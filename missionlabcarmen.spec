@@ -21,15 +21,21 @@ BuildRequires:	xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi binutils gcc-c++ gcc t
 
 %if 0%{?fedora}
 
-%if 0%{?fedora_version} <= 23
-Requires:	xorg-x11-fonts-misc lesstif-devel libstdc++-devel compat-flex libGLU-devel atlas
-BuildRequires:	xorg-x11-fonts-misc lesstif-devel libstdc++-devel compat-flex libGLU-devel atlas
-%else
-Requires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
-BuildRequires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
-%endif
+  %if 0%{?fedora_version}
+    %define real_fedora_ver %{fedora_version}
+  %else
+    %define real_fedora_ver %{fedora}
+  %endif
 
-#if ENABLE_OPENGL==1 -> libGLw-devel
+  %if 0%{?real_fedora_ver} <= 23 
+    Requires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
+    BuildRequires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
+  %else
+    Requires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
+    BuildRequires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
+  %endif
+
+  #if ENABLE_OPENGL==1 -> libGLw-devel
 
 %endif
 
