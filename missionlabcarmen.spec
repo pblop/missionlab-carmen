@@ -32,7 +32,7 @@ BuildRequires:	xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi binutils gcc-c++ gcc t
     BuildRequires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
   %else
     Requires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
-    BuildRequires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas
+    BuildRequires:	xorg-x11-fonts-misc motif-devel libstdc++-devel compat-flex libGLU-devel atlas flex-devel
   %endif
 
   #if ENABLE_OPENGL==1 -> libGLw-devel
@@ -93,10 +93,17 @@ BuildRequires:	xorg-x11-fonts-misc openmotif-devel libstdc++-devel libGLU-devel 
 MissionLab takes high-level military-style plans and executes them with teams of real or simulated robotic vehicles. MissionLab supports execution of multiple robots both in simulation and actual robotics platforms, including device drivers for controlling iRobot's ATRV-Jr and Urban Robot, ActivMedia's AmigoBot and Pioneer AT, and Nomadics Technologies' Nomad 150 & 200. Each vehicle executes its portion of the mission using reactive control techniques developed at Georgia Tech. 
 
 %prep
-%setup -q
+%setup -q -c
 
 %build
 rm -rf $RPM_BUILD_ROOT
+# In the latest Fedora versions, there are certain issues compiling old code
+# (without refactoring). C++23 standard changes how C handles certain cases,
+# like void function pointers (used in map_graphics.c, example: line 455).
+# https://fedoraproject.org/wiki/Changes/PortingToModernC
+# Using the gnu89 standard avoids those issues, and it seems like the codebase
+# doesn't require any modern C/C++ features.
+export CFLAGS="%{optflags} -std=gnu89"
 make
 
 %install
