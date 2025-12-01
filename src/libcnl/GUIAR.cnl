@@ -1,0 +1,110 @@
+/**********************************************************************
+        **                                                                  **
+        **                           GUIAR.cnl                        **
+        **                                                                  **
+        **                                                                  **
+        **  Written by:  Alberto Rodríguez Valle                            **
+        **                                                                  **
+        **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+init
+    #include "evitar_obstaculos.h"
+iend
+
+
+        /***********************************************************************/
+procedure Vector GUIAR with
+    Vector moverPasillo;
+    //Vector obstaculos;
+    Vector estarEnPasillo;
+header
+    static int inicial = 0;
+    robot_position rp;
+    Vector p1, p2;
+    int ts;
+    int numEsclavos;
+    static bool puertaProxima = false;
+    float radio, angulo;
+    Vector punto;
+    static Vector p2_ant;
+    Vector obstaculos;
+    Vector mid, inpt1, inpt2;
+    boolean stat;
+    int newtime;
+    double dx, dy, len;
+    double distancia = 1.0;
+body
+
+    //printf("\n*******pido Información de los obstculos*********\n");
+    obstaculos = evitar_obstaculos();
+    //printf("\n*******GUIAR*********\n");
+
+    if(inicial < 1)
+    {
+        sleep(5);
+        inicial ++;
+        if(inicial == 1){
+            //printf("Antes de enviar BROADCAST\n");
+        enviar_broadCast(5);
+                //enviarPosicion(rp);
+        }
+        VECTOR_CLEAR(output);
+    }else{
+        rp = exec_get_position();
+            //enviarPosicion(rp);
+        if(exec_detect_nearest_doorway(&p1, &p2, &ts) == true){
+                //printf("La distancia al marco de la puerta es de %f => PuertaProxima %s\n", modulo(rp.v, p2), puertaProxima ? "VERDADERO":"FALSO");
+            if((modulo(rp.v, p2) < 1.3) && puertaProxima == false){
+                numEsclavos = get_num_esclavos();
+                if(numEsclavos >= 1){
+                    enviar_cambio_estado(numEsclavos);
+                    decrementar_num_esclavos();
+                    puertaProxima = true;
+                    mid.x = (p1.x + p2.x)/2.0;
+                    mid.y = (p1.y + p2.y)/2.0;
+                    /*calculate the slope of perpendicular line*/
+                    dy = p1.x - p2.x;
+                    dx = p1.y - p2.y;
+                    dy *= -1;
+                    /*normalize the length to be 0.5*/
+                    len = 0.5/sqrt(dx*dx + dy*dy);
+                    dx *= len;
+                    dy *= len;
+                    /* calculate a test point */
+                    inpt1.x = mid.x + dx;
+                    inpt1.y = mid.y + dy;
+
+                    inpt2.x = mid.x - dx;
+                    inpt2.y = mid.y - dy;
+
+                    if(modulo(rp.v, inpt1) < modulo(rp.v, inpt2)){
+                        punto.x = mid.x - dx * distancia;
+                        punto.y = mid.y - dy * distancia;
+                    }else{
+                        punto.x = mid.x + dx * distancia;
+                        punto.y = mid.y + dy * distancia;
+                    }
+                    almacenar_posicion(punto);
+                }
+            }
+            if(modulo(rp.v, p2) > 1.4)
+                puertaProxima = false;
+        }
+        //printf("El numero de esclavos es de %d\n", get_num_esclavos());
+        if(get_num_esclavos() > 0){
+            output.x = moverPasillo.x + estarEnPasillo.x + obstaculos.x*0.3;
+            output.y = moverPasillo.y + estarEnPasillo.y + obstaculos.y*0.3;
+            //output.x = moverPasillo.x + estarEnPasillo.x;
+            //output.y = moverPasillo.y + estarEnPasillo.y;
+            output.z = 0.0;
+        }
+        else
+            VECTOR_CLEAR(output);
+            //output.x = rp.v.x + 0.05;
+            //output.y = 0.0;
+            //output.z = 0.0;
+    }
+pend

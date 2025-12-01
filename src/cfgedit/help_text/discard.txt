@@ -1,0 +1,7 @@
+"Title: Discard\n\
+\n\
+Changes have been made to the workspace which are not saved.\n\
+\n\
+Discard: Discard the current workspace.\n\
+Cancel: Do not discard.\n\
+Help:   This message."

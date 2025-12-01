@@ -1,0 +1,40 @@
+/**********************************************************************
+ **                                                                  **
+ **                       PUT_ROBOT_STATE.cnl                        **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: PUT_ROBOT_STATE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure void PUT_ROBOT_STATE with
+   int state;
+header
+body
+   exec_put_robot_state(state);
+pend
+
+
+
+/**********************************************************************
+# $Log: PUT_ROBOT_STATE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:00  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.7  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.6  1995/06/28  22:08:27  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

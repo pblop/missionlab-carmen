@@ -1,0 +1,7 @@
+DEFINES_VX	= -DVXWORKS -DCPU=MC68040 -fno-builtin -DNO_VXCONNECTION
+vx68k_FLAGS = -O $(INC_PATH_VX) $(DEFINES_VX) -DM68k
+vx68k_COMPILER  = /usr/vasc/local/pkg/gnu/m68/bin/g++
+vx68k_CCOMPILER  = /usr/vasc/local/pkg/gnu/m68/bin/gcc
+vx68k_LD = /usr/vasc/local/pkg/gnu/m68/bin/ld
+
+

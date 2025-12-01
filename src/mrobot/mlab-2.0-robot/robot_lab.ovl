@@ -1,0 +1,27 @@
+--******************************************************************
+--
+--	robot_lab.ovl
+--
+--	overlay file describing points in the robotlab
+--	
+--	Doug MacKenzie
+--
+--******************************************************************
+
+ORIGIN 2 3
+SCENARIO "example1"
+
+SITE "Robot Lab, MARC 362"
+
+CONTROL MEASURES:  
+
+Boundary "MARC 362" 0 6.1  10.7 6.1    10.7 0   1.7 0  1.7 2.7  0 2.7   0 6.1
+Gap Door 10.5 4.3    10.9 4.3  1.5
+
+PP DoorWay 9.0 3.7 0.4
+PP Middle 5.0 3.1 0.4
+
+PP north 3.4 100.0 0.4
+PP south 3.4 -100.0 0.4
+PP east  100 1.84 0.4
+PP west	 -100 1.84 0.4

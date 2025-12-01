@@ -1,0 +1,31 @@
+--******************************************************************
+--
+--	example_formation.odl
+--
+--	Example overlay file for formation mission.
+--	
+--	This file describes a set of positions in the
+--	world used by the script example_formation.
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+SCENARIO "Formation Demo"
+
+SITE "Simulation"
+
+MISSION-AREA 800 800
+
+ORIGIN 30 0
+
+
+CONTROL MEASURES:
+
+PP Charlie 50 100
+
+PP Delta1 400 100
+
+PP Echo 400 500
+

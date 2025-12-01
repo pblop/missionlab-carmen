@@ -1,0 +1,61 @@
+--******************************************************************
+--
+--	drv
+--
+--	script to drive one Denning DRV robot on ttyb.
+--	
+--	This example spawns one robot, then commands
+--	it to move to a series of points.
+--
+--	Doug MacKenzie
+--
+--******************************************************************
+
+MISSION NAME "Single Denning DRV Robot Run"
+
+OVERLAY "drv.ovl"
+
+SP StartPlace* 3.4 1.84  --   Note: x means EAST
+                 	 --         y means NORTH
+			 -- 11 feet from far west wall, 6 feet from south wall
+			 -- Turn robot so 0 sensor (light) is pointed east
+
+NEW-ROBOT george-the-robot "robot" "blue" (
+					robot_type = "DRV1",
+					-- run_type = "REAL",
+					tty_num = 0,
+
+					avoid_obstacle_sphere = 1.25,
+					navigation_success_radius = 0.3,
+					move_to_goal_success_radius = 0.3,
+
+					navigation_noise_gain = 0,
+					navigation_move_to_goal_gain = 1.0,
+					navigation_avoid_obstacle_gain = 0.7,
+					navigation_avoid_robot_gain = 0,
+					navigation_formation_gain = 0,
+
+					base_velocity = 0.05,
+					max_velocity = 0.05
+					)
+set robot-length 0.8
+
+UNIT <unit-george> george-the-robot
+
+SET SHOW-TRAILS ON
+
+COMMAND LIST:
+
+ 0. UNIT unit-george START StartPlace 0 20
+
+ 1. UNIT unit-george MOVETO NearDoor
+
+ 2. UNIT unit-george MOVETO Middle
+
+ 3. UNIT unit-george MOVETO StartPlace
+
+ 4. UNIT unit-george OCCUPY StartPlace
+
+ 5. UNIT unit-george STOP
+
+ 6. Quit

@@ -1,0 +1,184 @@
+/**********************************************************************
+ **                                                                  **
+ **                           NOTIFY_GOALS.cnl                       **
+ **                                                                  **
+ **  NOTIFY_GOALS will broad cast the message to other robots as     **
+ **  well.                                                           **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: NOTIFY_GOALS.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector NOTIFY_GOALS with
+   Vector	 goal_loc;
+header
+
+  void fill_id_string(char **&robcid);
+  void fill_goal_string(char **&robgoal);
+  void fill_los_string(char **&robcol);
+  bool get_colID(char *&colId);
+  int get_state_info(char *about);
+  void send_state_info(char *send, char *rec);
+  bool rec_state_info(char *send, char *rec);
+  void send_new_goal_info(char *about, char *send, char *rec, int ts, Vector goal, Vector mpos);
+  bool rec_new_goal_info(char *about, char *send, char *rec, int &ts, Vector &goal, Vector &mpos);
+  void put_goal_info(char *about, int ts, Vector goal);
+  bool get_goal_info(char *about, int &ts, Vector &goal);       
+  bool get_pos_shot(Vector &pos, double &heading);
+  bool has_los(char *name, Vector &pos);
+  bool put_visual_goal(char* sender, char *about, bool see, int goalID, Vector pos, int ptg, int optg);
+  Vector rel_to_abs(Vector pos, double heading, Vector p_to_pos);
+  Vector abs_to_rel(Vector pos, double heading, Vector p_to_abs);
+body
+
+//initialize some variables
+
+   VECTOR_CLEAR(output);
+
+   char *colId;
+   get_colID(colId);
+
+   char **robcol, **robgoal, **robcid;
+   fill_los_string(robcol);
+   fill_goal_string(robgoal);
+   fill_id_string(robcid);
+
+//get the clock position
+
+   Vector mypos; 
+   double myhead; 
+   get_pos_shot(mypos, myhead);
+
+
+/***************************************************************************
+* 1. share information with LOS robots (receiving)			   *
+***************************************************************************/
+
+  for (int i = 0; i < 4; i++)
+  {
+	Vector apos;
+	if ((bool) has_los(robcol[i], apos))
+	{
+	    rec_state_info(robcid[i], colId);
+	    get_state_info(robcid[i]);
+
+//get the position of the i-th robot which is asked for information
+        for (int j = 0; j < 4; j++)
+        {
+		int gts; 
+		Vector grl, mpos;
+		if (rec_new_goal_info(robgoal[j], robcid[i], colId, gts, grl, mpos))
+		{
+//receive information about j-th robot's goal (in i-th robot's reference frame)
+//check if it already received it
+
+			int gts2; 
+			Vector grl2;
+			if ( !get_goal_info(robgoal[j], gts2, grl2)
+				|| gts >= gts2)
+			{
+
+//compute j-th robot's goal in my own reference frame
+
+			double ah = -M_PI + atan2(apos.y, apos.x)
+					-atan2(mpos.y, mpos.x);
+			ah = (ah*180.0)/M_PI;
+			while (ah > 180.0) ah -= 360.0;
+			while (ah < -180.0) ah += 360.0;
+
+			Vector gal=rel_to_abs(apos, ah, grl);
+			gal=rel_to_abs(mypos, myhead, gal);
+			
+//store the received informations
+			//if (!strcmp(robgoal[j], "TGred"))
+			//printf("\n %s received %s goal by %s %f %f", colId,
+			//		robgoal[j], robcid[i], gal.x, gal.y);
+
+			put_goal_info(robgoal[j], gts, gal); 
+ 			if (gts > gts2)
+			{
+				put_visual_goal(colId, robcid[j], 0, gts, gal, 10000, 10000);
+			}
+			}
+		}
+	} //end for
+	} //end if (check visibility with robot i) 
+   }
+
+/***************************************************************************
+* 2. share information with LOS robots (transmitting)			   *
+***************************************************************************/
+
+   for (int i = 0; i < 4; i++)
+   {
+//check if it can see the i-th robot
+
+	Vector pos;
+	if ((bool) has_los(robcol[i], pos))
+	{
+	    send_state_info(colId, robcid[i]);
+	    for (int j = 0; j < 4; j++)
+	    {		
+		if (!strcmp(robgoal[j]+2, colId+1))
+        	{
+		   int gts;
+		   Vector gvect;
+   		   get_goal_info(robgoal[j], gts, gvect);
+		   Vector grl=abs_to_rel(mypos, myhead, goal_loc);
+		   send_new_goal_info(robgoal[j], colId, robcid[i], gts, grl, pos);
+		}
+		else
+		{
+//check if it knows j-th robot's goal
+
+		   int gts;
+		   Vector gvect;
+   		   if ( get_goal_info(robgoal[j], gts, gvect))
+		   {
+
+//compute the j-th robot's goal in relative coordinates
+
+			Vector grl=abs_to_rel(mypos, myhead, gvect);
+			send_new_goal_info(robgoal[j], colId, robcid[i], gts-1, grl, pos);
+		   }
+		}
+	    }
+	}
+  }
+
+
+  fflush(stdout);
+  for (int i = 0; i < 4; i++)
+  {
+    	free(robcol[i]);
+     	free(robgoal[i]);
+     	free(robcid[i]);
+  }
+  free (robcol);
+  free (robgoal);
+  free (robcid);
+
+pend
+
+
+/**********************************************************************
+# $Log: NOTIFY_GOALS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#
+#**********************************************************************/

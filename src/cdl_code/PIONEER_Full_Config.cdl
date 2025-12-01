@@ -1,0 +1,54 @@
+/*************************************************
+*
+* This CDL file PIONEER_Full_Config.cdl was created with cfgedit
+* version 3.0
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instGroup $AN_1548 from [
+  Stop];
+
+instBP<227,266> $AN_1541 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1546,
+            society[Start]<50,50>|Start| = $AN_1548,
+            society[$AN_1546]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1553 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1557 from vehicle(
+  bound_to = PIONEERAT(
+[
+          $AN_1553,
+          $AN_1541]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_1557]<10,10>|Group of Robots|
+]<10,10>
+

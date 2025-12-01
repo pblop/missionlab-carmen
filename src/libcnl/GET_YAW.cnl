@@ -1,0 +1,23 @@
+/**********************************************************************
+ **                                                                  **
+ **                         GET_YAW.cnl                              **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure double GET_YAW with
+   type_pry pry;
+header
+body
+   output = pry.yaw;
+pend
+

@@ -1,0 +1,87 @@
+/*************************************************
+*
+* This CDL file PatrolCar.cdl was created with cfgedit
+* version 1.0c
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instGroup $AN_376 from [
+    %Goal_Location = {91.0, 15}
+,
+  GoTo];
+
+instGroup $AN_377 from [
+    %Goal_Location = {91.0, 120}
+,
+  GoTo];
+
+instGroup $AN_378 from [
+    %Goal_Location = {96.5, 120}
+,
+  GoTo];
+
+instGroup $AN_379 from [
+  Stop];
+
+instBP<565,111> |The Wheels Binding Point| $AN_380 from movement(
+  v<0,0> = ,
+  base_vel = {0.3},
+  bound_to = base:DRIVE(
+        v<292,156> = FSA(
+            society[Start]<741,298>|Start| = $AN_379,
+            society[$AN_396]<590,119>|State2| = $AN_378,
+            society[$AN_400]<119,116>|State1| = $AN_377,
+            society[$AN_408]<119,478>|State3| = $AN_376,
+            society[$AN_424]<592,478>|State4| = [
+                %Goal_Location = {96.5, 15}
+,
+              GoTo]<10,10>
+,
+            rules[$AN_396]<590,119>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {96.5,120}
+,
+              AtGoal]<361,105>|Trans5|
+ goto $AN_400,
+            rules[Start]<741,298>|Start| = if [
+              Immediate]<10,10>|Trans2|
+ goto $AN_396,
+            rules[$AN_424]<592,478>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {96.5,15}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_396,
+            rules[$AN_408]<119,478>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {91.0,15}
+,
+              AtGoal]<352,479>|Trans4|
+ goto $AN_424,
+            rules[$AN_400]<119,116>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {91.0,120}
+,
+              AtGoal]<120,295>|Trans3|
+ goto $AN_408)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.3},
+        cautious_vel = {0.2},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_524 from vehicle(
+  bound_to = PatrolCarRobot1:MRV2(
+PatrolCarRobot1:[
+          $AN_380]
+)<13,13>|The robot|
+);
+
+NoName:[
+[
+    $AN_524]<0,0>|The Configuration|
+]<10,10>
+

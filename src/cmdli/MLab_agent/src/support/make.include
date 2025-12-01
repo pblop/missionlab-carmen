@@ -1,0 +1,250 @@
+#
+# make.include
+#
+
+#---------------------------------------------------------------------
+# Define all our user variables to get rid of warnings
+L_SRCS = 
+LFLAGS =
+Y_SRCS =
+YFLAGS = 
+CC_SRCS =
+C_SRCS =
+ASM_SRCS =
+CNL_SRCS =
+LDFLAGS =
+ARFLAGS = rcvs
+DEPEND_FLAGS = 
+DATA = 
+#---------------------------------------------------------------------
+
+#LY_CC=$(L_SRCS:.l=.cc) $(Y_SRCS:.y=.cc) $(Y_SRCS:.y=.tab.h)
+LY_CC=$(L_SRCS:.l=.cc) $(Y_SRCS:.y=.cc)
+LY_H=$(Y_SRCS:.y=.tab.h)
+
+#---------------------------------------------------------------------
+# Here for user to override
+CFLAGS =
+CNLFLAGS = 
+#---------------------------------------------------------------------
+
+# build data files from bit mapped images
+%.data: %.bmp
+	$(SUPPORT_DIR)/binary2text.pl $<
+
+#---------------------------------------------------------------------
+
+ifeq ($(TARGET_OS),linux)
+   # ------------------------- LINUX --------------------------------------
+   DEPENDPRG = gccmakedep
+   DEPEND_FLAGS = -D__cplusplus -D__i386__ -I/usr/X11R6/include -I/usr/include/c++/3.3.2 -I/usr/include/c++/3.3.2/i386-redhat-linux -I/usr/lib/gcc-lib/i386-redhat-linux/3.3.2/include -I/usr/include/c++/3.2.2 -I/usr/include/c++/3.2.2/i386-redhat-linux -I/usr/lib/gcc-lib/i386-redhat-linux/3.2.2/include
+   CC = gcc
+# Define a CC command using shell options
+   SCC = gcc
+   YACC = bison
+   CNL = mic_cnl
+   YFLAGS = -tvd
+   LEX = flex
+   LFLAGS =
+   AR = ar
+   LD = gcc
+   LDOPTS = 
+   LDFLAGS = -g
+#   LIBS = -lstdc++ -lg++ -lm
+#   LIBS = -lstdc++ -lc -L/usr/X11R6/LessTif/Motif1.2/lib -lm
+   LIBS = -lstdc++ -lc -L/usr/X11R6/lib -lm
+#   CFLAGS = -fhandle-exceptions -DUSE_EXCEPTIONS -frtti -DUSE_RTTI
+#   CFLAGS = -Wall -g -D_REENTRANT -I/usr/X11R6/LessTif/Motif1.2/include
+   CFLAGS = -Wall -g -D_REENTRANT -I/usr/X11R6/include -fpermissive -I/usr/include/openmotif/
+   SCFLAGS = -O -Wall -g
+   XLIBS = -L/usr/X11R6/lib -lXm -lXt -lXext -lX11                   
+
+   LIBEXT = .a
+   BINEXT = 
+   OBJEXT = .o
+   SOBJEXT = .so
+
+#  Need to tell the compiler how the name the file
+   EXENAMEFLAG = -o 
+   
+
+(%): %
+	$(AR) $(ARFLAGS) $@ $^ 
+	
+endif
+
+ifeq ($(TARGET_OS),win32)
+   # ------------------------- WIN32 --------------------------------------
+   LIBEXT = .lib
+   BINEXT = .exe
+   OBJEXT = .obj
+
+   DEPENDPRG = gccmakedep 
+#   DEPENDPRG = $(MIC_MAKEDEPEND_DIR)/bin/$(TARGET_OS)/mic_makedepend$(BINEXT)
+
+   DEPEND_FLAGS = -D__cplusplus -DWIN32 -Dwin32 -D_WIN32 \
+   	-D_WIN32_WINDOWS=0x0400 -DWINVER=0x0400 \
+        -D_MSC_VER=1310 -D_M_IX86=300 \
+        -I$(VC_ROOT_LINUX)/vc7/include -I$(VC_ROOT_LINUX)/vc7/platformsdk/include
+#RH9
+#   CC =  wine $(VC_ROOT_LINUX)/vc7/bin/cl.exe --
+#   CSC = wine $(C_ROOT_LINUX)/Microsoft.NET/Framework/v1.1.4322/csc.exe --
+#   AR =  wine $(VC_ROOT_LINUX)/vc7/bin/lib.exe --
+#   LD =  wine $(VC_ROOT_LINUX)/vc7/bin/link.exe--
+#FC2
+   CC = setarch i386 wine $(VC_ROOT_LINUX)/vc7/bin/cl.exe 
+   CSC = setarch i386 wine $(C_ROOT_LINUX)/Microsoft.NET/Framework/v1.1.4322/csc.exe 
+   AR =  setarch i386 wine $(VC_ROOT_LINUX)/vc7/bin/lib.exe 
+   LD = setarch i386 wine $(VC_ROOT_LINUX)/vc7/bin/link.exe
+
+   YACC = bison
+   CNL = .mic_cnl
+   YFLAGS = -tvd
+   LEX = flex
+   LFLAGS =
+   ARFLAGS = /NOLOGO /machine:X86 /VERBOSE
+   LDOPTS = 
+   LDFLAGS = /NOLOGO /LIBPATH:$(VC_ROOT)\\vc7\\lib  /LIBPATH:$(VC_ROOT)\\vc7\\platformsdk\\lib /NODEFAULTLIB:LIBC $(SYS_LIBS) /subsystem:console /incremental:no /debug /machine:I386  
+
+#   DLLFLAGS = /NOLOGO /LIBPATH:$(VC_ROOT)\\vc7\\lib /LIBPATH:$(VC_ROOT)\\vc7\\platformsdk\\lib $(SYS_LIBS) /incremental:no /debug /machine:I386 /DLL
+
+
+# DLLFLAGS DEF:
+   DLLFLAGS = /LIBPATH:$(VC_ROOT)\\vc7\\lib /LIBPATH:$(VC_ROOT)\\vc7\\platformsdk\\lib $(SYS_LIBS) /INCREMENTAL:no /NOLOGO /DLL /DEBUG /SUBSYSTEM:WINDOWS /MACHINE:X86 
+
+
+# don't know if we need wsock32, or if ws2_32 is it???
+#   LIBS = wsock32.lib iphlpapi.lib
+   LIBS = iphlpapi.lib ws2_32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
+
+
+   SYS_INCLUDE = /I$(VC_ROOT)\\vc7\\include /I$(VC_ROOT)\\vc7\\platformsdk\\include 
+#   CFLAGS = /nologo /MLd -W3 /GR /GX /Zi -TP -DWIN32 -Dwin32 -D_DEBUG -D_CONSOLE -D_MBCS -D_WIN32 -D_WIN32_WINDOWS=0x0400 -DWINVER=0x0400 $(SYS_INCLUDE) 
+
+# CFLAGS DEF:
+# /GR     : Enable C++ RTTI
+# /EHsc   : Enable C++ exception handling AND extern "C" defaults to nothrow
+# /RTC1   : Enable fast checks (Stack frame runtime checking AND Uninitialized local usage checks)
+# /MTd    : Use multithreaded debug library
+# /W3     : Set warning level to 3 
+# /nologo : supress copyright message
+# /c      : compile only
+# /Zi     : enable debugging information (Note: Was /ZI which "enable edit and continue debug info",
+#           but that stopped -I/shares/... includes from working, so dropped back to /Zi)
+# /TP     : Compile all files as .cpp
+   CFLAGS = $(SYS_INCLUDE) /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "LIBCMDLI_EXPORTS" /D "_WINDLL" /D "_MBCS" /GR /EHsc /RTC1 /MTd /W3 /nologo /c /Zi /TP
+#   CSFLAGS = /nologo /target:exe /define:WIN32 /define:win32 /define:_DEBUG /define:_CONSOLE /define:_MBCS /define:_WIN32 /define:_WIN32_WINDOWS=0x0400 /define:WINVER=0x0400 
+   CSFLAGS = /nologo /target:exe 
+   SCFLAGS = -TP 
+
+#  Need to override the library command for WIN32
+(%): %
+	@if $(AR) $(ARFLAGS) $@ $^ ; then echo "Inserted $<" ; else \
+	$(AR) $(ARFLAGS) /OUT:$@ $^ ; echo "Created lib and inserted $<" ;\
+	fi
+
+%.obj: %.cc
+	$(CC) $(CFLAGS) $(INCLUDES) $*.cc
+
+#  Need to tell the compiler how the name the file
+   EXENAMEFLAG = /out:
+
+   # Need to use the bash shell for the makefile's FOR statements.
+#   SHELL=bash.exe
+endif
+
+ifeq ($(TARGET_OS),djgpp)
+   # ------------------------- DJGPP --------------------------------------
+   DEPEND_FLAGS = -- -D__cplusplus -I/home/doug/cross/include -I/home/doug/cross/lib/gcc-lib/i386-go32-msdos/2.7.2.1/include -I/usr/include/g++ -I/usr/include/g++/std
+   CC = dos-gcc
+   # Define a CC command using shell options
+   SCC = dos-gcc
+   CNL = mic_cnl
+   AR = dos-ar
+   YACC = bison
+   LEX = flex
+   LFLAGS =
+   LDFLAGS =  -Xlinker -Map -Xlinker linkmap -g 
+   LIBS = -lpc -lstdc++ -lm
+   CFLAGS = -fhandle-exceptions -frtti 
+   SCFLAGS = -fhandle-exceptions -frtti 
+   LIBEXT = .a
+   BINEXT = 
+   OBJEXT = .o
+   SOBJEXT = .so
+
+#  Need to tell the compiler how the name the file
+   EXENAMEFLAG = -o 
+endif
+
+#---------------------------------------------------------------------
+
+OBJS=$(L_SRCS:.l=$(OBJEXT)) $(Y_SRCS:.y=$(OBJEXT)) $(CC_SRCS:.cc=$(OBJEXT)) \
+     $(C_SRCS:.c=$(OBJEXT)) $(ASM_SRCS:.S=$(OBJEXT)) $(CNL_SRCS:.cnl=$(OBJEXT))
+
+#---------------------------------------------------------------------
+
+VERSIONFLAGS = -DBUILDDATE="\"`date '+%T, %a %h %d, 20%y'`\""
+VERSIONFLAGS += -DBUILDVER="\"`cat $(SUPPORT_DIR)/build_version`\""
+VERSIONFLAGS += -DBUILDNUM="\"`cat $(SUPPORT_DIR)/build_count`\""
+VERSIONFLAGS += $(MIC_ROOT)/support/version.cc
+VERSIONOBJ = version$(OBJEXT)
+
+# ---------------------------------------------------
+
+# flags for RCS
+export COFLAGS =
+
+#---------------------------------------------------------------------
+
+%.cc: %.cnl
+	$(CNL) -c $(CNLFLAGS) $(INCLUDES) $<
+
+#%.cc: %.l
+#	$(LEX) $(LFLAGS) -o$*.cc $*.l
+#need to remove the include of unistd.h for win32.  Turns out it isn't necessary on
+#linux either, so just always remove it (comment it out).
+%.cc: %.l
+	$(LEX) $(LFLAGS) -t -o$*.cc $*.l | $(MIC_ROOT)/support/clean_lex.sh > $*.cc
+
+%.cc %.tab.h: %.y
+	$(YACC) $(YFLAGS) -o $*.cc $*.y
+	@if test -e $*.cc.h ; then \
+	   mv -f $*.cc.h $*.tab.h ;\
+	fi
+	@if test -e $*.hh ; then \
+	   mv -f $*.hh $*.tab.h ;\
+	fi
+	@if test -e $*.cc.output ; then \
+	   mv -f $*.cc.output $*.output ;\
+	fi
+	@if test -e $*.cc.out ; then \
+	   mv -f $*.cc.out $*.output ;\
+	fi
+
+%.o: %.cc
+	$(CC) -c $(CFLAGS) $(INCLUDES) $*.cc
+
+%.so: %.cc
+	$(CC) -c -shared $(CFLAGS) $(INCLUDES) $*.cc -o $@
+
+%.obj: %.cs
+	$(CSC) -c $(CSFLAGS) $(INCLUDES) $*.cs
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(INCLUDES) $*.c
+
+%.obj: %.c
+	$(CC) -c $(CFLAGS) $(INCLUDES) $*.c
+
+%.o: %.S
+	$(CC) -c $(CFLAGS) -Wa,-al=$*.lst $*.S            
+
+%.ps: %.h
+	doc++ -A -t -o $*.tex $<
+	latex $*.tex
+	latex $*.tex
+	dvips $*.dvi -o
+	rm -f $*.dvi $*.tex $*.aux $*.log
+
+#---------------------------------------------------------------------

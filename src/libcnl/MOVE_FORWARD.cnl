@@ -1,0 +1,51 @@
+/**********************************************************************
+ **                                                                  **
+ **                         MOVE_FORWARD.cnl                         **
+ **                                                                  **
+ **  This cnl file was used to be called MOVE_AHEAD.cnl. Since the   **
+ **  MOVE_AHEAD was corrected to accept a compass direction and gen- **
+ **  erate the vector towards the direction, the old one was archi-  **
+ **  ved as MOVE_FORWARD. This behavior will constantly generate a   **
+ **  vector to the robot's heading direction.                        **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOVE_FORWARD.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector MOVE_FORWARD with
+   double       amount;
+   double       heading;
+header
+body
+   VECTOR_CLEAR(output);
+   output.x=amount;  
+   /*rotate_z(output, heading);*/ /*rotating is incorrect --jdiaz*/
+   
+   if( debug )
+   {
+      fprintf(stderr,"MOVE_FORWARD(%d) output=<%.2f %.2f>\n",
+		 robot_id, output.x,output.y);
+   }
+pend
+
+/**********************************************************************
+# $Log: MOVE_FORWARD.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/06/18 01:21:44  endo
+# Initial revision
+#
+#
+#**********************************************************************/

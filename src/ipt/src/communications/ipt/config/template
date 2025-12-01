@@ -1,0 +1,25 @@
+.KEEP_STATE:
+
+all:: libipt.a iptserver
+
+#include <arch.def>
+
+#include <rules.def>
+#include <composite.def>
+
+install:: install.includes install.server 
+
+install.server:: $(MAINTYPE)/iptserver
+	cp $(MAINTYPE)/iptserver $(INSTALL_DIR)/bin
+
+install.includes:: ipt_comm.h tcx.h tcxP.h
+	$(RM) $(INSTALL_DIR)/include/ipt/$(ALL_FILES).h
+	cp *.h $(INSTALL_DIR)/include/ipt
+
+/*
+ * Include the local Imakefile.
+ */
+XCOMM -------------------------------------------------------------------------
+
+#include INCLUDE_IMAKEFILE
+

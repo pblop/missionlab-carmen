@@ -1,0 +1,68 @@
+
+MAINTYPE = LINUX
+LINUX_FLAGS = -g -DLINUX -DWITH_PTHREADS
+LINUX_COMPILER = g++
+LINUX_CCOMPILER = gcc
+
+#define LINUXMakeLibrary(file,depobjs,ldobjs) MakeLibrary(file,depobjs,ldobjs)
+
+install.LINUX:: LINUX/$(IPTLIB)
+	cp LINUX/$(IPTLIB) $(INSTALL_DIR)/lib/LINUX
+	#ranlib -t $(INSTALL_DIR)/lib/LINUX/$(IPTLIB)
+
+#define MakeLINUXObject(object,file,env)    @@\
+	MakeEnvObjectRule($(LINUX_COMPILER),LINUX/object,LINUX/file,file,$(LINUX_FLAGS),env)
+
+#define MakeLINUXProgram(name, file)  @@\
+MakeLINUXObject(name,file,$(EMPTY))    @@\
+LINUX/name: LINUX/$(IPTLIB) @@\
+	$(LINUX_COMPILER) LINUX/file.o -o LINUX/name LINUX/$(IPTLIB) $(LINUX_LINK) $(EXTRALIBS)
+
+#define MakeLINUXObjectC(object, file)    @@\
+	MakeObjectCRule($(LINUX_CCOMPILER),LINUX/object,LINUX/file,file,$(LINUX_FLAGS))
+
+#define MakeLINUXCProgram(name, file)  @@\
+MakeLINUXObjectC(name,file)    @@\
+LINUX/name: LINUX/$(IPTLIB) @@\
+	$(LINUX_CCOMPILER) LINUX/file.o -o LINUX/name LINUX/$(IPTLIB) $(LINUX_LINK) $(EXTRALIBS)
+
+#define MakeLINUXLib() LINUXMakeLibrary(LINUX/$(IPTLIB),$(LINUX_LIB_OBJS), $(LINUX_LIB_OBJS))
+
+all.LINUX:: LINUX/$(IPTLIB) LINUX/iptserver
+
+
+#define VxLibObject(file)  @@\
+
+#define UnixLibObject(file)  @@\
+@@\
+LINUX_LIB_OBJS += LINUX/file.o   @@\
+LINUX_LIB_SRCS += file.cc  @@\
+MakeLINUXObject($(IPTLIB),file,$(EMPTY))   @@\
+
+#define UnixLibObjectEnv(file,env)  @@\
+@@\
+LINUX_LIB_OBJS += LINUX/file.o   @@\
+LINUX_LIB_SRCS += file.cc  @@\
+	MakeLINUXObject($(IPTLIB),file,env)   @@\
+
+#define MakeIptLib()      @@\
+$(IPTLIB): $(MAINTYPE)/$(IPTLIB)	 		@@\
+	MakeLINUXLib()   @@\
+
+#define MakeIptProgram(name,file)      @@\
+SRCS += file.$(CCSUFFIX)    				@@\
+name: $(MAINTYPE)/name	 		@@\
+  MakeLINUXProgram(name,file)   @@\
+
+#define MakeIptCProgram(name,file)      @@\
+SRCS += file.$(CSUFFIX)    				@@\
+name: $(MAINTYPE)/name	 		@@\
+	MakeLINUXCProgram(name,file)   @@\
+
+clean::
+	$(RM) LINUX/$(ALL_FILES)
+
+install:: install.LINUX
+
+depend:: depend.LINUX
+

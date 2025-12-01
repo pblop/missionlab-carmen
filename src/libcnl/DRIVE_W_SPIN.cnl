@@ -1,0 +1,158 @@
+/**********************************************************************
+ **                                                                  **
+ **                          MOVE_ROBOT.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DRIVE_W_SPIN.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+
+ /***********************************************************************/
+
+procedure void DRIVE_W_SPIN with
+   Vector v;    
+   double max_vel;
+   double base_vel;
+   double cautious_vel;
+   bool cautious_mode;
+header
+   const char* sf;
+   double slippage_factor;
+body
+
+/* ----------- move the robot ------------*/
+
+
+#if 0
+//old version
+
+   /* apply the base velocity */
+   v.x *= base_vel;
+   v.y *= base_vel;
+
+   /* clip at the max velocity */
+   if( len_2d(v) > max_vel ) 
+   {
+      unit_2d(v);
+      if (cautious_mode)
+      {
+         mult_2d(v,cautious_vel);
+      }
+      else
+      {
+         mult_2d(v,max_vel);
+      }
+   }
+ 
+#else
+//fixed version
+
+  /* apply the base velocity */
+  v.x *= base_vel;
+  v.y *= base_vel;
+
+  /* check if we have to clip */
+  if( len_2d(v) > max_vel )
+  {
+
+    /* infinite vector means we are inside safety margin */
+    /* in cautious mode we need to clip to cautious speed in this case */
+    if( (len_2d(v) > (0.001*GT_INFINITY*base_vel)) && cautious_mode )
+    {
+
+      unit_2d(v);
+      mult_2d(v,cautious_vel);
+
+    } else {
+
+      unit_2d(v);
+      mult_2d(v,max_vel);
+        
+    }
+
+  }
+
+#endif
+
+
+   // Run the robot_side_com.c command.
+   exec_move_robot(v);
+
+
+/* ----------- spin the robot ----------- */
+
+   if (v.z != 0)
+     {
+       // Retrieving "spin_slippage_factor" from the database.
+       const char* ssf = "spin_slippage_factor";
+       sf = get_state((char*)ssf);
+
+       if ( sf != NULL )
+       {
+          slippage_factor = strtod( sf, NULL );
+       }
+       else
+       {
+          slippage_factor = 1.0;
+       }
+
+       // Run the robot_side_com.c command.
+       exec_spin_robot(v.z,slippage_factor/10.0);
+     }
+
+   if( debug )
+      fprintf(stderr,"Drive <%.1f %.1f> %5.3f\n",v.x,v.y, v.z);
+
+pend
+
+
+/**********************************************************************
+# $Log: DRIVE_W_SPIN.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:55  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.13  2003/04/06 19:43:42  endo
+# gcc 3.1.1
+#
+# Revision 1.12  2002/10/25 01:38:55  kaess
+# - swirl stripped off unnecessary code and parameters,
+# infinite repulsion within safety margin added
+# - "robot-too-cautious" bug fixed: robot should be in
+# cautious mode iff inside safety margin, which is the dase
+# when COOP returns an infinit vector - infinity needed to be changed
+#
+# Revision 1.11  2000/03/30 01:22:00  endo
+# spin can now be executed if v.z is not 0.
+# slippage_factor is now coming from database_double.
+#
+# Revision 1.10  1999/05/30 23:52:58  conrad
+# *** empty log message ***
+#
+# Revision 1.4  1996/01/17  18:49:01  doug
+# cautious_mode should have been a bool
+#
+# Revision 1.3  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.3  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.2  1995/08/23  17:04:51  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/08/22  17:31:49  doug
+# Initial revision
+#
+# Revision 1.12  1995/06/28  22:05:37  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

@@ -1,0 +1,98 @@
+/*----------------------------------------------------------
+
+	MAINTAIN_FORM
+
+	Output a vector to maintain a formation position.
+
+	Written by:  Tucker Balch
+
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+----------------------------------------------------------*/
+
+/* $Id: MAINTAIN_FORM.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+procedure Vector MAINTAIN_FORM with
+
+Vector	offset;			/* vector to proper position */
+double	dead_zone_radius;	/* distance of allowed slop */
+double	saturation_length;	/* spring saturates at dzr + sl */
+
+header
+
+double	len;
+
+body
+
+   if( debug ) 
+      fprintf(stderr,"MAINTAIN_FORM (%d): ", robot_id);
+
+VECTOR_CLEAR(output);
+
+/* if error is within the deadzone then no effect */
+len = len_2d(offset);
+if( len <= dead_zone_radius )
+	{
+ 	/* no effect */
+           if( debug ) 
+              fprintf(stderr,"Within dead_zone  ");
+       	}
+else
+	{
+	/* shorten the error vector by the deadzone length */
+	len -= dead_zone_radius;
+   
+	unit_2d(offset);
+   
+	/* if within the spring zone then linear effect */ 
+	if( saturation_length != 0 && len < saturation_length )
+		{
+		/* linear drop within zone */
+		double frac = len / saturation_length;
+		times_2d(offset, frac, output);
+                if( debug ) 
+                   fprintf(stderr,"Within linear_zone, fraction = %.1f  ",frac);
+            	}
+	else
+		{
+		/* constant past spring zone */
+		output = offset;
+                if( debug ) 
+                   fprintf(stderr,"Saturated  ");
+            	}
+	}
+
+if( debug ) 
+	{
+	fprintf(stderr,"output=(%.1f %.1f)\n", output.x,output.y);
+	}
+
+pend
+
+
+
+/**********************************************************************
+# $Log: MAINTAIN_FORM.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.3  1995/07/10  19:54:18  doug
+# *** empty log message ***
+#
+# Revision 1.2  1995/06/30  15:20:59  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/06/30  15:14:39  doug
+# Initial revision
+#
+# Revision 1.4  1995/06/29  13:40:38  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

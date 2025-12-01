@@ -1,0 +1,97 @@
+/*************************************************
+*
+* This CDL file example.cdl was created with cfgedit
+* version 1.0a
+*
+**************************************************/
+
+bindArch AuRA;
+
+instGroup $AN_222 from [
+  Stop];
+instGroup $AN_223 from [
+    %Objects = {Home_Base}
+,
+  MoveTo];
+instGroup $AN_224 from [
+    %Object = {Mine}
+,
+  MarkObjectAs];
+instGroup $AN_225 from [
+    %Object = {Rock}
+,
+  MarkObjectAs];
+instGroup $AN_226 from [
+  ProbeObject];
+instGroup $AN_227 from [
+    %Objects = {Unknown_Objects}
+,
+  MoveTo];
+instBP<565,111> |The Wheels Binding Point| $AN_228 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE(
+        v<292,156> = FSA(
+            society[$AN_243]<297,249>|State1| = $AN_227,
+            society[$AN_245]<666,240>|State2| = $AN_226,
+            society[$AN_249]<512,60>|State3| = $AN_225,
+            society[$AN_257]<510,453>|State4| = $AN_224,
+            society[$AN_273]<149,437>|State5| = $AN_223,
+            society[$AN_305]<154,625>|State6| = $AN_222,
+            society[Start]<71,162>|Start| = [
+              Stop]<100,100>
+,
+            rules[$AN_245]<666,240>|State2| = if [
+                %Signal = {Danger}
+,
+              SigSense]<0,0>|Trans4|
+ goto $AN_257,
+            rules[$AN_249]<512,60>|State3| = if [
+              FirstTime]<0,0>|Trans5|
+ goto $AN_243,
+            rules[$AN_257]<510,453>|State4| = if [
+              FirstTime]<0,0>|Trans6|
+ goto $AN_243,
+            rules[$AN_273]<149,437>|State5| = if [
+                %Objects = {Home_Base},
+                %Distance = {0.2}
+,
+              Near]<0,0>|Trans9|
+ goto $AN_305,
+            rules[$AN_243]<297,249>|State1| = if [
+                %Objects = {Unknown_Objects},
+                %Distance = {0.2}
+,
+              Near]<0,0>|Trans2|
+ goto $AN_245,
+            rules[$AN_245]<666,240>|State2| = if [
+                %Signal = {Safe}
+,
+              SigSense]<0,0>|Trans3|
+ goto $AN_249,
+            rules[Start]<71,162>|Start| = if [
+              FirstTime]<0,0>|Trans1|
+ goto $AN_243,
+            rules[$AN_243]<297,249>|State1| = if [
+                %Objects = {Unknown_Objects}
+,
+              UnDetect]<0,0>|Trans2|
+ goto $AN_273)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_1014 from vehicle(
+  bound_to = exampleRobot1:MRV2(
+exampleRobot1:[
+          $AN_228]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_1014]<0,0>|The Configuration|
+]<10,10>

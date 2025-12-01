@@ -1,0 +1,134 @@
+/*************************************************
+*
+* This is the UGV default CDL library file
+*
+* $Id: default.UGV,v 1.1.1.1 2006/07/12 13:37:54 endo Exp $
+*
+* $Log: default.UGV,v $
+* Revision 1.1.1.1  2006/07/12 13:37:54  endo
+* MissionLab 7.0
+*
+* Revision 1.1.1.1  2005/02/06 22:59:30  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+* Revision 1.9  1996/06/05 20:28:31  doug
+* *** empty log message ***
+*
+# Revision 1.8  1996/06/01  21:55:00  doug
+# *** empty log message ***
+#
+# Revision 1.8  1996/06/01  21:55:00  doug
+# *** empty log message ***
+#
+# Revision 1.7  1996/05/14  23:17:57  doug
+# *** empty log message ***
+#
+# Revision 1.6  1996/05/02  22:58:54  doug
+# *** empty log message ***
+#
+*
+**************************************************/
+
+/********************* Types *****************************/
+
+// Speeds in the range of 0 to 10 meters per second
+defType[UGV] Speeds_10 DisplayAs SliderBar 0 10 |Meters/Second| = {Turtle},{Normal},{Rabbit};
+
+// Distances in the range of 0 to 10 meters
+defType[UGV] Distances_10 DisplayAs SliderBar 0 10 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+defType[UGV] Nearness_10 DisplayAs SliderBar 0 10 |Meters| = {Very Near}, {Near}, {Somewhat Near};
+
+defType[UGV] Map_Location DisplayAs TwoPoints;
+
+defType[UGV] location;
+defType[UGV] robot_position;
+defType[UGV] Vector;
+
+/********************* Binding points *****************************/
+defIBP[UGV] location localization();
+
+defOBP[UGV] void movement(
+    Vector v,
+    float base_vel);
+
+defRBP[UGV] vehicle();
+
+/******************** sensors ********************/
+
+defSensor[UGV] binds localization robot_position SHAFTENCODERS();
+
+/******************** actuators ********************/
+
+defActuator[UGV] binds movement void DRIVE(
+      Vector v,
+      float base_vel);
+
+/******************** robots ********************/
+
+defRobot[UGV] binds vehicle HUMMER(
+    actuator base:DRIVE,
+    sensor   xyt:SHAFTENCODERS);
+
+/********************* Operators *****************************/
+
+defOp[UGV] binds FSA Vector FSA FSAstyle(
+    list [boolean triggers, expression rules, member society]);
+
+/********************* Agents *****************************/
+
+defAgent[UGV] binds CONSTANT boolean CONSTANT
+|Perceptual trigger generating constant value useful for hardcoding transitions|
+(const boolean value);
+
+defAgent[UGV] binds CONSTANT int list_of_inputs(
+	list int input 
+);
+
+
+defAgent[UGV] binds user_wait int user_wait(
+	const UTM position, 
+	const string message
+);
+
+defAgent[UGV] binds xcountry int xcountry(
+	const float initial_speed, 
+	list const UTM points
+/*
+	const float tolerance, 
+	const boolean obstacle_avoidance,
+	const UTM start_point,
+	const UTM end_point,
+	const float speed, 
+	const string formation_type, 
+	const float formation_spacing,
+	const float formation_dead_zone,
+	const float formation_saturation
+*/
+);
+
+defAgent[UGV] binds TELOP int teleoperate(
+	const float initial_speed, 
+	const UTM start,
+	const UTM end
+    );
+
+defAgent[UGV] binds TELOP int follow_road(
+    double robot_heading,
+    double joystick_x,
+    double joystick_y);
+
+defAgent[UGV] binds TELOP int RSTA(
+    double robot_heading,
+    double joystick_x,
+    double joystick_y);
+
+
+defAgent[UGV] binds FIRST_TIME boolean FIRST_TIME
+|Perceptual trigger causing transition to occur first time the state executes|
+();
+
+defAgent[UGV] binds NOOP int NOOP
+|An agent which performs no operation, generating an empty output|
+();
+

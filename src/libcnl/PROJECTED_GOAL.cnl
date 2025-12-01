@@ -1,0 +1,72 @@
+/**********************************************************************
+ **                                                                  **
+ **                      PROJECTED_GOAL.cnl                          **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  When this CNL is called, the robot will create a goal location  **
+ **  projected with the paramenters specified. For example, if you   **
+ **  want the robot to think there is a new goal in the back, set    **
+ **  the project_angle to be 180 degree (and put some distance).     **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: PROJECTED_GOAL.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector PROJECTED_GOAL with
+   Vector robot_location;
+   double robot_heading;
+   double project_angle;
+   double distance;
+header
+   int           first_time = TRUE;
+   double        project_direction;
+   Vector        goal;
+body
+   if (first_time)
+     {
+
+       project_direction = robot_heading + project_angle;
+       while (project_direction < 360) project_direction += 360;
+       while (project_direction > 360) project_direction -= 360;
+
+       goal.x = robot_location.x + 
+	 (distance * cos(project_direction*(M_PI/180.0)));
+       goal.y = robot_location.y + 
+	 (distance * sin(project_direction*(M_PI/180.0)));
+       goal.z = 0;
+
+       first_time = FALSE;
+
+     }
+
+   output = goal;
+
+  if( debug )
+   {
+      fprintf(stderr,"PROJECTED_GOAL(%d) output=<%.2f %.2f>\n",
+		 robot_id, output.x,output.y);
+   }
+pend
+
+/**********************************************************************
+# $Log: PROJECTED_GOAL.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/04/16 15:17:24  endo
+# Initial revision
+#
+#
+#**********************************************************************/

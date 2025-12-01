@@ -1,0 +1,52 @@
+--******************************************************************
+--
+--	real1
+--
+--	script to drive one Denning MRV2 robot.
+--	
+--	This example spawns one robot, then commands
+--	it to move to a series of points.
+--
+--	Doug MacKenzie
+--
+--******************************************************************
+
+MISSION NAME "Single Denning MRV2 Robot Run"
+
+OVERLAY "robot-lab1.ovl"
+
+NEW-ROBOT stimpy-the-robot "mlab-2.0-robot" "blue" "" (
+					avoid_obstacle_sphere = 1.25,
+					navigation_success_radius = 0.3,
+					move_to_goal_success_radius = 0.3,
+
+					navigation_noise_gain = 0,
+					navigation_move_to_goal_gain = 1.0,
+					navigation_avoid_obstacle_gain = 0.7,
+					navigation_avoid_robot_gain = 0,
+					navigation_formation_gain = 0,
+
+					base_velocity = 0.05,
+					max_velocity = 0.05
+					)
+set robot-length 0.8
+
+UNIT <unit-stimpy> stimpy-the-robot
+
+SET SHOW-TRAILS ON
+
+COMMAND LIST:
+
+ 0. UNIT unit-stimpy START StartPlace 0 20
+
+ 1. UNIT unit-stimpy MOVETO NearDoor
+
+ 2. UNIT unit-stimpy MOVETO Middle
+
+ 3. UNIT unit-stimpy MOVETO StartPlace
+
+ 4. UNIT unit-stimpy OCCUPY StartPlace
+
+ 5. UNIT unit-stimpy STOP
+
+ 6. Quit

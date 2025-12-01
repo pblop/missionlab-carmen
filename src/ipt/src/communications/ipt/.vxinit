@@ -1,0 +1,5 @@
+tyBackspaceSet(0x7f)
+tyMonitorTrapSet('')
+putenv "IPTHOST=orf.ius.cs.cmu.edu"
+hostAdd "orf.ius.cs.cmu.edu", "128.2.199.197"
+hostAdd "orf", "128.2.199.197"

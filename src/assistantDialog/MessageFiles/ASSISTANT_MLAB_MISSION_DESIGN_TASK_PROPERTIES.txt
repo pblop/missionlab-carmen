@@ -1,0 +1,4 @@
+You can modify the properties of this task. These properties will help the wizard select an appropriate mission. 
+
+Click 'Apply' when finished.
+

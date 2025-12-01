@@ -1,0 +1,121 @@
+/**********************************************************************
+ **                                                                  **
+ **                            PROBE.cnl                             **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: PROBE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector PROBE with
+   double       sphere;
+   double       safety_margin;
+   obs_array    readings;
+header
+   int             i;
+   int             way_clear[12];
+body
+            
+   // init array
+   for (i = 0; i < 12; i++) 
+   {     
+      way_clear[i] = TRUE;
+   }  
+    
+   // Determine if each direction is empty out to our sphere of influence.
+   for(i=0; i<readings.size; i++)
+   {
+      double c_to_c_dist = len_2d(readings.val[i].center);
+      double obs_radius = readings.val[i].r + safety_margin;
+         
+      /* If within our sphere of influence, then isn't clear */
+      if (c_to_c_dist <= obs_radius + sphere )
+      {
+         Vector v = readings.val[i].center;
+         if( len_2d(v) > EPS_ZERO )
+         {
+            double theta = RADIANS_TO_DEGREES(atan2(v.y,v.x));
+            while( theta < 0 )
+               theta += 360;
+
+            int slot = (int)((theta + 15) / 30);
+            way_clear[slot] = FALSE;
+         }
+      }
+   }
+   
+   // Init with a unit vector straight ahead
+   output.x = 1.0;
+   output.y = 0;
+   
+   // pick the path closest to our current heading (0) that is clear
+   // way_clear[0] is straight ahead
+   // way_clear[1] is left
+   // way_clear[11] is right
+   // way_clear[6] is back
+   for (i = 0; i <= 6; i++)
+   {
+      // check the left side: Note this catches the 0 and 6 cases too.
+      int left  = i;
+   
+      if( way_clear[left] )
+      {
+         /* then go this direction */
+         rotate_z(output, left*30);
+   
+         /* Reduce output strength by ratio isn't in current direction */
+         double mag = 1.0 - ((double)i / 6);
+         mult_2d(output, mag);
+         break;
+      }
+   
+      /* check the right side */
+      int right = 12 - i;
+   
+      if( way_clear[right] )
+      {
+         /* then go this direction */
+         rotate_z(output, right*30);
+   
+         /* Reduce output strength by ratio isn't in current direction */
+         double mag = 1.0 - ((double)i / 6);
+         mult_2d(output, mag);
+         break;
+      }
+   }
+   
+   // If didn't like any directions, don't generate anything.
+   if( i > 6 )
+   {
+      VECTOR_CLEAR(output);
+   }
+
+   if( debug )
+      fprintf(stderr,"probe: output=(%.1f %.1f)\n",output.x,output.y);
+   
+pend
+
+
+
+/**********************************************************************
+# $Log: PROBE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:00  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.12  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.11  1995/06/28  22:08:05  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

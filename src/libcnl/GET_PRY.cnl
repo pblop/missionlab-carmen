@@ -1,0 +1,57 @@
+/**********************************************************************
+ **                                                                  **
+ **                       GET_PRY.cnl                                **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Khaled S. Ali					     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure type_pry GET_PRY with
+header
+type_pry  pry;
+// robot_position  position;
+body
+   if ( debug )
+     fprintf(stderr,"procedure get_pry\n");
+
+   pry = exec_get_pry();
+   // position = exec_get_position();
+
+   if ( pry.status == 0 )
+    {
+     // Change coordinate system to right hand coordinates with 0 at east.
+     pry.yaw = -(pry.yaw - 90);
+     if ( pry.yaw < 0 )
+       pry.yaw += 360;
+
+     // Compute heading for Dennings from compass heading and shaft encoder
+     // heading.
+     if ( pry.shaft_heading != HEADING_INVALID )
+       pry.yaw += pry.shaft_heading;
+
+     output = pry;
+
+     if ( debug )
+      {
+       fprintf(stderr,"get_pry returning p=%.1f  r=%.1f  y=%.1f\n",
+	       output.pitch, output.roll, output.yaw);
+      }
+    }
+   else
+    if ( debug )
+      fprintf(stderr,"get_pry: compass not responding properly\n");
+
+pend
+

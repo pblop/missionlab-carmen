@@ -1,0 +1,94 @@
+/**********************************************************************
+**                                                                  **
+**                           SEGUIR_LIDER.cnl                       **
+**                                                                  **
+**                                                                  **
+**  Written by:  Alberto Rodríguez Valle                            **
+**                                                                  **
+**                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+init
+#include "dstar.hpp"
+iend
+
+
+/***********************************************************************/
+
+procedure Vector SEGUIR_LIDER with
+   obs_array    obstacles;
+   robot_position pos;
+   double gridsize;
+   double length;
+   double width;
+   double ao_val;
+   double goal_gain;
+   double persistence;
+   double angle_dev;
+   Vector ao_vec;
+header
+        Dstar* d = new Dstar(length, width, gridsize);
+        robot_position posicionLider, miPosicion;
+        Vector diferencia;
+        static int inicial = 0;
+        Vector goal_rel_loc;
+body
+    if(hay_lider() == false)
+        escucho_broadCast(true);
+
+    if(get_inicial_nueva_tarea() == 1){
+        set_inicial_nueva_tarea(0);
+        sigo_lider();
+        printf("SIGO LIDER primera ejecución\n");
+    }
+
+    posicionLider = posicion_lider();
+    minus_2d(posicionLider.v, miPosicion.v, output);
+    rotate_z(goal_rel_loc, -1 * miPosicion.heading);
+
+    if( len_2d(goal_rel_loc) > gridsize )
+    {
+        Vector global = d->sequencer(goal_rel_loc,pos,obstacles,ao_val, ao_vec,goal_gain,persistence,angle_dev);
+        minus_2d(global,pos.v,output);
+        rotate_z(output,-1*pos.heading);
+        unit_2d(output);
+    }
+    else{
+    /* return a zero vector if within the success circle */
+        cout<<"Within success radius\n"<<flush;
+       output=goal_rel_loc;
+       unit_2d(output);
+       if(d) {
+            d->~Dstar();
+             d=NULL;
+        }
+    }
+
+    if( debug )
+    {
+        fprintf(stderr,"Seguir lider(%d) output=(%.1f %.1f)\n", robot_id,output.x,output.y);
+    }
+
+    set_posicion_ant_lider(posicionLider.v);
+
+pend
+
+        /*
+            ****Para seguir lider sin algoritmo D*  *****
+        VECTOR_CLEAR(output);
+        posicionLider = posicion_lider();
+        miPosicion = exec_get_position();
+        //printf("MI pos = (%.1f, %.1f) PosLider = (%.1f, %.1f) /// %s \n", miPosicion.v.x, miPosicion.v.y, posicionLider.v.x, posicionLider.v.y, hay_lider() ? "TRUE":"FALSE");
+        minus_2d(posicionLider.v, miPosicion.v, output);
+        rotate_z(output, -1 * miPosicion.heading);
+        //printf("VECTOR DESPLAZAMIENTO= (%.1f, %.1f)\n",  output.x, output.y);
+
+        //printf("SIGO LIDER obstaculo (%f, %f)\n", obstaculo.x, obstaculo.y);
+
+        output.x += obstaculo.x * 0.3;
+        output.y += obstaculo.y * 0.3;
+    printf("SIGO LIDER obstaculo (%f, %f)\n", output.x, output.y);
+    set_posicion_ant_lider(posicionLider.v);*/
+

@@ -1,0 +1,33 @@
+/**********************************************************************
+**                                                                  **
+**                           NUEVA_TAREA.cnl                        **
+**                                                                  **
+**                                                                  **
+**  Written by:  Alberto Rodríguez Valle                            **
+**                                                                  **
+**                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+
+
+/***********************************************************************/
+
+procedure bool NUEVA_TAREA with
+header
+ static int cambio = 1;
+body
+    if(cambio == 1){
+        //printf("Primera Iteraccion\n");
+        set_inicial_nueva_tarea(1);
+    }
+    cambio = 0;
+    output = cambio_estado();
+    //printf("NUEVA TAREA %s\n", output ? "VERDADERO":"FALSO");
+    if(output == true){
+        poner_cambio_estado(false);
+        //set_primera(0);
+        cambio = 1;
+    }
+pend

@@ -1,0 +1,274 @@
+/*************************************************
+*
+* This CDL file sample-type-I-nmc.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2835 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA12:FSA(
+            society[$AN_2849]<212,314>|State1| = [
+              Stop]<100,100>
+,
+            society[$AN_2851]<476,171>|State2| = [
+              CNP_BidOnTask]<100,100>
+,
+            society[$AN_2853]<748,314>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_2855]<483,445>|State4| = [
+              CNP_ExecuteWonTask]<100,100>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2849,
+            rules[$AN_2851]<476,171>|State2| = if [
+              CNP_IsAuctionEnded]<0,0>|Trans1|
+ goto $AN_2853,
+            rules[$AN_2853]<748,314>|State3| = if [
+              CNP_WonTask]<0,0>|Trans2|
+ goto $AN_2855,
+            rules[$AN_2853]<748,314>|State3| = if [
+              CNP_LostTask]<0,0>|Trans3|
+ goto $AN_2849,
+            rules[$AN_2849]<212,314>|State1| = if [
+              CNP_AuctionReady]<0,0>|Trans1|
+ goto $AN_2851,
+            rules[$AN_2855]<483,445>|State4| = if [
+                %cnp_task = {CHECK_WON_CNP_TASK},
+                %task_name = {""}
+,
+              CNP_TaskCompletionNotified]<335,374>|Trans1|
+ goto $AN_2849)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2870 from vehicle(
+  bound_to = sample-type-I-nmcRobot3:DEFAULT_ROBOT(
+sample-type-I-nmcRobot3:[
+          $AN_2835]
+)<365,181>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2871 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA5:FSA(
+            society[$AN_2849]<212,314>|State1| = [
+              Stop]<100,100>
+,
+            society[$AN_2851]<476,171>|State2| = [
+              CNP_BidOnTask]<100,100>
+,
+            society[$AN_2853]<748,314>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_2855]<483,445>|State4| = [
+              CNP_ExecuteWonTask]<100,100>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2849,
+            rules[$AN_2851]<476,171>|State2| = if [
+              CNP_IsAuctionEnded]<0,0>|Trans1|
+ goto $AN_2853,
+            rules[$AN_2853]<748,314>|State3| = if [
+              CNP_WonTask]<0,0>|Trans2|
+ goto $AN_2855,
+            rules[$AN_2853]<748,314>|State3| = if [
+              CNP_LostTask]<0,0>|Trans3|
+ goto $AN_2849,
+            rules[$AN_2849]<212,314>|State1| = if [
+              CNP_AuctionReady]<0,0>|Trans1|
+ goto $AN_2851,
+            rules[$AN_2855]<483,445>|State4| = if [
+                %cnp_task = {CHECK_WON_CNP_TASK},
+                %task_name = {""}
+,
+              CNP_TaskCompletionNotified]<335,374>|Trans1|
+ goto $AN_2849)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2902 from vehicle(
+  bound_to = sample-type-I-nmcRobot2:DEFAULT_ROBOT(
+sample-type-I-nmcRobot2:[
+          $AN_2871]
+)<365,38>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2903 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[$AN_2917]<235,49>|State1| = [
+              Stop]<100,100>
+,
+            society[$AN_2919]<837,692>|State2| = [
+                %task_name = {"EODTask"},
+                %task_id = {"0"},
+                %task_constraints = {"ENVIRONMENT:0:SURFACE,MISSION_STEALTHINESS:0:NOT_STEALTHY,TARGET_LOCATION_X:2:*,TARGET_LOCATION_Y:2:*,TARGET_LOCATION_Z:2:*"}
+,
+              CNP_InjectTask]<100,100>
+,
+            society[$AN_2921]<225,474>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_2923]<223,700>|State4| = [
+                %alert_subject = {"Mission Accomplished"},
+                %alert_message = {"The robot has completed all the tasks."},
+                %sends_email = {NO_Email},
+                %recipient = {""},
+                %sends_image = {NO_Image}
+,
+              Alert]<10,10>
+,
+            society[$AN_2925]<222,905>|State5| = [
+              TerminateMission]<10,10>
+,
+            society[$AN_2927]<547,280>|State6| = [
+                %Objects = {Mines},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {2.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2929]<554,470>|State8| = [
+              Stop]<10,10>
+,
+            society[$AN_2931]<563,682>|State9| = [
+                %Objects = {Friendly_Robots},
+                %move_away_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_objects_sphere = {100.0},
+                %avoid_objects_safety_margin = {10.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveAway]<10,10>
+,
+            society[$AN_2933]<236,281>|State10| = [
+                %Objects = {Mines}
+,
+              LookFor]<10,10>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2936]<837,281>|State11| = [
+                %Objects = {Mine}
+,
+              NotifyRobots_ObjectLocation]<10,10>
+,
+            society[$AN_2965]<1015,496>|State11| = [
+                %Targets = {Mine}
+,
+              CNP_SaveTargetLocation]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans2|
+ goto $AN_2917,
+            rules[$AN_2921]<225,474>|State3| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<0,0>|Trans1|
+ goto $AN_2923,
+            rules[$AN_2923]<223,700>|State4| = if [
+              Alerted]<0,0>|Trans2|
+ goto $AN_2925,
+            rules[$AN_2921]<225,474>|State3| = if [
+                %Objects = {Mines}
+,
+              Detect]<0,0>|Trans3|
+ goto $AN_2927,
+            rules[$AN_2929]<554,470>|State8| = if [
+                %cnp_task = {CHECK_SPECIFIC_CNP_TASK},
+                %task_name = {"EODTask"}
+,
+              CNP_TaskCompletionNotified]<0,0>|Trans6|
+ goto $AN_2921,
+            rules[$AN_2919]<837,692>|State2| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_2929,
+            rules[$AN_2931]<563,682>|State9| = if [
+                %Objects = {Friendly_Robots},
+                %Distance = {60.0}
+,
+              AwayFrom]<0,0>|Trans4|
+ goto $AN_2929,
+            rules[$AN_2929]<554,470>|State8| = if [
+                %Objects = {Friendly_Robots},
+                %Distance = {50.0}
+,
+              Near]<0,0>|Trans5|
+ goto $AN_2931,
+            rules[$AN_2917]<235,49>|State1| = if [
+                %Delay = {15.0}
+,
+              Wait]<0,0>|Trans5|
+ goto $AN_2933,
+            rules[$AN_2933]<236,281>|State10| = if [
+                %Objects = {Mines}
+,
+              Detect]<0,0>|Trans2|
+ goto $AN_2927,
+            rules[$AN_2927]<547,280>|State6| = if [
+                %Objects = {Mines},
+                %Distance = {20.0}
+,
+              Near]<0,0>|Trans2|
+ goto $AN_2936,
+            rules[$AN_2965]<1015,496>|State11| = if [
+                %Delay = {2.0}
+,
+              Wait]<0,0>|Trans2|
+ goto $AN_2919,
+            rules[$AN_2936]<837,281>|State11| = if [
+              Immediate]<0,0>|Trans2|
+ goto $AN_2965)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2962 from vehicle(
+  bound_to = sample-type-I-nmcRobot1:DEFAULT_ROBOT(
+sample-type-I-nmcRobot1:[
+          $AN_2903]
+)<49,38>|Individual Robot|
+);
+
+[
+[
+    $AN_2962,
+    $AN_2902,
+    $AN_2870]<10,10>|Group of Robots|
+]<10,10>
+

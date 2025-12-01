@@ -1,0 +1,96 @@
+/**********************************************************************
+ **                                                                  **
+ **                    FILTER_OBJECT_CLASSES.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: FILTER_OBJECT_CLASSES.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string.h>
+iend
+
+/***********************************************************************/
+
+procedure ObjectList FILTER_OBJECT_CLASSES with
+   CNLString_t desired_color;
+   ObjectList full_list;
+header
+body
+   if( debug )
+   {
+      cerr << "FILTER_OBJECT_CLASSES(" << robot_id << "):\n";
+      for(int i=0; i<full_list.count; i++)
+         cerr << "   " << full_list.objects[i] << '\n';
+   }
+
+   int num = 0;
+   for(int i=0; i<full_list.count; i++)
+      if( !strcasecmp(full_list.objects[i].objcolor, desired_color.val) )
+	 num++;
+
+   output.count = num;
+   if( num > 0 )
+      output.objects = new ObjectReading[num];
+
+   num = 0;
+   for(int i=0; i<full_list.count; i++)
+      if( !strcasecmp(full_list.objects[i].objcolor, desired_color.val) )
+	 output.objects[num++] = full_list.objects[i];
+
+   if( debug )
+   {
+      cerr << "--- output after filtering\n";
+      for(int i=0; i<output.count; i++)
+         cerr << "   " << output.objects[i] << '\n';
+   }
+pend
+
+
+
+/**********************************************************************
+# $Log: FILTER_OBJECT_CLASSES.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.1.1.1  2005/02/06 22:59:57  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.8  2003/04/06 12:04:03  endo
+# gcc 3.1.1
+#
+# Revision 1.7  1999/12/16 23:12:30  mjcramer
+# rh6 port
+#
+# Revision 1.6  1996/05/05  16:47:48  doug
+# fixing compiler warnings
+#
+# Revision 1.5  1996/02/08  19:22:52  doug
+# *** empty log message ***
+#
+# Revision 1.4  1995/10/11  22:04:41  doug
+# *** empty log message ***
+#
+# Revision 1.3  1995/10/09  15:58:23  doug
+# class changed to color
+#
+# Revision 1.2  1995/10/09  15:25:25  doug
+# change ObjectClasses to ObjectColors
+#
+# Revision 1.1  1995/10/06  20:53:37  doug
+# Initial revision
+#
+#**********************************************************************/

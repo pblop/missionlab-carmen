@@ -1,0 +1,7 @@
+"Title: Overwrite File\n\
+\n\
+A file with the same name already exists.\n\
+\n\
+Overwrite:    Write the file, destroying the existing one.\n\
+Cancel:       Abort the operation.\n\
+Help:         This message."

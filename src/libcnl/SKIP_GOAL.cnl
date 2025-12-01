@@ -1,0 +1,66 @@
+/**********************************************************************
+ **                                                                  **
+ **                         SKIP_GOAL.cnl                        **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SKIP_GOAL.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool SKIP_GOAL with
+   bool         have_a_goal;
+header
+body
+{
+    char *value = NULL;
+    int skip = 0;
+
+    value = get_state("skip");
+
+    if (value != NULL)
+    {
+        skip = atoi(value);
+    }
+
+    put_state("skip", "0");
+
+    output = skip;
+}
+pend
+
+
+/**********************************************************************
+# $Log: SKIP_GOAL.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/05/15 02:48:49  endo
+# gcc-3.4 upgrade
+#
+# Revision 1.1.1.1  2005/02/06 23:00:02  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2003/04/02 22:34:08  zkira
+# Initial revision
+#
+# Revision 1.2  2002/11/10 21:26:42  zkira
+# Added dynamic waypoints and comm loss trigger.
+#
+# Revision 1.1  2002/10/03 13:45:08  zkira
+# CNL file for SKIP_GOAL behavior.  Implemented for skip waypoint functionality
+#
+# Revision 1.2  1995/10/11  22:04:41  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/10/09  21:45:12  doug
+# Initial revision
+#
+#**********************************************************************/

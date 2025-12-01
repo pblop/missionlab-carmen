@@ -1,0 +1,7 @@
+"Title: Exit FSA editor\n\
+\n\
+Changes have been made which are not saved.\n\
+\n\
+Yes:    Exit and discard the changes.\n\
+Cancel: Do not exit.\n\
+Help:   This message."

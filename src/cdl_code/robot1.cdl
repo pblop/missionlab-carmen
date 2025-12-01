@@ -1,0 +1,55 @@
+/*************************************************
+*
+* This CDL file robot1.cdl was created with cfgedit
+* version 7.0.00
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instGroup $AN_1548 from [
+  Stop];
+
+instBP<227,266> $AN_1541 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1546,
+            society[Start]<50,50>|Start| = $AN_1548,
+            society[$AN_1546]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+
+instBP<222,15> |The Wheels Binding Point| $AN_2979 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {2.5},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>
+);
+
+instBP<0,0> $AN_2981 from vehicle(
+  bound_to = MIO(
+[
+          $AN_2979,
+          $AN_1541]
+)<0,0>
+);
+
+[
+[
+    $AN_2981]<10,10>|Group of Robots|
+]<10,10>
+

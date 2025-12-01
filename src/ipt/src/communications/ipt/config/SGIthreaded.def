@@ -1,0 +1,16 @@
+SGIthreaded_COMPILER = CC -o32
+SGIthreaded_CCOMPILER = cc
+SGIthreaded_FLAGS = -g -DSGI -DWITH_PTHREADS -o32
+SGIthreaded_LINK = -w -lpthread
+
+#define SGIthreadedMakeLibrary(file,depobjs,ldobjs)         @@\
+file: depobjs            							@@\
+	$(RM) $@										@@\
+	ar crv $@ ldobjs									
+
+install.SGIthreaded:: SGIthreaded/$(IPTLIB)
+	cp SGIthreaded/$(IPTLIB) $(INSTALL_DIR)/lib/SGIthreaded
+
+depend.SGIthreaded::
+	$(DEPEND) -I. -I/usr/include/CC -pSGIthreaded/ $(SGIthreaded_FLAGS) $(CCFLAGS) $(SGIthreaded_LIB_SRCS)
+

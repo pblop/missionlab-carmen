@@ -1,0 +1,230 @@
+/*************************************************
+*
+* This CDL file sample-type-I-track.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2929 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA14:FSA(
+            society[$AN_2943]<212,314>|State1| = [
+              Stop]<100,100>
+,
+            society[$AN_2945]<476,171>|State2| = [
+              CNP_BidOnTask]<100,100>
+,
+            society[$AN_2947]<748,314>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_2949]<483,445>|State4| = [
+              CNP_ExecuteWonTask]<100,100>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2943,
+            rules[$AN_2945]<476,171>|State2| = if [
+              CNP_IsAuctionEnded]<0,0>|Trans1|
+ goto $AN_2947,
+            rules[$AN_2947]<748,314>|State3| = if [
+              CNP_WonTask]<0,0>|Trans2|
+ goto $AN_2949,
+            rules[$AN_2947]<748,314>|State3| = if [
+              CNP_LostTask]<0,0>|Trans3|
+ goto $AN_2943,
+            rules[$AN_2943]<212,314>|State1| = if [
+              CNP_AuctionReady]<0,0>|Trans1|
+ goto $AN_2945,
+            rules[$AN_2949]<483,445>|State4| = if [
+                %cnp_task = {CHECK_WON_CNP_TASK},
+                %task_name = {""}
+,
+              CNP_TaskCompletionNotified]<335,374>|Trans1|
+ goto $AN_2943)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2964 from vehicle(
+  bound_to = sample-type-I-trackRobot3:DEFAULT_ROBOT(
+sample-type-I-trackRobot3:[
+          $AN_2929]
+)<365,181>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2965 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA6:FSA(
+            society[$AN_2943]<212,314>|State1| = [
+              Stop]<100,100>
+,
+            society[$AN_2945]<476,171>|State2| = [
+              CNP_BidOnTask]<100,100>
+,
+            society[$AN_2947]<748,314>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_2949]<483,445>|State4| = [
+              CNP_ExecuteWonTask]<100,100>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2943,
+            rules[$AN_2945]<476,171>|State2| = if [
+              CNP_IsAuctionEnded]<0,0>|Trans1|
+ goto $AN_2947,
+            rules[$AN_2947]<748,314>|State3| = if [
+              CNP_WonTask]<0,0>|Trans2|
+ goto $AN_2949,
+            rules[$AN_2947]<748,314>|State3| = if [
+              CNP_LostTask]<0,0>|Trans3|
+ goto $AN_2943,
+            rules[$AN_2943]<212,314>|State1| = if [
+              CNP_AuctionReady]<0,0>|Trans1|
+ goto $AN_2945,
+            rules[$AN_2949]<483,445>|State4| = if [
+                %cnp_task = {CHECK_WON_CNP_TASK},
+                %task_name = {""}
+,
+              CNP_TaskCompletionNotified]<335,374>|Trans1|
+ goto $AN_2943)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2996 from vehicle(
+  bound_to = sample-type-I-trackRobot2:DEFAULT_ROBOT(
+sample-type-I-trackRobot2:[
+          $AN_2965]
+)<365,38>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2997 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[$AN_3051]<212,52>|State1| = [
+              Stop]<10,10>
+,
+            society[$AN_3055]<213,225>|State2| = [
+                %Objects = {Enemies}
+,
+              LookFor]<10,10>
+,
+            society[$AN_3059]<577,227>|State3| = [
+              CNP_SaveDynConstraints_Track]<10,10>
+,
+            society[$AN_3063]<579,452>|State4| = [
+                %task_name = {"TrackTask"},
+                %task_id = {"0"},
+                %task_constraints = {"MISSION_STEALTHINESS:0:STEALTHY,TARGET_LOCATION_X:2:*,TARGET_LOCATION_Y:2:*,TARGET_LOCATION_Z:2:*,TARGET_VELOCITY_X:2:*,TARGET_VELOCITY_Y:2:*,TARGET_VELOCITY_Z:2:*,TARGET_VEHICLE_TYPE:0:*"}
+,
+              CNP_InjectTask]<10,10>
+,
+            society[$AN_3067]<823,454>|State5| = [
+                %notify_message = {"Terminate TrackTask."}
+,
+              NotifyRobots]<10,10>
+,
+            society[$AN_3071]<571,668>|State6| = [
+              Stop]<10,10>
+,
+            society[$AN_3075]<214,452>|State7| = [
+                %alert_subject = {"Mission Accomplished"},
+                %alert_message = {"The robot has completed all the tasks."},
+                %sends_email = {NO_Email},
+                %recipient = {""},
+                %sends_image = {NO_Image}
+,
+              Alert]<10,10>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_3083]<214,690>|State8| = [
+              TerminateMission]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_3051,
+            rules[$AN_3051]<212,52>|State1| = if [
+                %Delay = {0.0}
+,
+              Wait]<213,135>|Trans2|
+ goto $AN_3055,
+            rules[$AN_3055]<213,225>|State2| = if [
+                %Objects = {Enemies}
+,
+              Detect]<0,0>|Trans3|
+ goto $AN_3059,
+            rules[$AN_3059]<577,227>|State3| = if [
+                %notify_message = {"Dynamic constraints saved."}
+,
+              Notified]<0,0>|Trans4|
+ goto $AN_3063,
+            rules[$AN_3063]<579,452>|State4| = if [
+                %Delay = {180}
+,
+              Wait]<0,0>|Trans5|
+ goto $AN_3067,
+            rules[$AN_3067]<823,454>|State5| = if [
+              MessageSent]<10,10>|Trans6|
+ goto $AN_3071,
+            rules[$AN_3063]<579,452>|State4| = if [
+                %cnp_task = {CHECK_SPECIFIC_CNP_TASK},
+                %task_name = {"TrackTask"}
+,
+              CNP_TaskCompletionNotified]<0,0>|Trans7|
+ goto $AN_3075,
+            rules[$AN_3063]<579,452>|State4| = if [
+              CNP_IsAuctionFailed]<10,10>|Trans8|
+ goto $AN_3055,
+            rules[$AN_3075]<214,452>|State7| = if [
+              Alerted]<0,0>|Trans9|
+ goto $AN_3083,
+            rules[$AN_3071]<571,668>|State6| = if [
+                %cnp_task = {CHECK_SPECIFIC_CNP_TASK},
+                %task_name = {"TrackTask"}
+,
+              CNP_TaskCompletionNotified]<10,10>|Trans10|
+ goto $AN_3075)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_3048 from vehicle(
+  bound_to = sample-type-I-trackRobot1:DEFAULT_ROBOT(
+sample-type-I-trackRobot1:[
+          $AN_2997]
+)<49,38>|Individual Robot|
+);
+
+[
+[
+    $AN_3048,
+    $AN_2996,
+    $AN_2964]<10,10>|Group of Robots|
+]<10,10>
+

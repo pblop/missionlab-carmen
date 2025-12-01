@@ -1,0 +1,74 @@
+/**********************************************************************
+ **                                                                  **
+ **                        MOVE_TO_GUARDED.cnl                       **
+ **                                                                  **
+ **  Written by:  Brian Lee                                          **
+ **                                                                  **
+ **  Copyright 2002 Georgia Tech Research Corporation                **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOVE_TO_GUARDED.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $*/
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector MOVE_TO_GUARDED with
+    Vector goal_rel_loc;
+    double dropoff_radius;
+    double dead_zone_radius;
+    double output_gain;
+    bool   have_a_goal;
+header
+body
+{
+    // need a local copy of this for now until the CNL compiler is fixed
+    double dLocalOutputGain = output_gain;
+
+    VECTOR_CLEAR( output );
+
+    // don't do anything unless we have a goal
+    if ( have_a_goal )
+    {
+        double dGoalDist = len_3d( goal_rel_loc );
+
+        // if we're close to our goal, we don't have to do anything
+        // this helps cut down on divide-by-zero errors, also
+        if ( ( dGoalDist > dead_zone_radius) && ( dGoalDist > EPS_ZERO ) )
+        {
+            output = goal_rel_loc;
+            unit_3d( output );
+
+            // if we're inside the dropoff radius of the goal, factor into the output 
+            // weight a linear dropoff from the edge of the radius to the goal
+
+            if ( ( dGoalDist < dropoff_radius ) && 
+                 ( ( dropoff_radius - dead_zone_radius ) > EPS_ZERO ) )
+            {
+                dLocalOutputGain *= ( ( dGoalDist - dead_zone_radius ) / 
+                                      ( dropoff_radius - dead_zone_radius ) );
+            }
+
+            // scale the output appropriately
+            scale_3d( output, dLocalOutputGain );
+        }
+    }
+}
+pend
+
+/**********************************************************************
+ * $Log: MOVE_TO_GUARDED.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:59  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:05  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.1  2002/07/02 20:28:31  blee
+ * Initial revision
+ *
+ *
+ **********************************************************************/

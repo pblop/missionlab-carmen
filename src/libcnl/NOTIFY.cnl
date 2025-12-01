@@ -1,0 +1,409 @@
+/**********************************************************************
+ **                                                                  **
+ **                           NOTIFY.cnl                             **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  This cnl code was mainly written for passing messages between   **
+ **  main FSA and sub-FSA. By taking advantage of the database       **
+ **  structure, it stores "notifymessage" as the entry key and       **
+ **  assign the value "1" if it needs to be notified.                **
+ **                                                                  **
+ **  NOTIFY_ROBOTS will broad cast the message to other robots as    **
+ **  well.                                                           **
+ **                                                                  **
+ **  Copyright 2000 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: NOTIFY.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+/***********************************************************************/
+
+procedure Vector NOTIFY with
+   CNLString_t notifymessage;
+header
+   int first_time = true;
+body
+{
+    VECTOR_CLEAR(output);
+
+    if (first_time)
+    {
+        // Tell database that the entry "<notifymesage>" has a value '1' (true).
+        put_state(notifymessage.val, "1");
+
+        if (debug)
+        {
+            fprintf(
+                stderr,
+                "NOTIFY.cnl: NOTIFY - notifymessage.val = \"%s\", value = 1\n",
+                notifymessage.val);
+        }
+
+        first_time = false;
+    }
+}
+pend
+
+/***********************************************************************/
+
+procedure Vector NOTIFY_ROBOTS with
+   CNLString_t notifymessage;
+header
+   int first_time = true;
+body
+{
+    VECTOR_CLEAR(output);
+
+    if (first_time)
+    {
+        // Tell database in all robots that the entry "<notifymesage>" has
+        // a value '1' (true). The third argument specifies whether the
+        // broadcast is via mlab (MLAB_CONSOLE) or this robot (THIS_ROBOT).
+        exec_broadcast_value(notifymessage.val, "1", THIS_ROBOT);
+
+        if (debug)
+        {
+            fprintf(
+                stderr,
+                "NOTIFY_ROBOTS.cnl: NOTIFY_ROBOTS - notifymessage.val = \"%s\", value = 1\n",
+                notifymessage.val);
+        }
+
+        first_time = false;
+    }
+}
+pend
+
+//***********************************************************************
+// This functions checks to see if the message was recieved.
+//***********************************************************************
+procedure bool NOTIFIED_ONCE with
+   CNLString_t notifymessage;
+header
+   char *value;
+   char *ptr;
+body
+{
+    // Checking the database entry "notifymesage" value.
+    // Note: it uses "return_state", so that it deletes the entry
+    //       from the database once it is read. 
+    value = return_state(notifymessage.val);
+    if (value != NULL)
+    {
+        // The key is in the database, so decode it
+        output = (const boolean)(strtol(value, &ptr, 10));
+
+        if (ptr == value || ptr == NULL || *ptr != '\0') 
+        {
+            fprintf(
+                stderr,
+                "Robot (%d): Badly formed number in NOTIFIED: '%s'\n",
+                robot_id,
+                notifymessage.val);
+
+            output = false;
+        }
+        else
+        {
+            if (debug)
+            {
+                fprintf(
+                    stderr,
+                    "Robot(%d): NOTIFIED - New value %d for %s\n",
+                    robot_id,
+                    output,
+                    notifymessage.val);
+            }
+        }
+    }
+    else
+    {
+        // The key is not in the database, so returen false.
+        output = false;
+    }
+
+    if (debug)
+    {
+        fprintf(
+            stderr,
+            "Robot(%d): NOTIFIED: Returning value %d for %s\n",
+            robot_id,
+            output,
+            notifymessage.val);
+    }
+}
+pend
+
+//***********************************************************************
+// This function broadcasts the location of the specifid cloest object.
+//***********************************************************************
+procedure Vector NOTIFY_ROBOTS_OBJECT_LOCATION with
+    ObjectReading object;
+header
+    bool notified = false;
+body
+{
+    gt_Point objRelPos;
+    Vector objAbsPos;
+    robot_position robotPos;
+    char valueBuf[1024];
+
+    VECTOR_CLEAR(output);
+    VECTOR_CLEAR(objAbsPos);
+
+    if (!notified)
+    {
+        if (object.id != NOID)
+        {
+            objRelPos = object.closest_point();
+            robotPos = exec_get_position();
+
+            objAbsPos.x = objRelPos.x;
+            objAbsPos.y = objRelPos.y;
+            rotate_z(objAbsPos, robotPos.heading);
+            plus_2d(objAbsPos, robotPos.v);
+
+            // Send out X.
+            sprintf(valueBuf, "%f", objAbsPos.x);
+            exec_broadcast_value(
+                (char *)(NOTIFY_OBJECT_LOC_X_KEY.c_str()),
+                valueBuf,
+                THIS_ROBOT);
+
+            // Send out Y.
+            sprintf(valueBuf, "%f", objAbsPos.y);
+            exec_broadcast_value(
+                (char *)(NOTIFY_OBJECT_LOC_Y_KEY.c_str()),
+                valueBuf,
+                THIS_ROBOT);
+
+            // Send out Z.
+            sprintf(valueBuf, "%f", objAbsPos.z);
+            exec_broadcast_value(
+                (char *)(NOTIFY_OBJECT_LOC_Z_KEY.c_str()),
+                valueBuf,
+                THIS_ROBOT);
+
+            // Send out confirmation.
+            exec_broadcast_value(
+                (char *)(NOTIFY_OBJECT_LOC_DONE_KEY.c_str()),
+                "1",
+                THIS_ROBOT);
+
+            notified = true;
+        }
+    }
+}
+pend
+
+//***********************************************************************
+// This function checks to see if the broadcasted object location was
+// received.
+//***********************************************************************
+procedure bool IS_OBJECT_LOCATION_NOTIFIED with
+header
+   char *value;
+   char *ptr;
+   bool oldValue = false;
+body
+{
+    value = get_state((char *)(NOTIFY_OBJECT_LOC_DONE_KEY.c_str()));
+    if (value != NULL)
+    {
+        // The key is in the database, so decode it
+        output = (const boolean)(strtol(value, &ptr, 10));
+
+        if (ptr == value || ptr == NULL || *ptr != '\0') 
+        {
+            if (debug)
+            {
+                fprintf(
+                    stderr,
+                    "Robot (%d): Badly formed number in IS_OBJECT_LOCATION_NOTIFIED: '%s'\n",
+                    robot_id,
+                    NOTIFY_OBJECT_LOC_DONE_KEY.c_str());
+            }
+
+            output = oldValue;
+        }
+        else
+        {
+            oldValue = output;
+
+            if (debug)
+            {
+                fprintf(
+                    stderr,
+                    "Robot(%d): IS_OBJECT_LOCATION_NOTIFIED - New value %d for %s\n",
+                    robot_id,
+                    output,
+                    NOTIFY_OBJECT_LOC_DONE_KEY.c_str());
+            }
+        }
+    }
+    else
+    {
+        output = oldValue;
+    }
+
+    if (debug)
+    {
+        fprintf(
+            stderr,
+            "Robot(%d): IS_OBJECT_LOCATION_NOTIFIED: Returning value %d for %s\n",
+            robot_id,
+            output,
+            NOTIFY_OBJECT_LOC_DONE_KEY.c_str());
+    }
+}
+pend
+
+//***********************************************************************
+// This function retrieves the location of the broadcasted object.
+//***********************************************************************
+procedure Vector NOTIFIED_OBJECT_LOCATION with
+header
+    const int NUM_DIMENSIONS = 3;
+    Vector oldValue;
+    string keyStrings[NUM_DIMENSIONS];
+    char *value;
+    char *ptr;
+    int firstTime = true;
+body
+{
+    Vector objRelPos, objAbsPos;
+    robot_position robotPos;
+    double objPos[NUM_DIMENSIONS];
+    int i;
+    bool validData = true;
+
+    VECTOR_CLEAR(output);
+    VECTOR_CLEAR(objRelPos);
+    VECTOR_CLEAR(objAbsPos);
+
+    if(firstTime)
+    {
+        VECTOR_CLEAR(oldValue);
+        keyStrings[0] = NOTIFY_OBJECT_LOC_X_KEY;
+        keyStrings[1] = NOTIFY_OBJECT_LOC_Y_KEY;
+        keyStrings[2] = NOTIFY_OBJECT_LOC_Z_KEY;
+        firstTime = false;
+    }
+
+    // First, get the values from the database.
+    for (i = 0; i < NUM_DIMENSIONS; i++)
+    {
+        value = get_state((char *)(keyStrings[i].c_str()));
+
+        if (value != NULL)
+        {
+            // The value has been updated so read the new value
+            objPos[i] = strtod(value, &ptr);
+
+            if (ptr == value || ptr == NULL || *ptr != '\0') 
+            {
+                if(debug)
+                {
+                    fprintf(
+                        stderr,
+                        "Robot (%d): Badly formed number in NOTIFIED_OBJECT_LOCATION %s: '%s'\n", 
+                        robot_id,
+                        keyStrings[i].c_str(),
+                        value);
+                }
+
+                validData = false;
+                break;
+            }
+
+            if(debug)
+            {
+                fprintf(
+                    stderr,
+                    "Robot(%d): NOTIFIED_OBJECT_LOCATION - Got value %f for %s\n",
+                    robot_id,
+                    objPos[i],
+                    keyStrings[i].c_str());
+            }
+        }
+        else
+        {
+            validData = false;
+            break;
+        }
+    }
+
+    // Covert the coordinate in the egocentric coordinate.
+    if (validData)
+    {
+        robotPos = exec_get_position();
+
+        objAbsPos.x = objPos[0];
+        objAbsPos.y = objPos[1];
+        objAbsPos.z = objPos[2];
+
+        minus_2d(objAbsPos, robotPos.v, objRelPos);
+        rotate_z(objRelPos, -robotPos.heading);
+        
+        output = objRelPos;
+        oldValue = output;
+    }
+    else
+    {
+        // Use old value.
+        output = oldValue;
+    }
+
+    if(debug)
+    {
+        fprintf(
+            stderr,
+            "Robot(%d): NOTIFIED_OBJECT_LOCATION: Returning value <%f, %f, %f>\n",
+            robot_id,
+            output.x,
+            output.y,
+            output.z);
+    }
+}
+pend
+
+/**********************************************************************
+# $Log: NOTIFY.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.3  2006/02/19 17:54:53  endo
+# Experiment related modifications
+#
+# Revision 1.2  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.4  2000/10/16 19:21:31  endo
+# Modified due to the compiler upgrade.
+#
+# Revision 1.3  2000/06/13 16:54:30  endo
+# THIS_ROBOT added as an input of exec_broadcast_value().
+#
+# Revision 1.2  2000/04/25 07:13:59  endo
+# NOTIFY_ROBOTS was added.
+#
+# Revision 1.1  2000/04/16 15:23:19  endo
+# Initial revision
+#
+#
+#**********************************************************************/

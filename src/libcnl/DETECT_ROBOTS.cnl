@@ -1,0 +1,55 @@
+/**********************************************************************
+ **                                                                  **
+ **                        DETECT_ROBOTS.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DETECT_ROBOTS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure Robots DETECT_ROBOTS with
+   double max_dist;
+header
+   RobotReadings rtn;
+   int          i;
+body
+   rtn = exec_detect_robots(max_dist);
+
+   output.cnt = min(MAX_ROBOT_READINGS,rtn.num_readings);
+   for(i=0; i<output.cnt; i++)
+   {
+      output.id[i] = rtn.readings[i].id;
+      output.v[i].x = rtn.readings[i].v.x;
+      output.v[i].y = rtn.readings[i].v.y;
+      output.v[i].z = 0;
+   }
+pend
+
+
+
+/**********************************************************************
+# $Log: DETECT_ROBOTS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.7  1999/12/17 00:12:38  endo
+# rh6 port
+#
+# Revision 1.6  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.5  1995/06/28  21:58:49  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

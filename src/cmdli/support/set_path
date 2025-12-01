@@ -1,0 +1,8 @@
+# Set the path variables to hit the MIC directories
+#
+
+set path = ( $path $SIMSERVER_DIR/bin/$TARGET_OS )
+set path = ( $path $OPCON_DIR/bin/$TARGET_OS )
+#set path = ( $path $MIC_RPCGEN_DIR/bin/$TARGET_OS )
+set path = ( $path $MIC_RPCGEN_DIR/bin/linux )
+set path = ( $path $SUPPORT_DIR )

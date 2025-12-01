@@ -1,0 +1,8 @@
+Middle-click on the text below
+'The State Machine' to view the 
+next level of detail.
+
+Use the 'Up 1 Level' button to
+view the previous level of
+detail.
+

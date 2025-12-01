@@ -1,0 +1,110 @@
+/*************************************************
+*
+* This CDL file subfsa_inspect.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+[
+FSA1:FSA(
+      society[$AN_2511]<202,129>|State1| = [
+        Stop]<100,100>
+,
+      society[$AN_2513]<594,129>|State2| = [
+          %Objects = {Enemies},
+          %move_to_object_gain = {1.0},
+          %avoid_obstacle_gain = {1.0},
+          %wander_gain = {0.0},
+          %avoid_obstacle_sphere = {2.2},
+          %avoid_obstacle_safety_margin = {0.3}
+,
+        MoveToward]<100,100>
+,
+      society[$AN_2515]<945,127>|State3| = [
+          %notify_message = {"Enemy put down weapons."}
+,
+        NotifyRobots]<100,100>
+,
+      society[$AN_2517]<948,348>|State4| = [
+        Stop]<100,100>
+,
+      society[$AN_2519]<603,346>|State5| = [
+          %Objects = {Illegal_Weapons}
+,
+        LookFor]<100,100>
+,
+      society[$AN_2521]<202,349>|State6| = [
+          %alert_subject = {"Warning: Illegal weapons seized"},
+          %alert_message = {"The robot has found illegal weapons."},
+          %sends_email = {NO_Email},
+          %recipient = {""},
+          %sends_image = {NO_Image}
+,
+        Alert]<100,100>
+,
+      society[$AN_2523]<600,596>|State7| = [
+          %alert_subject = {"Warning: No weapon found"},
+          %alert_message = {""},
+          %sends_email = {NO_Email},
+          %recipient = {""},
+          %sends_image = {NO_Image}
+,
+        Alert]<100,100>
+,
+      society[$AN_2525]<205,595>|State8| = [
+          %notify_message = {"InspectTask completed."}
+,
+        Notify]<100,100>
+,
+      society[Start]<50,50>|Start| = [
+        Stop]<100,100>
+,
+      society[$AN_2546]<208,758>|State9| = [
+        Stop]<10,10>
+,
+      rules[$AN_2513]<594,129>|State2| = if [
+          %Objects = {Enemies},
+          %Distance = {5.0}
+,
+        Near]<0,0>|Trans3|
+ goto $AN_2515,
+      rules[Start]<50,50>|Start| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2511,
+      rules[$AN_2515]<945,127>|State3| = if [
+        MessageSent]<0,0>|Trans5|
+ goto $AN_2517,
+      rules[$AN_2517]<948,348>|State4| = if [
+          %Delay = {1.0}
+,
+        Wait]<0,0>|Trans6|
+ goto $AN_2519,
+      rules[$AN_2519]<603,346>|State5| = if [
+          %Objects = {Illegal_Weapons},
+          %Distance = {30.0}
+,
+        Near]<0,0>|Trans7|
+ goto $AN_2521,
+      rules[$AN_2519]<603,346>|State5| = if [
+          %Delay = {3.0}
+,
+        Wait]<0,0>|Trans8|
+ goto $AN_2523,
+      rules[$AN_2521]<202,349>|State6| = if [
+        Alerted]<0,0>|Trans9|
+ goto $AN_2525,
+      rules[$AN_2523]<600,596>|State7| = if [
+        Alerted]<0,0>|Trans10|
+ goto $AN_2525,
+      rules[$AN_2511]<202,129>|State1| = if [
+          %Objects = {Enemies}
+,
+        Detect]<0,0>|Trans2|
+ goto $AN_2513,
+      rules[$AN_2525]<205,595>|State8| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2546)<41,35>|The State Machine|
+]<10,10>
+

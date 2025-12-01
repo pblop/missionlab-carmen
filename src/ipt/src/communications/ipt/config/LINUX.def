@@ -1,0 +1,9 @@
+LINUX_FLAGS = -g -DLINUX -DWITH_PTHREADS
+LINUX_COMPILER = g++
+LINUX_CCOMPILER = gcc
+
+#define LINUXMakeLibrary(file,depobjs,ldobjs) MakeLibrary(file,depobjs,ldobjs)
+
+install.LINUX:: LINUX/$(IPTLIB)
+	cp LINUX/$(IPTLIB) $(INSTALL_DIR)/lib/LINUX
+	#ranlib -t $(INSTALL_DIR)/lib/LINUX/$(IPTLIB)

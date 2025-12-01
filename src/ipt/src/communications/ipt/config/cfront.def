@@ -1,0 +1,12 @@
+
+cfront_COMPILER = CC
+cfront_CCOMPILER = acc
+cfront_FLAGS = -g -DSUN4
+cfront_LINK = -lC
+cfront_CPP = cppC=cpp
+
+#define cfrontMakeLibrary(file,depobjs,ldobjs) MakeLibrary(file,depobjs,ldobjs)
+
+install.cfront:: cfront/$(IPTLIB)
+	cp cfront/$(IPTLIB) $(INSTALL_DIR)/lib/cfront
+	#ranlib -t $(INSTALL_DIR)/lib/cfront/$(IPTLIB)

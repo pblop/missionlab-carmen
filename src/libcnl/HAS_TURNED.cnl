@@ -1,0 +1,89 @@
+/**********************************************************************
+ **                                                                  **
+ **                          HAS_TURNED.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **                Written by:  Jonathan F. Diaz                     **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: HAS_TURNED.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+init
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool HAS_TURNED with
+   double   desired_turn_angle;
+   double   robot_heading;
+   double   off_set;
+header
+body
+  static double accum = 0, last_heading;
+  static int init = 0;
+  int dhead, rhead, a, b;
+  robot_position loc;
+  
+  loc = exec_get_position();
+  robot_heading = loc.heading;
+  if (!init)
+  {
+     init = 1;
+     accum = 0;
+     last_heading = robot_heading;
+  }
+
+  dhead = (int)last_heading;
+  rhead = (int)robot_heading;
+
+  while(dhead < 0) dhead += 360;
+  while(dhead >= 360) dhead -= 360;
+
+  while(rhead < 0) rhead += 360;
+  while(rhead >= 360) rhead -= 360;
+
+  if (dhead < rhead) {
+    a = rhead - dhead;
+    b = 360 - rhead + dhead;
+  }
+  else {
+    a = dhead - rhead;
+    b = 360 - dhead + rhead;
+  }
+
+  accum += (a < b)? a: b;
+  last_heading = robot_heading;
+
+  if (accum > (desired_turn_angle - fabs(off_set))) {
+     init = 0;
+     output = true;
+     accum = 0;
+  } else output = false;
+
+  if (debug)
+    fprintf(stderr, "HAS_TURNED: %g %g %g %d %d\n", desired_turn_angle, robot_heading, 
+	    accum, output, init);
+
+
+pend
+
+/**********************************************************************
+# $Log: HAS_TURNED.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:02  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  2000/03/30 01:29:57  endo
+# off_set added.
+#
+#
+#**********************************************************************/

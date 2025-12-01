@@ -1,0 +1,9 @@
+MissionLab.geometry: 760x560+10+0
+MissionLab*Command Interface.geometry: -760-345
+MissionLab*personality_window.geometry: +200-30
+MissionLab*main_telop_window.geometry: +70-30
+MissionLab*Obstacle Creation.geometry: +5-345
+MissionLab*World Scale.geometry: +5-300
+MissionLab*Time Scale.geometry: 300x100+10-300
+MissionLab*selectColor: yellow
+

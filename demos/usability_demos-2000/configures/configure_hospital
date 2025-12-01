@@ -1,0 +1,226 @@
+# Make backup CDL files from the editor (true or false).
+backup_files = false
+
+# Show the values of the slider bars instead of the symbolic names
+ShowSliderValues = True
+
+# Hide the parameters for a state/trigger of FSA in detail for default. (true or false)
+HideStateTriggerParameters = True
+
+# Disable the Waypoints function in the main menu (Note: Not MissionExpert). (true or false)
+DisableWaypointsFunction = false
+
+# Disable Path Planner. (true or false)
+DisablePathPlanner = true
+
+# Disable Honeywell Real-Time Analyzer. (true or false)
+DisableHoneywellRTAnalyzer = true
+
+# Disable MissionExpert. (true or false)
+DisableMissionExpert = false
+
+# Disable MissionExpert's repairment feature. (true or false)
+DisableMissionExpertRepair = false
+
+# Hide the MissionExpert menu even if the function itself enabled. (true or false)
+HideMissionExpertMenu = false
+
+# Disable AssistantDialog. (true or false)
+DisableAssistantDialog = true
+
+# Hide AssistantDialog upon starting of CfgEdit. (true or false)
+HideAssistantDialog = false
+
+# Specify where the message file for Assistant Dialog is stored.
+AssistantDialogMsgDir = $MLAB_HOME/src/assistantDialog/MessageFiles/
+
+# Specify where 3D models are saved.
+Vis3DModelDir = $MLAB_HOME/src/terrain/models
+
+# Set the capabilities of the user.
+#   Need Execute in order to run a configuration  
+#   Need Modify in order to be able to modify parameters in a configuration
+#   Need Edit in order to be able to create or modify configurations
+#   Need Create in order to be able to create new components
+#   Need Library in order to be able to modify library components
+#   Need RealRobots in order to be able to run real robots
+#   Need MExpModifyCBRLib in order to be able to modify the library of the CBRServer.
+#
+user_privileges = Execute, Modify, Edit, Create, RealRobots, Library, MExpModifyCBRLib
+#user_privileges = Execute, Modify, Edit, Create, RealRobots, MExpModifyCBRLib
+#user_privileges = Execute, Modify, Edit, Create, RealRobots, Library
+
+# Select which primitives are shown to the user
+# List architectures here to restrict names to only those names occurring
+# in all of the listed architectures.  The default is to show all names.
+# Architectures:
+#    AuRA
+#    AuRA.urban
+#    AuRA.naval
+#    UGV
+#
+restrict_names = AuRA.urban
+
+# List of comma separated directories and root names of the 
+# CDL description libraries to load.
+# Will try to load xxx.gen, xxx.AuRA, and xxx.UGV 
+CDL_libraries = $MLAB_HOME/lib/default,
+                $MLAB_HOME/lib/agents
+
+
+# Optional: Configuration to load as the empty config.
+#DefaultConfiguration = $MLAB_HOME/lib/FSA.cdl
+DefaultConfiguration = $MLAB_HOME/lib/default.cdl
+
+# Where to find the map overlays
+MapOverlays = .
+
+# Default Overlay
+DefaultOverlay = hospital.ovl
+
+# Default remote host
+#DefaultHost = cortez.cc.gatech.edu
+
+# Directory of the remote machine where the robot executable should be
+# FTP-ed to, and executed from. (Note: It only affects if you specified
+# a machine name in the "Remote host computer" field of the run dialog.)
+RemoteHostRobotDir = /home/demo
+
+# The user name for executing the robot executable on a remote machine.
+# If it is commented, the name of the user who are running mlab will
+# be used. (Note: It only affects if you specified a machine name in
+# the "Remote host computer" field of the run dialog.)
+#RemoteShellUserName = demo
+
+# The machine name that laserfit is running on.
+LaserFitMachineName = columbus
+
+# Default robot color
+DefaultColor = blue
+
+# Default HServer ID that the robot executable and HServer connect each other via IPT 
+DefaultHServerName = fred
+
+# Directory to write the event logs.
+# None are written if this is empty.
+#EventLogDir = .
+
+# Directory to write the event replay CDL files. The event logging (above) has to be on.
+# None are written if this is empty or the event logging is off.
+#ReplayDir = .
+
+# Directory for saving the Mission Expert output data files.
+# The files will be deleted if this option is commented.
+#MExpDataFilesDir = .
+
+# Name (with path) for the socket of CBR Planner.
+#CBRServerSocketName = /tmp/robot-cbrplanner.socket
+
+# This option specifies whether to disable premission-CNP upon specifying
+# a mission using Mission Expert. Also, this option should be set to False
+# (i.e., enabling Premission CNP) if you want to display robots based on
+# the configuration specified in ROBOT-CONSTRAINTS section of .mission_expertrc.
+DisablePremissionCNP = False
+
+# This option specifies whether to disable runtime-CNP upon specifying
+# a mission using Mission Expert.
+DisableRuntimeCNP = False
+
+# This option specifies whether to allow the user to alter the robot constraints
+# via the Mission Expert's user interface. If this set to True (as it should be),
+# the robot constraints specified in .mission_expertrc by "experts" will be used.
+DisallowModCNPRobots = True
+
+# The first robot's start position. It has to be defined as PP. If it is commented,
+# default "StartPlace" will be used.
+FirstRobotStartPlace = StartPlace
+
+# Offsets to start robots at. This is for the 2nd and later robots in the multi-robot mission.
+# The first robot won't be affected. Not for the extra robots. 
+RobotStart_dx = 1
+RobotStart_dy = 0
+
+# Extra robots to add to the run.
+#ExtraRobots = "Enemy \"./robots/SentryRobot1\" "red" (robot_type = HOLONOMIC, run_type= SIMULATION, extra_robot = true)"
+#ExtraRobots = "Enemy \"./enemyRobot1\" "red" (robot_type = HOLONOMIC, run_type= SIMULATION, extra_robot = true)"
+
+# The extra robot's start position. It has to be defined as PP. If it is commented,
+# it will be treated as one of the multi-robot (i.e., having RobotStart_dx RobotStart_dy
+# offsets).
+#ExtraRobotStartPlace = SentryPost
+ExtraRobotStartPlace = EnemyStartPlace
+
+# Offsets to start extra robots at. This is for the 2nd and later extra robots.
+# The first extra robot won't be affected. If these are uncommented, RobotStart_dx
+# and RobotStart_dy above will be used.
+ExtraRobotStart_dx = 1
+ExtraRobotStart_dy = 0
+
+# Whether to enable the robot data logging. (Not the usability or event log.)
+LogRobotData = False
+
+# Whether to show the current status of the robot when mlab is running
+ShowRobotStatus = False
+
+# To set the default time (second) for the mission to expire, uncomment this line.
+#MissionExpirationTime = 180
+
+# *********** CNL Architecture configuration ********************
+
+# Directories to look in for link libraries.   
+# Seperate each path with a colon.  Newlines are allowed after the colon.
+lib_paths = $MLAB_HOME/lib
+
+# List of comma separated directories and root names of the 
+# CNL source files and libraries to load.
+# Will try to load libxxx.a and include xxx.inc as the cnl header file
+# The editor will look for yyy.cnl in these locations for each extern agent
+CNL_libraries = $MLAB_HOME/lib/cnl
+
+# directories to look in for CNL source files to display in the editor.
+CNL_sources = $MLAB_HOME/src/libcnl
+
+# cflags parm passed to C++ compiler
+cflags = -g,
+	     -I$MLAB_HOME/src/include
+
+# ldflags parm passed to C++ compiler
+ldflags = -L$MLAB_HOME/lib,
+          CNL_LIBS,
+          -lhardware_drivers,
+          -lipt,
+          -lstdc++,
+          -lm,
+          -lqlearn,
+          -lcbr_behavioral_select,
+          -ldstar,
+          -lcnp,
+          -lCommBehavior
+
+# *********** Real robot configuration flags ********************
+#The list of real robots we know about
+robots = HServer
+
+# Any misc robot settings that will be dumped to the script file
+MiscRobotSettings = "set show-trails on",
+		    "set scale-robots on",
+		    "set ROBOT-LENGTH 0.5" 
+
+# Any list of strings attached to the robot name will be appended
+# to the startup parameters for that robot.  The robot names are
+# case sensitive.
+
+HServer  = "robot_type = HSERVER",
+	 "danger_range = 1.0",
+	 "compass_type = NOCOMPASS",
+	 "use_reverse = 0",
+	 "draw_obstacles = 1",
+	 "lurch_mode = 0",
+	 "wait_for_turn = 0",
+	 "drive_wait_angle = 90",
+	 "adjust_obstacles = 1",
+	 "use_sonar = 1",
+	 "use_laser = 1",
+	 "use_cognachrome = 1",
+	 "wait_for_ack = 0",
+	 "multiple_hservers = 0"

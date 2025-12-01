@@ -1,0 +1,73 @@
+/**********************************************************************
+ **                                                                  **
+ **                     SUM_WEIGHTED_VECTORS.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SUM_WEIGHTED_VECTORS.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure Vector SUM_WEIGHTED_VECTORS with
+   list Vector v;	
+   list double gain;
+   CNLString_t name;
+header
+   Vector tmp;
+   int    i;
+body
+   if( v_num != gain_num )
+   {
+      fprintf(stderr,"Error in SUM_WEIGHTED_VECTORS: Number of input vectors must match number of gain values\n");
+      exit(1);
+   }
+
+   if( debug )
+   {
+      fprintf(stderr,"SUM_WEIGHTED_VECTORS(%d) %s\n",robot_id, name.val);
+      for(i=0; i<v_num; i++)
+         fprintf(stderr,"	<%.1f %.1f> * %.1f\n",v[i].x,v[i].y,gain[i]);
+   }
+
+   /* compute the weighted vector sumation of all the inputs */
+   VECTOR_CLEAR(output);
+   for(i=0; i<v_num; i++)
+   {
+      times_2d(v[i],gain[i],tmp);
+      plus_2d(output,tmp);
+   }
+
+
+   if( debug )
+      fprintf(stderr,"	output=<%.1f %.1f>\n",output.x,output.y);
+pend
+
+
+
+/**********************************************************************
+# $Log: SUM_WEIGHTED_VECTORS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.1.1.1  2005/02/06 23:00:01  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.7  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.6  1995/07/10  19:54:18  doug
+# *** empty log message ***
+#
+# Revision 1.5  1995/06/28  22:10:42  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

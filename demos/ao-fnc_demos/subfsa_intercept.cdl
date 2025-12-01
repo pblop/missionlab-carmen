@@ -1,0 +1,62 @@
+/*************************************************
+*
+* This CDL file subfsa_intercept.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+[
+FSA1:FSA(
+      society[Start]<50,50>|Start| = [
+        Stop]<100,100>
+,
+      society[$AN_2546]<241,263>|State1| = [
+        Stop]<100,100>
+,
+      society[$AN_2548]<663,262>|State2| = [
+          %Objects = {Enemies},
+          %intercept_gain = {1.0},
+          %avoid_obstacle_gain = {0.5},
+          %wander_gain = {0.0},
+          %avoid_obstacle_sphere = {1.2},
+          %avoid_obstacle_safety_margin = {0.3}
+,
+        Intercept]<100,100>
+,
+      society[$AN_2550]<665,492>|State3| = [
+          %notify_message = {"Enemy stop."}
+,
+        NotifyRobots]<100,100>
+,
+      society[$AN_2552]<247,491>|State4| = [
+          %notify_message = {"InterceptTask completed."}
+,
+        Notify]<100,100>
+,
+      society[$AN_2562]<249,702>|State5| = [
+        Stop]<10,10>
+,
+      rules[$AN_2546]<241,263>|State1| = if [
+          %Objects = {Enemies}
+,
+        Detect]<0,0>|Trans2|
+ goto $AN_2548,
+      rules[$AN_2548]<663,262>|State2| = if [
+          %Objects = {Enemies},
+          %Distance = {25.0}
+,
+        Near]<665,381>|Trans3|
+ goto $AN_2550,
+      rules[Start]<50,50>|Start| = if [
+        Immediate]<10,10>|Trans1|
+ goto $AN_2546,
+      rules[$AN_2550]<665,492>|State3| = if [
+        MessageSent]<10,10>|Trans5|
+ goto $AN_2552,
+      rules[$AN_2552]<247,491>|State4| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2562)<36,41>|The State Machine|
+]<10,10>
+

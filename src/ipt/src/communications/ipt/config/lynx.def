@@ -1,0 +1,19 @@
+
+lynx_FLAGS = -g -DPPC -DLYNX -D__NO_INCLUDE_WARN__ -Wall -DWITH_PTHREADS -mthreads
+/* lynx_COMPILER = /usr/local/bin/g++ */
+lynx_COMPILER = PATH=$(LYNX_DIR)/bin c++
+lynx_CCOMPILER = PATH=$(LYNX_DIR)/bin gcc
+lynx_LINK = -mthreads -lbsd 
+
+#define lynxMakeLibrary(file,depobjs,ldobjs) 		@@\
+file: depobjs            							@@\
+	$(RM) $@										@@\
+	$(LYNX_DIR)/bin/ar cr $@ ldobjs					@@\
+	$(LYNX_DIR)/bin/ranlib $@
+
+install.lynx:: lynx/$(IPTLIB)
+	cp lynx/$(IPTLIB) $(INSTALL_DIR)/lib/lynx
+	#ranlib -t $(INSTALL_DIR)/lib/lynx/$(IPTLIB)
+
+depend.lynx::
+	$(DEPEND) -plynx/ -I. -I$(LYNX_DIR)/../../usr/include -I$(LYNX_DIR)/../../usr/lib/g++-include -I$(LYNX_DIR)/usr/lib/g++-include $(lynx_FLAGS) $(CCFLAGS) $(lynx_LIB_SRCS) 

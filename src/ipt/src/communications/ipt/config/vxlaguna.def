@@ -1,0 +1,7 @@
+DEFINES_VX	= -DVXWORKS -DCPU=R4000 -DVXWORKS -Dsigned= -Dvolatile=  
+vx_FLAGS = -g $(INC_PATH_VX) $(DEFINES_VX) \
+		-mcpu=r4000 -V2.5.7 -funroll-loops \
+		-ansi -pipe -nostdinc +V 
+vx_COMPILER  = CCmips.mine
+vx_CCOMPILER  = gcc-sde
+vx_LD = ld

@@ -1,0 +1,16 @@
+src/cbrplanner/cbrserver
+src/cdl/cdl
+src/cfgedit/cfgedit
+src/cfgedit/.cfgeditrc
+src/cfgedit/.mission_expertrc
+src/cbrplanner/.repair_planrc
+src/cfgedit/rta
+src/cnl/cnl
+src/EventLogParser/EventLogParser
+src/hardware_drivers/hserver/hserver
+src/hardware_drivers/hserver/.hserverrc
+src/hardware_drivers/laser/laserfit
+src/mlab/mlab
+src/path_planner/path_planner
+src/mrobot/mlab-2.0-robot/mlab-2.0-robot
+src/mrobot/tmr_robot-1998/tmr_robot-1998

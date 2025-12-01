@@ -1,0 +1,94 @@
+MISSIONLAB AND CARMEN INTEGRATION
+=================================
+
+This package contains full source code of Missionlab and Carmen integration.
+Please contact fjaviersr@usal.es if you have any question or problem regarding 
+installation or usage of this software.
+
+LICENSE INFO
+============
+
+Missionlab:
+* Copyright 1994 - 2006  Georgia Tech Research Corporation. All rights Reserved.
+See src/MISSIONLAB_COPYRIGHT file for details:
+
+Carmen:
+* Copyright (c) 2002 Michael Montemerlo, Nicholas Roy, Sebastian Thrun, Dirk Haehnel, Cyrill Stachniss and Jared Glover
+* Licensed under GNU GPL v2
+See src/CARMEN_AUTHORS and src/CARMEN_COPYING for details.
+
+IPC:
+* Copyright (c) 2008, Carnegie Mellon University
+* Primary authors: Reid Simmons, Christopher Fedor, Richard Goodwin, Trey Smith
+* All rights reserved.
+See src/IPC_COPYRIGHT file for details
+
+New hserver drivers, components (as IPC-Adapter) and modifications:
+* Copyright (c) 2012, University of Salamanca
+* All rights reserved.
+* Licensed under GNU GPL v2 or newer
+
+INSTALLATION
+============
+
+You can test this software easily in Fedora from version 11 to 17.
+Fedora 15 is recommended because it has been our development environment.
+Only 32 bits is supported. It won't work in 64 bits versions of Fedora.
+
+Steps to install this software:
+
+1.- Install rpm-build package (as root)
+# yum install rpm-build
+
+2.- Install dependencies (as root):
+# yum-builddep missionlab_carmen-1.0.src.rpm
+
+3.- Build your RPM package (as normal user):
+$ rpmbuild --rebuild missionlab_carmen-1.0.src.rpm
+
+4.- Install your RPM (as root):
+$ yum --nogpgcheck install /home/USER/rpmbuild/RPMS/ARCH/missionlab_carmen-VERSION.RELEASE.ARCH.rpm 
+
+Note that:
+USER = your username
+ARCH = usually i386 or i686
+VERSION = 1.0-1 in this release
+RELEASE = fcXX (Fedora release)
+"--nogpgcheck" flag is needed because the RPM package is not digitally signed.
+
+During installation, a full copy of the source code is placed 
+at /usr/src to allow inplace building and code analysis.
+
+USAGE
+=====
+
+There are three demos, but additionally you can use MissionLab and Carmen as usual:
+http://www.cc.gatech.edu/aimosaic/robot-lab/research/MissionLab/mlab_manual-7.0.pdf
+http://carmen.sourceforge.net/doc/
+
+Steps to test the demos:
+
+1.- Go to demos folder (as normal user):
+$ cd /usr/demos/grousal_demos
+
+2.- Select one demo (the most interesting is missionlab_carmen):
+$ cd missionlab_carmen
+
+3.- Start the demo:
+$ ./start_demo.sh
+
+4.- See what happens
+
+5.- Stop the demo:
+$ ./stop_demo.sh
+
+Notes:
+- If you want to use cfgedit and build your own missions, remember to
+  do this in a user writable folder (/usr/demos is not writable for non root users).
+
+- Please contact fjaviersr@usal.es if you have any question or problem regarding 
+  installation or usage of this software.
+
+- Check for updates in the (temporal) official homepage:
+  http://web.usal.es/~fjaviersr/missionlab_carmen/
+  

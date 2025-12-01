@@ -1,0 +1,27 @@
+/**********************************************************************
+ **                                                                  **
+ **                            SLUAV_TRANSPORT.cnl                   **
+ **                            Patrick Ulam                          **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+
+procedure Vector SLUAV_TRANSPORT with
+   int robotid;
+header
+robot_position rp;
+body
+   VECTOR_CLEAR(output);
+   rp = exec_get_robot_position(robotid);
+   exec_setxyTheta((double) rp.v.x, (double) rp.v.y, rp.heading);
+
+pend
+
+

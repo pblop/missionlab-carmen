@@ -1,0 +1,122 @@
+--******************************************************************
+--
+--	PHASE1-TaskA
+--
+--      Airfied assessment. Gaining access to denied areas of an
+--	airfield and its neighbor: control tower, TV station, and hangar.
+--
+--	Three Packbots will be lauched to traverse overland from
+--      three different locations. Two of these will be targeted
+--      to probe the cotrol tower and the TV station. The third
+--      Packbot will carry a Throwbot, approach to the hangar as
+--	close as it could, and release the Throwbot. The Throwbot
+--	will, then, probe/monitor the hangar.
+--       
+--	This scenario was developed for DARPA's Tactical Mobile
+--      Robotics Project.
+--
+--      1/7/98 Yoichiro Endo
+--
+--******************************************************************
+
+MISSION-AREA 3000 2000
+
+--ORIGIN 50 50
+
+MISSION NAME "Airfield Assessment"
+
+SCENARIO "Airfield Assessment"
+
+OVERLAY airfield.ovl
+
+--SET OBSTACLE-COVERAGE 0
+--SET MIN-OBSTACLE-RADIUS 6
+--SET MAX-OBSTACLE-RADIUS 15
+--SET SEED 945816565 -- 5052, 450, 206885425, 1003573794, 96165
+--SET HIGHLIGHT-REPELLING-OBSTACLES
+--CREATE-OBSTACLES
+
+
+
+NEW-ROBOT bluerobot "tmr_robot-1998" blue (
+		avoid_obstacle_sphere=0.5,
+		avoid_obstacle_safety_margin=0.5,
+		navigation_avoid_obstacle_gain=0.25,
+		navigation_avoid_robot_gain=0.5,
+		navigation_avoid_robot_min_range=15,
+		navigation_avoid_robot_sphere=45,
+		navigation_formation_gain=1.0,
+		navigation_move_to_goal_gain=1.0,
+		navigation_success_radius=5.0,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0.05,
+		detect_concealments_range=15,
+		occupy_avoid_robot_gain=0.5,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=1.0,
+		occupy_avoid_robot_sphere=1.0,
+		formation_spacing=1.0,
+		formation_slop=0,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 5, 
+		max_velocity = 7
+		)
+
+NEW-ROBOT redrobot "tmr_robot-1998" red (
+		avoid_obstacle_sphere=0.5,
+		avoid_obstacle_safety_margin=0.5,
+		navigation_avoid_obstacle_gain=0.25,
+		navigation_avoid_robot_gain=0.5,
+		navigation_avoid_robot_min_range=15,
+		navigation_avoid_robot_sphere=45,
+		navigation_formation_gain=1.0,
+		navigation_move_to_goal_gain=1.0,
+		navigation_success_radius=5.0,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0.05,
+		detect_concealments_range=15,
+		occupy_avoid_robot_gain=0.5,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=1.0,
+		occupy_avoid_robot_sphere=1.0,
+		formation_spacing=1.0,
+		formation_slop=0,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 5, 
+		max_velocity = 7
+		)
+
+SET ROBOT-LENGTH 20
+
+UNIT <scouts> (<Packbot-1> bluerobot) (<Packbot-2> bluerobot) (<Packbot-3> bluerobot)
+UNIT <Throwbot> redrobot
+
+COMMAND LIST:
+
+ 0. UNIT Packbot-1 START PP-PP1a AND
+    UNIT Packbot-2 START PP-PP1b AND
+    UNIT Packbot-3 START PP-PP1c
+
+10. UNIT Packbot-1 MOVETO PP-PP2a
+
+20. UNIT Packbot-1 MOVETO PP-PP3a
+
+30. UNIT Packbot-1 MOVETO "Control Tower"
+
+40. UNIT Packbot-2 MOVETO PP-PP2b
+
+50. UNIT Packbot-2 MOVETO PP-PP3b
+
+60. UNIT Packbot-2 MOVETO "TV Station"
+
+70. UNIT Packbot-3 MOVETO PP-PP2c
+
+80. UNIT Packbot-3 MOVETO PP-PP3c
+
+90. UNIT Throwbot START PP-PP3c
+
+100. UNIT Throwbot MOVETO "Hangar"

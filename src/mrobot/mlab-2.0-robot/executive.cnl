@@ -1,0 +1,150 @@
+/**********************************************************************
+ **                                                                  **
+ **                          executive.cnl                           **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: executive.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+/***********************************************************************/
+
+procedure Vector EXECUTIVE with
+   gt_Command cmd;
+
+   /* Behaviors */
+   Vector moveto;
+   Vector follow;
+   Vector occupy;
+   Vector teleop;
+
+   /* techniques */
+   Vector traveling;
+   Vector traveling_overwatch;
+   Vector bounding_overwatch;
+header
+   Vector v1; 
+   Vector v2; 
+body
+
+   VECTOR_CLEAR(v1);
+   VECTOR_CLEAR(v2);
+
+   switch(cmd.behavior)
+   {
+      case NO_BEHAVIOR:
+         break;
+
+      case START:
+         break;
+
+      case MOVETO:
+	 v1 = moveto;
+	 break;
+
+      case FOLLOW:
+	 v1 = follow;
+	 break;
+
+      case OCCUPY:
+	 v1 = occupy;
+	 break;
+
+      case TELEOPERATE:
+	 v1 = teleop;
+	 break;
+
+      case STOP:
+	 halt("Received STOP command");
+	 break;
+
+      default:
+	 fprintf(stderr,"(%d) Procedure EXECUTE_CMD: unknown behavior=%d\n",
+			 robot_id, cmd.behavior);
+	 break;
+   }
+
+   if( debug )
+   {
+      fprintf(stderr,"EXECUTE_CMD(%d) behavior=%d v1=(%.1f %.1f)\n",
+	      robot_id, cmd.behavior, v1.x, v1.y);
+   }
+
+
+   if( debug )
+   {
+      fprintf(stderr,"EXECUTE_CMD(%d) technique=%d v2=(%.1f %.1f)\n",
+	      robot_id, cmd.technique, v2.x, v2.y);
+   }
+
+   switch(cmd.technique)
+   {
+      case NO_TECHNIQUE:
+         break;
+
+      case TRAVELING:
+	 v2 = traveling;
+         break;
+
+      case TRAVELING_OVERWATCH:
+	 v2 = traveling_overwatch;
+	 break;
+
+      case BOUNDING_OVERWATCH:
+	 v2 = bounding_overwatch;
+	 break;
+
+      default:
+	 fprintf(stderr,"(%d) Procedure EXECUTE_CMD: unknown technique=%d\n",
+			 robot_id, cmd.technique);
+	 break;
+   }
+
+   if( debug )
+   {
+      fprintf(stderr,"EXECUTE_CMD(%d) technique=%d v2=(%.1f %.1f)\n",
+	      robot_id, cmd.technique, v2.x, v2.y);
+   }
+
+   /* sum the components */
+   add_2d(v1,v2,output);
+
+   if( debug )
+   {
+      fprintf(stderr,"EXECUTE_CMD(%d) output=(%.1f %.1f)\n",
+	      robot_id, output.x, output.y);
+   }
+#if 0
+fprintf(stderr,"EXECUTIVE(%d) v1:%d(%.1f %.1f) v2:%d(%.1f %.1f) out=(%.1f %.1f)\n",
+robot_id,cmd.behavior,v1.x,v1.y,cmd.technique,v2.x,v2.y,output.x, output.y);
+#endif
+
+pend
+
+
+
+/**********************************************************************
+# $Log: executive.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:14  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.16  1996/02/21  15:43:53  doug
+# fixedup so compiles with current libcnl
+#
+# Revision 1.15  1995/06/29  13:37:32  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

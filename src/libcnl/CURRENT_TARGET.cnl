@@ -1,0 +1,49 @@
+/**********************************************************************
+ **                                                                  **
+ **                       CURRENT_TARGET.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Antonio Sgorbissa                                  **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CURRENT_TARGET.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure Vector CURRENT_TARGET with
+   Vector  new_vector;
+header
+int get_my_visual_goal(Vector &vg, int &ptvg);
+body
+
+   VECTOR_CLEAR(output);
+
+   int ptg;
+   bool vg = (bool) get_my_visual_goal(output, ptg);
+
+   char *value;
+   if (!vg)
+   {
+	if( strcmp(value=get_state("CTarget") , ""))
+     	{
+        	char *ptr;
+       		/* The value has been updated so read the new value */
+       		output.x = strtod(value,&ptr);
+       		value = ptr+1;
+       		output.y = strtod(value,&ptr);
+   	}
+   	else
+     	{
+        	/* The value has NOT been updated so reuse the old value */
+        	output.x = 0;
+        	output.y = 0;
+     	}
+  }
+
+pend
+

@@ -1,0 +1,90 @@
+/*************************************************
+*
+* This CDL file type-I-intercept-enemy.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2838 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2853]<114,319>|State1| = [
+                %color = {"orange"}
+,
+              ChangeRobotColor]<10,10>
+,
+            society[$AN_2855]<879,496>|State2| = [
+                %Goal_Location = {175.36, 770.56},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2857]<297,499>|State3| = [
+              TerminateMission]<10,10>
+,
+            society[$AN_2859]<331,135>|State4| = [
+              Stop]<10,10>
+,
+            society[$AN_2861]<882,132>|State5| = [
+                %color = {"red"}
+,
+              ChangeRobotColor]<10,10>
+,
+            society[$AN_2863]<554,682>|State6| = [
+              Stop]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2853,
+            rules[$AN_2855]<879,496>|State2| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {175.36, 770.56}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_2857,
+            rules[$AN_2853]<114,319>|State1| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_2859,
+            rules[$AN_2859]<331,135>|State4| = if [
+                %Delay = {15.0}
+,
+              Wait]<0,0>|Trans2|
+ goto $AN_2861,
+            rules[$AN_2861]<882,132>|State5| = if [
+              Immediate]<0,0>|Trans6|
+ goto $AN_2855,
+            rules[$AN_2855]<879,496>|State2| = if [
+                %notify_message = {"Enemy stop."}
+,
+              Notified]<0,0>|Trans1|
+ goto $AN_2863)<292,156>|The State Machine|
+,
+        max_vel = {20.0},
+        base_vel = {1.5},
+        cautious_vel = {1.0},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_2877 from vehicle(
+  bound_to = type-I-intercept-enemyRobot1:DEFAULT_ROBOT(
+type-I-intercept-enemyRobot1:[
+          $AN_2838]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_2877]<10,10>|Group of Robots|
+]<10,10>
+

@@ -1,0 +1,172 @@
+/* $Id: GROUSAL.cnl,v 1.1.1.1 2010/03/03 */
+
+init
+#include "CommBehaviorAdviseMethod.h"
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector GROUSAL_TELOP_CSB with
+   int telop_mode;
+   double robot_heading;
+   double joystick_x;
+   double joystick_y;
+   double joystick2_x;
+   double joystick2_y;
+   double slider_1;
+   double slider_2;   
+   int joy_buttons;
+header
+   Vector dir = ZERO_VECTOR;
+   double  angle;
+body
+   {
+	exec_update_csb_carretilla();
+	exec_get_csb_advise(CSB_ADVISE_USE_COMM_RECOVERY);
+
+      if((telop_mode & 0x01))
+	{
+	  if ( (joystick_x == 0.0) && (joystick_y == 0.0) )
+	     angle = 0.0;
+          else
+             angle = atan2(joystick_y, joystick_x) - M_PI_2;
+	}
+      else
+	{
+	  if ( (joystick_x == 0.0) && (joystick_y == 0.0) )
+             angle = 0.0;
+      	  else
+             angle = atan2(joystick_y, joystick_x);
+	}
+      dir.x = cos(angle);
+      dir.y = sin(angle);
+   }
+
+   output = dir;
+
+   // The output of this behavior is relative to the current heading of the
+   // robot.  So, to generate a constant heading (in world coordinates) vector
+   // requires compensation for the heading changes.
+   if ( !(telop_mode & 0x01) )
+      rotate_z(output, -1 * robot_heading);
+
+	exec_send_advanced_telop(joystick2_x, joystick2_y, slider_1, slider_2, joy_buttons);
+	
+pend
+
+
+//-------------------------------------------------------------------------
+// This function returns a vector that is a copy of the communication
+// sensitive behavioral advise that is executed here.
+//-------------------------------------------------------------------------
+procedure Vector GROUSAL_FOLLOW_CSB_ADVISE with
+int method;
+header
+body
+{
+    CSB_Advise_t advise;
+    int adviseMethod = CSB_ADVISE_GREEDY;
+
+    // Set the advise method.
+    switch (method) {
+
+    case CSB_Greedy:
+        adviseMethod = CSB_ADVISE_GREEDY;
+        break;
+
+    case CSB_Average:
+        adviseMethod = CSB_ADVISE_AVERAGE;
+        break;
+
+    case Comm_Recovery:
+        adviseMethod = CSB_ADVISE_USE_COMM_RECOVERY;
+        break;
+
+    case Comm_Preserve:
+        adviseMethod = CSB_ADVISE_USE_COMM_PRESERVE;
+        break;
+
+    case Internalized_Plan:
+        adviseMethod = CSB_ADVISE_USE_INTERNALIZED_PLAN;
+        break;
+    }
+
+    VECTOR_CLEAR(output);
+
+	exec_update_csb_carretilla();
+
+    // Get the advise.
+    // advise = exec_get_csb_advise(adviseMethod);
+    advise = exec_get_csb_advise(CSB_ADVISE_USE_COMM_RECOVERY);
+
+    output.x = advise.x;
+    output.y = advise.y;
+}
+pend
+
+
+//-------------------------------------------------------------------------
+// This bool function checks to see if the current signal strength is
+// stronger than the one specified.
+//-------------------------------------------------------------------------
+
+procedure bool GROUSAL_COMM_SIGNAL_STRONG_ENOUGH with
+   double threshold;
+header
+body
+{
+	if(threshold>=65)
+		exec_set_signal_threshold_high(threshold);
+	else
+		exec_set_signal_threshold_low(threshold);
+		
+	float level = exec_get_signal_level_carretilla();
+	//printf("Nivel de Señal WiFi: %d\n", level);
+    if(level>=threshold)
+    	output = true;
+    else
+    	output = false;
+}         
+pend
+
+
+
+procedure bool GROUSAL_GENERAL_BATTERY_CHARGED with
+   double threshold;
+header
+body
+{
+	int level = exec_get_general_battery_level_carretilla();
+	printf("Batería General: %d Voltios\n", level);
+    if(level>=threshold)
+    	output = true;
+    else
+    	output = false;
+}         
+pend
+
+
+
+procedure bool GROUSAL_SERVO_BATTERY_CHARGED with
+   double threshold;
+header
+body
+{
+	int level = exec_get_servo_battery_level_carretilla();
+	printf("Batería Servos: %d Voltios\n", level);
+    if(level>=threshold)
+    	output = true;
+    else
+    	output = false;
+}         
+pend
+
+
+
+
+
+
+
+

@@ -1,0 +1,81 @@
+/**********************************************************************
+ **                                                                  **
+ **                       COMPUTE_B.cnl                       	     **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Antonio Sgorbissa                                  **
+ **                                                                  **
+ **  Copyright 2000, 2001, Georgia Tech Research Corporation         **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: COMPUTE_B.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure double COMPUTE_B with
+   Vector g;
+header
+body
+
+   char *value, *ptr;
+   int cgoal = 0;
+   if( strcmp(value=get_state("MisAtGoal"),""))
+       cgoal = (strtol(value,&ptr,10));
+
+   double b = 0.0;
+   bool ft;
+   int ngoal = 0;
+
+   if( strcmp(value=get_state("BetaDB"),"") )
+   {
+        b = strtod(value,&ptr);
+        value = ptr+1;
+        ft    = (bool)strtol(value,&ptr,10);
+        value = ptr+1;
+        ngoal = (int)strtol(value,&ptr,10);
+   }
+   else ft = true;
+
+   if (ft || (cgoal != ngoal))
+   {
+	b = 0;
+	ft = false;
+	ngoal = cgoal;
+        //printf("\n Beta: GOAL!");
+   }
+
+   b+=g.y/20.0;
+   output = b;
+
+   value = (char*)malloc(100*sizeof(char));
+   sprintf(value, "%f %d %d", b, ft, ngoal);
+   put_state("BetaDB", value);
+   free (value);
+
+pend
+
+
+
+/**********************************************************************
+# $Log: COMPUTE_B.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  2001/12/23 20:28:57  endo
+# RH 7.1 porting.
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+# *** empty log message ***
+#
+#**********************************************************************/

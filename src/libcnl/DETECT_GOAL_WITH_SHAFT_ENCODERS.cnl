@@ -1,0 +1,45 @@
+/**********************************************************************
+ **                                                                  **
+ **               DETECT_GOAL_WITH_SHAFT_ENCODERS.cnl                **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DETECT_GOAL_WITH_SHAFT_ENCODERS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector DETECT_GOAL_WITH_SHAFT_ENCODERS with
+   Vector goal;		/* where is the goal? */
+   Vector robot_loc;	/* where is the robot? */
+header
+body
+   output.x = goal.x - robot_loc.x;
+   output.y = goal.y - robot_loc.y;
+
+   if( debug )
+      fprintf(stderr,"DETECT_GOAL_WITH_SHAFT_ENCODERS output=(%.1f %.1f)\n",output.x,output.y);
+pend
+
+
+/**********************************************************************
+# $Log: DETECT_GOAL_WITH_SHAFT_ENCODERS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.8  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.7  1995/06/28  21:52:14  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

@@ -1,0 +1,235 @@
+/*************************************************
+*
+* This CDL file mini-demo.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_2944 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA8:FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2953,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2953]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2956 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA7:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2972]<304,291>|State1| = [
+                %env_filename = {"urban.ovl"},
+                %cmdl_filename = {"mini-demo.cmdl"},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5},
+                %goal_tolerance = {1.0}
+,
+              FollowCMDLiCommands]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2972)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.175},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2976 from vehicle(
+  bound_to = urbanRobot4:DEFAULT_ROBOT(
+urbanRobot4:[
+          $AN_2956,
+          $AN_2944]
+)<59,209>|Individual Robot|
+);
+
+instBP<227,266> $AN_2977 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA6:FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2953,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2953]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2988 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA5:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2972]<304,291>|State1| = [
+                %env_filename = {"urban.ovl"},
+                %cmdl_filename = {"mini-demo.cmdl"},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.2},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5},
+                %goal_tolerance = {1.0}
+,
+              FollowCMDLiCommands]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2972)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_3007 from vehicle(
+  bound_to = urbanRobot3:DEFAULT_ROBOT(
+urbanRobot3:[
+          $AN_2988,
+          $AN_2977]
+)<58,38>|Individual Robot|
+);
+
+instBP<227,266> $AN_3008 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA4:FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2953,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2953]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_3019 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA3:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2972]<304,291>|State1| = [
+                %env_filename = {"urban.ovl"},
+                %cmdl_filename = {"mini-demo.cmdl"},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5},
+                %goal_tolerance = {1.0}
+,
+              FollowCMDLiCommands]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2972)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.225},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_3038 from vehicle(
+  bound_to = urbanRobot2:DEFAULT_ROBOT(
+urbanRobot2:[
+          $AN_3019,
+          $AN_3008]
+)<59,209>|Individual Robot|
+);
+
+instBP<227,266> $AN_3039 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA2:FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2953,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2953]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_3050 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2972]<304,291>|State1| = [
+                %env_filename = {"urban.ovl"},
+                %cmdl_filename = {"mini-demo.cmdl"},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.2},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5},
+                %goal_tolerance = {1.0}
+,
+              FollowCMDLiCommands]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2972)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.25},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_3069 from vehicle(
+  bound_to = urbanRobot1:DEFAULT_ROBOT(
+urbanRobot1:[
+          $AN_3050,
+          $AN_3039]
+)<58,38>|Individual Robot|
+);
+
+[
+[
+    $AN_3069,
+    $AN_3038]<21,18>|Group of Robots|
+,
+[
+    $AN_3007,
+    $AN_2976]<22,137>|Group of Robots|
+]<10,10>
+

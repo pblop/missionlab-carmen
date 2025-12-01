@@ -1,0 +1,7 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=doug
+
+# update the mirror each weekday morning at 5:05am.
+05 5 * * mon-fri  cd /tmp ; cvs -d :pserver:builds@oak:/cvsroot checkout support/rsync_cvs.sh ; support/rsync_cvs.sh ;
+

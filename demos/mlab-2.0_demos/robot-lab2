@@ -1,0 +1,66 @@
+--******************************************************************
+--
+--	real1
+--
+--	script to drive one Denning MRV2 robot.
+--	
+--	This example spawns one robot, then commands
+--	it to move to a series of points.
+--
+--	Doug MacKenzie
+--
+--******************************************************************
+
+MISSION NAME "Single Denning MRV2 Robot Run"
+
+OVERLAY "robot-lab2.ovl"
+
+--PP StartPlace* 3.4 4.54  --   Note: x means EAST
+                 	 --         y means NORTH
+			 -- 11 feet from far west wall, 6 feet from south wall
+			 -- Turn robot so 0 sensor (light) is pointed east
+
+NEW-ROBOT slow-robot "mlab-2.0-robot" "blue" "" (
+                avoid_obstacle_sphere = 1.25,
+                navigation_success_radius = 0.3,
+                move_to_goal_success_radius = 0.3,
+
+--              navigation_noise_gain = 0,
+--              navigation_move_to_goal_gain = 1.0,
+--              navigation_avoid_obstacle_gain = 0.7,
+--              navigation_avoid_robot_gain = 0,
+--              navigation_formation_gain = 0,
+
+                base_velocity = 0.1,
+                max_velocity = 0.1
+
+
+)
+
+UNIT <peaceful-robot> slow-robot 
+
+SET SHOW-TRAILS ON
+
+COMMAND LIST:
+
+ 0. UNIT peaceful-robot START StartPlace 
+
+ 1. UNIT peaceful-robot MOVETO DoorWay1
+
+ 2. UNIT peaceful-robot MOVETO DoorWay2 
+
+ 3. UNIT peaceful-robot MOVETO Printer
+
+ 4. UNIT peaceful-robot OCCUPY Printer
+
+ 5. UNIT peaceful-robot MOVETO DoorWay2
+
+ 6. UNIT peaceful-robot MOVETO DoorWay1
+
+ 7. UNIT peaceful-robot MOVETO StartPlace
+
+ 8. UNIT peaceful-robot OCCUPY StartPlace
+
+ 9. UNIT peaceful-robot STOP
+
+10. Quit

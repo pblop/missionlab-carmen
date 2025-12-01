@@ -1,0 +1,42 @@
+/*********************************************************
+**                                                      **
+**                                                      **
+**              IR_POSICION_OBJETIVO.cnl                **
+**                                                      **
+**                                                      **
+*********************************************************/
+
+
+#include "cnl.inc"
+
+/*init
+#include "lmadjust.h"
+iend*/
+
+
+procedure Vector IR_POSICION_OBJETIVO with
+    Vector obstaculo;
+header
+        static int inicial = 0;
+        Vector posObjetivo;
+        robot_position miPosicion;
+body
+
+
+        posObjetivo = posicion_objetivo();
+         // printf("Posicion objetivo (%f, %f)\n", posObjetivo.x, posObjetivo.y);
+
+    VECTOR_CLEAR(output);
+    miPosicion = exec_get_position();
+    minus_2d(posObjetivo, miPosicion.v, output);
+    rotate_z(output, -1 * miPosicion.heading);
+
+
+    output.x += obstaculo.x * 0.3;
+    output.y += obstaculo.y * 0.3;
+    //printf("\n++++++++++++IR POSICION OBJETIVO+++++++++++++++\n");
+    //printf("IR POSICION OBJETIVO obstaculo (%f, %f)\n", output.x, output.y);
+
+    //fprintf(stdout,"Estoy en IR_PosicionObjetivo\n");
+
+pend

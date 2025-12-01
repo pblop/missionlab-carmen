@@ -1,0 +1,66 @@
+/*--------------------------------------------------------------------
+
+	COMPUTE_G.cnl
+
+
+	Written by: 	Antonio Sgorbissa 
+
+	Copyright 2000, Antonio Sgorbissa 
+
+--------------------------------------------------------------------*/
+
+/* $Id: COMPUTE_G.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector COMPUTE_G with
+   Vector	goal_rel_loc;
+   bool		have_a_goal;
+
+header
+body
+
+   //printf("\nCompute G %f %f", output.x, output.y);
+   VECTOR_CLEAR(output);
+	
+/*   if( have_a_goal && len_2d(goal_rel_loc) > EPS_ZERO )
+   {
+     	output = goal_rel_loc; 
+	unit_2d(output);
+	//printf("\n Output %f %f", output.x, output.y);
+   }*/
+   if( have_a_goal && len_2d(goal_rel_loc) > 0.1 )
+   {
+     	output = goal_rel_loc; 
+   	double vabs = sqrt(output.x*output.x+output.y*output.y);
+   	if (vabs!=0.0)
+   	{
+        	output.x = output.x/vabs;
+        	output.y = output.y/vabs;
+   	}
+
+	//printf("\n Output %f %f", output.x, output.y);
+   }
+
+  char *value = (char*)malloc(100*sizeof(char));
+  sprintf(value, "%f %f", output.x, output.y);
+  put_state("GoalForce", value);
+  //printf("\nGoal vector %f %f", output.x, output.y);
+pend
+
+
+/**********************************************************************
+# $Log: COMPUTE_G.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#**********************************************************************/

@@ -1,0 +1,66 @@
+--******************************************************************
+--
+--	example3
+--
+--	Example complex mission script for 4 robots.
+--	
+--	This example spawns four robots  They go on to execute
+--	a complex scout mission.  There are actually two two
+--	robot teams, scouts-1 and scouts-2.  Initially they
+--	occupy their assembly area (AA-AA1) until cleared to
+--	proceed (by a user button-click).  After that they
+--	move to a series of points, split into separate teams,
+--	re-form as a four robot team, and finally occupy 
+--	the objective (OBJ-Tango).  The companion overlay file 
+--	that defines the points to move to is example3.odl .
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+MISSION NAME "example3"
+
+SCENARIO "example3"
+
+OVERLAY example3.ovl
+
+SET OBSTACLE-COVERAGE 2
+SET MIN-OBSTACLE-RADIUS 6
+SET MAX-OBSTACLE-RADIUS 15
+SET SEED 945816565 -- 5052, 450, 206885425, 1003573794, 96165
+SET HIGHLIGHT-REPELLING-OBSTACLES
+CREATE-OBSTACLES
+
+
+NEW-ROBOT bluerobot "mlab-2.0-robot" "blue" ""
+
+
+UNIT <scouts> (<scouts-1> bluerobot bluerobot) (<scouts-2> bluerobot bluerobot)
+
+COMMAND LIST:
+
+ 0. UNIT scouts START AA-AA1 0 20
+
+ 1. UNIT scouts OCCUPY AA-AA1 FORMATION Column
+
+ 2. UNIT scouts MOVETO PP-CHARLIE FORMATION Column
+
+ 5. UNIT scouts MOVETO PP-Delta1 FORMATION Column
+
+ 6. UNIT scouts MOVETO AXIS-Gamma1 FORMATION Wedge
+
+ 7. UNIT scouts-1 MOVETO ATK-BP1 AND
+    UNIT scouts-2 MOVETO ATK-BP2
+
+ 8. UNIT scouts-1 OCCUPY ATK-BP1 UNTIL TIMEOUT 10
+	AND
+    UNIT scouts-2 OCCUPY ATK-BP2 UNTIL TIMEOUT 10
+
+ 9. UNIT scouts MOVETO OBJ-Tango FORMATION Diamond
+
+10. UNIT scouts OCCUPY OBJ-Tango FORMATION Diamond UNTIL TIMEOUT 20
+
+11. UNIT scouts STOP
+
+12. Quit

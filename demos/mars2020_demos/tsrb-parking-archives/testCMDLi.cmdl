@@ -1,0 +1,19 @@
+MISSION NAME "CMDLi Test"
+
+NEW-ROBOT atrvjrClass "atrvjrRobot"
+
+UNIT <testCMDLiRobot1> atrvjrClass
+UNIT <testCMDLiRobot2> atrvjrClass
+
+UNIT <all> (testCMDLiRobot1 testCMDLiRobot2)
+
+COMMAND LIST:
+   unit testCMDLiRobot1 MoveTo goalLocation = [Waypoint-A]
+   unit testCMDLiRobot1 MoveTo goalLocation = [Waypoint-B]
+   unit all Synchronize
+   unit testCMDLiRobot1 MoveTo goalLocation = [Waypoint-C]
+   unit testCMDLiRobot1 MoveTo goalLocation = [Waypoint-B]
+   unit testCMDLiRobot1 MoveTo goalLocation = [Waypoint-A]
+   unit testCMDLiRobot2 MoveTo goalLocation = [Waypoint-A]
+   unit testCMDLiRobot2 MoveTo goalLocation = [Waypoint-B]
+   unit testCMDLiRobot2 MoveTo goalLocation = [StartPlace]

@@ -1,0 +1,7 @@
+"Title: Overwrite Workspace\n\
+\n\
+Changes have been made to the workspace which are not saved.\n\
+\n\
+Yes:    Overwrite the current workspace.\n\
+Cancel: Abort the operation.\n\
+Help:   This message."

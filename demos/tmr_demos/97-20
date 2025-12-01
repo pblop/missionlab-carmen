@@ -1,0 +1,175 @@
+--******************************************************************
+--
+--	97-20
+--	
+--      Establish observation posts at a building.
+--
+--	Two robots approach to a target building after being deployed
+--      from woods. They cross parking lot and street using parked cars
+--      as covers. When they reach to the (7th floor of ) building, one
+--      robot (R1)remains one side of exterior stairwell while the other
+--      robot (R2) goes to the other exterior stairwell through the
+--      hallway. R1 and R2 serve as observation posts.
+--       
+--	This scenario was developed for DARPA's Tactical Mobile
+--      Robotics Project.
+--
+--      12/1/98 Yoichiro Endo
+--
+--******************************************************************
+
+MISSION-AREA 200 150
+
+MISSION NAME "97-20"
+
+SCENARIO "97-20"
+
+OVERLAY 97-20.ovl
+
+NEW-ROBOT bluerobot "tmr_robot-1998" "blue" "" (
+		avoid_obstacle_sphere=2.5,
+		avoid_obstacle_safety_margin=1.5,
+		navigation_avoid_obstacle_gain=0.025,
+		navigation_avoid_robot_gain=0, --0.75,
+		navigation_avoid_robot_min_range=0.5,
+		navigation_avoid_robot_sphere=10.0,
+		navigation_formation_gain=0.5,
+		navigation_move_to_goal_gain=1.5,
+		navigation_success_radius=2.0 ,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0,
+		detect_concealments_range=5,
+		occupy_move_to_goal_gain= 4.0,
+		occupy_avoid_robot_gain= 0.1,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=0.5,
+		occupy_avoid_robot_sphere=0.5,
+		formation_spacing=1.5,
+		formation_slop=1,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 0.3,-- 0.1, 
+		max_velocity = 0.5 -- 0.3
+		)
+
+
+NEW-ROBOT PatrolCar "PatrolCarRobot1" "red" "" (
+                --robot_type = "MRV2",
+                run_type= "SIMULATION"
+                )
+
+NEW-ROBOT PedestrianRobot "PedestrianRobot1" "green" "" (
+                --robot_type = "MRV2",
+                run_type= "SIMULATION"
+                )
+
+--SET SHOW-TRAILS ON
+SET ROBOT-LENGTH 1
+
+UNIT <scouts> (<R1> bluerobot) (<R2> bluerobot)
+UNIT <patrol1> PatrolCar
+UNIT <patrol2> PatrolCar
+UNIT <pedestrian> PedestrianRobot
+
+COMMAND LIST:
+
+------------------------------------------------------------------
+-- Approach to the Target Building
+------------------------------------------------------------------
+
+ 0. UNIT scouts START AA-Hummer 0 1.5 AND
+    UNIT patrol1 START AA-patrol-car1 AND
+    UNIT patrol2 START AA-patrol-car2 AND
+    UNIT pedestrian START AA-park-car
+
+10. UNIT scouts MOVETO AA-car1 FORMATION line
+
+20. UNIT scouts MOVETO AA-car2 FORMATION line
+
+30. UNIT scouts MOVETO AA-car3 FORMATION line
+
+30. UNIT scouts MOVETO AA-car4 FORMATION line
+
+40. UNIT scouts MOVETO AA-car5 FORMATION line
+
+50. UNIT scouts MOVETO AA-car6 FORMATION line
+
+60. UNIT scouts MOVETO AA-car7 FORMATION column
+
+65. UNIT scouts OCCUPY AA-car7 FORMATION line
+
+70. UNIT scouts MOVETO PP-P1 FORMATION line
+
+75. UNIT scouts OCCUPY PP-P1 FORMATION line
+
+80. UNIT scouts MOVETO AA-car8 FORMATION column
+
+90. UNIT scouts OCCUPY AA-car8 FORMATION line
+
+100. UNIT scouts MOVETO PP-P2 FORMATION column
+
+110. UNIT scouts MOVETO PP-P3 FORMATION line
+
+
+------------------------------------------------------------------
+-- Movement in the Building
+------------------------------------------------------------------
+
+120. UNIT scouts MOVETO PP-P4 FORMATION column
+
+130. UNIT scouts MOVETO PP-P5 FORMATION column
+
+135. UNIT R1 OCCUPY PP-P5
+
+--140. UNIT R2 MOVETO PP-P6
+
+--150. UNIT R2 MOVETO PP-P7
+
+--160. UNIT R2 MOVETO PP-P8
+
+--170. UNIT R2 MOVETO PP-P9
+
+180. UNIT R2 MOVETO PP-P10
+
+185. UNIT R2 OCCUPY PP-P10
+
+------------------------------------------------------------------
+-- Observation Posts Established. Now, R1 Leaving the Building
+------------------------------------------------------------------
+
+--190. UNIT R2 STOP
+
+200. UNIT R1 MOVETO PP-P4
+
+210. UNIT R1 MOVETO PP-P3
+
+220. UNIT R1 MOVETO PP-P2
+
+230. UNIT R1 MOVETO AA-car8
+
+--235. UNIT R1 OCCUPY AA-car8
+
+240. UNIT R1 MOVETO PP-P1
+
+--245. UNIT R1 OCCUPY PP-P1
+
+250. UNIT R1 MOVETO AA-car7
+
+--255. UNIT R1 OCCUPY AA-car7
+
+260. UNIT R1 MOVETO AA-car6
+
+270. UNIT R1 MOVETO AA-car5
+
+280. UNIT R1 MOVETO AA-car4
+
+290. UNIT R1 MOVETO AA-car3
+
+300. UNIT R1 MOVETO AA-car2
+
+310. UNIT R1 MOVETO AA-car1
+
+320. UNIT R1 MOVETO Hummer
+
+--330. UNIT R1 STOP

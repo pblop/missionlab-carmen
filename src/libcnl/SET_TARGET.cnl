@@ -1,0 +1,79 @@
+/**********************************************************************
+ **                                                                  **
+ **                           SET_TARGET.cnl                       **
+ **                                                                  **
+ **  SET_TARGET will broad cast the message to other robots as     **
+ **  well.                                                           **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SET_TARGET.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector SET_TARGET with
+   Vector	 goal_loc;
+header
+  bool get_colID(char *&colId);
+  void put_goal_info(char *about, int ts, Vector goal);
+  bool get_goal_info(char *about, int &ts, Vector &goal);
+  void set_my_visual_goal(int see, Vector vg, int ptvg);
+  void set_helper(char*);
+  void reset_my_stale();
+
+body
+
+   VECTOR_CLEAR(output);
+
+   set_helper("");
+   reset_my_stale();
+   return_state("ProgressDB");
+
+   Vector vg;
+   set_my_visual_goal(0, vg, 10000);
+   
+   char *value = (char*)malloc(100*sizeof(char));
+   sprintf(value, "%f %f", goal_loc.x, goal_loc.y);
+   if (debug)
+	printf("\n\n*****SET TARGET %f %f\n", goal_loc.x, goal_loc.y);
+   put_state("CTarget", value);
+   free(value);
+
+   char *colId;
+   get_colID(colId);
+
+   char *robgoal = (char*) malloc(16*sizeof(char)); 
+   strcpy(robgoal, "TG");
+   strcat(robgoal, colId+1);
+
+   int gts;
+   Vector dgoal;
+   if ( !get_goal_info(robgoal, gts, dgoal))
+	gts = 4;
+   else
+	gts+=4;
+   put_goal_info(robgoal, gts, dgoal);
+
+   free (robgoal);
+pend
+
+
+/**********************************************************************
+# $Log: SET_TARGET.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#
+#**********************************************************************/

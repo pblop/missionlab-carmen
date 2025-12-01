@@ -1,0 +1,23 @@
+MISSION NAME "gtech"
+OVERLAY "FortBenning-demo.ovl"
+NEW-ROBOT upenn_1 "upenn_1" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+NEW-ROBOT upenn_2 "upenn_2" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+NEW-ROBOT upenn_3 "upenn_3" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+UNIT <all> upenn_1 upenn_2 upenn_3
+
+set show-trails off
+set scale-robots off
+set ROBOT-LENGTH 10.0
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace -2.000000 0.000000

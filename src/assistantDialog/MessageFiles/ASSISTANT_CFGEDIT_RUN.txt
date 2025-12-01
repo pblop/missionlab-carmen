@@ -1,0 +1,2 @@
+Use the default settings in the Run dialog. Click 'Run' to run the mission.
+

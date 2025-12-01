@@ -1,0 +1,1 @@
+The CBR wizard found a repair solution for you. Click 'yes' if you'd like to use this solution. Click 'no' if you'd prefer to repair the mission manually.

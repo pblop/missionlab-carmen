@@ -1,0 +1,244 @@
+/*************************************************
+*
+* This CDL file Sentry.cdl was created with cfgedit
+* version 3.1.04
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_958 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_974]<120,300>|State1| = [
+                %Goal_Location = {39.03,6.25},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_976]<570,300>|State2| = [
+                %Goal_Location = {38.63,19.33},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_978]<1020,300>|State3| = [
+                %Goal_Location = {2.37,19.25},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_980]<1020,600>|State4| = [
+                %Goal_Location = {38.39,19.13},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_982]<570,600>|State5| = [
+                %Goal_Location = {38.83,6.13},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_984]<120,600>|State6| = [
+                %Goal_Location = {35.66,5.69},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_986]<120,900>|State7| = [
+                %Goal_Location = {35.70,1.32},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_988]<570,900>|State8| = [
+                %Goal_Location = {42.44,1.16},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_990]<1020,900>|State9| = [
+                %Goal_Location = {42.32,5.81},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_992]<1020,1200>|State10| = [
+                %Goal_Location = {42.07,1.32},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_994]<570,1200>|State11| = [
+                %Goal_Location = {35.78,1.28},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_996]<120,1200>|State12| = [
+                %Goal_Location = {35.66,5.53},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_998]<134,1575>|State13| = [
+                %Goal_Location = {38.75,5.89},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1030]<399,484>|State14| = [
+                %Objects = {Enemies}
+,
+              LookFor]<10,10>
+,
+            rules[$AN_976]<570,300>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {38.63,19.33}
+,
+              AtGoal]<10,10>|Trans2|
+ goto $AN_978,
+            rules[$AN_978]<1020,300>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.37,19.25}
+,
+              AtGoal]<10,10>|Trans3|
+ goto $AN_980,
+            rules[$AN_980]<1020,600>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {38.39,19.13}
+,
+              AtGoal]<10,10>|Trans4|
+ goto $AN_982,
+            rules[$AN_982]<570,600>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {38.83,6.13}
+,
+              AtGoal]<10,10>|Trans5|
+ goto $AN_984,
+            rules[$AN_984]<120,600>|State6| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {35.66,5.69}
+,
+              AtGoal]<10,10>|Trans6|
+ goto $AN_986,
+            rules[$AN_986]<120,900>|State7| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {35.70,1.32}
+,
+              AtGoal]<10,10>|Trans7|
+ goto $AN_988,
+            rules[$AN_988]<570,900>|State8| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {42.44,1.16}
+,
+              AtGoal]<10,10>|Trans8|
+ goto $AN_990,
+            rules[$AN_990]<1020,900>|State9| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {42.32,5.81}
+,
+              AtGoal]<10,10>|Trans9|
+ goto $AN_992,
+            rules[$AN_992]<1020,1200>|State10| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {42.07,1.32}
+,
+              AtGoal]<10,10>|Trans10|
+ goto $AN_994,
+            rules[$AN_994]<570,1200>|State11| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {35.78,1.28}
+,
+              AtGoal]<10,10>|Trans11|
+ goto $AN_996,
+            rules[$AN_996]<120,1200>|State12| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {35.66,5.53}
+,
+              AtGoal]<0,0>|Trans12|
+ goto $AN_998,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans13|
+ goto $AN_974,
+            rules[$AN_974]<120,300>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {39.03,6.25}
+,
+              AtGoal]<10,10>|Trans1|
+ goto $AN_976,
+            rules[$AN_998]<134,1575>|State13| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {38.75,5.89}
+,
+              AtGoal]<0,0>|Trans14|
+ goto $AN_1030,
+            rules[$AN_1030]<399,484>|State14| = if [
+                %Delay = {20.0}
+,
+              Wait]<0,0>|Trans2|
+ goto $AN_974)<292,156>|Mission|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1028 from vehicle(
+  bound_to = SentryRobot1:PIONEERAT(
+SentryRobot1:[
+          $AN_958]
+)<0,0>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_1028]<10,10>|Group of Robots|
+]<10,10>
+

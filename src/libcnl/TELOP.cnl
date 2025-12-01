@@ -1,0 +1,95 @@
+/**********************************************************************
+ **                                                                  **
+ **                            TELOP.cnl                             **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: TELOP.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector TELOP with
+   int telop_mode;
+   double robot_heading;
+   double joystick_x;
+   double joystick_y;
+   double joystick2_x;
+   double joystick2_y;
+   double slider_1;
+   double slider_2;   
+   int joy_buttons;
+header
+   Vector dir = ZERO_VECTOR;
+   double  angle;
+body
+   {
+      
+      if((telop_mode & 0x01))
+	{
+	  if ( (joystick_x == 0.0) && (joystick_y == 0.0) )
+	     angle = 0.0;
+          else
+             angle = atan2(joystick_y, joystick_x) - M_PI_2;
+	}
+      else
+	{
+	  if ( (joystick_x == 0.0) && (joystick_y == 0.0) )
+             angle = 0.0;
+      	  else
+             angle = atan2(joystick_y, joystick_x);
+	}
+      dir.x = cos(angle);
+      dir.y = sin(angle);
+   }
+
+   output = dir;
+
+   // The output of this behavior is relative to the current heading of the
+   // robot.  So, to generate a constant heading (in world coordinates) vector
+   // requires compensation for the heading changes.
+   if ( !(telop_mode & 0x01) )
+      rotate_z(output, -1 * robot_heading);
+
+	exec_send_advanced_telop(joystick2_x, joystick2_y, slider_1, slider_2, joy_buttons);
+
+pend
+
+/***********************************************************************/
+
+procedure Vector POPUP_TELOP_INTERFACE with
+header
+   VECTOR_CLEAR(output);
+   put_state("teleop_complete", "0");
+
+   exec_popup_telop_interface();
+body
+pend
+
+
+/**********************************************************************
+# $Log: TELOP.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:01  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.6  2003/04/03 00:26:51  zkira
+# Added joystick support
+#
+# Revision 1.5  2000/05/19 21:41:24  endo
+# POPUP_TELOP_INTERFACE added.
+#
+# Revision 1.4  1995/09/08 15:59:46  doug
+# *** empty log message ***
+#
+# Revision 1.3  1995/06/29  13:28:15  jmc
+# Added copyright notice and RCS id and log strings.
+#**********************************************************************/

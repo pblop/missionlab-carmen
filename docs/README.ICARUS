@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+README for MissionLab-ICARUS [Latest Update: 10/18/2007]
+
+Written by: Yoichiro Endo
+
+---------------------------------------------------------------------------
+
+* Note: Other "how to" documents can be found in docs directory.
+
+---------------------------------------------------------------------------
+
+COMPILATION
+
+1.) cd src
+
+2.) ./configure
+
+3.) make all
+
+
+ENVIRONMENT SETUP
+
+1.) Make sure your PATH includes "[your MissionLab]/bin" and "."
+
+
+RUNNING A SAMPLE DEMO OF MISSIONLAB-ICARUS WIZARD
+
+I.) Terminal 1 (Note: Necessary only if you want to run CIM locally):
+
+  1.) cd cim
+  2.) java -jar ./lib/cim.jar
+  3.) inject an environment message
+
+II.) Terminal 2:
+
+  1.) run "iptserver"
+
+III) Terminal 3:
+
+  1.) cd [your MissionLab]/demos/minos_demos
+  2.) cbrserver -l sme-generated.cbl
+
+IV) Terminal 4:
+
+  1.) cd [your MissionLab]/demos/minos_demos
+  2.) run "./MakeExtraRobots" [Necessary only for the first time.]
+  3.) cfgedit
+  4.) Click "New Robot" for the first question.
+  5.) Click "Yes" for a new Mission Expert session
+  6.) In the CIM Setup dialog, enter appropriate values for
+     - CIM Host name
+     - MPPC Port number
+  7.) Click "Connect" and then "Subscribe"
+  8.) Change the "Message type" to "Environment"
+  9.) Click "Subscribe" again, and then "Done"
+  10.) Click "Next" to recieve mission data from CIM
+  11.) Click "Next" to specify a mission via a mission type.
+  12.) MissionLab will suggest a location based on the ICARUS Environment message.
+	 If this location is acceptable click "Ok", otherwise select an overlay.
+  13.) Click on a mission type from the available types.
+  14.) Add NoFlyZone etc. if necesary.
+  15.) Click the "Finish" button.
+  16.) At this point, you can either
+      A.) Rehearse the mission by clicking "Rehearse",
+      B.) See the mission details by clicking "Detail", or
+      C.) Send the XML mission to CIM by clicking "Send".
+

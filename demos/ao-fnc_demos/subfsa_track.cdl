@@ -1,0 +1,55 @@
+/*************************************************
+*
+* This CDL file subfsa_track.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+[
+FSA1:FSA(
+      society[$AN_2907]<482,210>|State2| = [
+          %target = {Enemies},
+          %minimum_distance = {10.0},
+          %maximum_distance = {20.0}
+,
+        TrackTarget]<100,100>
+,
+      society[$AN_2909]<297,438>|State2| = [
+          %notify_message = {"TrackTask completed."}
+,
+        Notify]<10,10>
+,
+      society[$AN_2911]<507,662>|State3| = [
+        Stop]<10,10>
+,
+      society[Start]<50,50>|Start| = [
+        Stop]<100,100>
+,
+      society[$AN_2927]<697,433>|State4| = [
+          %notify_message = {"TrackTask reneged."}
+,
+        Notify]<10,10>
+,
+      rules[$AN_2907]<482,210>|State2| = if [
+          %notify_message = {"Terminate TrackTask."}
+,
+        Notified]<0,0>|Trans1|
+ goto $AN_2909,
+      rules[$AN_2909]<297,438>|State2| = if [
+        Immediate]<0,0>|Trans2|
+ goto $AN_2911,
+      rules[Start]<50,50>|Start| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2907,
+      rules[$AN_2907]<482,210>|State2| = if [
+          %target = {Enemy}
+,
+        TargetUntrackable]<0,0>|Trans3|
+ goto $AN_2927,
+      rules[$AN_2927]<697,433>|State4| = if [
+        Immediate]<0,0>|Trans4|
+ goto $AN_2911)<39,43>|The State Machine|
+]<10,10>
+

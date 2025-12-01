@@ -1,0 +1,40 @@
+/*********************************************************
+**                                                      **
+**                                                      **
+**                  IR_A_ROOMBA.cnl                     **
+**                                                      **
+**                                                      **
+*********************************************************/
+
+
+#include "cnl.inc"
+
+init
+#include "lmadjust.h"
+iend
+
+
+procedure Vector IR_A_ROOMBA with
+	Vector 	goal_rel_loc;
+	double  location_gain;
+	double  obstacle_gain;
+	double  sphere;
+header
+body
+    float marchaAtras = 0;
+    VECTOR_CLEAR(output);
+    /*La tercera componente del vector se utiliza para indicar si el robot debe retroceder*/
+	output = exec_calcular_vector_roomba(goal_rel_loc, location_gain, obstacle_gain, sphere);
+
+    marchaAtras = output.z;
+    output.z = 0;
+
+    if(output.x != 0 || output.y != 0)
+        unit_3d(output);
+
+    output.z = marchaAtras;
+
+    //fprintf(stdout,"Estoy en IR_A_Roomba\n");
+  	//fprintf(stdout,"Esto es Prueba PosX: %.2f\t PosY: %.2f\t MarchaAtras %.0f\n", output.x, output.y, output.z);
+
+pend

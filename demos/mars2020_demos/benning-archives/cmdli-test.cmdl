@@ -1,0 +1,64 @@
+/**********************************************************************
+* CMDLi mission script for mars2020 integrated demo
+* 
+* Written by:  Douglas C. MacKenzie 
+* 
+* $Id: cmdli-test.cmdl,v 1.1.1.1 2008/07/14 16:44:30 endo Exp $
+*
+* $Log: cmdli-test.cmdl,v $
+* Revision 1.1.1.1  2008/07/14 16:44:30  endo
+* MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/20 17:18:13  endo
+* MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/12 13:38:17  endo
+* MissionLab 7.0
+*
+* Revision 1.1  2006/07/11 17:21:55  endo
+* MARS 2020 demo checked-in.
+*
+* Revision 1.1  2004/11/22 00:26:23  endo
+* *** empty log message ***
+*
+* Revision 1.4  2004/11/12 21:28:12  endo
+* Support for the final demo added.
+*
+* Revision 1.2  2004/10/25 22:49:36  doug
+* Sequencing is working and shot video
+*
+*********************************************************************/
+
+MISSION NAME "Joint Demo"
+
+NEW-ROBOT atrvjrClass "atrvjrRobot"
+NEW-ROBOT truckClass "truckRobot"
+NEW-ROBOT pioneerClass "pioneerRobot"
+NEW-ROBOT segwayClass "segwayRobot"
+
+UNIT <gtech-testRobot1> atrvjrClass
+UNIT <gtech-testRobot2> atrvjrClass
+
+UNIT <upenn_1> truckClass
+UNIT <upenn_2> truckClass
+UNIT <upenn_3> truckClass
+
+UNIT <usc_pioneer1> pioneerClass
+UNIT <usc_pioneer2> pioneerClass
+UNIT <usc_segway> segwayClass
+
+UNIT <north_cache> (gtech-testRobot1 upenn_1 usc_pioneer2)
+UNIT <south_cache> (gtech-testRobot2 upenn_2 upenn_3 usc_pioneer1 usc_segway)
+UNIT <gtech> (gtech-testRobot1 gtech-testRobot2)
+
+COMMAND LIST:
+   unit gtech-testRobot1 MoveTo goalLocation = [GIT-A1]
+   unit gtech-testRobot2 MoveTo goalLocation = [GIT-B1]
+   unit gtech Synchronize
+
+   unit gtech-testRobot1 MoveTo goalLocation = [GIT-A2]
+   unit gtech-testRobot1 MoveTo goalLocation = [GIT-A3]
+   unit gtech-testRobot1 Loiter
+   unit gtech-testRobot2 MoveTo goalLocation = [GIT-B2]
+   unit gtech-testRobot2 MoveTo goalLocation = [GIT-B3]
+   unit gtech-testRobot1 Loiter

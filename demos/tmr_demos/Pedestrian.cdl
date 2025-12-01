@@ -1,0 +1,75 @@
+/*************************************************
+*
+* This CDL file Pedestrian.cdl was created with cfgedit
+* version 1.0c
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instGroup $AN_406 from [
+    %Goal_Location = {101.25, 15}
+,
+  GoTo];
+
+instGroup $AN_376 from [
+    %Goal_Location = {101.25, 120}
+,
+  GoTo];
+
+instGroup $AN_377 from [
+  Stop];
+
+instBP<565,111> |The Wheels Binding Point| $AN_378 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE(
+        v<292,156> = FSA(
+            society[Start]<43,326>|Start| = $AN_377,
+            society[$AN_394]<591,120>|State2| = $AN_376,
+            society[$AN_398]<605,546>|State4| = $AN_406,
+            society[$AN_407]<281,328>|State3| = [
+                %Goal_Location = {101.25, 62.8}
+,
+              GoTo]<10,10>
+,
+            rules[$AN_398]<605,546>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {101.25,15}
+,
+              AtGoal]<526,374>|Trans5|
+ goto $AN_394,
+            rules[Start]<43,326>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_407,
+            rules[$AN_407]<281,328>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {101.25, 62.8}
+,
+              AtGoal]<337,520>|Trans2|
+ goto $AN_398,
+            rules[$AN_394]<591,120>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {101.25, 120}
+,
+              AtGoal]<695,286>|Trans3|
+ goto $AN_398)<292,156>|The State Machine|
+,
+        max_vel = {0.15},
+        base_vel = {0.1},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_458 from vehicle(
+  bound_to = PedestrianRobot1:MRV2(
+PedestrianRobot1:[
+          $AN_378]
+)<13,13>|The robot|
+);
+
+NoName:[
+[
+    $AN_458]<0,0>|The Configuration|
+]<10,10>
+

@@ -1,0 +1,8 @@
+"Title: Save As\n\
+\n\
+Enter the filename to save the workspace too.\n\
+An extension of \".cdl\" will be added unless you enter it.\n\
+\n\
+Save:   Write the file to the name you have entered.\n\
+Cancel: Abort the operation.\n\
+Help:   This message."

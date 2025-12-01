@@ -1,0 +1,1 @@
+The CBR wizard couldn't find a solution for you. You can try and correct the mission manually. To do so, at the FSA level, modify tasks and triggers as you see appropriate.

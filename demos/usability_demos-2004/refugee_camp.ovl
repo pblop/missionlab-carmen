@@ -1,0 +1,70 @@
+--******************************************************************
+--
+--	refugee_camp.ovl
+--
+--	This overlay was developed for the DARPA MARS Usability Study.
+--
+--  Yoichiro Endo
+--
+--  Original: 11/11/2001
+--  Revised:  11/20/2003 (for the 2nd MARS Usability Study)
+--
+--******************************************************************
+
+SCENARIO "EOD"
+
+SITE "Refugee Campsite"
+
+MISSION-AREA 800 600
+
+LOAD-MAP "refugee_camp.mapinfo"
+
+ORIGIN 0 0
+
+--******************************************************************
+CONTROL MEASURES: 
+--******************************************************************
+-- Start / Home
+
+PP StartPlace 180 220 8
+OBJECT 180 220 8 Fixed blue
+
+--AA "Home" 120 200 160 200 160 250 120 250
+--Object  140 225 0.01 Fixed White 
+
+--******************************************************************
+-- Supply Depot
+
+--PP "Supply" 300 410 0.1
+--PP "Depot " 300 398 0.1
+PP "Home " 300 398 0.1
+AA "aasd001*" 340 330 360 330 360 370 340 370
+Boundary "bdsd001*" 312 385 346 360
+--Object  326 372.5 0.01 Fixed White 
+Object 350 350 0.01 Fixed White 
+
+--******************************************************************
+-- Refugee Camp
+
+PP "Expected Refugee" 506 241 0.1
+PP "Campsite        " 506 233 0.1
+
+Boundary "bdrc001*"  398 282 507 332
+Boundary "bdrc002*"  507 332 629 161
+Boundary "bdrc003*"  629 161 492 72
+Boundary "bdrc004*"  492 72  398 282
+
+--******************************************************************
+-- Land Mines
+
+Object 471 191 5 Movable orange
+Object 512 149 5 Movable orange
+Object 518 199 5 Movable orange
+
+--******************************************************************
+-- EOD Area
+
+--Object  372 144 8 Container green 
+--PP "EOD Area" 372 144 8
+Object  412 144 8 Container green 
+PP "EOD Area" 412 144 8

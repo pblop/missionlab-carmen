@@ -1,0 +1,28 @@
+--******************************************************************
+--
+--	Rockville.ovl
+--
+--	This overlay was developed for DARPA's Tactical Mobile
+--      Robotics Project.
+--
+--      Yoichiro Endo
+--
+--      08/04/2000
+--
+--******************************************************************
+
+SCENARIO "Rockville TMR Demo"
+
+SITE "Rockville TMR Demo Site"
+
+MISSION-AREA 800 600
+
+LOAD-MAP "Rockville.mapinfo"
+
+ORIGIN 0 0
+
+--******************************************************************
+CONTROL MEASURES: 
+--******************************************************************
+
+PP StartPlace 320.0 187.00 10

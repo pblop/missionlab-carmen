@@ -1,0 +1,35 @@
+Message type:
+   Add option of handling messages inside handler, i.e., make context useful
+
+General:
+   Add timers
+
+Pigeon holes:
+    When handling a pigeon hole, pass in the pigeon hole message itself rather
+than a copy.
+
+Interdomain messages:
+    Query for translation and send with message name rather than wait for
+    translation.
+
+Messages:
+    Add a "reset" field to messages.  When it is 1, FormattedData should be
+recalculated.  This will be set by a ResetFormatted method (probably used, for
+example, in a Destination's MakeMessage) and it will be invoked automatically
+by a SetData call
+    When recalculating FormattedData, use the structures that were allocated
+rather than starting from scratch.
+
+Desinations:
+    Add a DisposeMessage method.  This will allow us to not delete a pigeon
+hole message when it is handled, since the handler execution will do a
+DisposeMessage rather than a delete
+
+Server:
+   Make server/client connections with Unix (or whatever) rather than just TCP
+connections 
+   Add message to that will disconnect a module (can be used to cleanly bring
+down modules on VxWorks machines that have crashed without restarting the whole
+system) 
+
+  

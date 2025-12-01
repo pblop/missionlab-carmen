@@ -1,0 +1,35 @@
+/*************************************************
+*
+* This CDL file FSA.cdl was created with cfgedit
+* version 0.9b
+*
+**************************************************/
+
+bindArch AuRA;
+
+instBP<565,111> |The Wheels Binding Point| $AN_223 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<292,156> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_231 from vehicle(
+  bound_to = MRV2(
+[
+          $AN_223]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_231]<0,0>|The Configuration|
+]<10,10>

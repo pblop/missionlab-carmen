@@ -1,0 +1,51 @@
+--******************************************************************
+--
+--	scout_env.odl
+--
+--	scout_env overlay file for complex mission.
+--	
+--	This file describes a set of positions in the
+--	world used by the script scout_env.
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+SCENARIO "scout_env"
+
+MISSION-AREA 900 800
+
+ORIGIN 0 0  
+
+SITE "Demo B site, Colorado"
+
+ORIGIN 0 0 -- All the following coordinades are with respect to this origin
+
+CONTROL MEASURES:  -- This marks the end of the information section and 
+                   -- the beginning of the description data
+
+Boundary Bot 10 100 800 100 
+Boundary Top 10 700 800 700
+
+LDLC Echo 175 105 175 695      -- Beginning and end marked with FEBA
+
+AA AA1 50 575  150 575  150 675   50 675
+
+PP Charlie 50 350
+
+Gap Delta 150 350  200 350 100
+
+PP Delta1 250 350
+
+Axis Golf 200 350 600 350 150
+
+PP Gamma1 500 350
+
+PL Gamma 500 105 500 695
+
+ATK BP1 600 250
+
+ATK BP2 650 450 
+
+OBJ Tango 825 350 200

@@ -1,0 +1,8 @@
+"Title: Bind Robot\n\
+\n\
+Binding the robot will attach input and output binding points to robot \n\
+specific device drivers. \n\
+\n\
+OK:    Bind the configuration to a specific robot.\n\
+Abort: Abort binding operation.\n\
+Help:  This message."

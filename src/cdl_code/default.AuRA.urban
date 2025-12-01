@@ -1,0 +1,1365 @@
+/*************************************************
+*
+* This is the AuRA default CDL library file
+*
+* $Id: default.AuRA.urban,v 1.1.1.1 2006/07/12 13:37:54 endo Exp $
+*
+* $Log: default.AuRA.urban,v $
+* Revision 1.1.1.1  2006/07/12 13:37:54  endo
+* MissionLab 7.0
+*
+* Revision 1.10  2006/07/11 04:19:28  endo
+* Clean-up for MissionLab 7.0 release.
+*
+* Revision 1.9  2006/07/10 06:10:34  endo
+* Clean-up for MissionLab 7.0 release.
+*
+* Revision 1.8  2006/07/02 21:45:03  endo
+* CMDLi from MARS 2020 integrated into AO-FNC repository.
+*
+* Revision 1.7  2006/05/06 18:33:51  endo
+* Bugs of TrackTask fixed.
+*
+* Revision 1.6  2006/05/02 04:14:04  endo
+* TrackTask improved for the experiment.
+*
+* Revision 1.5  2005/04/08 01:55:18  pulam
+* CNP behaviors
+*
+* Revision 1.4  2005/03/27 01:19:25  pulam
+* addition of uxv behaviors
+*
+* Revision 1.3  2005/03/23 07:36:41  pulam
+* addition of 3d visulation and handling of UUVs, USVs, UAVs
+*
+* Revision 1.2  2005/02/08 00:00:23  endo
+* Mods from usability-2004
+*
+* Revision 1.1.1.1  2005/02/06 22:59:30  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+* Revision 1.53  2003/04/06 09:21:55  endo
+* Updated for CBR Wizard Prototype II.
+*
+* Revision 1.52  2003/04/06 07:54:28  endo
+* Checked in for Ananth. Dstar added.
+*
+* Revision 1.51  2003/04/06 00:04:40  kaess
+* *** empty log message ***
+*
+* Revision 1.50  2003/04/02 23:00:43  zkira
+* Added skip_goal and at_or_skip_goal and telop mode
+*
+* Revision 1.49  2002/11/08 16:23:24  endo
+* Rolled back to cancel ARBITRATE.
+*
+* Revision 1.48  2002/11/07 22:09:50  blee
+* added ARBITRATE operator
+*
+* Revision 1.47  2002/10/31 21:24:35  ebeowulf
+* Added the code for the RESET_WORLD code.
+*
+* Revision 1.46  2002/10/31 15:09:17  ebeowulf
+* Added the CHANGE_ROBOT_COLOR simulation behavior
+*
+* Revision 1.45  2002/10/25 15:24:03  ebeowulf
+* Added new parameters to the QLEARN operator.
+*
+* Revision 1.44  2002/10/25 01:32:03  kaess
+* - swirl stripped off unnecessary code and parameters,
+* infinite repulsion within safety margin added
+*
+* Revision 1.43  2002/07/02 20:27:29  blee
+* Added MOVE_TO_GUARDED
+*
+* Revision 1.42  2002/01/31 10:34:42  endo
+* Parameters chaged due to the change of max_vel and base_vel.
+*
+* Revision 1.41  2002/01/13 01:37:56  endo
+* Behaviors for Mission Expert added.
+*
+* Revision 1.40  2001/10/18 17:44:42  ebeowulf
+* Added ActionTimeout variable to QLEARN
+*
+* Revision 1.39  2001/09/24 21:06:54  ebeowulf
+* Added QLEARN coordinator, and Reinforcer type
+*
+* Revision 1.38  2001/01/24 23:35:27  saho
+* Added code for motivations and theitr update.
+*
+* Revision 1.37  2000/12/02 21:33:06  sgorbiss
+* Added behaviors for line-of-sight navigation
+* MicroNavigation and Avoid The Past
+*
+* Revision 1.36  2000/09/19 10:03:03  endo
+* Biohazard_Sign and Biohazard_Container added.
+* More camera modes added.
+*
+* Revision 1.35  2000/08/27 20:58:01  endo
+* WAIT_FOR_PROCEED was binded as boolean instead of Vector.
+*
+* Revision 1.34  2000/08/15 20:45:54  endo
+* Standby* added.
+*
+* Revision 1.33  2000/08/12 19:53:54  saho
+* Minor fix for DOORWAY_ULTRASOUND.
+*
+* Revision 1.32  2000/07/17 19:37:51  conrad
+* added camera trackign mode
+*
+* Revision 1.31  2000/06/18 01:55:16  endo
+* MOVE_AHEAD no longer takes "amount".
+*
+* Revision 1.30  2000/05/26 19:13:38  endo
+* The types which use slider bars are organized.
+*
+* Revision 1.29  2000/05/19 21:47:24  endo
+* AssistedGoTo added.
+*
+* Revision 1.28  2000/04/25 07:16:18  endo
+* NOTIFY_ROBOTS was addded.
+*
+* Revision 1.27  2000/04/20 00:50:52  endo
+* fsa_completion_key
+*
+* Revision 1.26  2000/04/19 21:44:31  jdiaz
+* *** empty log message ***
+*
+* Revision 1.25  2000/04/16 15:20:40  endo
+* A bunch of states/triggers for the TMR usability test
+* Phase II was added.
+*
+* Revision 1.24  2000/04/13 22:23:10  endo
+* Checked in for Doug.
+* Four new triggers have been defined to allow using the distributed flags.
+*         FlagIsSet(flag name)   : returns true when the flag becomes true.
+*         FlagIsClear(flag name) : returns true when the flag becomes false.
+*         SetFlag(flag name)     : sets the named flag to true and returns TRUE,
+*                                  so it works like Immediate.
+*         ClearFlag(flag name)   : clears the named flag to false and returns TRUE,
+*                                  so it works like Immediate.
+*
+* Revision 1.23  2000/03/30 15:40:31  saho
+* Added TALK behavior.
+*
+* Revision 1.22  2000/03/30 01:10:23  endo
+* OneObjectClass, ObjectClasses changed to reflect the
+* usability study. SWIRL_STATIC_OBSTACLES added.
+*
+* Revision 1.21  2000/03/24 16:40:35  saho
+* Added IS_AN_OBJECT_MOTIVATED and DETECT_SOUND_MOTIVATED.
+*
+* Revision 1.20  2000/02/29 20:28:58  saho
+* Added sound rel;ated stae and trigger.
+*
+* Revision 1.19  2000/02/29 00:24:21  jdiaz
+* protos for mark doorway, and changes to enter room and doorway detection
+*
+* Revision 1.18  2000/02/18 02:22:20  endo
+* Alert state and Alerted trigger added.
+*
+* Revision 1.17  2000/02/07 05:57:09  jdiaz
+* doorways walls hallways rooms
+*
+* Revision 1.16  2000/01/24 18:28:13  ellenber
+* Fixed Objects/Obstacles conflict.  Now works with Obstacles.
+*
+* Revision 1.15  1999/10/25 18:43:33  endo
+* rolled back to this version.
+*
+* Revision 1.10  1999/09/03 20:58:56  endo
+* Initial revision for default.AuRA.urban.
+*
+*
+**************************************************/
+
+/********************* Types *****************************/
+
+defType[AuRA.urban] location;
+defType[AuRA.urban] Vector;	// Replaces displacement
+defType[AuRA.urban] state;
+defType[AuRA.urban] link;
+defType[AuRA.urban] robot_position;
+defType[AuRA.urban] object_locations;
+defType[AuRA.urban] image;
+defType[AuRA.urban] ObjectList;
+defType[AuRA.urban] Reading;
+defType[AuRA.urban] obs_array;
+defType[AuRA.urban] raw_sonar_array;
+defType[AuRA.urban] Reinforcer;
+defType[AuRA.urban] CNLString_t;
+
+deftype[AuRA.urban] GridSize DisplayAs SliderBar 0.0 5.0 |Grid Size| = {0.0}, {1.0}, {2.0}, {3.0}, {4.0}, {5.0};
+
+deftype[AuRA.urban] WorldLength DisplayAs SliderBar 50 400 |WorldLength| = {50}, {100}, {150}, {200}, {250}, {300}, {350}, {400};
+
+deftype[AuRA.urban] WorldWidth DisplayAs SliderBar 50 400 |WorldWidth| = {50}, {100}, {150}, {200}, {250}, {300}, {350}, {400};
+
+
+defType[AuRA.urban] UValue_1000 DisplayAs SliderBar 0 1000 |Eq. line| = {0}, {500.0}, {1000.0};
+
+defType[AuRA.urban] Past_Range DisplayAs SliderBar 0 100 |Avoid Past Range| = {0}, {50}, {100};
+
+defType[AuRA.urban] Past_Grid_Dim DisplayAs SliderBar 0 1000 |Avoid Past Range| = {0}, {500}, {1000};
+
+defType[AuRA.urban] Past_Grid_Scale DisplayAs SliderBar 0 100 |Avoid Past Range| = {0}, {50}, {100};
+
+defType[AuRA.urban] Past_Overlap_Ratio DisplayAs SliderBar 0 1 |Avoid Past Range| = {0}, {0.5}, {1};
+
+defType[AuRA.urban] Range_100 DisplayAs SliderBar 0 100 |VisGoal Range| = {0}, {50}, {100};
+
+// Range: used for gain, threshold etc.
+defType[AuRA.urban] Range_01 DisplayAs SliderBar 0 1 |Meters| = {0.00},{1.00};
+defType[AuRA.urban] Range_5 DisplayAs SliderBar 0 5 |Meters| = {0.00},{5.00};
+
+defType[AuRA.urban] Range_10 DisplayAs SliderBar 0 10 |Meters| = {0.00},{2.00},{4.0},{6.0},{8.0},{10.0};
+
+
+// Patient
+defType[AuRA.urban] Patient_01 DisplayAs SliderBar 0 1 |Meters| = {0.00}, {1.00};
+
+// Time
+defType[AuRA.urban] Time_30 DisplayAs SliderBar 0 30 |Seconds| = {0 sec},{30 sec};
+defType[AuRA.urban] Time_300 DisplayAs SliderBar 0 300 |Seconds| = {0 sec}, {300 sec};
+defType[AuRA.urban] Tiempo_30 DisplayAs SliderBar 0 30 |Minutos| = {0 min},{30 min};
+
+// Distance
+defType[AuRA.urban] Distances_5 DisplayAs SliderBar 0 5 |Meters| = {0 m},{5 m};
+defType[AuRA.urban] Distances_10 DisplayAs SliderBar 0 10 |Meters| = {0 m},{10 m};
+defType[AuRA.urban] Distances_50 DisplayAs SliderBar 0 50 |Meters| = {0 m},{50 m};
+defType[AuRA.urban] Distances_100 DisplayAs SliderBar 0 100 |Meters| = {0 m},{100 m};
+
+// Heading
+defType[AuRA.urban] Heading_360 DisplayAs SliderBar 0 360 |Degrees| = {0 deg},{360 deg};
+defType[AuRA.urban] Heading_90 DisplayAs SliderBar -90 90 |Degrees| = {Right},{Straight},{Left};
+defType[AuRA.urban] Heading_45 DisplayAs SliderBar -45 45 |Degrees| = {Down}, {Level}, {Up};
+
+// Degree
+defType[AuRA.urban] Degrees_90 DisplayAs SliderBar 0 90 |Degrees| = {Accurate}, {Sloppy};
+defType[AuRA.urban] Degrees_45 DisplayAs SliderBar 0 45 |Degrees| = {Accurate}, {Sloppy};
+
+// Angular Velocity
+defType[AuRA.urban] Ang_Velocity DisplayAs SliderBar -1000 1000 |Degrees/Sec| = {-1000},{0},{1000};
+
+//SAHO
+defType[AuRA.urban] Change_Variable DisplayAs SliderBar -100 100 |increase/decrease| = {-100},{0},{100};
+
+// Slippage Factor
+defType[AuRA.urban] Slippage_Factor DisplayAs SliderBar 0 2 |Multiplier| = {0},{1},{2};
+
+// Awayness, Nearness
+defType[AuRA.urban] Awayness_10 DisplayAs SliderBar 0 10 |Meters| = {0 m}, {10 m};
+defType[AuRA.urban] Nearness_10 DisplayAs SliderBar 0 10 |Meters| = {0 m}, {10 m};
+
+// Classes
+//defType[AuRA.urban] ObjectClasses  DisplayAs CheckBox = {Biohazard_Sign}, {Biohazard_Container}, {Possible_Biohazard}, {Mines}, {Enemies}, {Red_Flags}, {EOD_Areas}, {Trees_and_Shrubs}, {Home_Base}, {Start_Place}, {Friendly_Robots};
+//defType[AuRA.urban] OneObjectClass  DisplayAs RadioBox = {Biohazard_Sign}, {Biohazard_Container}, {Possible_Biohazard}, {Mine}, {Enemy}, {Red_Flag}, {EOD_Area}, {Tree_or_Shrub}, {Home_Base}, {Unknown_Object};
+defType[AuRA.urban] ObjectClasses  DisplayAs CheckBox = {Possible_Biohazard}, {Possible_Victim}, {Possible_Hostage}, {Mines}, {Enemies}, {EOD_Areas}, {Trees_and_Shrubs}, {Home_Base}, {Start_Place}, {Friendly_Robots};
+//defType[AuRA.urban] OneObjectClass  DisplayAs RadioBox = {Possible_Biohazard}, {Possible_Victim}, {Mine}, {Enemy}, {EOD_Area}, {Tree_or_Shrub}, {Home_Base}, {Unknown_Object};
+defType[AuRA.urban] OneObjectClass  DisplayAs RadioBox = {Possible_Biohazard}, {Possible_Victim}, {Mine}, {Enemy}, {EOD_Area}, {Tree_or_Shrub}, {Home_Base}, {Unknown_Object}, {Friendly_Robots};
+defType[AuRA.urban] NBC_Class  DisplayAs RadioBox = {Biological_Agent}, {Chemical_Agent}, {Radioactive_Material};
+//defType[AuRA.urban] TestObject_Class  DisplayAs RadioBox = {Biohazard}, {Mine};
+defType[AuRA.urban] ProbeObject_Class  DisplayAs RadioBox = {Possible_Biohazard}, {Possible_Victim}, {Possible_Hostage};
+defType[AuRA.urban] TestObject_Class  DisplayAs RadioBox = {Biohazard}, {Victim}, {Hostage};
+defType[AuRA.urban] MarkObjectClass DisplayAs RadioBox = {Biohazard}, {Safe_Material};
+defType[AuRA.urban] FollowObject_Class  DisplayAs RadioBox = {Friendly_Robot}, {Enemy}, {Victim}, {Hostage};
+
+defType[AuRA.urban] RobotClasses  DisplayAs CheckBox = {Blue_Robot}, {Red_Robot}, {Green_Robot}, {Yellow_Robot};
+
+defType[AuRA.urban] PatrolEnd DisplayAs TypeInBox 0 1|Type-in the last patrol point|;
+
+defType[AuRA.urban] Map_Location1 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location2 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location3 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location4 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location5 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location6 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location7 DisplayAs TwoPoints;
+defType[AuRA.urban] Map_Location8 DisplayAs TwoPoints;
+
+defType[AuRA.urban] RobotCid  DisplayAs RadioBox = {Blue_Robot}, {Red_Robot}, {Green_Robot}, {Yellow_Robot};
+
+defType[AuRA.urban] Share_state  DisplayAs RadioBox = {TRUE},{FALSE};
+
+// Locations
+defType[AuRA.urban] Map_Location DisplayAs TwoPoints;
+defType[AuRA.urban] Start_Location DisplayAs TwoPoints;
+defType[AuRA.urban] End_Location DisplayAs TwoPoints;
+
+// Radio Box Types
+defType[AuRA.urban] DirectionTypes DisplayAs RadioBox = {Right}, {Left}, {Both_Left_and_Right};
+defType[AuRA.urban] ProceedDirTypes DisplayAs RadioBox = {Right}, {Left},
+{Facing}, {Opposite};
+defType[AuRA.urban] DetectionTypes DisplayAs RadioBox = {DETECT_UNMARKED_ONLY}, {DETECT_ANY};
+defType[AuRA.urban] EnterTypes     DisplayAs RadioBox = {ENTER_UNMARKED_ONLY}, {ENTER_ANY};
+defType[AuRA.urban] ThroughTypes   DisplayAs RadioBox = {THROUGH_UNMARKED_ONLY}, {THROUGH_ANY};
+defType[AuRA.urban] FormationTypes  DisplayAs RadioBox = {NoFormation}, {Sweep}, {Line}, {LineLeft}, {LineRight}, {Diamond}, {Wedge}, {WedgeLeft}, {WedgeRight}, {Column};
+defType[AuRA.urban] check_use_email DisplayAs RadioBox = {Send_Email}, {NO_Email};
+defType[AuRA.urban] check_attach_image DisplayAs RadioBox = {Attach_Image}, {NO_Image};
+defType[AuRA.urban] check_sub_mission_deployment DisplayAs RadioBox = {DEPLOY_FIRST}, {EXECUTE_IMMEDIATELY};
+defType[AuRA.urban] check_sub_mission_deployment_method DisplayAs RadioBox = {DEPLOY_BY_GOTO}, {DEPLOY_BY_LOCALIZE};
+defType[AuRA.urban] TurnMode  DisplayAs RadioBox = {ON},{OFF};
+defType[AuRA.urban] ThetaPsiMode DisplayAs RadioBox = {Check_Theta_Only}, {Check_Psi_Only}, {Check_Both_Theta_And_Psi};
+defType[AuRA.urban] TrackingMode DisplayAs RadioBox = {None},{Center},{Sweep_X_High},{Sweep_X_Center},{Sweep_X_Low},{Sweep_Y_Left},{Sweep_Y_Center},{Sweep_Y_Right},{Sweep_XY},{Largest_Any_Color},{Largest_A},{Largest_B},{Largest_C},{Closest_Laser};
+defType[AuRA.urban] ResetTypes DisplayAs RadioBox = {DEFAULT_MAP}, {USE_NEW_MAP};
+
+defType[AuRA.urban] CSB_Methods DisplayAs RadioBox = {Comm_Recovery}, {Comm_Preserve}, {Internalized_Plan}, {CSB_Average}, {CSB_Greedy};
+
+// Define symbolic names for the keypresses.
+// The first letter of the name is the corresponding keypress
+// the case is not sensitive.  All other key presses are mapped to a space
+// which is shown as the first name in this list.
+defType[AuRA.urban] KeyPress  DisplayAs RadioBox = {Danger}, {Safe}, {Abort};
+
+// TypeInBox Types
+//
+// The format for TypeInBox is:
+// defType <new name> DisplayAs TypeInBox <1: ScrollBox or 0: Non-ScrollBox>
+// <1: Show typed contents on the screen or 0: Do not show typed contents on the screen>
+// |<description/heading goes to the top of the box>|
+defType[AuRA.urban] email_address DisplayAs TypeInBox 0 0|Type-in the email address (if applicable)|;
+defType[AuRA.urban] type_alert_subject DisplayAs TypeInBox 0 1|Type-in the headline of this alert|;
+defType[AuRA.urban] type_alert_message DisplayAs TypeInBox 1 0|Type-in the alert message|;
+defType[AuRA.urban] key_name DisplayAs TypeInBox 0 0|Enter the name of the distributed flag|;
+defType[AuRA.urban] type_message DisplayAs TypeInBox 1 0|Type-in a message|; // Used by TALK
+defType[AuRA.urban] type_notify_message DisplayAs TypeInBox 0 1|Type-in the notify message|;
+defType[AuRA.urban] fsa_completion_key DisplayAs TypeInBox 0 0|FSA completion key|;
+defType[AuRA.urban] type_map_name DisplayAs TypeInBox 0 1|Type-in the new map name|;
+defType[AuRA.urban] type_sub_mission_name DisplayAs TypeInBox 0 1|Type-in the sub-mission name|;
+defType[AuRA.urban] type_env_filename DisplayAs TypeInBox 0 1|Type-in the environment file name|;
+defType[AuRA.urban] type_cmdl_filename DisplayAs TypeInBox 0 1|Type-in the cmdl file name|;
+
+/********************* Binding points *****************************/
+defIBP[AuRA.urban] robot_position sense_location();
+
+defIBP[AuRA.urban] int sense_compass();
+
+defIBP[AuRA.urban] raw_sonar_array sense_raw_sonar();
+
+defIBP[AuRA.urban] obs_array sense_obstacles(
+    double max_sensor_range);
+
+defIBP[AuRA.urban] ObjectList sense_objects(
+    double max_sensor_range);
+
+defOBP[AuRA.urban] void movement(
+    Vector v,
+    double base_vel);
+
+defOBP[AuRA.urban] void pantilt(
+    Vector look_loc );
+
+defOBP[AuRA.urban] void pantiltzoom(
+    Vector look_loc,
+    const int zoom );
+
+defRBP[AuRA.urban] vehicle();
+
+
+defOBP[AuRA.urban] void motivations(
+   Vector v );
+
+/******************** sensors ********************/
+
+defSensor[AuRA.urban] binds sense_location robot_position GET_LOCATION();
+defSensor[AuRA.urban] binds sense_compass int GET_COMPASS_HEADING();
+
+
+defSensor[AuRA.urban] binds sense_raw_sonar raw_sonar_array RAW_ULTRASONICS
+|Return a list of the raw sonar readings from the robot|
+	();
+
+defSensor[AuRA.urban] binds sense_obstacles obs_array DETECT_OBSTACLES
+|Return a list of all objects detected within the sonar range (meters)|
+      (const double max_sensor_range = {10});
+
+defSensor[AuRA.urban] binds sense_objects ObjectList DETECT_OBJECTS
+|Return a list of all objects detected by the vision system|
+      (const double max_sensor_range = {100} );
+
+/*defSensor[AuRA.urban] binds video image pulnix_camera();*/
+
+
+/******************** actuators ********************/
+
+defActuator[AuRA.urban] binds movement void DRIVE(
+      Vector v,
+      const double max_vel = {0.2},
+      const double base_vel = {0.1},
+      const double cautious_vel = {0.05},
+      const boolean  cautious_mode = {false});
+
+
+defActuator[AuRA.urban] binds movement void CONDUCIR(
+      Vector v,
+      const double max_vel = {1},
+      const double base_vel = {0.5},
+      const double cautious_vel = {0.3},
+      const boolean  cautious_mode = {false});
+
+defActuator[AuRA.urban] binds movement void DRIVE_W_SPIN(
+      Vector v,
+      const double max_vel = {0.2},
+      const double base_vel = {0.1},
+      const double cautious_vel = {0.05},
+      const boolean  cautious_mode = {false});
+
+defActuator[AuRA.urban] binds pantilt void PANTILT(
+      Vector look_loc );
+
+defActuator[AuRA.urban] binds pantiltzoom void PANTILTZOOM(
+      Vector look_loc,
+      const int zoom );
+
+
+defActuator[AuRA.urban] binds motivations void MOTIVATIONS(
+      Vector v);
+
+defActuator[AuRA.urban] binds movement void DRIVE_ROOMBA(
+      Vector v,
+      const double max_vel = {0.2},
+      const double base_vel = {0.1},
+      const double cautious_vel = {0.05},
+      const boolean  cautious_mode = {false});
+
+
+/******************** robots ********************/
+
+defRobot[AuRA.urban] binds vehicle MRV2(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION,
+    sensor   vision_system:DETECT_OBJECTS);
+
+defRobot[AuRA.urban] binds vehicle HUMMER(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION,
+    sensor   vision_system:DETECT_OBJECTS);
+
+
+defRobot[AuRA.urban] binds vehicle MIO(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION);
+
+defRobot[AuRA.urban] binds vehicle MIO2(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION,
+	sensor   sonars:DETECT_OBSTACLES);
+
+defRobot[AuRA.urban] binds vehicle MIO3(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION,
+	sensor   sonars:DETECT_OBSTACLES,
+    sensor   vision_system:DETECT_OBJECTS);
+
+defRobot[AuRA.urban] binds vehicle PIONEERAT(
+    actuator base:DRIVE,
+    actuator camera:PANTILT,
+    sensor   vision_system:DETECT_OBJECTS,
+    sensor   sonars:DETECT_OBSTACLES,
+    sensor   shaftencoders:GET_LOCATION);
+
+defRobot[AuRA.urban] binds vehicle DEFAULT_ROBOT(
+    actuator base:DRIVE,
+    actuator camera:PANTILT,
+    sensor   vision_system:DETECT_OBJECTS,
+    sensor   sonars:DETECT_OBSTACLES,
+    sensor   shaftencoders:GET_LOCATION);
+
+defRobot[AuRA.urban] binds vehicle NOMAD200(
+    actuator base:DRIVE,
+    actuator camera:PANTILT,
+    actuator motivations:MOTIVATIONS,
+    sensor   vision_system:DETECT_OBJECTS,
+    sensor   sonars:DETECT_OBSTACLES,
+    sensor   shaftencoders:GET_LOCATION);
+
+/********************* Operators *****************************/
+
+defOp[AuRA.urban] binds FSA Vector FSA FSAstyle(
+//    boolean reset_when_regain_scope,
+    list [boolean triggers, expression rules, member society]);
+
+defOp[AuRA.urban] binds COOP Vector COOP SELECTstyle(
+   list [Vector members, const float weight = {1.0}]
+   );
+
+defOp[AuRA.urban] binds MDL_coordinator Vector MDL_coordinator MDLstyle(
+   commands command_list,
+
+   Vector moveto,
+   Vector teleop,
+   Vector occupy,
+
+   boolean moveto_done,
+   boolean teleop_done,
+   boolean occupy_done
+   );
+
+defOp[AuRA.urban] binds CMDLi Vector CMDLi MDLstyle(
+   const string envFilename,
+   const string cmdlFilename,
+
+   Vector moveto,
+   Vector recon,
+
+   boolean moveto_done,
+   boolean recon_done
+   );
+
+defOp[AuRA.urban] binds QLEARN Vector QLEARN RLstyle(
+   list boolean triggers,
+   list Vector society,
+   list Reinforcer reinforcers,
+   //const string QfileName,
+   const CNLString_t QfileName,
+   const double ActionTimeout,
+   const double alpha,
+   const double alphaDecay,
+   const double random,
+   const double randomDecay
+);
+
+/********************* Agents *****************************/
+
+defAgent[AuRA.urban] binds MOVE_TO_GOAL_DSTAR Vector MOVE_TO_GOAL_DSTAR(
+    Vector goal_rel_loc,
+    obs_array obstacles,
+    robot_position pos,
+    const double gridsize = {0.25},
+    const double length = {100},
+    const double width = {100},
+    const double ao_val,
+    const double goal_gain,
+    const double persistence,
+    const double angle_dev,
+    Vector ao_vec
+);
+
+
+defAgent[AuRA.urban] binds VARIABLE double VARIABLE(const double value);
+
+defAgent[AuRA.urban] binds GET_HEADING double GET_HEADING(robot_position cur_pos);
+
+defAgent[AuRA.urban] binds VECTOR_COMPASS_DIFFERENTIAL Vector VECTOR_COMPASS_DIFFERENTIAL(
+	double Desired_heading,
+	double Tolerance,
+	int Compass_heading
+);
+
+defAgent[AuRA.urban] binds STAY_ON_PATH location STAY_ON_PATH(
+    Vector Start,
+    Vector End,
+    double Path_Width
+);
+
+defAgent[AuRA.urban] binds GET_XY location GET_XY(robot_position cur_pos);
+
+defAgent[AuRA.urban] binds AVOID_STATIC_OBSTACLES Vector AVOID_STATIC_OBSTACLES(
+    const double sphere = {3.0},
+    const double safety_margin = {0.5},
+    object_locations readings);
+
+defAgent[AuRA.urban] binds PROBE Vector PROBE(
+    const double sphere = {3.0},
+    const double safety_margin = {0.5},
+    object_locations readings);
+
+defAgent[AuRA.urban] binds NOISE Vector NOISE(
+    const int persistence = {20},
+    double robot_heading);
+
+defAgent[AuRA.urban] binds MOVE_TO_GOAL Vector MOVE_TO_GOAL(
+    Vector goal_rel_loc,
+    double success_radius);
+
+defAgent[AuRA.urban] binds IR_A_ROOMBA Vector IR_A_ROOMBA(
+    Vector goal_rel_loc,
+    const double location_gain = {1.0},
+	const double obstacle_gain = {1.0},
+	const double sphere = {0.5});
+
+defAgent[AuRA.urban] binds IR_POSICION_OBJETIVO Vector IR_POSICION_OBJETIVO(
+    Vector obstaculo);
+
+defAgent[AuRA.urban] binds ENTRAR_HABITACION Vector ENTRAR_HABITACION(
+    Vector entrar,
+    Vector ostaculos,
+    Vector teleop,
+    double pesoEntrar,
+    double pesoObstaculos,
+    const double pesoTeleop = {1.0});
+
+defAgent[AuRA.urban] binds ASPIRAR Vector ASPIRAR();
+
+defAgent[AuRA.urban] binds GUIAR_ROBOT Vector GUIAR_ROBOT(
+    int num,
+    Vector pasillo);
+
+defAgent[AuRA.urban] binds GUIAR Vector GUIAR(
+    Vector moverPasillo,
+    //Vector obstaculos,
+    Vector estarEnPasillo);
+
+defAgent[AuRA.urban] binds SEGUIR_LIDER Vector SEGUIR_LIDER(
+    Vector obstaculo);
+
+//defAgent[AuRA.urban] binds SEGUIR_LIDER Vector SEGUIR_LIDER(
+//    obs_array obstacles,
+//    robot_position pos,
+//    const double gridsize = {0.25},
+//    const double length = {100},
+//    const double width = {100},
+//    const double ao_val,
+//    const double goal_gain,
+//    const double persistence,
+//    const double angle_dev,
+//    Vector ao_vec
+//);
+
+defAgent[AuRA.urban] binds IR_POSICON_ANT_LIDER Vector IR_POSICON_ANT_LIDER(
+    obs_array obstacles,
+    robot_position pos,
+    const double gridsize = {0.25},
+    const double length = {100},
+    const double width = {100},
+    const double ao_val,
+    const double goal_gain,
+    const double persistence,
+    const double angle_dev,
+    Vector ao_vec);
+
+defAgent[AuRA.urban] binds ESTOY_POS_ANT_LIDER boolean ESTOY_POS_ANT_LIDER
+|Trigger que determina si un robot ha alcanzado el punto que deseaba con un margen de error|
+(boolean have_a_goal, double success_radius);
+
+
+defAgent[AuRA.urban] binds ASPIRAR560 Vector ASPIRAR560();
+
+defAgent[AuRA.urban] binds AERIAL_MOVE_TO_GOAL Vector AERIAL_MOVE_TO_GOAL(
+    Vector goal_rel_loc,
+//    double goal_altitude,
+    double success_radius);
+
+defAgent[AuRA.urban] binds AERIAL_AVOID_ROBOT Vector AERIAL_AVOID_ROBOT(
+    const double sphere  = {8.0},
+    const double min_range = {1.0});
+
+defAgent[AuRA.urban] binds AERIAL_AVOID_OBSTACLES Vector AERIAL_AVOID_OBSTACLES
+|Motor behavior generating a vector away from any close obstacles|
+( double sphere,
+  double safety_margin,
+  obs_array   readings);
+
+defAgent[AuRA.urban] binds AERIAL_NOISE Vector AERIAL_NOISE(
+    const int persistence = {20},
+    double robot_heading);
+
+defAgent[AuRA.urban] binds AERIAL_MAINTAIN_ALTITUDE Vector AERIAL_MAINTAIN_ALTITUDE
+|Uav tries to maintain a given altitiude|
+( robot_position robopos,
+  const double desired_altitude = {10.0},
+  const double dead_zone = {3.0});
+
+
+defAgent[AuRA.urban] binds AERIAL_GLOBAL_TO_EGOCENTRIC Vector AERIAL_GLOBAL_TO_EGOCENTRIC(
+    Vector global,
+    location robot_location,
+    double robot_heading,
+    double goal_altitude);
+
+defAgent[AuRA.urban] binds POS_ANT_LIDER_REL_LOC Vector POS_ANT_LIDER_REL_LOC(
+    robot_position pos);
+
+
+defAgent[AuRA.urban] binds MOVE_AHEAD Vector MOVE_AHEAD(
+    double heading);
+
+defAgent[AuRA.urban] binds SWIRL_STATIC_OBSTACLES Vector SWIRL_STATIC_OBSTACLES(
+    const double sphere = {1.5},
+    const double safety_margin = {0.3},
+    Vector goal_rel_loc,
+    obs_array readings);
+
+defAgent[AuRA.urban] binds SETXY Vector SETXY(
+    double x,
+    double y);
+
+defAgent[AuRA.urban] binds SETXYTHETA Vector SETXYTHETA(
+    Vector new_robot_location,
+    double new_theta);
+
+defAgent[AuRA.urban] binds MOVE_TO Vector MOVE_TO(
+    boolean have_a_goal,
+    Vector goal_rel_loc);
+
+defAgent[AuRA.urban] binds CARMEN_NAVIGATE Vector CARMEN_NAVIGATE(
+    Vector goal);
+    
+defAgent[AuRA.urban] binds FOLLOW_CSB_ADVISE Vector FOLLOW_CSB_ADVISE(
+    int method);
+    
+defAgent[AuRA.urban] binds GROUSAL_FOLLOW_CSB_ADVISE Vector GROUSAL_FOLLOW_CSB_ADVISE(
+    int method);
+
+defAgent[AuRA.urban] binds INIT_CSB Vector INIT_CSB();
+
+defAgent[AuRA.urban] binds UPDATE_CSB_SENSOR_DATA Vector UPDATE_CSB_SENSOR_DATA();
+
+defAgent[AuRA.urban] binds COMM_SIGNAL_STRONG_ENOUGH boolean COMM_SIGNAL_STRONG_ENOUGH(
+    double threshold);
+    
+defAgent[AuRA.urban] binds GROUSAL_COMM_SIGNAL_STRONG_ENOUGH boolean GROUSAL_COMM_SIGNAL_STRONG_ENOUGH(
+    double threshold);
+    
+defAgent[AuRA.urban] binds GROUSAL_SERVO_BATTERY_CHARGED boolean GROUSAL_SERVO_BATTERY_CHARGED(
+    double threshold);
+    
+defAgent[AuRA.urban] binds GROUSAL_GENERAL_BATTERY_CHARGED boolean GROUSAL_GENERAL_BATTERY_CHARGED(
+    double threshold);
+
+defAgent[AuRA.urban] binds CSB_CONFIDENCE_HIGH_ENOUGH boolean CSB_CONFIDENCE_HIGH_ENOUGH(
+    int method,
+    double threshold);
+
+defAgent[AuRA.urban] binds MARK_DOORWAY Vector MARK_DOORWAY();
+
+defAgent[AuRA.urban] binds MARKED_DOORWAY boolean MARKED_DOORWAY();
+
+defAgent[AuRA.urban] binds UNMARK_DOORWAY Vector UNMARK_DOORWAY();
+
+defAgent[AuRA.urban] binds UNMARKED_DOORWAY boolean UNMARKED_DOORWAY();
+
+defAgent[AuRA.urban] binds ENTER_ROOM Vector ENTER_ROOM(
+    double distance,
+    int unmarked);
+
+defAgent[AuRA.urban] binds ENTER_DOORWAY Vector ENTER_DOORWAY(
+    double distance,
+    int unmarked);
+
+defAgent[AuRA.urban] binds THROUGH_DOORWAY boolean THROUGH_DOORWAY(
+    int unmarked);
+
+defAgent[AuRA.urban] binds LEAVE_ROOM Vector LEAVE_ROOM();
+
+defAgent[AuRA.urban] binds ENTER_ALTERNATE_HALLWAY Vector ENTER_ALTERNATE_HALLWAY(
+    double distance);
+
+defAgent[AuRA.urban] binds DETECT_ALTERNATE_HALLWAY boolean DETECT_ALTERNATE_HALLWAY();
+
+defAgent[AuRA.urban] binds GLOBAL_TO_EGOCENTRIC Vector GLOBAL_TO_EGOCENTRIC(
+    Vector global,
+    location robot_location,
+    double robot_heading);
+
+defAgent[AuRA.urban] binds got_continue boolean got_continue();
+
+defAgent[AuRA.urban] binds DATABASE_VALUE double DATABASE_DOUBLE(
+    const string key,
+    const double initial);
+
+defAgent[AuRA.urban] binds SET_DATABASE_DOUBLE boolean SET_DATABASE_DOUBLE(
+    const string key,
+    const double value);
+
+defAgent[AuRA.urban] binds GET_HALLWAY_INFO_VECTOR Vector GET_HALLWAY_INFO_VECTOR(
+    const string key,
+    int Direction);
+
+defAgent[AuRA.urban] binds GET_HALLWAY_INFO_DOUBLE double GET_HALLWAY_INFO_DOUBLE(
+    const string key);
+
+defAgent[AuRA.urban] binds IN_ROOM boolean IN_ROOM
+();
+
+defAgent[AuRA.urban] binds IN_HALLWAY boolean IN_HALLWAY
+();
+
+defAgent [AuRA.urban] binds SET_TRIGGER_FLAG Vector SET_TRIGGER_FLAG
+(string key);
+
+defAgent [AuRA.urban] binds IS_TRIGGER_FLAG_SET boolean IS_TRIGGER_FLAG_SET
+(string key);
+
+defAgent [AuRA.urban] binds CNP_GOT_A_TASK boolean CNP_GOT_A_TASK
+();
+
+defAgent [AuRA.urban] binds CNP_IS_TASK_CHANGED boolean CNP_IS_TASK_CHANGED
+();
+
+defAgent [AuRA.urban] binds CNP_IS_TASK_WON boolean CNP_IS_TASK_WON
+();
+
+defAgent [AuRA.urban] binds CNP_IS_TASK_LOST boolean CNP_IS_TASK_LOST
+();
+
+defAgent[AuRA.urban] binds CNP_BID_ON_TASK location CNP_BID_ON_TASK();
+
+// Obsolete: Use CNP_NOTIFY_TASK_COMPLETED instad.
+//defAgent[AuRA.urban] binds CNP_RENEG_TASK location CNP_RENEG_TASK();
+
+defAgent[AuRA.urban] binds CNP_TRACK location CNP_TRACK();
+
+defAgent[AuRA.urban] binds DATABASE_VALUE int DATABASE_INT(
+    const string key,
+    const int initial);
+
+defAgent[AuRA.urban] binds DATABASE_VALUE boolean DATABASE_BOOLEAN(
+    const string key,
+    const boolean initial);
+
+defAgent[AuRA.urban] binds UPDATE_DISTRIBUTED_FLAG boolean UPDATE_DISTRIBUTED_FLAG
+|Update a distributed flag -- returns true for use on transition (see TEST_DISTRIBUTED_FLAG)|
+( const string  key,
+  const boolean value);
+
+defAgent[AuRA.urban] binds TEST_DISTRIBUTED_FLAG boolean TEST_DISTRIBUTED_FLAG
+|Test a distributed flag -- returns flag, or default if flag not valid yet (see UPDATE_DISTRIBUTED_FLAG)|
+( const string  key,
+  const boolean default_value);
+
+defAgent[AuRA.urban] binds TELOP Vector TELOP(
+    int telop_mode,
+    double robot_heading,
+    double joystick_x,
+    double joystick_y,
+    double joystick2_x,
+    double joystick2_y,
+    double slider_1,
+    double slider_2,
+    int joy_buttons);
+    
+defAgent[AuRA.urban] binds GROUSAL_TELOP_CSB Vector GROUSAL_TELOP_CSB(
+    int telop_mode,
+    double robot_heading,
+    double joystick_x,
+    double joystick_y,
+    double joystick2_x,
+    double joystick2_y,
+    double slider_1,
+    double slider_2,
+    int joy_buttons);
+
+defAgent[AuRA.urban] binds POPUP_TELOP_INTERFACE Vector POPUP_TELOP_INTERFACE(
+);
+
+//****************** SOUND RELATED STUFF ******************
+
+defAgent[AuRA.urban] binds SOUND Vector SOUND(
+    double robot_heading,
+    double sound_direction_x,
+    double sound_direction_y);
+
+defAgent[AuRA.urban] binds DETECT_SOUND boolean DETECT_SOUND
+|Perceptual trigger activated when the robot hears a sound|
+(double volume_threshold);
+
+
+defAgent[AuRA.urban] binds DETECT_SOUND_MOTIVATED boolean DETECT_SOUND_MOTIVATED
+|Trigger activated when the robot hears a sound and is in the mood|
+(double volume_threshold, double curiousity_threshold, double curiousity_level);
+
+defAgent[AuRA.urban] binds TALK Vector TALK
+|Talk using the Speech Synthesizer|
+(
+  string  talkmessage
+);
+
+//**************** END SOUND STUFF *******************************
+
+
+defAgent[AuRA.urban] binds FILTER_OBJECT_CLASSES ObjectList FILTER_OBJECT_CLASSES
+|Perceptual filter passing only objects with one of the specified colors|
+(list const string desired_color, ObjectList full_list);
+
+defAgent[AuRA.urban] binds FILTER_OBJECTS ObjectList FILTER_OBJECTS
+|Perceptual filter passing only objects with the specified color|
+(const string desired_color, ObjectList full_list);
+
+defAgent[AuRA.urban] binds FILTER_OBJECTS_BY_CLASS ObjectList FILTER_OBJECTS_BY_CLASS
+|Perceptual filter passing only objects of the specified types|
+(
+// If false, pass objects only of the indicated types
+// If true, pass objects only if NOT the indicated types
+const boolean remove_these,
+const ObjectClasses classes,
+ObjectList full_list
+);
+
+defAgent[AuRA.urban] binds IS_AN_OBJECT boolean IS_AN_OBJECT
+|Perceptual trigger if there is at least one object in the list|
+(ObjectList object_list);
+
+//**********************************************************
+// MOTIVATIONAL STUFF BEGIN
+//**********************************************************
+defAgent[AuRA.urban] binds IS_AN_OBJECT_MOTIVATED boolean IS_AN_OBJECT_MOTIVATED
+|Trigger if there is an object in the list and emotional thresholds are met|
+( ObjectList object_list,
+  double anger_lower, double anger_upper,
+  double fear_lower, double fear_upper,
+  double hunger_lower, double hunger_upper,
+  double curiousity_lower, double curiousity_upper,
+  double anger_level,
+  double fear_level,
+  double hunger_level,
+  double curiousity_level
+);
+
+defAgent[AuRA.urban] binds MOTIVATIONAL_UPDATE Vector MOTIVATIONAL_UPDATE
+|Process that updates the motivational variables|
+(double anger_level, double fear_level, double hunger_level, double curiousity_level);
+
+defAgent[AuRA.urban] binds CHANGE_MOTIVATIONAL_VECTOR Vector CHANGE_MOTIVATIONAL_VECTOR
+|State that changes the motivational variables|
+( double anger_change, double fear_change,  double hunger_change,  double  curiousity_change, double anger_level, double fear_level, double hunger_level, double curiousity_level);
+
+//**********************************************************
+// MOTIVATIONAL STUFF END
+//**********************************************************
+
+defAgent[AuRA.urban] binds CLOSEST_OBJECT Reading CLOSEST_OBJECT
+|Perceptual process extracting the closest object from a list of objects|
+(ObjectList object_list);
+
+defAgent[AuRA.urban] binds CLOSEST_OBSTACLE Vector CLOSEST_OBSTACLE
+|Perceptual process extracting the closest generic obstacle|
+(obs_array obstacle_list);
+
+defAgent[AuRA.urban] binds IS_AT_GOAL boolean IS_AT_GOAL
+|Perceptual trigger determining if robot is within success distance from goal|
+(boolean have_a_goal, Vector goal_rel_loc, double success_radius);
+
+defAgent[AuRA.urban] binds ESTOY_OBJETIVO boolean ESTOY_OBJETIVO
+|Trigger que determina si un robot ha alcanzado el punto que deseaba con un margen de error|
+(boolean have_a_goal, double success_radius);
+
+defAgent[AuRA.urban] binds FIN_ASPIRAR boolean FIN_ASPIRAR
+|Trigger que indica cuando se ha superado el tiempo de aspirar|
+(double tiempo_limpieza);
+
+defAgent[AuRA.urban] binds NUEVA_TAREA boolean NUEVA_TAREA
+|Trigger que indica cuando ha llegado un mensaje de un tipo determinado|
+();
+
+defAgent[AuRA.urban] binds SKIP_GOAL boolean SKIP_GOAL
+|Perceptual trigger determining if robot should skip current waypoint|
+(boolean have_a_goal);
+
+defAgent[AuRA.urban] binds OBJECT_LOCATION Vector OBJECT_LOCATION
+|Perceptual filter extracting X,Y location of an object from reading|
+(Reading   object);
+
+defAgent[AuRA.urban] binds PROJECTED_GOAL Vector PROJECTED_GOAL
+|Project a goal to the direction|
+( location robot_location,
+  double robot_heading,
+  double project_angle,
+  double distance);
+
+defAgent[AuRA.urban] binds AVOID_OBJECTS Vector AVOID_OBJECTS
+|Motor behavior generating a vector away from any close objects|
+( const double sphere = {3.0},
+  const double safety_margin = {0.5},
+  ObjectList   objlist);
+
+defAgent[AuRA.urban] binds AVOID_OBSTACLES Vector AVOID_OBSTACLES
+|Motor behavior generating a vector away from any close obstacles|
+( const double sphere = {3.0},
+  const double safety_margin = {0.5},
+  obs_array   readings);
+
+defAgent[AuRA.urban] binds AVOID_OBSTACLES_MEM Vector AVOID_OBSTACLES_MEM
+|Motor behavior generating a vector away from any close objects|
+( const double sphere = {3.0},
+  const double safety_margin = {0.5},
+  const double decay_rate = {0.01},
+  obs_array readings,
+  robot_position cur_pos
+);
+
+defAgent[AuRA.urban] binds MOVE_TO_FREE_SPACE Vector MOVE_TO_FREE_SPACE
+|Motor behavior generating a vector towards open areas|
+( const double horizon = {3.0},
+  obs_array   readings);
+
+defAgent[AuRA.urban] binds CONSTANT boolean CONSTANT
+|Perceptual trigger generating constant value useful for hardcoding transitions|
+(const boolean value);
+
+defAgent[AuRA.urban] binds AND boolean AND
+|Perceptual trigger whose output is true if both inputs are true|
+(boolean a, boolean b);
+
+defAgent [AuRA.urban] binds OR boolean OR
+|Perceptual trigger whose output is true if both inputs are not false|
+(boolean a, boolean b);
+
+defAgent [AuRA.urban] binds NOR boolean NOR
+|Perceptual trigger whose output is true if both inputs are false|
+(boolean a, boolean b);
+
+defAgent[AuRA.urban] binds NOT boolean NOT
+|Perceptual trigger whose output is true when the input is false|
+(boolean a);
+
+defAgent[AuRA.urban] binds NULL_MS Vector NULL_MS
+|the NULL motor schema outputs a zero vector, useful in empty FSA states|
+();
+
+defAgent[AuRA.urban] binds DROP_IN_BASKET Vector DROP_IN_BASKET
+|Drop the object the robot is carrying into the basket (if robot is near basket)|
+(Reading basket);
+
+defAgent[AuRA.urban] binds PICKUP_OBJECT void PICKUP_OBJECT
+|Pickup the object (if the robot is next to it)|
+(Reading object);
+
+defAgent[AuRA.urban] binds MARK_OBJECT void MARK_OBJECT
+|Mark an object (if the robot is next to it) by changing its color|
+(Reading object,
+ OneObjectClass  new_class);
+
+defAgent[AuRA.urban] binds HALT Vector HALT
+|Halts the robot executable|
+();
+
+defAgent[AuRA.urban] binds TERMINATE_MISSION Vector TERMINATE_MISSION
+|Terminate the entire mission|
+();
+
+defAgent[AuRA.urban] binds FIRST_TIME boolean FIRST_TIME
+|Perceptual trigger causing transition to occur first time the state executes|
+();
+
+defAgent[AuRA.urban] binds DOORWAY_ULTRASOUND boolean DOORWAY_ULTRASOUND
+|Perceptual trigger when a doorway is encountered in sonar patterns|
+(double robot_length,
+ double hallway_width,
+ int look_for,
+ int unmarked,
+ double max_dist
+);
+
+defAgent[AuRA.urban] binds NOOP Vector NOOP
+|An agent which performs no operation, generating an empty output|
+();
+
+defAgent[AuRA.urban] binds WAIT boolean WAIT(
+    double delay_time);
+
+defAgent[AuRA.urban] binds WAIT_FOR_PROCEED Vector WAIT_FOR_PROCEED
+();
+
+defAgent[AuRA.urban] binds ISFACING boolean ISFACING(
+    const int desired_heading,
+    const int accuracy,
+    double robot_heading);
+
+defAgent[AuRA.urban] binds HAS_TURNED boolean HAS_TURNED(
+    double desired_turn_angle,
+    double robot_heading,
+    double off_set);
+
+defAgent[AuRA.urban] binds MOVED_DISTANCE boolean MOVED_DISTANCE(
+    double desired_distance,
+    robot_position position);
+
+defAgent[AuRA.urban] binds SPIN Vector SPIN(
+    const double angular_velocity,
+    const double slippageFactor);
+
+defAgent[AuRA.urban] binds ECHO_OBJECTS ObjectList ECHO_OBJECTS
+|Debug tool which writes the list of objects to stderr and then returns it|
+(ObjectList full_list);
+
+defAgent[AuRA.urban] binds PROBE_MOVABLE boolean PROBE_MOVABLE
+|Is the object movable?|
+( Reading object);
+
+defAgent[AuRA.urban] binds PROBE_OBJECT Vector PROBE_OBJECT
+|Determine the object proporties|
+( Reading object);
+
+defAgent[AuRA.urban] binds ALERT Vector ALERT
+|Alert the user about the object|
+( string  alertsubject,
+  string  alertmessage,
+  boolean use_email,
+  string  mail_recipient,
+  boolean attach_image
+);
+
+defAgent[AuRA.urban] binds ALERTED_ONCE boolean ALERTED_ONCE
+|Causes the transition when the alert message has sent|
+(const boolean value
+);
+
+defAgent[AuRA.urban] binds NOTIFY Vector NOTIFY
+|The robot notifies this message|
+( string  notifymessage
+);
+
+defAgent[AuRA.urban] binds NOTIFY_ROBOTS Vector NOTIFY_ROBOTS
+|The robot notifies this message to other robots via console|
+( string  notifymessage
+);
+
+defAgent[AuRA.urban] binds NOTIFIED_ONCE boolean NOTIFIED_ONCE
+|Causes a transition when the robot received this message|
+( string  notifymessage
+);
+
+defAgent[AuRA.urban] binds IS_NOT_PROGRESSING boolean IS_NOT_PROGRESSING
+|Causes a transition when the robot is stuck and having no progress|
+( Vector desired_location,
+  double patient);
+
+defAgent[AuRA.urban] binds IS_VALID_OBJECT boolean IS_VALID_OBJECT
+|Is this a valid object?|
+( Reading object);
+
+defAgent[AuRA.urban] binds MAP_LOCATION Vector MAP_LOCATION
+|Determine the location of a map feature|
+( const string feature_name );
+
+defAgent[AuRA.urban] binds START_SUB_MISSION Vector START_SUB_MISSION
+|Starts Sub-Mission|
+( string  sub_mission_name,
+  int deployment_method,
+  Vector goal_rel_loc
+);
+
+defAgent[AuRA.urban] binds SUB_MISSION_READY boolean SUB_MISSION_READY
+|Causes a transition when sub-mission is ready|
+( int sub_mission_deployment,
+  boolean at_goal_trigger
+);
+
+defAgent[AuRA.urban] binds LAST_KEY_PRESS int LAST_KEY_PRESS
+|Return the last key that was pressed on the operator console|
+( );
+
+defAgent[AuRA.urban] binds EQUAL_INT boolean EQUAL_INT
+|check if the two values are equal|
+(int a, int b);
+
+defAgent[AuRA.urban] binds ADD_OBJECT Vector ADD_OBJECT
+|Add an object to the environment|
+(string color,
+ int style,
+ location place,
+ double diameter );
+
+defAgent[AuRA.urban] binds DEBUG_PROC Vector DEBUG_PROC
+|Writes a counter to stderr to aid debugging|
+( );
+
+defAgent[AuRA.urban] binds MAINTAIN_FORM Vector MAINTAIN_FORM
+|Maintain our position in the formation|
+(Vector offset,
+ const double dead_zone_radius,
+ const double saturation_length );
+
+defAgent[AuRA.urban] binds COMPUTE_FORM_POSITION Vector COMPUTE_FORM_POSITION
+|get egocentric vector to our correct position in the formation|
+(const double spacing,
+ const int unit_size,
+ Vector unit_center_relative,
+ double formation_heading,
+ location robot_location,
+ double robot_heading,
+ string formation_name
+);
+
+defAgent[AuRA.urban] binds COMPUTE_UNIT_CENTER Vector COMPUTE_UNIT_CENTER
+|Compute the center location of a group of objects|
+(ObjectList   robots);
+
+defAgent[AuRA.urban] binds SCALE_VECTOR Vector SCALE_VECTOR
+|Multiply a vector by a scale factor|
+(Vector v,
+ double multiplier);
+
+defAgent[AuRA.urban] binds DETECT_FORM_HEADING double DETECT_FORM_HEADING
+|Determine the heading of the formation|
+(Vector relative_goal,
+ Vector telop_input,
+ double telop_mag,
+ const double default_trigger,
+ double robot_heading
+);
+
+defAgent[AuRA.urban] binds COUNT_OBJECTS int COUNT_OBJECTS(
+   ObjectList   objlist);
+
+defAgent[AuRA.urban] binds SUM int SUM(
+    list int values);
+
+defAgent[AuRA.urban] binds SUM_DOUBLE double SUM_DOUBLE(
+    list double values);
+
+defAgent[AuRA.urban] binds SUBTRACT_VECTORS Vector SUBTRACT_VECTORS
+|Compute the difference of the two vectors|
+(Vector   A,
+ Vector   B);
+
+defAgent[AuRA.urban] binds DEBUG_SHOW_INPUT Vector DEBUG_SHOW_INPUT
+|Debug tool which writes the vector to stderr|
+(string msg,
+ Vector input);
+
+defAgent[AuRA.urban] binds LOOK_TO Vector LOOK_TO(
+	const double look_theta,
+	const double look_psi );
+
+defAgent[AuRA.urban] binds IS_LOOKING_AT_DEGREE boolean IS_LOOKING_AT_DEGREE(
+	const int lookfor,
+	const double desired_theta,
+	const double delta_theta,
+	const double desired_psi,
+	const double delta_psi );
+
+defAgent[AuRA.urban] binds SET_CAMERA_TRACKING_MODE Vector SET_CAMERA_TRACKING_MODE(
+	 const int mode);
+
+defAgent[AuRA.urban] binds COMPUTE_REP Vector COMPUTE_REP
+(
+  const double sphere,
+  obs_array   readings);
+
+defAgent[AuRA.urban] binds COMPUTE_F Vector COMPUTE_F
+(
+  Vector   rep_force);
+
+defAgent[AuRA.urban] binds COMPUTE_T Vector COMPUTE_T
+(
+  Vector   rep_force);
+
+defAgent[AuRA.urban] binds COMPUTE_G Vector COMPUTE_G
+(
+  boolean have_a_goal,
+  Vector goal_rel_loc);
+
+defAgent[AuRA.urban] binds COMPUTE_U double COMPUTE_U
+(
+  Vector   rep_force);
+
+defAgent[AuRA.urban] binds COMPUTE_ULIM double COMPUTE_ULIM
+(
+  double alpha,
+  double beta,
+  double umax,
+  double umin);
+
+defAgent[AuRA.urban] binds COMPUTE_A double COMPUTE_A
+(
+  Vector g,
+  Vector f);
+
+defAgent[AuRA.urban] binds COMPUTE_B double COMPUTE_B
+(
+  Vector g);
+
+defAgent[AuRA.urban] binds SET_TARGET Vector SET_TARGET
+(
+  Vector goal_loc);
+
+defAgent[AuRA.urban] binds CURRENT_TARGET double CURRENT_TARGET(
+    const Vector new_vector);
+
+defAgent[AuRA.urban] binds MNAV_OBSTACLES Vector MNAV_OBSTACLES
+|Motor behavior generating a micronavigation vector |
+(
+  double ulim,
+  Vector f,
+  Vector t,
+  Vector g,
+  double u);
+
+defAgent[AuRA.urban] binds MNAV_TO_GOAL Vector MNAV_TO_GOAL
+|Motor behavior generating a micronavigation vector |
+(
+  double ulim,
+  Vector f,
+  Vector t,
+  Vector g,
+  double u);
+
+defAgent[AuRA.urban] binds MUST_FOLLOW boolean MUST_FOLLOW(
+  Vector g,
+  Vector f);
+
+defAgent[AuRA.urban] binds MUST_LEAVE boolean MUST_LEAVE(
+  double alpha,
+  Vector g,
+  Vector f);
+
+defAgent[AuRA.urban] binds FREE_US_PATH Vector FREE_US_PATH(
+  Vector goal_rel_loc,
+  obs_array readings,
+  robot_position cur_pos,
+  boolean progress,
+  int state_sharing);
+
+defAgent[AuRA.urban] binds IS_A_FROBOT boolean IS_A_FROBOT
+|Perceptual trigger if there is at least one object in the list|
+(ObjectList object_list,
+  robot_position cur_pos);
+
+defAgent[AuRA.urban] binds DATABASE_VEC Vector DATABASE_VEC(
+    const string key,
+    const Vector new_vector);
+
+defAgent[AuRA.urban] binds NOTIFY_GOALS Vector NOTIFY_GOALS
+|The robot notifies this message to other robots via console|
+( Vector goal_loc);
+
+defAgent[AuRA.urban] binds SET_CID Vector SET_CID
+|An agent which performs no operation, generating an empty output|
+( int cid);
+
+defAgent[AuRA.urban] binds AVOID_PAST Vector AVOID_PAST
+|Motor behavior generating a vector away from any close obstacles|
+( int past_horizon,
+  int past_mark,
+  robot_position cur_pos,
+  int past_gridsize,
+  int world_to_past_scale,
+  double overlap_ratio );
+
+defAgent[AuRA.urban] binds IS_NOT_PROGRESSING_MEM boolean IS_NOT_PROGRESSING_MEM
+|Causes a transition when the robot is stuck and having no progress|
+( Vector desired_location,
+  double patient);
+
+defAgent[AuRA.urban] binds MOVE_TO_GUARDED Vector MOVE_TO_GUARDED
+( Vector  goal_rel_loc,
+  double  dropoff_radius,
+  double  dead_zone_radius,
+  double  output_gain,
+  boolean have_a_goal );
+
+defAgent[AuRA.urban] binds CHANGE_ROBOT_COLOR Vector CHANGE_ROBOT_COLOR(
+    const string color );
+
+defAgent[AuRA.urban] binds RESET_WORLD Vector RESET_WORLD(
+    const string new_overlay,
+    boolean load_new_overlay );
+
+defAgent[AuRA.urban] binds CBRGetCase int CBRGetCase(
+	Vector goal_rel_loc);
+
+defAgent[AuRA.urban] binds CBRAgent Vector CBRAgent(
+	int CBR_RetCode,
+	Vector COOPVector);
+
+defAgent[AuRA.urban] binds MakeUnitVector Vector MakeUnitVector(
+	double XComp,
+	double YComp);
+
+defAgent[AuRA.urban] binds HeadRelUnitV Vector HeadRelUnitV(
+	Vector Goal_Location,
+	robot_position Robot_Pos,
+	double XComp,
+	double YComp);

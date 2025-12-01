@@ -1,0 +1,62 @@
+/**********************************************************************
+ **                                                                  **
+ **                    DETECT_CENTER_OF_MASS.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DETECT_CENTER_OF_MASS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector DETECT_CENTER_OF_MASS with
+   Robots   readings;
+header
+   Vector	sum;
+   Vector	t;
+   int          i;
+body
+   /* compute the center of mass of the perceived robots and move towards
+      that perceived location */
+
+   VECTOR_CLEAR(sum);
+   for(i=0; i<readings.cnt; i++)
+   {
+      add_2d(sum,readings.v[i],t);
+      sum = t;
+   }
+
+   /* NOTE: readings.cnt + 1 counts us too. */
+   if( readings.cnt > 0 )
+   {
+      divide_2d(sum, readings.cnt + 1, output);
+   }
+   else
+   {
+      VECTOR_CLEAR(output);
+   }
+pend
+
+
+
+/**********************************************************************
+# $Log: DETECT_CENTER_OF_MASS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.6  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.5  1995/06/28  21:50:25  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

@@ -1,0 +1,51 @@
+--******************************************************************
+--
+--	sea-mines.ovl
+--
+--	This overlay was developed for AO-FNC Project.
+--
+--  Yoichiro Endo
+--
+--  03/28/2005
+--
+--******************************************************************
+
+SCENARIO "Naval Mission"
+
+SITE "Monterey Bay Aquarium Research Institute"
+
+MISSION-AREA 900 750
+
+LOAD-MAP "sea-mines.mapinfo"
+
+ORIGIN 0 0
+
+--******************************************************************
+CONTROL MEASURES: 
+--******************************************************************
+-- Start Place
+
+PP StartPlace 605. 85.0 4
+
+--******************************************************************
+-- Mines
+
+--OBJECT 359.0 261.0 10 Movable orange
+--OBJECT 452.0 273.0 10 Movable orange
+--OBJECT 516.0 320.0 10 Movable orange
+--OBJECT 547.0 389.0 10 Movable orange
+--OBJECT 534.0 465.0 10 Movable orange
+--OBJECT 478.0 532.0 10 Movable orange
+--OBJECT 390.0 514.0 10 Movable orange
+--OBJECT 354.0 457.0 10 Movable orange
+--OBJECT 321.0 401.0 10 Movable orange
+
+OBJECT 790.0 249.0 10 Movable orange
+OBJECT 743.0 307.0 10 Movable orange
+OBJECT 713.0 249.0 10 Movable orange
+OBJECT 560.0 540.0 10 Movable orange
+OBJECT 504.0 494.0 10 Movable orange
+OBJECT 585.0 486.0 10 Movable orange
+OBJECT 411.0 239.0 10 Movable orange
+OBJECT 350.0 178.0 10 Movable orange
+OBJECT 442.0 172.0 10 Movable orange

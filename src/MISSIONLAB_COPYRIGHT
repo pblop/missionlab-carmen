@@ -1,0 +1,61 @@
+MissionLab version 7.0
+Released July 2006
+
+"Copyright 1994 - 2006
+Georgia Tech Research Corporation (GTRC)
+Atlanta, Georgia  30332-0415
+ALL RIGHTS RESERVED
+
+This software may be modified, copied and redistributed, both within
+the recipient's organization and externally, subject to the following
+restrictions:
+  (a) The recipient may not derive income for the Georgia Tech Research
+      Corporation (herein \"GTRC\") software itself;
+  (b) In any derivative works based on this software, the recipient agrees
+      to acknowledge GTRC;
+  (c) Any copies made of this software must be accompanied by the following
+      copyright notice: \"Copyright 1994 - 2006  Georgia Tech Research
+      Corporation. All rights Reserved.\"; and
+  (d) The recipient agrees to obey all U.S. Government restrictions governing
+      redistribution or export of such information.
+
+These restrictions may apply to redistribution within an international
+organization. GTRC makes no warranties or representations, either expressed
+or implied, with respect to the software contained herein, its quality,
+merchantability, performance or fitness for a particular purpose. In no event
+shall GTRC or its developers, directors, officers, employees or affiliates be
+liable for direct, incidental, indirect, special or consequential damages
+(including damages or loss of business profits, business interruption, loss
+of business information and the like) resulting from any defect in this
+software or its documentation or arising out of the use or inability to use
+this software or accompanying documentation even if GTRC, an authorized
+representative or a GTRC affiliate has been advised of the possibility of such
+damage. GTRC makes no representation or warranty regarding the results
+obtainable through use of this software. No oral or written information or
+advice given by GTRC, its dealers, distributors, agents, affiliates, developers,
+directors, officers or employees shall create a warranty or in any way increase
+the scope of this warranty. This software was developed with ARPA Grant number
+N00014-94-1-0215 and funded by DARPA under contract number DAAE07-98-C-LO38,
+and DARPA / U.S. Army SMDC under contract number DASG60-99-C-0081, DARPA / DOI
+contract number NBCH1020012, and NAVAIR Intelligent Autonomy program."
+
+
+Several additional software packages are distributed with MissionLab, their
+copyrights are included below:
+
+
+IPT is "(c) 1995, Carnegie Mellon University. All Rights Reserved." This
+software is made available for academic and research purposes only. No
+commercial license is hereby granted.  Copying and other reproduction is
+authorized only for research, education, and other non-commercial
+purposes.  No warranties, either expressed or implied, are made
+regarding the operation, use, or results of the software.
+
+
+CMDLi:
+CMDLi is (c) 1996 - 2003 by Mobile Intelligence Corporation.  All rights
+reserved.
+
+CTHREADS:
+CThreads is (c) 1997 by the Georgia Institute of Technology.  All rights
+reserved.

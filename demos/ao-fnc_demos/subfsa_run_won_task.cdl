@@ -1,0 +1,145 @@
+/*************************************************
+*
+* This CDL file /home/endo/AO-FNC/mission.ao-fnc/demos/ao-fnc_demos/subfsa_run_won_task.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+[
+FSA1:FSA(
+      society[Start]<50,50>|Start| = [
+        Stop]<100,100>
+,
+      society[$AN_3090]<49,413>|State1| = [
+        Stop]<10,10>
+,
+      society[$AN_3092]<246,82>|State2| = [
+        CNP_NotifyWonTaskStarted]<10,10>
+,
+      society[$AN_3094]<435,77>|State3| = [
+        Run_EODTask]<10,10>
+,
+      society[$AN_3096]<721,612>|State4| = [
+        CNP_NotifyTaskCompleted]<10,10>
+,
+      society[$AN_3098]<257,800>|State5| = [
+        CNP_NotifyWonTaskStarted]<10,10>
+,
+      society[$AN_3100]<472,795>|State6| = [
+        Run_InspectTask]<10,10>
+,
+      society[$AN_3102]<1030,609>|State7| = [
+        Stop]<10,10>
+,
+      society[$AN_3104]<247,267>|State8| = [
+        CNP_NotifyWonTaskStarted]<10,10>
+,
+      society[$AN_3106]<247,451>|State9| = [
+        CNP_NotifyWonTaskStarted]<10,10>
+,
+      society[$AN_3108]<252,628>|State10| = [
+        CNP_NotifyWonTaskStarted]<10,10>
+,
+      society[$AN_3110]<445,259>|State11| = [
+        Run_TrackTask]<10,10>
+,
+      society[$AN_3112]<456,440>|State12| = [
+        Run_ObserveTask]<10,10>
+,
+      society[$AN_3114]<469,620>|State13| = [
+        Run_InterceptTask]<10,10>
+,
+      society[$AN_3116]<741,274>|State14| = [
+        CNP_SaveDynConstraints_Track]<10,10>
+,
+      society[$AN_3120]<1027,431>|State16| = [
+        CNP_NotifyTaskReneged]<10,10>
+,
+      rules[$AN_3090]<49,413>|State1| = if [
+          %task_name = {"EODTask"}
+,
+        CNP_WonTaskIs]<0,0>|Trans2|
+ goto $AN_3092,
+      rules[$AN_3092]<246,82>|State2| = if [
+        Immediate]<0,0>|Trans3|
+ goto $AN_3094,
+      rules[$AN_3094]<435,77>|State3| = if [
+          %notify_message = {"EODTask completed."}
+,
+        Notified]<0,0>|Trans4|
+ goto $AN_3096,
+      rules[$AN_3090]<49,413>|State1| = if [
+          %task_name = {"InspectTask"}
+,
+        CNP_WonTaskIs]<0,0>|Trans5|
+ goto $AN_3098,
+      rules[$AN_3098]<257,800>|State5| = if [
+        Immediate]<0,0>|Trans6|
+ goto $AN_3100,
+      rules[$AN_3100]<472,795>|State6| = if [
+          %notify_message = {"InspectTask completed."}
+,
+        Notified]<0,0>|Trans7|
+ goto $AN_3096,
+      rules[$AN_3096]<721,612>|State4| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_3102,
+      rules[$AN_3090]<49,413>|State1| = if [
+          %task_name = {"TrackTask"}
+,
+        CNP_WonTaskIs]<0,0>|Trans1|
+ goto $AN_3104,
+      rules[$AN_3104]<247,267>|State8| = if [
+        Immediate]<0,0>|Trans2|
+ goto $AN_3110,
+      rules[$AN_3110]<445,259>|State11| = if [
+          %notify_message = {"TrackTask completed."}
+,
+        Notified]<0,0>|Trans3|
+ goto $AN_3096,
+      rules[$AN_3090]<49,413>|State1| = if [
+          %task_name = {"ObserveTask"}
+,
+        CNP_WonTaskIs]<0,0>|Trans4|
+ goto $AN_3106,
+      rules[$AN_3106]<247,451>|State9| = if [
+        Immediate]<0,0>|Trans5|
+ goto $AN_3112,
+      rules[$AN_3112]<456,440>|State12| = if [
+          %notify_message = {"ObserveTask completed."}
+,
+        Notified]<0,0>|Trans6|
+ goto $AN_3096,
+      rules[$AN_3090]<49,413>|State1| = if [
+          %task_name = {"InterceptTask"}
+,
+        CNP_WonTaskIs]<0,0>|Trans7|
+ goto $AN_3108,
+      rules[$AN_3108]<252,628>|State10| = if [
+        Immediate]<0,0>|Trans8|
+ goto $AN_3114,
+      rules[$AN_3114]<469,620>|State13| = if [
+          %notify_message = {"InterceptTask completed."}
+,
+        Notified]<0,0>|Trans9|
+ goto $AN_3096,
+      rules[$AN_3110]<445,259>|State11| = if [
+          %notify_message = {"TrackTask reneged."}
+,
+        Notified]<0,0>|Trans1|
+ goto $AN_3116,
+      rules[Start]<50,50>|Start| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_3090,
+      rules[$AN_3120]<1027,431>|State16| = if [
+        Immediate]<0,0>|Trans2|
+ goto $AN_3102,
+      rules[$AN_3116]<741,274>|State14| = if [
+          %notify_message = {"Dynamic constraints saved."}
+,
+        Notified]<0,0>|Trans1|
+ goto $AN_3120)<35,40>|The State Machine|
+]<10,10>
+

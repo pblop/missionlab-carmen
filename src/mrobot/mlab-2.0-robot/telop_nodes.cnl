@@ -1,0 +1,62 @@
+#ifdef INC_TELOP
+/*--------------------------------------------------------------------
+
+	telop_nodes.cnl
+
+	CNL code for a robot to avoid obstacles, maintain formation,
+	and respond to teleop commands.
+
+	Written by:  Douglas MacKenzie
+
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: telop_nodes.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+/* =================== coordination modules ======================= */
+
+node teleop is SUM_WEIGHTED_VECTORS with
+        name = {"teleop"};
+
+	v = avoid_obstacle;
+	gain = db_nav_avoid_obs_gain;
+
+	v = nav_avoid_robot;
+        gain = db_nav_avoid_robot_gain;
+
+// Formation code needs to be setup to get unit heading from
+// the joystick.  But, also needs to handle null input vectors.
+	v = formation;
+        gain = db_nav_formation_gain;
+
+        v = telop;
+        gain = db_joystick_magnitude;
+nend
+#endif
+
+
+/**********************************************************************
+# $Log: telop_nodes.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:15  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.4  1995/07/10  19:54:59  doug
+# *** empty log message ***
+#
+# Revision 1.3  1995/06/29  13:43:31  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

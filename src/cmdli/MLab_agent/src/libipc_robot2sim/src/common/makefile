@@ -1,0 +1,187 @@
+# Make file for libmic/common 
+#
+# Written by: Douglas C. MacKenzie
+#
+# Copyright 1996-2002.  All Rights Reserved.                      
+# Mobile Intelligence Corporation                                
+# Livonia, Michigan, USA                                           
+#                                                              
+#********************************************************************
+
+# $Id: makefile,v 1.1.1.1 2008/07/14 16:44:16 endo Exp $
+
+# ---------------------------------------------------
+
+# Get system wide defaults
+include $(SUPPORT_DIR)/make.include
+include ../../make.local
+
+# ---------------------------------------------------
+
+CC_SRCS = rpc_client.cc rpc_client_support.cc rpc_xdr.cc rpc_server.cc \
+	rpc_server_support.cc
+
+# ---------------------------------------------------
+RPCFLAGS = -C -b -N
+# ---------------------------------------------------
+
+INCLUDES = -I../../include -I$(LIBMIC_DIR)/include \
+        -I$(LIBIPC_SUPPORT_DIR)/include  
+
+
+../$(ARCHIVE): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
+	
+all: ../$(ARCHIVE)
+
+#Note: We don't yet have rpcgen other places
+ifeq ($(TARGET_OS),linux)
+
+#Make a header file for the RPC stuff
+rpc_defs.h: rpc_defs.x
+	mic_rpcgen $(RPCFLAGS) -h rpc_defs.x | ./clean_defs.sh > rpc_defs.h
+
+#make client-side stubs for the RPC stuff
+rpc_client.cc: rpc_defs.x rpc_defs.h
+	mic_rpcgen $(RPCFLAGS) -l rpc_defs.x | ./clean_client.sh > rpc_client.cc
+
+#make the XDR routines 
+rpc_xdr.cc: rpc_defs.h
+	mic_rpcgen $(RPCFLAGS) -c rpc_defs.x | ./clean_xdr.sh > rpc_xdr.cc
+
+#make server-side stubs for the RPC stuff
+#we breath on it a bit to get the function names to match
+rpc_server.cc: rpc_defs.h
+	mic_rpcgen $(RPCFLAGS) -m rpc_defs.x | ./clean_server.sh > rpc_server.cc
+
+endif
+
+doc: mic.ps mic_exception.ps
+
+# Get general, invariant targets
+EXTRA_DELETES = rpc_xdr.cc rpc_server.cc rpc_defs.h rpc_client.cc
+include $(SUPPORT_DIR)/make.targets
+
+#######################################################################
+# $Log: makefile,v $
+# Revision 1.1.1.1  2008/07/14 16:44:16  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:46  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:37:54  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/07/01 00:24:20  endo
+# CMDLi from MARS 2020 migrated into AO-FNC repository.
+#
+# Revision 1.1.1.1  2006/06/29 20:42:07  endo
+# cmdli local repository.
+#
+# Revision 1.32  2004/03/31 14:18:14  doug
+# add extra cleanups
+#
+# Revision 1.31  2004/03/26 16:57:21  doug
+# switched to using make.target
+#
+# Revision 1.30  2004/03/12 20:36:45  doug
+# snap
+#
+# Revision 1.29  2004/03/08 14:52:19  doug
+# cross compiles on visual C++
+#
+# Revision 1.28  2004/02/28 19:26:16  doug
+# builds clean on Fedora (commented out a matcon call)
+#
+# Revision 1.27  2004/02/28 16:35:24  doug
+# getting cmdli to work in sara
+#
+# Revision 1.26  2004/02/20 20:55:15  doug
+# barriers work
+#
+# Revision 1.25  2003/12/10 17:23:38  doug
+# working on tasker
+#
+# Revision 1.24  2003/11/26 22:50:43  doug
+# working on state machines
+#
+# Revision 1.23  2003/11/26 15:21:39  doug
+# back from GaTech
+#
+# Revision 1.22  2003/11/07 22:54:34  doug
+# working on cmdl_io
+#
+# Revision 1.21  2003/11/07 20:29:10  doug
+# added cmdli interpreter library
+#
+# Revision 1.20  2003/11/03 22:43:44  doug
+# adding defComposite support
+#
+# Revision 1.19  2003/10/22 20:34:16  doug
+# still working on glyph_editor
+#
+# Revision 1.18  2003/10/07 21:02:42  doug
+# working on open click
+#
+# Revision 1.17  2003/09/29 19:09:13  doug
+# getting hooked into mouse events
+#
+# Revision 1.16  2003/08/25 22:01:55  doug
+# builds against libccl_gui
+#
+# Revision 1.15  2003/08/22 21:23:54  doug
+# Back from Benning
+#
+# Revision 1.14  2003/06/30 22:30:43  doug
+# Added altitude to robots
+#
+# Revision 1.13  2003/06/30 21:11:04  doug
+# Support altitiude
+#
+# Revision 1.12  2003/06/27 19:13:45  doug
+# got tomahawk to display
+#
+# Revision 1.11  2003/04/25 22:13:36  doug
+# still working on tcp support
+#
+# Revision 1.10  2003/04/24 20:56:53  doug
+# still coding on tcp support
+#
+# Revision 1.9  2003/04/23 20:57:15  doug
+# still working on tcp support
+#
+# Revision 1.8  2003/04/07 12:44:44  doug
+# moving to RedHat 9
+#
+# Revision 1.7  2003/03/21 15:55:35  doug
+# moved libccl_code to the sara namespace
+#
+# Revision 1.6  2003/03/13 22:42:08  doug
+# seems to work
+#
+# Revision 1.5  2003/03/03 13:44:27  doug
+# seems to work
+#
+# Revision 1.4  2003/02/26 22:16:23  doug
+# integrated with opcon
+#
+# Revision 1.3  2002/10/08 14:40:59  doug
+# fix so works without special environment setup
+#
+# Revision 1.2  2002/10/03 15:31:58  doug
+# fixed include in makefile
+#
+# Revision 1.1.1.1  2002/10/02 18:18:17  doug
+# Initial import into cvs
+#
+#
+#######################################################################
+
+
+
+###########################################################################
+# dependencies generated by makedepend
+
+# DO NOT DELETE
+

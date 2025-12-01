@@ -1,0 +1,136 @@
+When compiled the files in this directory produce an executable named
+mapper. The mapper is automatically called from cfgedit to produce a
+set of path points which are then converted to an FSA.
+
+The code can also be run as a standalone module and the explanations below
+describe only that case.
+
+
+HOW TO COMPILE
+==============
+
+In this  directory type 'make'.
+
+NOTE: The original code was written for SunOS Release 4.1.3_U1. 
+      It was ported to Redhat Linux 6.0 and appears to run just fine.
+
+
+HOW TO RUN as a stand alone application
+=======================================
+
+
+1.  Run the 'mapper' executable.
+
+2.  At the prompt enter the name of the map_file. A sample file
+    called 'marc.dat' is provided. (Note: MARC is the name of the 
+    building in which the Mobile Robotics Lab is located)
+
+3.  To show how the program works it stops after each step as described
+    in the 'How does it work' section. The program opens a graphical 
+    window in which it displays the map. The program also uses the console
+    window from which it was started. Press 1 and Enter in the console
+    window to continue to the next step of the execution.
+
+4.  Next you will be prompted to specify start and end points.
+    You have to left-click twice in the window displaying the map.
+
+5.  The path between the two points is calculated and displayed.
+
+6.  The program prompts for the name of the output CDL file.
+    For example you can type: 'goto.cdl'
+
+7.  Press 0 to  quit the program. If you wish to specify a different
+    path press 1; this will take you to step 4.
+
+8.  The CDL file can now be loaded  into the configuration
+    editor. If you have Missions Lab installed you can run
+    'cfgedit' and load 'goto.cdl'.
+
+9.  The FSA can now be compiled by clicking on the 'compile' button.
+
+10. When the compilation is complete the FSA can be executed. 
+    Click on the 'Run' button. You will be prompted to select an
+    overlay file. Make sure to select the 'marc.ovl' file which is 
+    provided with this distribution. 
+
+    Note: Copy 'marc.ovl', 'Empty.ovl', and 'goto.cdl' to the
+          directory from which you run 'cfgedit'.
+
+
+
+
+
+HOW DOES IT WORK
+================
+
+The code can be described in six steps:
+
+
+Step 1.
+
+Read a description of the environment form a map file. This file defines the 
+position of the walls and obstacles in the environments. The walls should
+form a closed polygon which we call the environment border. The format of
+this file is described at the end of the README file.
+
+Step 2.
+
+Before we do any form of path planning we have to apply some standard 
+techniques from the robot motion planning literature. We define a 
+configuration space by shrinking the border by the radius of the robot. 
+From now on all operations are performed using the shrunk border only.  
+
+Step 3.
+
+The result from Step 2 is a complex polygonal region. To simplify the path 
+planning we partition this border into convex polygonal regions only. 
+
+Step 4.
+
+The user is now prompted to specify start and end points for the robot path. 
+This is done by asking the user to click twice (once for each point) in
+the window displaying the map.
+
+Step 5. 
+
+The two points from Step 4 are passed as arguments to the path planning module 
+and a path is constructed between them. The path consists of a sequence 
+line segments connecting the start and end point. The line segments do not 
+cross the boundary or the obstacles at any point. 
+The path planning module uses the A* algorithm to find the path.
+
+
+Step 6.
+
+Output a CDL file describing an FSA that can execute the path found in
+Step 5. This CDL file can later be loaded into 'cfgedit'.
+
+
+
+
+FORMAT OF THE MAP FILE
+======================
+
+The map file describes the environment in which the robot will be moving. 
+The file is a regular text file with a format that is described below. 
+
+The file has three sections: walls, obstacles, and landmarks. Each of the 
+sections begins with a keyword and a number. The keyword is just the name
+of the section (in capital letters) and the number specifies how many lines
+for this section follow.  
+
+The entries in the WALLS section specify points in the Cartesian plane which
+if connected form a closed polygonal contour. The points have to be specified
+in counter-clockwise fashion and must form a complete contour. The first 
+point should NOT be repeated at the end of the list. 
+
+The entries in the OBSTACLES section are similar to the entries in the WALLS 
+section but they have to be specified in clockwise fashion. As before the 
+first point should NOT be repeated at the end of the list. 
+
+The entries in the LANDMARKS section specify environment landmarks. This is 
+still an experimental section of the map file and its format is likely to 
+change often. The format will be described in the next distribution.
+
+See the sample file 'marc.dat' for an example.
+

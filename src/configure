@@ -1,0 +1,226 @@
+#!/bin/bash -f
+###########################################################################
+#
+# configure
+#
+# - This script configures the compilation environment for MissionLab.
+#
+# Written by: Yoichiro Endo
+#
+###########################################################################
+
+# $Id: configure,v 1.2 2008/07/16 16:27:35 endo Exp $
+
+# Save the root directory
+cd ..
+MLAB_HOME=$PWD
+cd $MLAB_HOME/src
+
+# Set up other paths
+ConfigDir=config
+MakeInclude=make.include
+LinkListInclude=$ConfigDir/linklist.include
+IncludeDir=$MLAB_HOME/src/include
+RootIncludeDir=$MLAB_HOME/include
+LinkListLib=$ConfigDir/linklist.lib
+LibDir=$MLAB_HOME/lib
+LinkListBin=$ConfigDir/linklist.bin
+BinDir=$MLAB_HOME/bin
+
+# Create a make.include file.
+echo ""
+echo -n "Creating $MakeInclude file... "
+if [ -a $MakeInclude ]; then 
+    rm -f $MakeInclude
+fi
+
+#if [ "$DESTDIR" == "" ]; then
+#    echo -n "Where do you want to install MissionLab? (default: '/usr'): "
+#    read dest
+#    if [ "$dest" == "" ]; then	    
+#        DESTDIR=/usr
+#    else
+#        DESTDIR=$dest
+#    fi
+#fi
+
+if [ "$ENABLE_OPENGL" == "" ]; then
+    # Check if the user wants OpenGL enabled.
+    echo ""
+    echo -n "Enable OpenGL 3D-display functions in mlab? [y/n](default: 'y'): "
+    read -n 1 input
+    echo ""
+    if [ "$input" == "n" ]; then
+        ENABLE_OPENGL=0
+    else
+        ENABLE_OPENGL=1
+    fi
+fi
+
+if [ "$ENABLE_MOBILITY" == "" ]; then
+#    # Check if the user wants Mobility (HServer) enabled.
+#    echo -n "Enable the Mobility (iRobot) drivers in HServer (e.g., ATRV-Jr)? [y/n](default: 'n'): "
+#    read -n 1 input
+#    echo ""
+#    if [ "$input" == "y" ]; then
+#        ENABLE_MOBILITY=1
+#    else
+        ENABLE_MOBILITY=0
+#    fi
+fi
+
+
+if [ "$ENABLE_OPENCV" == "" ]; then
+    # Check if the user wants OpenCV (HServer) enabled.
+    echo -n "Enable the OpenCV (Intel) driver in HServer? [y/n](default: 'y'): "
+    read -n 1 input
+    echo ""
+    if [ "$input" == "n" ]; then
+        ENABLE_OPENCV=0
+    else
+        ENABLE_OPENCV=1
+    fi
+fi
+
+if [ "$USE_IPC" == "" ]; then
+    # Check if the user wants IPC instead IPT as message server.
+    echo -n "Use IPC as message server instead of IPT? [y/n](default: 'y'): "
+    read -n 1 input
+    echo ""
+    if [ "$input" == "n" ]; then
+        USE_IPC=0
+    else
+        USE_IPC=1
+    fi
+fi
+
+if [ "$ENABLE_GAZEBO" == "" ]; then
+    # Check if the user wants Gazebo (HServer) enabled.
+    echo -n "Enable the Gazebo (USC) drivers in HServer? [y/n](default: 'n'): "
+    read -n 1 input
+    echo ""
+    if [ "$input" == "y" ]; then
+        ENABLE_GAZEBO=1
+    else
+        ENABLE_GAZEBO=0
+    fi
+fi
+
+
+echo ""
+echo "Executing ./config/PrintMakeIncludePaths $ENABLE_OPENGL $ENABLE_MOBILITY $ENABLE_OPENCV $ENABLE_GAZEBO"
+./config/PrintMakeIncludePaths $ENABLE_OPENGL $ENABLE_MOBILITY  $ENABLE_OPENCV $ENABLE_GAZEBO $USE_IPC 1>$MakeInclude
+echo ""
+#echo "Done."
+
+# Create the symbolic links for include files.
+for IncludeFile in `cat $LinkListInclude | xargs echo`
+do
+    echo -n "Linking $IncludeFile... "
+    ln -fs $MLAB_HOME/$IncludeFile $IncludeDir
+    echo "Done.";
+done
+
+# Create the symbolic links from root directory
+echo -n "Linking $MLAB_HOME/include... "
+cd $MLAB_HOME
+ln -fs src/include
+cd $MLAB_HOME/src
+echo "Done.";
+
+# Create the symbolic links for lib files.
+echo ""
+echo -n "Checking lib directory '$LibDir'... "
+if [ -d $LibDir ]; then 
+    echo "Found.";
+    echo -n "Clearing $LibDir... "
+#   rm -rf $LibDir
+    mkdir $LibDir
+    echo "Done.";
+else
+    echo "Not found."
+    echo -n "Creating $LibDir... "
+    mkdir $LibDir
+    echo "Done.";
+fi
+
+for LibFile in `cat $LinkListLib | xargs echo`
+do
+    echo -n "Linking $LibFile... "
+    ln -fs $MLAB_HOME/$LibFile $LibDir
+    echo "Done.";
+done
+
+# Create the symbolic links for bin files.
+echo ""
+echo -n "Checking bin directory '$BinDir'... "
+if [ -d $BinDir ]; then 
+    echo "Found.";
+    echo -n "Clearing $BinDir... "
+#   rm -rf $BinDir
+    mkdir $BinDir
+    echo "Done.";
+else
+    echo "Not found."
+    echo -n "Creating $BinDir... "
+    mkdir $BinDir
+    echo "Done.";
+fi
+
+for BinFile in `cat $LinkListBin | xargs echo`
+do
+    echo -n "Linking $BinFile... "
+    ln -fs $MLAB_HOME/$BinFile $BinDir
+    echo "Done.";
+done
+echo ""
+
+# Create the symbolic links hserver/mobility
+echo -n "Linking $MLAB_HOME/src/hardware_drivers/hserver/mobility... "
+cd $MLAB_HOME/src/hardware_drivers/hserver
+ln -fs  /home/mobility/mobility-b-1.1.9-rh6.2
+rm -f mobility
+ln -fs mobility-b-1.1.9-rh6.2 mobility
+cd $MLAB_HOME/src
+echo "Done.";
+
+# Run "make depend"
+make depend
+
+echo ""
+echo ""
+
+if [ "$ENABLE_OPENGL" == "1" ]; then
+    echo "OpenGL (mlab): Enabled";
+else
+    echo "OpenGL (mlab): Disabled";
+fi
+
+if [ "$ENABLE_MOBILITY" == "1" ]; then
+    echo "Mobility (HServer): Enabled";
+else
+    echo "Mobility (HServer): Disabled";
+fi
+
+if [ "$ENABLE_OPENCV" == "1" ]; then
+    echo "OpenCV (HServer): Enabled";
+else
+    echo "OpenCV (HServer): Disabled";
+fi
+
+if [ "$ENABLE_GAZEBO" == "1" ]; then
+    echo "Gazebo (HServer): Enabled";
+else
+    echo "Gazebo (HServer): Disabled";
+fi
+
+echo "---------------------------------------------------------"
+echo "MissionLab configured successfully."
+echo ""
+echo "Make sure your PATH will include: $BinDir"
+echo -n "(e.g., setenv PATH $BinDir:"
+echo '$PATH)'
+echo "---------------------------------------------------------"
+echo ""
+echo "Type 'make all' to install MissionLab."
+echo ""

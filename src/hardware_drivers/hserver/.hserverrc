@@ -1,0 +1,374 @@
+# This is is the hserver configuration file.
+
+<start camera camera1>
+port_string = /dev/ttyS0
+<end>
+
+<start laser laserS1>
+name = front
+port_string = /dev/ttyS1
+angle_offset = 0
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+#stream_host = localhost # used for streaming
+<end>
+
+<start laser atrv-front>
+name = front
+port_string = /dev/ttyR2
+angle_offset = 0
+x_offset = 40  # in cm
+y_offset = 0   # in cm
+listen_ipt = false
+send_ipt = false
+#stream_host = localhost # used for streaming
+<end>
+
+<start laser atrv-back>
+name = back
+port_string = /dev/ttyR1
+angle_offset = 180
+x_offset = -40  # in cm
+y_offset = -10  # in cm
+listen_ipt = false
+send_ipt = false
+#stream_host = localhost # used for streaming
+<end>
+
+<start laser front>
+name = front
+port_string = /dev/ttyR5
+angle_offset = 0
+#x_offset = 10  # in cm
+x_offset = 0  # in cm
+y_offset = 0   # in cm
+listen_ipt = false
+send_ipt = false
+#stream_host = localhost # used for streaming
+<end>
+
+<start laser back>
+name = back
+port_string = /dev/ttyR6
+angle_offset = 180
+#x_offset = -10  # in cm
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+#stream_host = localhost # used for streaming
+<end>
+
+<start cognachrome cog1>
+port_string = /dev/ttyS0
+<end>
+
+<start nomad 150>
+type = 150
+port_string = /dev/ttyS0
+<end>
+
+<start nomad 200>
+type = 200
+host_name = cortez
+<end>
+
+<start pioneer pioneer1>
+port_string = /dev/ttyS0
+<end>
+
+<start amigobot amigobot1>
+port_string = /dev/ttyS0
+<end>
+
+<start roomba roomba1>
+port_string = /dev/ttyUSB0
+<end>
+
+<start robotLaser robotlaser1>
+port_string = toro.usal.es
+<end>
+
+<start framegrabber framegrabber1>
+port_string = /dev/video
+<end>
+
+#<start gps gps1>
+<start gps tsrb>
+use_base = false
+port_string = /dev/ttyR1
+base_lat = 33.77807
+base_long = -84.38997
+#x_diff = 10
+#y_diff = 10
+x_diff = 53
+y_diff = 29.5
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+<start gps gps1>
+#<start gps benning-demo>
+use_base = false
+port_string = /dev/ttyR1
+base_lat = 32.36969
+base_long = -84.80479
+x_diff = 120
+y_diff = 15
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+<start gps gps1>
+#<start gps benning-demo-old>
+use_base = false
+port_string = /dev/ttyR1
+base_lat = 32.36964
+base_long = -84.80467
+x_diff = 125
+y_diff = 15
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+#<start gps gps1>
+<start gps benning-comm>
+use_base = false
+port_string = /dev/ttyR1
+base_lat = 32.37062
+base_long = -84.80440
+x_diff = 153
+y_diff = 129
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+#<start gps gps1>
+<start gps benning-field>
+use_base = false
+port_string = /dev/ttyR1
+base_lat = 32.36830
+base_long = -84.80918
+x_diff = 135
+y_diff = 148
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+#<start gps gps1>
+<start gps benning-village>
+use_base = false
+port_string = /dev/ttyR1
+base_lat = 32.36987
+base_long = -84.80416
+x_diff = 173
+y_diff = 37
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+<start gps gpscan>
+type = CAN
+x_diff = 5
+y_diff = 5
+m_per_lat = 111194.927
+m_per_long = 92821.387
+<end>
+
+<start carmen carmenLocal>
+central_server = 127.0.0.1
+<end>
+
+<start gps carmenLocal>
+type = CARMEN
+port_string = 127.0.0.1
+<end>
+
+<start laser carmenLocal>
+port_string = CARMEN
+name = 127.0.0.1
+angle_offset = 0
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+<end>
+
+<start carmen carmen1>
+central_server = 127.0.0.1:3001
+<end>
+
+<start gps carmen1>
+type = CARMEN
+port_string = 127.0.0.1:3001
+<end>
+
+<start laser carmen1>
+port_string = CARMEN
+name = 127.0.0.1:3001
+angle_offset = 0
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+<end>
+
+<start carmen carmen2>
+central_server = 127.0.0.1:3002
+<end>
+
+<start gps carmen2>
+type = CARMEN
+port_string = 127.0.0.1:3002
+<end>
+
+<start laser carmen2>
+port_string = CARMEN
+name = 127.0.0.1:3002
+angle_offset = 0
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+<end>
+
+<start carmen carmen3>
+central_server = 127.0.0.1:3003
+<end>
+
+<start gps carmen3>
+type = CARMEN
+port_string = 127.0.0.1:3003
+<end>
+
+<start laser carmen3>
+port_string = CARMEN
+name = 127.0.0.1:3003
+angle_offset = 0
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+<end>
+
+<start compass compass1>
+port_string = /dev/ttyR2
+type = 3DM-G # 3DM-G or KVH-C100
+<end>
+
+<start compass compass2>
+port_string = /dev/ttyR3
+type = KVH-C100 # 3DM-G or KVH-C100
+<end>
+
+<start gyro gyro1>
+type = DMU-VGX
+<end>
+
+<start jbox jbox19>
+jbox_id = 19
+disable_network_query = false
+gps_section = gps1
+<end>
+
+<start jbox jbox20>
+jbox_id = 20
+disable_network_query = false
+gps_section = gps1
+<end>
+
+<start jbox jbox21>
+jbox_id = 21
+disable_network_query = false
+gps_section = gps1
+<end>
+
+<start jbox jbox22>
+jbox_id = 22
+disable_network_query = false
+gps_section = gps1
+<end>
+
+<start jbox jbox23>
+jbox_id = 23
+disable_network_query = false
+gps_section = gps1
+<end>
+
+<start jbox jbox24>
+jbox_id = 24
+disable_network_query = false
+gps_section = gps1
+<end>
+
+<start jbox jbox19-lite>
+jbox_id = 19
+disable_network_query = true
+gps_section = gps1
+<end>
+
+<start jbox jbox20-lite>
+jbox_id = 20
+disable_network_query = true
+gps_section = gps1
+<end>
+
+<start jbox jbox21-lite>
+jbox_id = 21
+disable_network_query = true
+gps_section = gps1
+<end>
+
+<start jbox jbox22-lite>
+jbox_id = 22
+disable_network_query = true
+gps_section = gps1
+<end>
+
+<start jbox jbox23-lite>
+jbox_id = 23
+disable_network_query = true
+gps_section = gps1
+<end>
+
+<start jbox jbox24-lite>
+jbox_id = 24
+disable_network_query = true
+gps_section = gps1
+<end>
+
+<start laser laserUSB0>
+name = front
+port_string = /dev/ttyUSB0
+angle_offset = 0
+x_offset = 0  # in cm
+y_offset = 0  # in cm
+listen_ipt = false
+send_ipt = false
+stream_host = localhost # used for streaming
+<end>
+
+# This section is automatically called by HServer unless
+# specified to use another section with the '-P' option.
+
+<start posecalc posecalc1>
+fuser_type = ekf # maxconf, ekf, or pfilter
+variance_scheme = dynamic # dynamic or static
+compass2mlab_headingFacor = 1.0
+#compass2mlab_headingOffset = 185.0 # cartman
+compass2mlab_headingOffset = 0 # kenny
+#compass_max_valid_angspeed4heading = 0.95 # deg/s
+compass_max_valid_angspeed4heading = 1000 # deg/s
+gps2mlab_headingFactor = 1.0
+gps2mlab_headingOffset = 0
+gps_min_valid_transspeed4heading = 0 # m/s
+#gps_max_valid_angspeed4heading = 0.95 # deg/s
+gps_max_valid_angspeed4heading = 1000.0 # deg/s
+<end>
+
+<start posecalc pose2>
+fuser_type = pfilter # maxconf, ekf, or pfilter
+variance_scheme = dynamic # dynamic or static
+<end>

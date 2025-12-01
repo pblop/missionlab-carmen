@@ -1,0 +1,33 @@
+/**********************************************************************
+ **                                                                  **
+ **                      DOCK.cnl                                    **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Jonathan F. Diaz                                   **
+ **                                                                  **
+ **  Copyright 1999, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+init
+iend
+
+/***********************************************************************/
+procedure Vector DOCK with 
+robot_position robotloc; Vector dockpos; 
+double dockxy; double controlled_radius;
+double cone_angle; double ballistic_gain; 
+double controlled_gain;
+header
+body
+{
+  output = compute_dock_force_on_robot(robotloc.v, dockpos, dockxy, controlled_radius,
+				       cone_angle, ballistic_gain, controlled_gain);
+  rotate_z(output, -1*robotloc.heading);
+}
+pend
+

@@ -1,0 +1,13 @@
+
+#define Make<type>Object(object, file)    @@\
+	MakeObjectRule($(<type>_COMPILER),<type>/object,<type>/file,file,$(<type>_FLAGS))
+
+#define Make<type>Lib()   							@@\
+<type>/$(IPTVXLIB): $(<type>_LIB_OBJS)	@@\
+	$(RM) <type>/$(IPTVXLIB)							@@\
+	$(<type>_LD) -r -o <type>/$(IPTVXLIB) $(<type>_LIB_OBJS)
+
+all.<type>:: <type>/$(IPTVXLIB)
+
+install.<type>:: <type>/$(IPTVXLIB)
+	cp <type>/$(IPTVXLIB) $(INSTALL_DIR)/lib/<type>

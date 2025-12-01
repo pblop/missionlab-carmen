@@ -1,0 +1,20 @@
+"Title: Select File\n\
+\n\
+Presents a list of files and allows selecting one for loading.\n\
+\n\
+Filter allows entering regular expressions to limit the list\n\
+of files which are displayed.\n\
+\n\
+Directories shows the list of subdirectories to allow moving to\n\
+a different directory.\n\
+\n\
+Files shows the list of currently available files for selection.\n\
+\n\
+Up/down arrow keys move up and down the list of files.\n\
+Home/End keys travel to the top and bottom of the list.\n\
+\n\
+OK:     Load the selected file.\n\
+Filter: Redisplay the list of files after applying the filter.\n\
+Cancel: Do not load a file.\n\
+Help:   This message."
+

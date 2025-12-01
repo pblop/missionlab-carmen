@@ -1,0 +1,165 @@
+This patch makes the name of the node available in CNL procedures
+via a new builtin string constant called "node_name",
+and corrects the execution semantics so that the HEADER block executes
+once and only once each time the node gains scope.  
+The ONCE block continues to only execute once on program load.  
+Jonathan requested these changes.
+
+I have included a test configuration (one.cdl) and a modified WAIT.cnl
+which demonstrate the patch.  They are in ~doug/changes/00.04.11/
+
+This patch updates cnl/codegen.c
+It can be applied by changing to the ~robot/mission/src/cnl directory,
+checking out the file, and typing "patch < patch.txt"
+This file and the updated codegen.c file can also be found
+in my directory at ~doug/changes/00.04.11
+
+NOTE: After building the new cnl compiler you must rebuild all cnl procedures!
+      I changed the task control blocks and the old and new formats are not
+		compatible.  So, do a make clean in libcnl and a full make.
+
+To test the patch, build a new cnl executable and
+1. Temporarily put my WAIT.cnl file into libcnl to get the messages.
+2. Load ~doug/changes/00.04.10/test.cdl into cfgedit.
+2. Build the robot and run it.
+3. Examine the print statements from WAIT.cnl to see the current effect.
+   The header blocks run every cycle for blocked nodes.
+
+1. To test the patch, build a new cnl executable
+2. Rebuild libcnl
+3. Repeat the cfgedit compilation step and run the robot.
+4. Examine the print statements from WAIT.cnl to see the new effect.
+   The header block only runs once when its node gains scope.
+
+Please send mail to mailto:doug@mobile-intelligence.com with any 
+questions/comments and when this patch is added to the baseline.
+
+Doug MacKenzie
+
+*********************************************************
+
+
+
+
+--- codegen.c	Tue Apr 11 10:28:30 2000
++++ new_codegen.c	Tue Apr 11 11:52:16 2000
+@@ -313,6 +313,7 @@
+       sprintf (olbuf, "struct T_%s : public tcb", p_name);
+       outline (olbuf);
+       outline ("{");
++	   outline("   char *node_name;");
+       parm = cur->Parms;
+       pcnt = 0;
+       while (parm)
+@@ -600,7 +601,6 @@
+ 	 sprintf (olbuf, "void _cb_%s(IPCommunicator *comm, IPMessage *msg, void *hndData)", name);
+ 	 outline (olbuf);
+ 	 outline ("{");
+-//	 outline ("   _USE(data);");
+ 	 sprintf (olbuf, "   struct T_%s *parms = (struct T_%s *)hndData;", name, name);
+ 	 outline (olbuf);
+ 	 sprintf (olbuf, "   PCK_%s out;", typetext);
+@@ -632,7 +632,21 @@
+       {
+          sprintf (olbuf, "   struct T_%s *parms = (struct T_%s *)parm;", name, name);
+          outline (olbuf);
+-      }
++
++         outline ("");
++         outline ("   // node_name is the name of this node instance (AN_xxx) ");
++         outline ("   const char *node_name = parms->node_name;");
++         outline ("   USE(node_name);");
++         outline ("");
++      }
++		else
++		{
++         outline ("");
++         outline ("   // node_name is the name of this node instance (AN_xxx) ");
++         sprintf (olbuf, "   const char *node_name = \"%s\";", name);
++         outline (olbuf);
++         outline ("");
++		}
+ 
+       /* Emit the parameter shadows */
+       while (parm != NULL)
+@@ -728,6 +742,29 @@
+       /* Generate the top of the main loop */
+       outline ("   while(1)");
+       outline ("   {");
++
++      outline ("      // Loop here while we are blocked");
++      outline ("      do {");
++      outline ("         parms->done_ = true;");
++      outline ("         mutex_lock(_done_count_lock);");
++
++      outline ("         _done_count++;");
++      outline ("         if(_done_count >= _num_nodes) ");
++      outline ("         {");
++      outline ("            extern void end_of_cycle(void);");
++      outline ("            _done_count = 0;");
++      outline ("            end_of_cycle();	/* user function hook */");
++      outline ("            reset_all_tasks();	/* clear the status flags */");
++      outline ("            update_all_tasks();	/* reset the status flags */");
++      outline ("            condition_broadcast(_new_cycle);");
++      outline ("            mutex_unlock(_done_count_lock);");
++      outline ("            continue; /* skip the condition wait */");
++      outline ("         }");
++
++      outline ("         condition_wait(_new_cycle,_done_count_lock);");
++      outline ("         mutex_unlock(_done_count_lock);");
++      outline ("      } while( parms->blocked() ); ");
++		
+       outline ("      /******** start of user header ********/");
+ 
+       ResetLineNumber ();
+@@ -894,8 +931,8 @@
+ 
+       if (!is_void)
+       {
+-	 outline ("            parms->output = output;");
+-	 outline ("            parms->output_valid_ = true;");
++         outline ("            parms->output = output;");
++         outline ("            parms->output_valid_ = true;");
+       }
+       outline ("         }\n");
+ 
+@@ -918,28 +955,6 @@
+       outline ("         condition_wait(_new_cycle,_done_count_lock);");
+       outline ("         mutex_unlock(_done_count_lock);");
+       outline ("      } /* while not blocked */");
+-
+-
+-
+-      outline ("      // Handle cases where we are blocked");
+-      outline ("      parms->done_ = true;");
+-      outline ("      mutex_lock(_done_count_lock);");
+-
+-      outline ("      _done_count++;");
+-      outline ("      if(_done_count >= _num_nodes) ");
+-      outline ("      {");
+-      outline ("         extern void end_of_cycle(void);");
+-      outline ("         _done_count = 0;");
+-      outline ("         end_of_cycle();	/* user function hook */");
+-      outline ("         reset_all_tasks();	/* clear the status flags */");
+-      outline ("         update_all_tasks();	/* reset the status flags */");
+-      outline ("         condition_broadcast(_new_cycle);");
+-      outline ("         mutex_unlock(_done_count_lock);");
+-      outline ("         continue; /* skip the condition wait */");
+-      outline ("      }");
+-
+-      outline ("      condition_wait(_new_cycle,_done_count_lock);");
+-      outline ("      mutex_unlock(_done_count_lock);");
+       outline ("   } /* end of main while loop */");
+       outline ("};");
+    }
+@@ -1216,6 +1231,10 @@
+ 	 proc = cur->Proc;
+ 
+ 	 n_name = &Symbols[SymbolTable[cur->SymbolLoc].SymbolLocation];
++
++         // Set the node's name.
++         sprintf (olbuf, "  N_%s->node_name = \"%s\";", n_name, n_name);
++         outline (olbuf);
+ 
+ 	 /* generate storage for the parameters */
+ 	 parm = proc->Parms;

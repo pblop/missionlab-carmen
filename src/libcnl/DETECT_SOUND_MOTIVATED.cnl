@@ -1,0 +1,105 @@
+/**********************************************************************
+ **                                                                  **
+ **               DETECT_SOUND_MOTIVATED.cnl                         **
+ **                                                                  **
+ **  Written by:  Alexander Stoytchev                                **
+ **                                                                  **
+ **  Trigger that fires when a sound is heard and the robot is in    **
+ **  in the mood. The volume of the sound should be above            **
+ **  volume_threshold for the trigger to fire                        **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DETECT_SOUND_MOTIVATED.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool DETECT_SOUND_MOTIVATED with
+   double volume_threshold;
+   double curiousity_threshold;
+   double curiousity_level;
+header
+body
+
+   double x_dir;
+   double y_dir;
+   double vol;
+   char  value[100];
+   double new_value;
+
+   /* This function call returns the volume level.
+      Also, as a side effect it sets the three database double variables
+      associated with sound. This is done only in real mode. In simulation
+      the variables are set from the Sound simulation window in ./src/telop/
+   */
+   exec_detect_sound();
+   
+   vol=atof(get_state("sound_volume"));
+
+   if( vol > volume_threshold)
+   {
+     if( curiousity_level > curiousity_threshold)
+     { 
+        // We decrease our curiousity every time we hear a sound
+        // After a while this trigger will not fire anymore
+        // Because the robot is tired of hearing the same boring thing.
+
+        if((curiousity_level - 0.1) > 0)
+            new_value=curiousity_level - 0.1;
+	    else
+            new_value=0.0;
+
+
+        // This will update the "curiousity_level" in the DATABASE
+        // of the robot and the mission lab console. The Motivational Vector
+        // interface will update the values of its sliders automatically
+        // (it reads the DATABASE periodically and detects any changes).
+        sprintf(value, "%f", new_value);
+	    exec_put_console_state("curiousity_level", value);
+	    printf("DETECT_SOUND_MOTIVATED: Decreasing curiousity to =%s,\n",value);
+
+	   output=true;
+     }
+	 else
+	   output=false;
+   }
+   else
+	  output=false;
+
+   if( debug )
+	{
+	  printf("DETECT_SOUND_MOTIVATED: d_x=%s, d_y=%s, vol=%s, vol2=%f,\n", 
+                   get_state("sound_direction_x"),
+                   get_state("sound_direction_y"),
+                   get_state("sound_volume"), vol);
+
+
+      x_dir=atof(get_state("sound_direction_x"));
+      y_dir=atof(get_state("sound_direction_y"));
+
+      fprintf(stderr,"DETECT_SOUND_MOTIVATED(%d): volume=%.1f sound=<x=%.1f y=%.1f> " \
+                     "out=%s\n", robot_id, vol, 
+                      x_dir, y_dir,
+  	                  output?"YES":"NO");
+	}
+pend
+
+
+/**********************************************************************
+# $Log: DETECT_SOUND_MOTIVATED.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:03  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/03/24 16:56:18  saho
+# Initial revision
+#
+#**********************************************************************/

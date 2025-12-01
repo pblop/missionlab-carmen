@@ -1,0 +1,45 @@
+/**********************************************************************
+ **                                                                  **
+ **                       ECHO_OBJECTS.cnl                       **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: ECHO_OBJECTS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure ObjectList ECHO_OBJECTS with
+   ObjectList    full_list;
+header
+body
+   cerr << "ECHO_OBJECTS(" << robot_id << "):\n";
+   for(int i=0; i<full_list.count; i++)
+      cerr << "   " << full_list.objects[i] << '\n';
+
+   output = full_list;
+pend
+
+
+
+/**********************************************************************
+# $Log: ECHO_OBJECTS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  1996/02/26  03:01:19  doug
+# Initial revision
+#
+#**********************************************************************/

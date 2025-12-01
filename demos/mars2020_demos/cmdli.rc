@@ -1,0 +1,36 @@
+# Turn on communiations debugging
+# The value is a bitfield, so add the bits to form a value:
+#   1 : general startup comms messages
+#   2 : transmitter messages
+#   4 : receiver messages
+#   8 : receiver detailed messages
+#  16 : dump raw packets
+#   All messages = 31
+# The default is 1
+CommsDebug = 31
+
+# Disable multicasting and instead send multiple unicast messages, one to each other address
+# The format is cmdliName@ipaddr:port
+#RobotAddresses = "mlab@192.168.24.2:12345", "gtechRobot1@192.168.22.2:12345", "gtechRobot2@192.168.23.2:12345", "upenn_1@192.168.20.2:12345", "upenn_2@192.168.20.2:12345", "upenn_2@192.168.20.2:32770", "upenn_3@192.168.20.2:32771", "usc_pioneer1@192.168.21.2:12345", "usc_pioneer2@192.168.21.2:32769", "usc_segway@192.168.19.2:12345"
+#RobotAddresses = "mlab@192.168.24.2:12345", "gtech-testRobot1@192.168.22.2:12345", "gtech-testRobot2@192.168.23.2:12345"
+RobotAddresses = "mlab@127.0.0.1:30000", "mini-demoRobot1@127.0.0.1:30001", "mini-demoRobot2@127.0.0.1:30002", "mini-demoRobot3@127.0.0.1:30003", "mini-demoRobot4@127.0.0.1:30004", "gtechRobot1@127.0.0.1:30005", "gtechRobot2@127.0.0.1:30006", "upenn_1@127.0.0.1:30007", "upenn_2@127.0.0.1:30008", "upenn_2@127.0.0.1:30009", "upenn_3@127.0.0.1:30010", "usc_pioneer1@127.0.0.1:30011", "usc_pioneer2@127.0.0.1:30012", "usc_segway@127.0.0.1:30013"
+
+# Set the number of seconds between status messages during normal operations
+# The default is 5
+#NormalMsgPeriod = 5
+
+# Set the number of seconds between status messages while synchronizing
+# The default is 1
+#SyncMsgPeriod = 1
+
+# Set the debug level for the CMDLi intepreter
+# The value is a bitfield, so add the bits to form a value:
+#   1 : General messages while loading the CMDL file
+#   2 : BISON parser messages while loading the CMDL file
+#   4 : FLEX scanner messages while loading the CMDL file
+#   8 : Execution messages from the interpreter 
+#  16 : Synchronization messages from the interpreter
+#   All messages = 31
+# The default is 0
+Debug = 16
+

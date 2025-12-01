@@ -1,0 +1,197 @@
+/**********************************************************************
+ **                                                                  **
+ **                          MUST_LEAVE.cnl  	                     **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Antonio Sgorbissa                                  **
+ **                                                                  **
+ **  Copyright 2000, 2001, Georgia Tech Research Corporation         **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MUST_LEAVE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+init
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool MUST_LEAVE with
+  double alpha;
+  Vector g;
+  Vector f;
+header
+  int get_my_visual_goal(Vector &vg, int &ptvg);
+body
+
+   char *value,*ptr;
+   int cgoal = 0;
+   if( (value=get_state("MisAtGoal")) != NULL )
+       cgoal = (strtol(value,&ptr,10));
+
+   double a_delay = 0.0;
+
+//variabili per alpha
+   double alpha1 = 0.0;
+   double hy_a_t = 0.0;
+   double hyst_a = 0.0;
+
+//variabili per salpha
+   double a_s = 0.0;
+   double a1_s = 0.0;
+   double salpha = 0.0;
+   double hy_sa_t = 0.0;
+   double hyst_sa = 0.0;
+   bool ft;
+   int ngoal = 0;
+
+   if( strcmp(value=get_state("MustLDB"),"") )
+   {
+        a_delay = strtod(value,&ptr);
+        value = ptr+1;
+
+        alpha1 = strtod(value,&ptr);
+        value = ptr+1;
+        hy_a_t = strtod(value,&ptr);
+        value = ptr+1;
+        hyst_a = strtod(value,&ptr);
+        value = ptr+1;
+
+        a_s = strtod(value,&ptr);
+        value = ptr+1;
+        a1_s = strtod(value,&ptr);
+        value = ptr+1;
+        salpha = strtod(value,&ptr);
+        value = ptr+1;
+        hy_sa_t = strtod(value,&ptr);
+        value = ptr+1;
+        hyst_sa = strtod(value,&ptr);
+        value = ptr+1;
+        ft    = (bool)strtol(value,&ptr,10);
+        value = ptr+1;
+        ngoal = (int)strtol(value,&ptr,10);
+   }
+   else ft = true;
+
+   if (ft || (cgoal != ngoal))
+   {
+  	a_delay = 0.0;
+
+  	alpha1=0.0;
+  	hy_a_t = 0.0;
+  	hyst_a = 0.0;
+
+  	a_s=0.0;
+  	a1_s=0.0;
+  	salpha = 0.0;
+  	hy_sa_t = 0.0;
+  	hyst_sa = 0.0;
+	ft = false;
+	ngoal = cgoal;
+
+        //printf("\n Must Leave: GOAL!");
+  }
+
+  //bool cond1 = (g.x >= 0.5); //sgortemp 
+  //bool cond1 = (g.x >= 0.6); //sgortemp
+  bool cond1 = (g.x >= 0.0); 
+
+  //bool cond2 = ((g.x*f.x + g.y*f.y) >=-0.5);
+  bool cond2 = ((g.x*f.x + g.y*f.y) >=0);//sgortemp
+
+  a_delay = a_delay + fabs(alpha-alpha1);
+  a_s = a_s + (alpha-alpha1);
+ 
+
+  bool cond3 = (a_delay >= hyst_a ); //sgortemp
+  alpha1 = alpha;
+
+  if (fabs(alpha)>hy_a_t)
+  {       
+	hy_a_t=fabs(alpha);
+        hyst_a=fabs(alpha);
+       // qua siamo su quella in basso (pendenza 1/2)
+  } 
+  else if (fabs(alpha)<hy_a_t*6/7)
+  {       
+	hy_a_t=fabs(alpha)*7/6;
+        hyst_a=fabs(alpha)/2;
+  } 
+  else
+  // ci muoviamo su un segmento che unisce le due rette (pendenza 4)
+  	hyst_a=4*fabs(alpha)-3*hy_a_t;
+ 
+  salpha += (fabs(a_s-a1_s) * ((a_s+a1_s)/2.0))/10;
+  a1_s = a_s;
+  
+  bool cond4 = (a_delay*2 >= hyst_sa /*-4*M_PI*/); 
+
+  if (fabs(salpha)>hy_sa_t)
+  {       
+	hy_sa_t=fabs(salpha);
+        hyst_sa=fabs(salpha);
+       // qua siamo su quella in basso (pendenza 1/2)
+  } 
+  else if (fabs(salpha)<hy_sa_t*6/7)
+  {       
+	hy_sa_t=fabs(salpha)*7/6;
+        hyst_sa=fabs(salpha)/2;
+  } 
+  else
+  // ci muoviamo su un segmento che unisce le due rette (pendenza 4)
+  	hyst_sa=4*fabs(salpha)-3*hy_sa_t;
+
+  Vector vg; 
+  int ptvg;
+  bool has_vg = (bool) get_my_visual_goal(vg, ptvg);
+  has_vg = false; 
+  output = has_vg|(cond1&cond2&cond3&cond4);
+
+  if (output) 
+  {
+	a_delay = 0.0;
+	a_s = 0.0;
+	a1_s = a_s;
+  }
+
+  value = (char*)malloc(200*sizeof(char));
+  sprintf(value, "%f %f %f %f %f %f %f %f %f %d %d", a_delay, alpha1, hy_a_t, 
+	hyst_a, a_s, a1_s, salpha, hy_sa_t, hyst_sa, ft, ngoal);
+  put_state("MustLDB", value);
+  free (value);
+
+  if (debug)
+  {
+  	bool get_colID(char *&colId);
+   	char *colId;
+   	get_colID(colId);
+
+   	printf("\n %s I = %f SI = %f.", colId, hyst_a, hyst_sa); 
+  	printf("\n  MUSTLEAVE %d %d %d %d a_delay %f alpha %f a_s %f salpha %f ", cond1, cond2, cond3, cond4, a_delay, alpha, a_s, salpha); 
+        
+        fflush(stdout);
+
+   }	
+pend
+
+/**********************************************************************
+# $Log: MUST_LEAVE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  2001/12/23 20:28:57  endo
+# RH 7.1 porting.
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#
+#
+#**********************************************************************/

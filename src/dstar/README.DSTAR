@@ -1,0 +1,42 @@
+
+While integration of D* Lite into MissionLab was supported by
+DARPA MARS program, the D* Lite algorithm itself was developed
+by the independent effort of Sven Koenig and Maxim Likhachev.
+
+This code adheres closely to the D* Lite pseudo-code in the paper:
+
+S. Koenig and M. Likhachev "Improved Fast Replanning for Robot
+Navigation in Unknown Terrain", ICRA-2002.
+
+The paper is also available from Sven Koenig's website:
+
+http://www.cc.gatech.edu/fac/Sven.Koenig/bibsearch/abstract/Koen:02a.html
+
+---------------------------------------------------------------------------
+GoTo_Dstar
+
+The behavior is a front-end for an architecture that tries to switch
+between planning (by D* Lite) and reactive control at appropriate
+situations. The two parameters that control the switching capability are
+the "Dstar_angle_dev" and "Dstar_persistence". The "Dstar_angle_dev"
+parameter is a measure of the 'tolerance' of the planner or the freedom
+given to the reactive control by the planner. A small value for this
+parameter (which is an angle with unit in degrees) causes the planner to
+remain in control most of the time while a large value leaves the reactive
+control in charge. The "Dstar_persistence" parameter determines the inertia
+of the planner. The planner is activated only N cycles after the condition
+for its activation becomes true (and then only when the condition is still
+true after the N cycles), where N is the value of the "Dstar_persistence"
+parameter. The behavior of the system when the "Dstar_persistence" is set
+to zero is undefined.
+
+Upon successful completion of a mission, the behavior outputs a map in the
+file named "dstar.map", in the same directory as the robot executable.
+This map is a text file where each character represents a grid cell.
+During any run, the behavior first determines if this file exists and
+loads it as an initial map if so. This file has to be deleted if another
+mission is to be run on a different overlay. Future releases of Missionlab
+will include the capability of creating a map for D* Lite directly from
+an overlay. A feature that determines if the map in the directory
+corresponds to the current environment will also be included.
+

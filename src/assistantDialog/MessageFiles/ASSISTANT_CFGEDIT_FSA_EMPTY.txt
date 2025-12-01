@@ -1,0 +1,9 @@
+The 'Add Tasks' button creates
+circles representing goals for
+the robot to reach.
+
+The 'Add Trigger' button links
+which connect the states; click
+within one state circle and drag
+the pointer to within another
+state to create a trigger.

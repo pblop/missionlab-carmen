@@ -1,0 +1,726 @@
+/*************************************************
+*
+* This is the AuRA default CDL library file
+*
+* $Id: default.AuRA,v 1.1.1.1 2006/07/12 13:37:54 endo Exp $
+*
+* $Log: default.AuRA,v $
+* Revision 1.1.1.1  2006/07/12 13:37:54  endo
+* MissionLab 7.0
+*
+* Revision 1.2  2006/07/11 08:34:30  endo
+* Clean-up for MissionLab 7.0 release.
+*
+* Revision 1.1.1.1  2005/02/06 22:59:30  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+* Revision 1.41  2000/06/18 02:01:29  endo
+* MoveAhead no longer takes "amount".
+*
+* Revision 1.40  2000/03/30 01:14:03  endo
+* double off_set added for HAS_TURNED.
+*
+* Revision 1.39  2000/02/18 02:20:32  endo
+* fixed the "Wait" trigger's warning problem. (changed from
+* 'int' to 'double' on delay_time).
+*
+* Revision 1.38  2000/02/07 05:56:57  jdiaz
+* doorways walls hallways rooms
+*
+* Revision 1.37  2000/01/24 18:48:20  ellenber
+* Fixed Objects/Obstacles conflict.  Now works with Obstacles.
+*
+* Revision 1.36  1999/10/25 19:31:45  endo
+* rolled back to this version.
+*
+* Revision 1.34  1999/10/05 13:57:41  endo
+* IsLookingAtDegree:[] terminated.
+*
+* Revision 1.33  1999/08/11 21:55:52  jdiaz
+* added STAY_ON_PATH defintion
+*
+* Revision 1.32  1999/07/03 01:18:51  mjcramer
+* Added camera heading get
+* changed objects
+*
+* Revision 1.31  1999/06/29 01:51:03  mjcramer
+* Added  camera control - Funky funky funky
+*
+* Revision 1.30  1999/06/28 20:12:02  endo
+* SETXYTheta added.
+*
+* Revision 1.29  1999/06/23 18:30:07  jdiaz
+* added distances_50 and SETXY
+*
+# Revision 1.28  1999/06/11  15:40:50  conrad
+# *** empty log message ***
+#
+* Revision 1.27  1999/06/07 03:39:22  jdiaz
+* added types for AtDoorwayUltrasound trigger. Added triggers: AtdoorwayUltrasound; HAS_TURNED; and MOVED_DISTANCE
+*
+* Revision 1.26  1999/05/31 02:36:57  conrad
+* Added SPIN, ISFACING, VECTOR_COMPASS_DIFFERIENTAIL, GET_COMPASS_HEADING
+*
+* Revision 1.25  1999/05/28 00:28:06  mjcramer
+* Fixed "object" and "obstacle" confusion, added vision
+*
+* Revision 1.24  1997/02/14 03:52:56  zchen
+* add move_ahead
+*
+# Revision 1.23  1996/06/21  22:48:53  doug
+# *** empty log message ***
+#
+# Revision 1.22  1996/06/21  15:23:54  doug
+# removed blizzard robot type.
+#
+# Revision 1.21  1996/06/17  22:58:36  doug
+# *** empty log message ***
+#
+# Revision 1.20  1996/06/13  15:24:30  doug
+# *** empty log message ***
+#
+# Revision 1.19  1996/06/05  20:28:31  doug
+# *** empty log message ***
+#
+# Revision 1.18  1996/06/02  20:56:09  doug
+# *** empty log message ***
+#
+# Revision 1.17  1996/06/01  21:55:00  doug
+# *** empty log message ***
+#
+# Revision 1.16  1996/05/14  23:17:57  doug
+# *** empty log message ***
+#
+# Revision 1.15  1996/05/13  15:32:19  doug
+# *** empty log message ***
+#
+# Revision 1.14  1996/05/13  15:30:16  doug
+# *** empty log message ***
+#
+# Revision 1.13  1996/04/30  20:44:08  doug
+# *** empty log message ***
+#
+# Revision 1.13  1996/04/30  20:44:08  doug
+# *** empty log message ***
+#
+# Revision 1.12  1996/04/18  00:21:13  doug
+# *** empty log message ***
+#
+# Revision 1.11  1996/04/11  04:08:19  doug
+# *** empty log message ***
+#
+# Revision 1.10  1996/04/06  23:55:15  doug
+# *** empty log message ***
+#
+# Revision 1.9  1996/03/04  00:00:14  doug
+# *** empty log message ***
+#
+# Revision 1.8  1996/03/01  00:48:13  doug
+# *** empty log message ***
+#
+# Revision 1.7  1996/02/29  01:48:38  doug
+# *** empty log message ***
+#
+# Revision 1.6  1996/02/28  03:57:57  doug
+# *** empty log message ***
+#
+# Revision 1.5  1996/02/27  05:09:12  doug
+# *** empty log message ***
+#
+# Revision 1.4  1996/02/25  01:14:53  doug
+# *** empty log message ***
+#
+# Revision 1.3  1996/02/19  21:59:37  doug
+# *** empty log message ***
+#
+# Revision 1.2  1996/01/10  17:27:49  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/11/27  21:09:15  doug
+# Initial revision
+#
+*
+**************************************************/
+
+/********************* Types *****************************/
+
+defType[AuRA] location;
+defType[AuRA] Vector;	// Replaces displacement
+defType[AuRA] state;
+defType[AuRA] link;
+defType[AuRA] robot_position;
+defType[AuRA] object_locations;
+defType[AuRA] image;
+defType[AuRA] ObjectList;
+defType[AuRA] Reading;
+defType[AuRA] obs_array;
+defType[AuRA] raw_sonar_array;
+
+defType[AuRA] Range_01 DisplayAs SliderBar 0 1 |Meters| = {Not}, {Slightly}, {Neutral}, {Mostly}, {Extremely};
+defType[AuRA] Range_5 DisplayAs SliderBar 0 5 |Meters| = {0}, {2.5}, {5.0};
+
+
+// Times in the range of 0 to 30 seconds
+defType[AuRA] Time_30 DisplayAs SliderBar 0 30 |Seconds| = {No}, {Quick}, {Short}, {Medium}, {Long}, {Extreme};
+
+// Distances in the range of 0 to 10 meters
+defType[AuRA] Distances_10 DisplayAs SliderBar 0 10 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+// Distances in the range of 0 to 50 meters
+defType[AuRA] Distances_50 DisplayAs SliderBar 0 50 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+// Distances in the range of 0 to 100 meters
+defType[AuRA] Distances_100 DisplayAs SliderBar 0 100 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+defType[AuRA] Tiempo_30 DisplayAs SliderBar 0 30 |Minutos| = {0 min},{30 min};
+
+defType[AuRA] Heading_360 DisplayAs SliderBar 0 360 |Degrees| = {0},{180},{360};
+
+defType[AuRA] Heading_90 DisplayAs SliderBar -90 90 |Degrees| = {Right},{Straight},{Left};
+
+defType[AuRA] Heading_45 DisplayAs SliderBar -45 45 |Degrees| = {Down}, {Level}, {Up};
+
+defType[AuRA] Degrees_90 DisplayAs SliderBar 0 90 |Degrees| = {Accurate}, {Sloppy};
+
+defType[AuRA] Degrees_45 DisplayAs SliderBar 0 45 |Degrees| = {Accurate}, {Sloppy};
+
+defType[AuRA] Ang_Velocity DisplayAs SliderBar -1000 1000 |Degrees/Sec| = {-1000},{0},{1000};
+
+defType[AuRA] Slippage_Factor DisplayAs SliderBar 0 2 |Multiplier| = {0},{1},{2};
+
+defType[AuRA] Awayness_10 DisplayAs SliderBar 0 10 |Meters| = {Somewhat Far}, {Far}, {Very Far};
+defType[AuRA] Nearness_10 DisplayAs SliderBar 0 10 |Meters| = {Very Near}, {Near}, {Somewhat Near};
+
+//defType ObjectClasses  DisplayAs CheckBox = {Mines}, {Enemy_Robots}, {Flags}, {EOD_Areas}, {Rocks}, {Trees_and_Shrubs}, {Home_Base}, {Unknown_Objects}, {Hiding_Places}, {Cans};
+// We changed this for our vision specific operation, this does not have to be permanent -mjc
+
+defType[AuRA] ObjectClasses  DisplayAs CheckBox = {Red_Marker}, {Yellow_Marker}, {Green_Marker};
+
+//defType OneObjectClass  DisplayAs RadioBox = {Mine}, {Enemy_Robot}, {Flag}, {EOD_Area}, {Rock}, {Tree_or_Shrub}, {Home_Base}, {Unknown_Object}, {Hiding_Place}, {Can};
+// We changed this for our vision specific operation, this does not have to be permanent -mjc
+
+defType[AuRA] OneObjectClass  DisplayAs RadioBox = {Red_Marker}, {Yellow_Marker}, {Green_Marker};
+
+defType[AuRA] Map_Location DisplayAs TwoPoints;
+defType[AuRA] Start_Location DisplayAs TwoPoints;
+defType[AuRA] End_Location DisplayAs TwoPoints;
+
+defType[AuRA] DirectionTypes DisplayAs RadioBox = {Right}, {Left};
+
+defType[AuRA] FormationTypes  DisplayAs RadioBox = {NoFormation}, {Sweep}, {Line}, {LineLeft}, {LineRight}, {Diamond}, {Wedge}, {WedgeLeft}, {WedgeRight}, {Column};
+
+// Define symbolic names for the keypresses.
+// The first letter of the name is the corresponding keypress
+// the case is not sensitive.  All other key presses are mapped to a space
+// which is shown as the first name in this list.
+defType[AuRA] KeyPress  DisplayAs RadioBox = {Danger}, {Safe}, {Abort};
+
+defType[AuRA] TurnMode  DisplayAs RadioBox = {ON},{OFF};
+
+defType[AuRA] ThetaPsiMode DisplayAs RadioBox = {Check_Theta_Only}, {Check_Psi_Only}, {Check_Both_Theta_And_Psi};
+
+
+/********************* Binding points *****************************/
+defIBP[AuRA] robot_position sense_location();
+
+defIBP[AuRA] int sense_compass();
+
+defIBP[AuRA] raw_sonar_array sense_raw_sonar();
+
+defIBP[AuRA] obs_array sense_obstacles(
+    double max_sensor_range);
+
+defIBP[AuRA] ObjectList sense_objects(
+    double max_sensor_range);
+
+defOBP[AuRA] void movement(
+    Vector v,
+    double base_vel);
+
+defOBP[AuRA] void pantilt(
+    Vector look_loc );
+
+defOBP[AuRA] void pantiltzoom(
+    Vector look_loc,
+    const int zoom );
+
+defRBP[AuRA] vehicle();
+
+/******************** sensors ********************/
+
+defSensor[AuRA] binds sense_location robot_position GET_LOCATION();
+defSensor[AuRA] binds sense_compass int GET_COMPASS_HEADING();
+
+
+defSensor[AuRA] binds sense_raw_sonar raw_sonar_array RAW_ULTRASONICS
+|Return a list of the raw sonar readings from the robot|
+	();
+
+defSensor[AuRA] binds sense_obstacles obs_array DETECT_OBSTACLES
+|Return a list of all objects detected within the sonar range (meters)|
+      (const double max_sensor_range = {10});
+
+defSensor[AuRA] binds sense_objects ObjectList DETECT_OBJECTS
+|Return a list of all objects detected by the vision system|
+      (const double max_sensor_range = {100} );
+
+/*defSensor[AuRA] binds video image pulnix_camera();*/
+
+
+/******************** actuators ********************/
+
+defActuator[AuRA] binds movement void DRIVE(
+      Vector v,
+      const double max_vel = {0.2},
+      const double base_vel = {0.1},
+      const double cautious_vel = {0.05},
+      const boolean  cautious_mode = {false});
+
+defActuator[AuRA] binds movement void DRIVE_W_SPIN(
+      Vector v,
+      const double max_vel = {0.2},
+      const double base_vel = {0.1},
+      const double cautious_vel = {0.05},
+      const boolean  cautious_mode = {false});
+
+defActuator[AuRA] binds pantilt void PANTILT(
+      Vector look_loc );
+
+defActuator[AuRA] binds pantiltzoom void PANTILTZOOM(
+      Vector look_loc,
+      const int zoom );
+
+defActuator[AuRA] binds movement void DRIVE_ROOMBA(
+      Vector v,
+      const double max_vel = {0.2},
+      const double base_vel = {0.1},
+      const double cautious_vel = {0.05},
+      const boolean  cautious_mode = {false});
+
+
+/******************** robots ********************/
+
+defRobot[AuRA] binds vehicle MRV2(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION,
+    sensor   vision_system:DETECT_OBJECTS);
+
+defRobot[AuRA] binds vehicle HUMMER(
+    actuator base:DRIVE,
+    sensor   xyt:GET_LOCATION,
+    sensor   vision_system:DETECT_OBJECTS);
+
+defRobot[AuRA] binds vehicle PIONEERAT(
+    actuator base:DRIVE,
+    actuator camera:PANTILT,
+    sensor   vision_system:DETECT_OBJECTS,
+    sensor   sonars:DETECT_OBSTACLES,
+    sensor   shaftencoders:GET_LOCATION);
+
+/********************* Operators *****************************/
+
+defOp[AuRA] binds FSA Vector FSA FSAstyle(
+//    boolean reset_when_regain_scope,
+    list [boolean triggers, expression rules, member society]);
+
+defOp[AuRA] binds COOP Vector COOP SELECTstyle(
+   list [Vector members, const float weight = {1.0}]
+   );
+
+defOp[AuRA] binds MDL_coordinator Vector MDL_coordinator MDLstyle(
+   commands command_list,
+
+   Vector moveto,
+   Vector teleop,
+   Vector occupy,
+
+   boolean moveto_done,
+   boolean teleop_done,
+   boolean occupy_done
+   );
+
+/********************* Agents *****************************/
+
+defAgent[AuRA] binds VARIABLE double VARIABLE(const double value);
+
+defAgent[AuRA] binds GET_HEADING double GET_HEADING(robot_position cur_pos);
+
+defAgent[AuRA] binds VECTOR_COMPASS_DIFFERENTIAL Vector VECTOR_COMPASS_DIFFERENTIAL(
+	double Desired_heading,
+	double Tolerance,
+	int Compass_heading
+);
+
+defAgent[AuRA] binds STAY_ON_PATH location STAY_ON_PATH(
+    Vector Start,
+    Vector End,
+    double Path_Width
+);
+
+defAgent[AuRA] binds GET_XY location GET_XY(robot_position cur_pos);
+
+defAgent[AuRA] binds AVOID_STATIC_OBSTACLES Vector AVOID_STATIC_OBSTACLES(
+    const double sphere = {3.0},
+    const double safety_margin = {0.5},
+    object_locations readings);
+
+defAgent[AuRA] binds PROBE Vector PROBE(
+    const double sphere = {3.0},
+    const double safety_margin = {0.5},
+    object_locations readings);
+
+defAgent[AuRA] binds NOISE Vector NOISE(
+    const int persistence = {20},
+    double robot_heading);
+
+defAgent[AuRA] binds MOVE_TO_GOAL Vector MOVE_TO_GOAL(
+    Vector goal_rel_loc,
+    double success_radius);
+
+defAgent[AuRA] binds IR_A_ROOMBA Vector IR_A_ROOMBA(
+    Vector goal_rel_loc,
+    const double location_gain = {1.0},
+	const double obstacle_gain = {1.0},
+	const double sphere = {0.5});
+
+defAgent[AuRA] binds IR_POSICION_OBJETIVO Vector IR_POSICION_OBJETIVO(
+    const double location_gain = {1.0},
+    const double obstacle_gain = {1.0},
+    const double sphere = {0.5},
+    Vector obstaculo);
+
+defAgent[AuRA] binds ASPIRAR Vector ASPIRAR();
+
+//defAgent[AuRA] binds GUIAR_ROBOT Vector GUIAR_ROBOT(
+//    int num,
+//    Vector pasillo);
+
+defAgent[AuRA] binds SEGUIR_LIDER Vector SEGUIR_LIDER(
+    Vector obstaculo);
+
+defAgent[AuRA] binds IR_POSICON_ANT_LIDER Vector IR_POSICON_ANT_LIDER(
+    Vector obstaculo);
+
+defAgent[AuRA] binds ASPIRAR560 Vector ASPIRAR560();
+
+defAgent[AuRA] binds MOVE_AHEAD Vector MOVE_AHEAD(
+    double heading);
+
+defAgent[AuRA] binds SETXY Vector SETXY(
+    double x,
+    double y);
+
+defAgent[AuRA] binds SETXYTHETA Vector SETXYTHETA(
+    Vector new_robot_location,
+    double new_theta);
+
+defAgent[AuRA] binds MOVE_TO Vector MOVE_TO(
+    boolean have_a_goal,
+    Vector goal_rel_loc);
+    
+defAgent[AuRA] binds CARMEN_NAVIGATE Vector CARMEN_NAVIGATE(
+    Vector goal);
+
+defAgent[AuRA] binds ENTER_ROOM Vector ENTER_ROOM(
+    double distance);
+
+defAgent[AuRA] binds LEAVE_ROOM Vector LEAVE_ROOM();
+
+defAgent[AuRA] binds ENTER_ALTERNATE_HALLWAY Vector ENTER_ALTERNATE_HALLWAY(
+    double distance);
+
+defAgent[AuRA] binds DETECT_ALTERNATE_HALLWAY boolean DETECT_ALTERNATE_HALLWAY();
+
+defAgent[AuRA] binds GLOBAL_TO_EGOCENTRIC Vector GLOBAL_TO_EGOCENTRIC(
+    Vector global,
+    location robot_location,
+    double robot_heading);
+
+defAgent[AuRA] binds POS_ANT_LIDER_REL_LOC Vector POS_ANT_LIDER_REL_LOC(
+    robot_position pos);
+
+defAgent[AuRA] binds got_continue boolean got_continue();
+
+defAgent[AuRA] binds DATABASE_VALUE double DATABASE_DOUBLE(
+    const string key,
+    const double initial);
+
+defAgent[AuRA] binds DATABASE_VALUE int DATABASE_INT(
+    const string key,
+    const int initial);
+
+defAgent[AuRA] binds DATABASE_VALUE boolean DATABASE_BOOLEAN(
+    const string key,
+    const boolean initial);
+
+defAgent[AuRA] binds TELOP Vector TELOP(
+    int telop_mode,
+    double robot_heading,
+    double joystick_x,
+    double joystick_y,
+    double joystick2_x,
+    double joystick2_y,
+    double slider_1,
+    double slider_2,
+    int joy_buttons);
+    
+defAgent[AuRA] binds GROUSAL_TELOP_CSB Vector GROUSAL_TELOP_CSB(
+    int telop_mode,
+    double robot_heading,
+    double joystick_x,
+    double joystick_y,
+    double joystick2_x,
+    double joystick2_y,
+    double slider_1,
+    double slider_2,
+    int joy_buttons);
+
+defAgent[AuRA] binds FILTER_OBJECT_CLASSES ObjectList FILTER_OBJECT_CLASSES
+|Perceptual filter passing only objects with one of the specified colors|
+(list const string desired_color, ObjectList full_list);
+
+defAgent[AuRA] binds FILTER_OBJECTS ObjectList FILTER_OBJECTS
+|Perceptual filter passing only objects with the specified color|
+(const string desired_color, ObjectList full_list);
+
+defAgent[AuRA] binds FILTER_OBJECTS_BY_CLASS ObjectList FILTER_OBJECTS_BY_CLASS
+|Perceptual filter passing only objects of the specified types|
+(
+// If false, pass objects only of the indicated types
+// If true, pass objects only if NOT the indicated types
+const boolean remove_these,
+const ObjectClasses classes,
+ObjectList full_list
+);
+
+defAgent[AuRA] binds IS_AN_OBJECT boolean IS_AN_OBJECT
+|Perceptual trigger if there is at least one object in the list|
+(ObjectList object_list);
+
+defAgent[AuRA] binds CLOSEST_OBJECT Reading CLOSEST_OBJECT
+|Perceptual process extracting the closest object from a list of objects|
+(ObjectList object_list);
+
+defAgent[AuRA] binds CLOSEST_OBSTACLE Vector CLOSEST_OBSTACLE
+|Perceptual process extracting the closest generic obstacle|
+(obs_array obstacle_list);
+
+defAgent[AuRA] binds IS_AT_GOAL boolean IS_AT_GOAL
+|Perceptual trigger determining if robot is within success distance from goal|
+(boolean have_a_goal, Vector goal_rel_loc, double success_radius);
+
+defAgent[AuRA] binds ESTOY_OBJETIVO boolean ESTOY_OBJETIVO
+|Trigger que determina si un robot ha alcanzado el punto que deseaba con un margen de error|
+(boolean have_a_goal, double success_radius);
+
+defAgent[AuRA] binds ESTOY_POS_ANT_LIDER boolean ESTOY_POS_ANT_LIDER
+|Trigger que determina si un robot ha alcanzado el punto que deseaba con un margen de error|
+(boolean have_a_goal, double success_radius);
+
+
+defAgent[AuRA] binds FIN_ASPIRAR boolean FIN_ASPIRAR
+|Trigger que indica cuando se ha superado el tiempo de aspirar|
+(double tiempo_limpieza);
+
+defAgent[AuRA] binds NUEVA_TAREA boolean NUEVA_TAREA
+|Trigger que indica cuando ha llegado un mensaje de un tipo determinado|
+();
+
+defAgent[AuRA] binds OBJECT_LOCATION Vector OBJECT_LOCATION
+|Perceptual filter extracting X,Y location of an object from reading|
+(Reading   object);
+
+defAgent[AuRA] binds AVOID_OBJECTS Vector AVOID_OBJECTS
+|Motor behavior generating a vector away from any close objects|
+( const double sphere = {3.0},
+  const double safety_margin = {0.5},
+  ObjectList   objlist);
+
+defAgent[AuRA] binds AVOID_OBSTACLES Vector AVOID_OBSTACLES
+|Motor behavior generating a vector away from any close obstacles|
+( const double sphere = {3.0},
+  const double safety_margin = {0.5},
+  obs_array   readings);
+
+defAgent[AuRA] binds AVOID_OBSTACLES_MEM Vector AVOID_OBSTACLES_MEM
+|Motor behavior generating a vector away from any close objects|
+( const double sphere = {3.0},
+  const double safety_margin = {0.5},
+  const double decay_rate = {0.01},
+  obs_array readings,
+  robot_position cur_pos
+);
+
+defAgent[AuRA] binds MOVE_TO_FREE_SPACE Vector MOVE_TO_FREE_SPACE
+|Motor behavior generating a vector towards open areas|
+( const double horizon = {3.0},
+  obs_array   readings);
+
+defAgent[AuRA] binds CONSTANT boolean CONSTANT
+|Perceptual trigger generating constant value useful for hardcoding transitions|
+(const boolean value);
+
+defAgent[AuRA] binds AND boolean AND
+|Perceptual trigger whose output is true if both inputs are true|
+(boolean a, boolean b);
+
+defAgent[AuRA] binds NOT boolean NOT
+|Perceptual trigger whose output is true when the input is false|
+(boolean a);
+
+defAgent[AuRA] binds NULL_MS Vector NULL_MS
+|the NULL motor schema outputs a zero vector, useful in empty FSA states|
+();
+
+defAgent[AuRA] binds DROP_IN_BASKET Vector DROP_IN_BASKET
+|Drop the object the robot is carrying into the basket (if robot is near basket)|
+(Reading basket);
+
+defAgent[AuRA] binds PICKUP_OBJECT void PICKUP_OBJECT
+|Pickup the object (if the robot is next to it)|
+(Reading object);
+
+defAgent[AuRA] binds MARK_OBJECT void MARK_OBJECT
+|Mark an object (if the robot is next to it) by changing its color|
+(Reading object,
+ OneObjectClass  new_class);
+
+defAgent[AuRA] binds HALT Vector HALT
+|Halts the robot executable|
+();
+
+defAgent[AuRA] binds FIRST_TIME boolean FIRST_TIME
+|Perceptual trigger causing transition to occur first time the state executes|
+();
+
+defAgent[AuRA] binds DOORWAY_ULTRASOUND boolean DOORWAY_ULTRASOUND
+|Perceptual trigger when a doorway is encountered in sonar patterns|
+(double robot_length,
+ double hallway_width,
+ int look_for);
+
+defAgent[AuRA] binds NOOP Vector NOOP
+|An agent which performs no operation, generating an empty output|
+();
+
+defAgent[AuRA] binds WAIT boolean WAIT(
+    double delay_time);
+
+defAgent[AuRA] binds ISFACING boolean ISFACING(
+    const int desired_heading,
+    const int accuracy,
+    double robot_heading);
+
+defAgent[AuRA] binds HAS_TURNED boolean HAS_TURNED(
+    double desired_turn_angle,
+    double robot_heading,
+    double off_set);
+
+defAgent[AuRA] binds MOVED_DISTANCE boolean MOVED_DISTANCE(
+    double desired_distance,
+    robot_position position);
+
+defAgent[AuRA] binds SPIN Vector SPIN(
+    const double angular_velocity,
+    const double slippageFactor);
+
+defAgent[AuRA] binds ECHO_OBJECTS ObjectList ECHO_OBJECTS
+|Debug tool which writes the list of objects to stderr and then returns it|
+(ObjectList full_list);
+
+defAgent[AuRA] binds PROBE_MOVABLE boolean PROBE_MOVABLE
+|Is the object movable?|
+( Reading object);
+
+defAgent[AuRA] binds PROBE_OBJECT Vector PROBE_OBJECT
+|Determine the object proporties|
+( Reading object);
+
+defAgent[AuRA] binds IS_VALID_OBJECT boolean IS_VALID_OBJECT
+|Is this a valid object?|
+( Reading object);
+
+defAgent[AuRA] binds MAP_LOCATION Vector MAP_LOCATION
+|Determine the location of a map feature|
+( const string feature_name );
+
+defAgent[AuRA] binds LAST_KEY_PRESS int LAST_KEY_PRESS
+|Return the last key that was pressed on the operator console|
+( );
+
+defAgent[AuRA] binds EQUAL_INT boolean EQUAL_INT
+|check if the two values are equal|
+(int a, int b);
+
+defAgent[AuRA] binds ADD_OBJECT Vector ADD_OBJECT
+|Add an object to the environment|
+(string color,
+ int style,
+ location place,
+ double diameter );
+
+defAgent[AuRA] binds DEBUG_PROC Vector DEBUG_PROC
+|Writes a counter to stderr to aid debugging|
+( );
+
+defAgent[AuRA] binds MAINTAIN_FORM Vector MAINTAIN_FORM
+|Maintain our position in the formation|
+(Vector offset,
+ const double dead_zone_radius,
+ const double saturation_length );
+
+defAgent[AuRA] binds COMPUTE_FORM_POSITION Vector COMPUTE_FORM_POSITION
+|get egocentric vector to our correct position in the formation|
+(const double spacing,
+ const int unit_size,
+ Vector unit_center_relative,
+ double formation_heading,
+ location robot_location,
+ double robot_heading,
+ string formation_name
+);
+
+defAgent[AuRA] binds COMPUTE_UNIT_CENTER Vector COMPUTE_UNIT_CENTER
+|Compute the center location of a group of objects|
+(ObjectList   robots);
+
+defAgent[AuRA] binds SCALE_VECTOR Vector SCALE_VECTOR
+|Multiply a vector by a scale factor|
+(Vector v,
+ double multiplier);
+
+defAgent[AuRA] binds DETECT_FORM_HEADING double DETECT_FORM_HEADING
+|Determine the heading of the formation|
+(Vector relative_goal,
+ Vector telop_input,
+ double telop_mag,
+ const double default_trigger,
+ double robot_heading
+);
+
+defAgent[AuRA] binds COUNT_OBJECTS int COUNT_OBJECTS(
+   ObjectList   objlist);
+
+defAgent[AuRA] binds SUM int SUM(
+    list int values);
+
+defAgent[AuRA] binds SUBTRACT_VECTORS Vector SUBTRACT_VECTORS
+|Compute the difference of the two vectors|
+(Vector   A,
+ Vector   B);
+
+defAgent[AuRA] binds DEBUG_SHOW_INPUT Vector DEBUG_SHOW_INPUT
+|Debug tool which writes the vector to stderr|
+(string msg,
+ Vector input);
+
+defAgent[AuRA] binds LOOK_TO Vector LOOK_TO(
+	const double look_theta,
+	const double look_psi );
+
+//defAgent[AuRA] binds IS_LOOKING_AT_DEGREE boolean IS_LOOKING_AT_DEGREE(
+//	const int lookfor,
+//	const double desired_theta,
+//	const double delta_theta,
+//	const double desired_psi,
+//	const double delta_psi );

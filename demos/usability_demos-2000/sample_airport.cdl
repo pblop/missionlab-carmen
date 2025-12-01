@@ -1,0 +1,206 @@
+/*************************************************
+*
+* This CDL file sample_airport.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2376 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA2:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2391]<136,222>|State1| = [
+                %Goal_Location = {155.33,326.76},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2393]<459,115>|State2| = [
+                %Goal_Location = {309.05,169.82},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2395]<738,274>|State3| = [
+                %Goal_Location = {461.17,150.50},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2397]<688,559>|State4| = [
+                %Goal_Location = {503.82,203.62},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2399]<210,545>|State5| = [
+                %Goal_Location = {546.48,194.77},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2401]<273,350>|State6| = [
+              Stop]<10,10>
+,
+            rules[$AN_2391]<136,222>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {155.33,326.76}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_2393,
+            rules[$AN_2393]<459,115>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {309.05,169.82}
+,
+              AtGoal]<0,0>|Trans6|
+ goto $AN_2395,
+            rules[$AN_2395]<738,274>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {461.17,150.50}
+,
+              AtGoal]<0,0>|Trans7|
+ goto $AN_2397,
+            rules[$AN_2397]<688,559>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {503.82,203.62}
+,
+              AtGoal]<0,0>|Trans8|
+ goto $AN_2399,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans9|
+ goto $AN_2391,
+            rules[$AN_2399]<210,545>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {546.48,194.77}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_2401)<292,156>|Mission|
+,
+        max_vel = {1.2},
+        base_vel = {0.8},
+        cautious_vel = {0.1},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2415 from vehicle(
+  bound_to = sample_airportRobot2:PIONEERAT(
+sample_airportRobot2:[
+          $AN_2376]
+)<30,152>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2416 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2431]<123,244>|State1| = [
+                %Goal_Location = {19.32,482.90},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2433]<479,136>|State2| = [
+                %Goal_Location = {85.31,524.75},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2435]<674,338>|State3| = [
+                %Goal_Location = {311.47,482.09},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2437]<393,532>|State4| = [
+                %Goal_Location = {358.95,456.34},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2439]<99,415>|State5| = [
+              Stop]<10,10>
+,
+            rules[$AN_2431]<123,244>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {19.32,482.90}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_2433,
+            rules[$AN_2433]<479,136>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {85.31,524.75}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_2435,
+            rules[$AN_2435]<674,338>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {311.47,482.09}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_2437,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_2431,
+            rules[$AN_2437]<393,532>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {358.95,456.34}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_2439)<292,156>|Mission|
+,
+        max_vel = {1.2},
+        base_vel = {0.8},
+        cautious_vel = {0.1},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_2451 from vehicle(
+  bound_to = sample_airportRobot1:PIONEERAT(
+sample_airportRobot1:[
+          $AN_2416]
+)<32,20>|Individual Robot|
+);
+
+[
+[
+    $AN_2451,
+    $AN_2415]<10,10>|Group of Robots|
+]<10,10>
+

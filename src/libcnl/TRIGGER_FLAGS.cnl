@@ -1,0 +1,58 @@
+/**********************************************************************
+ **                                                                  **
+ **                      TRIGGER_FLAGS.cnl                           **
+ **                                                                  **
+ **                 Written by:  Jonathan F. Diaz                    **
+ **                                                                  **
+ **  Copyright 1995 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+init
+iend
+
+/***********************************************************************/
+
+procedure Vector  SET_GLOBAL_TRIGGER_FLAG with
+ CNLString_t  key;
+
+header
+body
+{
+  VECTOR_CLEAR(output);
+  exec_put_console_state(key.val, "TRUE");
+  
+}
+pend
+ 
+procedure Vector  SET_TRIGGER_FLAG with
+ CNLString_t  key;
+
+header
+body
+{
+  VECTOR_CLEAR(output);
+  put_state(key.val, "TRUE");
+
+}
+pend
+
+procedure bool IS_TRIGGER_FLAG_SET with
+ CNLString_t  key;
+header
+body
+{
+  /* return_state also deletes 'key' from the database */  
+  char *s = return_state(key.val);
+
+  if (s && !strcmp(s, "TRUE")) output = true;
+  else output = false;
+}
+pend
+
+
+

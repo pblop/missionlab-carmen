@@ -1,0 +1,115 @@
+/*************************************************
+*
+* This CDL file sample_eod.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2780 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2795]<255,277>|State1| = [
+                %Objects = {Mines}
+,
+              LookFor]<10,10>
+,
+            society[$AN_2797]<543,278>|State2| = [
+                %Objects = {Mines},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {2.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2799]<823,282>|State3| = [
+              Stop]<10,10>
+,
+            society[$AN_2801]<544,479>|State5| = [
+                %Object = {Mine}
+,
+              TerminateObject]<10,10>
+,
+            society[$AN_2803]<255,490>|State6| = [
+              Stop]<10,10>
+,
+            society[$AN_2805]<544,94>|State7| = [
+                %Objects = {Mines | Friendly_Robots},
+                %move_away_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.1},
+                %avoid_objects_sphere = {200.0},
+                %avoid_objects_safety_margin = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveAway]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2795,
+            rules[$AN_2795]<255,277>|State1| = if [
+                %Objects = {Mines}
+,
+              Detect]<0,0>|Trans2|
+ goto $AN_2797,
+            rules[$AN_2797]<543,278>|State2| = if [
+                %Objects = {Mines},
+                %Distance = {20.0}
+,
+              Near]<0,0>|Trans3|
+ goto $AN_2799,
+            rules[$AN_2799]<823,282>|State3| = if [
+                %Delay = {1.0}
+,
+              Wait]<0,0>|Trans6|
+ goto $AN_2801,
+            rules[$AN_2801]<544,479>|State5| = if [
+                %Delay = {1.0}
+,
+              Wait]<0,0>|Trans7|
+ goto $AN_2795,
+            rules[$AN_2795]<255,277>|State1| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<0,0>|Trans8|
+ goto $AN_2803,
+            rules[$AN_2797]<543,278>|State2| = if [
+                %Objects = {Friendly_Robots},
+                %Distance = {50.0}
+,
+              Near]<608,199>|Trans1|
+ goto $AN_2805,
+            rules[$AN_2805]<544,94>|State7| = if [
+                %Objects = {Friendly_Robots},
+                %Distance = {60.0}
+,
+              AwayFrom]<493,197>|Trans2|
+ goto $AN_2797)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_2823 from vehicle(
+  bound_to = sample_eodRobot1:DEFAULT_ROBOT(
+sample_eodRobot1:[
+          $AN_2780]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_2823]<10,10>|Group of Robots|
+]<10,10>
+

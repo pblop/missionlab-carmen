@@ -1,0 +1,71 @@
+/**********************************************************************
+ **                                                                  **
+ **                  CNP_SAVE_TARGET_VEHICLE_TYPE.cnl                **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  CNP_SAVE_TARGET_VEHICLE_TYPE saves the environment of a target. **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CNP_SAVE_TARGET_VEHICLE_TYPE.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+//***********************************************************************
+// This function saves the vehicle type of the target for CNP.
+//***********************************************************************
+procedure Vector CNP_SAVE_TARGET_VEHICLE_TYPE with
+    ObjectReading object;
+header
+    bool saved = false;
+body
+{
+    char valueBuf[1024];
+    int vehicleType;
+
+    VECTOR_CLEAR(output);
+
+    if (!saved)
+    {
+        if (object.id != NOID)
+        {
+            vehicleType = exec_check_vehicle_type(object.id);
+
+            sprintf(valueBuf, "%s", ROBOT_MOBILITY_TYPE_NAMES[vehicleType].c_str());
+            put_state((char *)(CNP_TARGET_VEHICLE_TYPE_KEY.c_str()), valueBuf);
+
+            saved = true;
+
+            if (debug)
+            {
+                fprintf(
+                    stderr,
+                    "CNP_SAVE_TARGET_VEHICLE_TYPE.cnl: Vehicle Type = %s [%d]\n",
+                    ROBOT_MOBILITY_TYPE_NAMES[vehicleType].c_str(),
+                    vehicleType);
+            }
+        }
+    }
+}
+pend
+
+/**********************************************************************
+# $Log: CNP_SAVE_TARGET_VEHICLE_TYPE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/05/02 04:17:18  endo
+# TrackTask improved for the experiment.
+#
+#**********************************************************************/

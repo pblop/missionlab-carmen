@@ -1,0 +1,16 @@
+SGI64_COMPILER = CC -64
+SGI64_CCOMPILER = cc -64
+SGI64_FLAGS = -g -DSGI
+SGI64_LINK = -w -lC -lCsup
+
+#define SGI64MakeLibrary(file,depobjs,ldobjs)         @@\
+file: depobjs            							@@\
+	$(RM) $@										@@\
+	ar crv $@ ldobjs									
+
+install.SGI64:: SGI64/$(IPTLIB)
+	cp SGI64/$(IPTLIB) $(INSTALL_DIR)/lib/SGI64
+
+depend.SGI64::
+	$(DEPEND) -I. -I/usr/include/CC -pSGI64/ $(SGI64_FLAGS) $(CCFLAGS) $(SGI64_LIB_SRCS)
+

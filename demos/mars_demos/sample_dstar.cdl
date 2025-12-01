@@ -1,0 +1,62 @@
+/*************************************************
+*
+* This CDL file sample_dstar.cdl was created with cfgedit
+* version 5.0.09
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_1539 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1555]<233,234>|State1| = [
+                %Goal_Location = {18.29, 12.24},
+                %Dstar_gridsize = {0.15},
+                %Dstar_length = {300.66},
+                %Dstar_width = {300.66},
+                %Dstar_angle_dev = {25.0},
+                %Dstar_persistence = {3.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.75},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo_Dstar]<10,10>
+,
+            society[$AN_1557]<712,241>|State2| = [
+              Stop]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1555,
+            rules[$AN_1555]<233,234>|State1| = if [
+                %Goal_Tolerance = {0.13},
+                %Goal_Location = {18.29, 12.24}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_1557)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1563 from vehicle(
+  bound_to = sample_dstarRobot1:DEFAULT_ROBOT(
+sample_dstarRobot1:[
+          $AN_1539]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_1563]<10,10>|Group of Robots|
+]<10,10>
+

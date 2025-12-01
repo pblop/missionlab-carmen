@@ -1,0 +1,89 @@
+/*--------------------------------------------------------------------
+
+	mnav_obstacles.cnl
+
+
+	Written by: 	Antonio Sgorbissa 
+
+	Copyright 2000, Antonio Sgorbissa 
+
+--------------------------------------------------------------------*/
+
+/* $Id: MNAV_OBSTACLES.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector MNAV_OBSTACLES with
+   double       ulim;
+   Vector       f;
+   Vector       t;
+   Vector       g;
+   double       u;
+header
+   double wg, wt, wf;
+   double vabs;
+bool get_colID(char *&colId);
+
+body
+
+
+   VECTOR_CLEAR(output);
+
+   char *colId;
+   get_colID(colId);
+
+   if (u < ulim)
+        {
+        wg = 1.0-u/ulim;
+        wt = u/ulim;
+        }
+   else
+        {
+        wt = 1.0;
+        wg = 0.0;
+        }
+   wf = 0.5/(1.0+exp((ulim-u)/pow(10, log10(ulim) - 2.0)));
+
+   g.x = -f.x/5.0;
+   g.y = -f.y/5.0;
+
+   mult_2d(f, wf);
+   mult_2d(t, wt);
+   mult_2d(g, wg);
+   plus_2d(output, f);
+   plus_2d(output, g);
+   plus_2d(output, t);
+
+   if (debug)
+   {
+	printf("\n ulim %f u %f", ulim, u);
+   	printf("\n f %f %f", f.x, f.y);
+   	printf("\n t %f %f", t.x, t.y);
+   	printf("\n g %f %f", g.x, g.y);
+   	printf("\n Output Vector %f %f", output.x, output.y);
+   }
+
+   vabs = sqrt(output.x*output.x+output.y*output.y);
+   if (vabs!=0.0)
+   {
+        output.x = output.x/vabs;
+        output.y = output.y/vabs;
+   }
+pend
+
+
+/**********************************************************************
+# $Log: MNAV_OBSTACLES.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#**********************************************************************/

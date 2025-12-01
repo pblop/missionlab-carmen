@@ -1,0 +1,91 @@
+/*--------------------------------------------------------------------
+
+	formnodes.cnl
+
+	CNL code for a robot to formate
+
+	Written by:  Tucker Balch
+
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: formnodes.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+/* ======================= perceptual nodes ======================= */
+
+node detect_form_type is EXTRACT_FORMATION with
+	cmd = get_command;
+nend
+
+node detect_unit_center is DETECT_UNIT_CENTER with
+	readings = detect_robots;
+	members = extract_unit;
+nend
+
+node detect_leader_center is DETECT_LEADER_CENTER with
+	spacing = db_formation_spacing;
+	form_heading = detect_form_heading;
+	form_type = detect_form_type;
+	readings = detect_robots;
+	members = extract_unit;
+nend
+
+/* ======================= motor modules ======================= */
+
+node detect_form_heading is DETECT_FORM_HEADING with
+	relative_goal = unit_goal;
+	telop_input = telop;
+	telop_mag = db_joystick_magnitude;
+	robot_heading = get_heading;
+	default_trigger = db_formation_default_trigger;
+nend
+
+node detect_form_position is DETECT_FORM_POSITION with
+	spacing = db_formation_spacing;
+	members = extract_unit;
+	unit_center_relative = detect_unit_center;     /* change!!!*/
+	leader_center_relative = detect_leader_center;
+	formation_heading = detect_form_heading;
+	robot_pos = get_xy;
+	robot_heading = get_heading;
+	formation_type = detect_form_type;
+	formation_ref = 1;
+nend
+
+node detect_in_form_position is DETECT_IN_POSITION with
+	offset = detect_form_position;
+	slop = db_formation_slop;
+nend
+
+node formation is MAINTAIN_FORM with
+	offset = detect_form_position;
+	dead_zone_radius = db_formation_dead_zone_radius;
+	saturation_length = db_formation_saturation_length;
+nend
+
+
+/**********************************************************************
+# $Log: formnodes.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:14  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.19  1995/06/30  15:16:14  doug
+# *** empty log message ***
+#
+# Revision 1.18  1995/06/29  13:38:58  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

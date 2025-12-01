@@ -1,0 +1,20 @@
+/**********************************************************************
+**                                                                  **
+**                         SENSE_LOCATION.cnl                       **
+**                                                                  **
+**                                                                  **
+ **********************************************************************/
+
+        /* $Id: SENSE_LOCATION.cnl,v 1.1.1.1 2009/05/20  $ */
+
+
+#include "cnl.inc"
+
+
+
+procedure robot_position SENSE_LOCATION with
+header
+body
+    output = exec_get_position();
+pend
+

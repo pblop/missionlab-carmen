@@ -1,0 +1,86 @@
+/*--------------------------------------------------------------------
+
+	occnodes.cnl
+
+	CNL code for a robot to occupy to a goal location
+
+	Written by:  Tucker Balch
+
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: occnodes.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+
+/* ======================= motor modules ======================= */
+
+node occ_avoid_robot is AVOID_ROBOT with
+	min_range = db_occ_avoid_robot_min_range;
+	sphere = db_occ_avoid_robot_sphere;
+	readings = detect_robots;
+nend
+
+
+/* ======================= coordination modules ======================= */
+
+node occupy is SUM_WEIGHTED_VECTORS with
+        name = {"occupy"};
+
+	v = noise;
+	gain = 0; /*0.1*/
+	
+	v = move_to_goal;
+	gain = db_occ_move_to_goal_gain;
+
+	v = avoid_obstacle;
+	gain = db_occ_avoid_obs_gain;
+
+	v = occ_avoid_robot;
+	gain = db_occ_avoid_robot_gain;
+
+	v = formation;
+	gain = db_nav_formation_gain;/*0.5*/
+
+#ifdef INC_TELOP
+        v = telop;
+        gain = db_joystick_magnitude;
+#endif
+
+nend
+
+
+/**********************************************************************
+# $Log: occnodes.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:14  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.17  1995/10/03  22:40:31  kali
+# *** empty log message ***
+#
+# Revision 1.16  1995/08/31  18:32:43  kali
+# substituted a database variable for the occupy move_to_goal gain
+# instead of a hard coded value
+#
+# Revision 1.15  1995/08/16  19:08:54  kali
+# added telop node
+#
+# Revision 1.14  1995/07/10  19:54:59  doug
+# *** empty log message ***
+#
+# Revision 1.13  1995/06/29  13:41:42  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

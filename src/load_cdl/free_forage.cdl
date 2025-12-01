@@ -1,0 +1,199 @@
+/*************************************************
+*
+* This CDL file free_forage.cdl was created with cfgedit
+* version 0.8a
+*
+**************************************************/
+
+instBP<0,0> get_objects from sense_objects(
+  bound_to = detect_objs:DETECT_OBJECTS(
+        max_sensor_range = {9999})<43,378>
+);
+
+instGroup detect_baskets from [
+FILTER_OBJECT_CLASSES(
+      desired_color[A] = {GreenObject},
+      full_list<10,29> = get_objects)<460,16>
+];
+instGroup closest_basket_group from [
+closest_basket:CLOSEST_OBJECT(
+      object_list<32,35> = detect_baskets)<332,34>
+];
+instGroup loc_of_basket_group from [
+loc_of_basket:OBJECT_LOCATION(
+      object<226,34> = closest_basket_group)<588,18>
+];
+instGroup avoid_static_obs_group from [
+avoid_obstacles:AVOID_OBJECTS(
+      sphere = {1.0},
+      safety_margin = {0.5},
+      objlist<10,81> = detect_obstacles_group:[
+detect_obstacles:FILTER_OBJECT_CLASSES(
+            desired_color[A] = {BlackObject},
+            full_list<10,10> = get_objects)<437,10>
+]<100,100>
+)<393,26>
+];
+instBP<16,235> AN_76 from localization(
+  bound_to = get_robot_loc:xyt:SHAFTENCODERS(
+)<14,29>
+);
+
+instGroup noise_group from [
+noise:NOISE(
+      persistence = {12},
+      robot_heading<47,53> = cur_heading_group:[
+cur_heading:GET_HEADING(
+            cur_pos<15,51> = AN_76)<358,64>
+]<100,100>
+)<388,26>
+];
+instGroup detect_oranges from [
+FILTER_OBJECT_CLASSES(
+      desired_color[A] = {OrangeObject},
+      full_list<10,14> = get_objects)<460,16>
+];
+instGroup closest_orange_group from [
+CLOSEST_OBJECT(
+      object_list<22,10> = detect_oranges)<363,10>
+];
+instGroup see_an_attractor from [
+is_an_orange:IS_AN_OBJECT(
+      object_list<10,10> = detect_oranges)<312,10>
+];
+instAgent<365,77> no_attractors from NOT(
+  a<10,71> = see_an_attractor);
+
+instAgent<150,105> always from CONSTANT(
+  value = {true});
+
+instBP<494,107> AN_36 from movement(
+  base_vel<0,0> = ,
+  v<0,0> = ,
+  bound_to = base:aa:DRIVE(
+        max_vel = {0.2},
+        v<10,127> = forage:FSA(
+            rules[Move_to_orange]<757,78> = if [
+at_orange:IS_AT_GOAL(
+                  have_a_goal<11,19> = see_an_attractor,
+                  goal_rel_loc<10,200> = closest_attractor_loc_gr_group:[
+closest_attractor_loc_gr:OBJECT_LOCATION(
+                        object<10,10> = closest_orange_group)<318,10>
+]<100,100>
+,
+                  success_radius = {0.2})<324,45>
+]<10,10>
+ goto pick_up_orange,
+            rules[Start]<62,71> = if [
+              always]<10,10>
+ goto Find_orange,
+            rules[pick_up_orange]<767,465> = if [
+              always]<10,10>
+ goto Return_to_basket,
+            rules[Find_orange]<326,72> = if [
+              no_attractors]<10,10>
+ goto End,
+            rules[Drop_orange]<128,459> = if [
+              always]<10,10>
+ goto Find_orange,
+            rules[Return_to_basket]<431,460> = if [
+at_basket:IS_AT_GOAL(
+                  have_a_goal<11,19> = see_a_basket:[
+is_a_basket:IS_AN_OBJECT(
+                        object_list<10,17> = detect_baskets)<312,10>
+]<100,100>
+,
+                  goal_rel_loc<11,178> = loc_of_basket_group,
+                  success_radius = {0.2})<437,52>
+]<10,10>
+ goto Drop_orange,
+            rules[Move_to_orange]<757,78> = if [
+              no_attractors]<10,10>
+ goto End,
+            rules[Find_orange]<326,72> = if [
+              see_an_attractor]<10,10>
+ goto Move_to_orange,
+            society[Find_orange]<326,72> = [
+Explore:[
+Explore_asm:COOP(
+                    weight[A] = {0.3},
+                    weight[B] = {1.0},
+                    members[A]<10,30> = noise_group,
+                    members[B]<10,189> = avoid_static_obs_group)<355,10>
+]<100,100>
+]<10,10>
+,
+            society[Move_to_orange]<757,78> = AN_48:[
+[
+move_to_orange_group:COOP(
+                    members[A]<10,10> = noise_group,
+                    members[B]<10,152> = avoid_static_obs_group,
+                    members[C]<10,301> = mto_grp:[
+move_to_orange:MOVE_TO(
+                          goal_rel_loc<71,275> = loc_of_orange:OBJECT_LOCATION(
+                              object<377,10> = closest_orange:CLOSEST_OBJECT(
+                                  object_list<10,10> = detect_oranges:[
+get_oranges:FILTER_OBJECT_CLASSES(
+                                        desired_color[A] = {OrangeObject},
+                                        full_list<10,14> = get_objects)<460,16>
+]<100,100>
+)<129,200>
+)<45,312>
+)<458,275>
+]<100,100>
+,
+                    weight[A] = {0},
+                    weight[B] = {1.0},
+                    weight[C] = {0.8})<444,26>
+]<10,10>
+]<100,100>
+,
+            society[pick_up_orange]<767,465> = [
+pickup_orange:PICKUP_OBJECT(
+                  object<10,48> = closest_orange_group)<343,46>
+]<10,10>
+,
+            society[Start]<62,71> = [
+NULL_MS(
+)<183,113>
+]<10,10>
+,
+            society[Return_to_basket]<431,460> = AN_49:[
+[
+move_to_basket_group:COOP(
+                    members[A]<10,10> = noise_group,
+                    members[B]<10,152> = avoid_static_obs_group,
+                    members[C]<10,301> = mtb_grp:[
+move_to_basket:MOVE_TO(
+                          goal_rel_loc<71,275> = loc_of_basket_group)<458,275>
+]<100,100>
+,
+                    weight[A] = {0},
+                    weight[B] = {1.0},
+                    weight[C] = {0.8})<444,26>
+]<149,29>
+]<100,100>
+,
+            society[End]<509,243> = [
+HALT(
+)<283,135>
+]<10,10>
+,
+            society[Drop_orange]<128,459> = [
+drop_orange:DROP_IN_BASKET(
+                  basket<12,16> = closest_basket_group)<330,19>
+]<10,10>
+)<314,93>
+,
+        base_vel = {0.1})<331,70>
+);
+
+instBP<314,71> robot_bp from vehicle(
+  bound_to = stimpy:Forager(
+stimpy:[
+          AN_36]
+)<264,74>
+);
+
+UNTITLED:[
+  robot_bp]<10,10>

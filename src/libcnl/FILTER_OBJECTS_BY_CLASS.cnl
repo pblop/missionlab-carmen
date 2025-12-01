@@ -1,0 +1,120 @@
+
+/**********************************************************************
+ **                                                                  **
+ **                 FILTER_OBJECTS_BY_CLASS.cnl                      **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: FILTER_OBJECTS_BY_CLASS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+init
+// Get definitions for ObjectClasses
+#define WANT_OBJECT_DEFS
+#include "cfgedit_common.h"
+iend
+
+#include "cnl.inc"
+
+init
+#include <string.h>
+
+static bool
+IsOfType(ObjectReading p, ObjectClasses classes)
+{
+   // ObjectClasses is a bitmap.
+   int pos = 0;
+   while( object_defs[pos].name )
+   {
+      if( strcasecmp(p.objcolor, object_defs[pos].color)==0 )
+      {
+         if( classes & (1 << pos) )
+            return true;
+         else
+	    return false;
+      }
+      pos ++;
+   }
+         
+   // Check if they wanted other objects
+   if( classes & (1 << pos-1) )
+      return true;
+
+   return false;
+}
+iend
+
+/***********************************************************************/
+
+procedure ObjectList FILTER_OBJECTS_BY_CLASS with
+   ObjectList    full_list;
+
+   // If false, pass objects only of the indicated types
+   // If true, pass objects only if NOT the indicated types
+   bool          remove_these;
+
+   // Classes of objects
+   ObjectClasses classes;
+header
+body
+   int num = 0;
+   for(int i=0; i<full_list.count; i++)
+      if( remove_these ^ IsOfType(full_list.objects[i], classes) )
+	 num++;
+   ObjectList tmp( num );	
+   // output.count = num;
+   //if( num > 0 )
+   //   output.objects = new ObjectReading[num];
+
+   num = 0;
+   for(int i=0; i<full_list.count; i++)
+      if( remove_these ^ IsOfType(full_list.objects[i], classes) )
+	 tmp.objects[num++] = full_list.objects[i];
+
+   output = tmp;
+ 
+   if( debug )
+   {
+      fprintf(stderr,"FILTER_OBJECTS_BY_CLASS(%d) removing=%d \n",
+	robot_id, remove_these );
+
+      for(int i=0; i<num; i++)
+	 cerr << "   " << output.objects[i] << '\n';
+   }
+pend
+
+
+/**********************************************************************
+# $Log: FILTER_OBJECTS_BY_CLASS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:57  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.6  2003/04/06 12:04:03  endo
+# gcc 3.1.1
+#
+# Revision 1.5  1999/12/17 00:51:28  endo
+# *** empty log message ***
+#
+# Revision 1.4  1999/12/16 23:12:21  mjcramer
+# rh6 port
+#
+# Revision 1.3  1996/05/05  16:47:48  doug
+# fixing compiler warnings
+#
+# Revision 1.2  1996/03/08  00:47:39  doug
+# *** empty log message ***
+#
+# Revision 1.1  1996/02/26  16:53:46  doug
+# Initial revision
+#
+#**********************************************************************/

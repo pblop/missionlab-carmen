@@ -1,0 +1,86 @@
+
+--MISSION-AREA 3000 2000
+
+--ORIGIN 50 50
+
+MISSION NAME "Airfield Assessment"
+
+NEW-ROBOT bluerobot blue (
+		avoid_obstacle_sphere=0.5,
+		avoid_obstacle_safety_margin=0.5,
+		navigation_avoid_obstacle_gain=0.25,
+		navigation_avoid_robot_gain=0.5,
+		navigation_avoid_robot_min_range=15,
+		navigation_avoid_robot_sphere=45,
+		navigation_formation_gain=1.0,
+		navigation_move_to_goal_gain=1.0,
+		navigation_success_radius=5.0,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0.05,
+		detect_concealments_range=15,
+		occupy_avoid_robot_gain=0.5,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=1.0,
+		occupy_avoid_robot_sphere=1.0,
+		formation_spacing=1.0,
+		formation_slop=0,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 5, 
+		max_velocity = 7
+		)
+
+NEW-ROBOT redrobot red (
+		avoid_obstacle_sphere=0.5,
+		avoid_obstacle_safety_margin=0.5,
+		navigation_avoid_obstacle_gain=0.25,
+		navigation_avoid_robot_gain=0.5,
+		navigation_avoid_robot_min_range=15,
+		navigation_avoid_robot_sphere=45,
+		navigation_formation_gain=1.0,
+		navigation_move_to_goal_gain=1.0,
+		navigation_success_radius=5.0,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0.05,
+		detect_concealments_range=15,
+		occupy_avoid_robot_gain=0.5,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=1.0,
+		occupy_avoid_robot_sphere=1.0,
+		formation_spacing=1.0,
+		formation_slop=0,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 5, 
+		max_velocity = 7
+		)
+
+//SET ROBOT-LENGTH 20
+
+UNIT <storm> redrobot
+UNIT <smoke> bluerobot
+UNIT <all> (storm smoke)
+
+COMMAND LIST:
+
+ 0. UNIT all Start
+
+10. UNIT storm MoveTo PP2a
+
+20. UNIT smoke MoveTo PP3a
+
+30. UNIT all Barrier
+
+    unit storm MoveTo "Control Tower"
+
+    UNIT smoke MoveTo PP3b
+
+60. UNIT smoke MoveTo "TV Station"
+
+30. UNIT all Barrier
+
+100. UNIT all MoveTo "Hangar"
+
+    UNIT all Stop

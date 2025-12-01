@@ -1,0 +1,9 @@
+Mission Expert is a system
+designed to create new mission
+plans based on previously
+successful missions.
+
+Click 'Yes' if you would like to
+use the Mission Expert system.
+
+Click 'No' if not.

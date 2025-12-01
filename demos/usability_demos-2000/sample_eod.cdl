@@ -1,0 +1,135 @@
+/*************************************************
+*
+* This CDL file /home/demo3/demos/usability_demos-2000/sample_eod.cdl was created with cfgedit
+* version 5.0.03
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_1418 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1434]<160,225>|State1| = [
+                %Objects = {Mines}
+,
+              LookFor]<10,10>
+,
+            society[$AN_1436]<419,227>|State2| = [
+                %Objects = {Mines},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_1438]<706,230>|State3| = [
+                %Objects = {Mine}
+,
+              PickUp]<10,10>
+,
+            society[$AN_1440]<892,413>|State4| = [
+                %Objects = {EOD_Areas}
+,
+              LookFor]<10,10>
+,
+            society[$AN_1442]<604,411>|State5| = [
+                %Objects = {EOD_Areas},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.19},
+                %avoid_obstacle_safety_margin = {0.29}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_1444]<292,400>|State6| = [
+                %Object = {Mine}
+,
+              PutInEOD]<10,10>
+,
+            society[$AN_1446]<162,462>|State7| = [
+                %Objects = {Home_Base},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.18},
+                %avoid_obstacle_safety_margin = {0.28}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_1448]<162,638>|State8| = [
+              Terminate]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1434,
+            rules[$AN_1434]<160,225>|State1| = if [
+                %Objects = {Mines}
+,
+              Detect]<0,0>|Trans2|
+ goto $AN_1436,
+            rules[$AN_1436]<419,227>|State2| = if [
+                %Objects = {Mines},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans3|
+ goto $AN_1438,
+            rules[$AN_1438]<706,230>|State3| = if [
+                %Objects = {Mine}
+,
+              Holding]<0,0>|Trans4|
+ goto $AN_1440,
+            rules[$AN_1440]<892,413>|State4| = if [
+                %Objects = {EOD_Areas}
+,
+              Detect]<0,0>|Trans5|
+ goto $AN_1442,
+            rules[$AN_1442]<604,411>|State5| = if [
+                %Objects = {EOD_Areas},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans6|
+ goto $AN_1444,
+            rules[$AN_1444]<292,400>|State6| = if [
+                %Objects = {Mine}
+,
+              NotHolding]<229,316>|Trans7|
+ goto $AN_1434,
+            rules[$AN_1434]<160,225>|State1| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<0,0>|Trans8|
+ goto $AN_1446,
+            rules[$AN_1446]<162,462>|State7| = if [
+                %Objects = {Home_Base},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans1|
+ goto $AN_1448)<292,156>|Mission|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.1},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1468 from vehicle(
+  bound_to = sample_eodRobot1:PIONEERAT(
+sample_eodRobot1:[
+          $AN_1418]
+)<0,0>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_1468]<10,10>|Group of Robots|
+]<10,10>
+

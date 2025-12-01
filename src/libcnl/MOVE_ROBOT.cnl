@@ -1,0 +1,71 @@
+/**********************************************************************
+ **                                                                  **
+ **                          MOVE_ROBOT.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOVE_ROBOT.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+
+ /***********************************************************************/
+
+procedure void MOVE_ROBOT with
+   Vector v;	
+   double max_vel;
+   double base_vel;
+   double cautious_vel;
+   bool cautious_mode;
+header
+void exec_move_robot(Vector v);
+
+body
+   /* apply the base velocity */
+   v.x *= base_vel;
+   v.y *= base_vel;
+
+   /* clip at the max velocity */
+   if( len_2d(v) > max_vel ) 
+   {
+      unit_2d(v);
+      if (cautious_mode)
+      {
+	 mult_2d(v,cautious_vel);
+      }
+      else
+      {
+	 mult_2d(v,max_vel);
+      }
+   }
+
+   if( debug )
+      fprintf(stderr,"Move_robot <%.1f %.1f>\n",v.x,v.y);
+
+   /* move the robot */
+   exec_move_robot(v);
+pend
+
+
+/**********************************************************************
+# $Log: MOVE_ROBOT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.14  1995/10/03  21:26:46  doug
+# change to bool
+#
+# Revision 1.13  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.12  1995/06/28  22:05:37  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

@@ -1,0 +1,400 @@
+/**********************************************************************
+ **                                                                  **
+ **  FittedCurve.h                                                   **
+ **                                                                  **
+ **  Create a 3D curve with specified end points and tangents with   **
+ **  the specified length.                                           **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **  Copyright 1996-2002.  All Rights Reserved.                      **
+ **  Mobile Intelligence Corporation                                 **
+ **  Alto, Michigan, USA                                             **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: FittedCurve.cc_jacobian,v 1.1.1.1 2008/07/14 16:44:16 endo Exp $ */
+
+/**********************************************************************
+* $Log: FittedCurve.cc_jacobian,v $
+* Revision 1.1.1.1  2008/07/14 16:44:16  endo
+* MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/20 17:17:46  endo
+* MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/12 13:37:55  endo
+* MissionLab 7.0
+*
+* Revision 1.1  2006/07/01 00:30:28  endo
+* CMDLi from MARS 2020 migrated into AO-FNC repository.
+*
+* Revision 1.1.1.1  2006/06/29 20:42:07  endo
+* cmdli local repository.
+*
+* Revision 1.1  2003/03/10 16:37:25  doug
+* added in different attempts at fittedcurve
+*
+* Revision 1.10  2003/03/03 13:44:23  doug
+* seems to work
+*
+* Revision 1.9  2003/02/28 22:07:21  doug
+* turn off some debug prints
+*
+* Revision 1.8  2002/09/30 14:34:54  doug
+* *** empty log message ***
+*
+* Revision 1.7  2002/09/06 13:16:52  doug
+* *** empty log message ***
+*
+* Revision 1.6  2002/08/29 17:06:06  doug
+* *** empty log message ***
+*
+* Revision 1.5  2002/08/29 02:23:37  doug
+* *** empty log message ***
+*
+* Revision 1.4  2002/08/27 18:58:09  doug
+* *** empty log message ***
+*
+* Revision 1.3  2002/08/26 19:51:34  doug
+* *** empty log message ***
+*
+* Revision 1.2  2002/08/23 19:07:56  doug
+* *** empty log message ***
+*
+* Revision 1.1  2002/08/23 18:03:22  doug
+* Initial revision
+*
+**********************************************************************/
+
+#include "mic.h"
+#include <math.h>
+#include "FittedCurve.h"
+
+uint newPointIndex = 0;
+
+/// The extension/compression spring constant
+static const double springK = 2.0;
+static const double torqueK = 2.0;
+
+/// The torsional spring constants
+static const double springT =  5.0;   // local (5.0 worked)
+static const double springT2 = 3.0;   // right (3.0 worked)
+static const double springT3 = 3.0;   // left  (3.0 worked)
+static const double latchingDistance = 1.3;   // how close to get before latching the length
+
+/// The number of cycles to loop in smoothing
+//static const uint smoothCycles = 200;
+static const uint smoothCycles = 100;
+
+double maxMovementFactor = 1.00;
+double friction = 100.0;
+bool debug = false;
+
+static const double maxTheta = DEGREES_TO_RADIANS(5.0);
+
+// *********************************************************************
+/// Create the FittedCurve object
+FittedCurve::FittedCurve()
+{
+}
+
+// *********************************************************************
+/// Destroy the FittedCurve
+FittedCurve::~FittedCurve()
+{
+}
+
+// *********************************************************************
+/// Create a new FittedCurve
+/// The current and final headings are in radians about pos Z axis
+/// Returns the first waypoint to move towards
+Vector 
+FittedCurve::initCurve(const uint numSegments, const double segLength, const Vector &curLocation, const Vector &finalLoc, const double curHeading, const double finalHeadingRad)
+{
+   // Remember our step size, final location, and final heading
+   segmentLength = segLength;
+   finalLocation = finalLoc;
+   finalHeading = finalHeadingRad;
+
+   // loop for each segment adding an intermediate point during each loop
+   // The points lie on a straight line ending at p2
+   for(uint i=0; i<numSegments-1; i++)
+   {
+      curve.push_back(waypoint(0.0));
+   }   
+   // the angle on the last point denotes the desired final heading
+   curve.push_back(waypoint(finalHeadingRad));
+
+   // smoothing expects the computed data to be correct.
+   computeLocations();
+
+   // smooth the curve.
+   smoothCurve(curLocation, curHeading);
+
+cerr << "\"After Smooth\"" << endl;
+   for(uint i=0; i < curve.size(); i++)
+   {
+//      cerr << i << "," << curve[i].theta << "," << curve[i].computedLocation.x << "," << curve[i].computedLocation.y << endl;
+      cerr << curve[i].computedLocation.x << "," << curve[i].computedLocation.y << endl;
+   }
+   cerr << endl;
+
+exit(0);
+   // Return the first waypoint to move towards.
+   return getNextPoint(curLocation, curHeading);
+}
+
+// *********************************************************************
+/// Compute the position and global angle of each point using forward chaining from the end.
+void 
+FittedCurve::computeLocations()
+{
+   Vector loc = finalLocation;
+   double theta = 0;
+
+   // a zero theta vector of the correct length
+   Vector delta(segmentLength, 0.0, 0.0);
+
+   for(int i=(int)curve.size()-1; i >= 0; i--)
+   {
+      // update this points info
+      curve[i].computedLocation = loc;
+      theta += curve[i].theta;
+      curve[i].computedAngle = theta;
+
+      // the angle tells how to rotate the delta vector to get to our left neighbor
+      delta.rotateZ( curve[i].theta );
+
+      // figure out where the next point is located
+      loc += delta;
+   }
+}
+
+// *********************************************************************
+/// Specify the actual location and heading, and get the next point along the curve
+Vector 
+FittedCurve::getNextPoint(const Vector &curLocation, const double curHeading)
+{
+   // Get the next point
+   Vector rtn = curve[0].computedLocation;
+   curve.pop_front();
+
+   // Re-smooth the curve.
+   smoothCurve(curLocation, curHeading);
+
+   // Fix up the Z value: just linear change in altitude along the path
+   double dz = (finalLocation.z - curLocation.z) / (curve.size());
+   rtn.z = curLocation.z + dz;
+
+   // Return the next waypoint to move towards.
+   return rtn;
+}
+
+// *********************************************************************
+/// Smooth the curve in one pass using a spring model
+void
+FittedCurve::smoothOnce(const Vector &curLocation, const double curHeading)
+{
+   // Zero the accumulators
+   for(uint i=0; i<curve.size()-1; i++)
+   {
+      curve[i].torque = 0.0;
+      curve[i].force.clear();
+   }
+
+   // Compute the co-linear force pulling/pushing from the current point to p[0]
+   Vector left = curLocation - curve[0].computedLocation;
+//cerr << "difference vector = " << left << endl;
+   double leftLength = left.length();
+   double f  = springK * (leftLength - segmentLength);
+   if( fabs(f) > segmentLength )
+   {
+      f = sign(f) * segmentLength;
+   }
+   Vector force( left );
+   force.set_length(f);
+
+   // compute the torque twisting the curLocation <-> p[0] link to align it with curHeading
+//dcm   curve[0].torque = (finalHeading - curve[0].computedAngle) * torqueK;
+
+   // we model the path as an N-bar linkage with a joint at each waypoint.
+   // This loop disperses the tip force down through these joints (points)
+   // using a simplified kinematic model of a torsional spring at each joint
+   // trying to keep the angle at 0 (180 degree separation) along with pseudo-damping
+   // at each joint to control the force transference.
+   // --- should use the Jacobian matrix ---
+//cerr << "force=" << force << " segmentLength=" << segmentLength << endl;
+   for(uint i=0; i<curve.size()-1; i++)
+   {
+
+      // Compute the torque on the joint from our left neighbor's force
+      curve[i].torque += -1 * force.x * segmentLength * sin(curve[i].computedAngle) +
+                              force.y * segmentLength * cos(curve[i].computedAngle);
+
+//cerr << i << "\tcurve[i].computedAngle=" << RADIANS_TO_DEGREES(curve[i].computedAngle) << " X torque=" << -1 * force.x * segmentLength * sin(curve[i].computedAngle) << " Y torque=" << force.y * segmentLength * cos(curve[i].computedAngle) << endl;
+   }
+
+/*
+      Vector leftLink = curve[i-1].position - curve[i].position;
+      Vector left2Link = curve[i-2].position - curve[i].position;
+      Vector rightLink = curve[i+1].position - curve[i].position;
+      Vector right2Link = curve[i+2].position - curve[i].position;
+
+      double leftLength  = leftLink.length();
+      double rightLength = rightLink.length();
+      Vector diff = rightLink.unit() + leftLink.unit();
+
+      double leftForce  = springK * (leftLength - segmentLength);
+      double rightForce = springK * (rightLength - segmentLength);
+
+if( debug )
+{
+   cerr << endl << "point " << i << endl;
+   cerr << " leftLink=" << leftLink << " " << " rightLink=" << rightLink << endl;
+   cerr << " dleftLength=" << leftLength-segmentLength << " drightLength=" << rightLength-segmentLength << "  ";
+
+   Vector vl = leftLink + rightLink;
+   cerr << " linear=" << vl.x << "," << vl.y << "," << vl.z << endl;
+   cerr << " diff=" << diff.x << "," << diff.y << "," << diff.z << " ";
+}
+
+      // compute the tangential vector as a vector pointing from this point to the 
+      // center of a quadrateral created with our left and right link.
+      Vector tangential = (leftLink + rightLink) / 2.0 * springT;
+
+      // compute the tangential vector as a vector pointing from this point to the 
+      // center of a quadrateral created with our left2 and right2 link.
+//      Vector tangential2 = (left2Link + right2Link) / 2.0 * springT2;
+//cerr << " left2Link=" << left2Link << " " << " right2Link=" << right2Link << " tangential2 =" << tangential2 << endl;
+
+      // compute our co-linear forces
+      leftLink.set_length(leftForce);
+      rightLink.set_length(rightForce);
+      Vector colinear = leftLink + rightLink;
+
+      // add the forces together
+      curve[i].forces = colinear + tangential;
+
+//      if( i == 2 )
+      if( i < maxpoint/2 )
+      {
+         // Same for the left, but only on the left most point:
+         // compute where we would be if (i+1) -> (i+2) was reversed to point at us.
+         Vector dvL = curve[i-1].position - curve[i-2].position;
+
+//cerr << " dvL=" << dvL << " " << " i-1 pos=" << curve[i-1].position << " i-2 pos=" << curve[i-2].position << endl;
+	 
+         // fixup the length in case there is a large discontinuity
+         dvL.set_length( segmentLength );
+//cerr << " dvL new length=" << dvL;
+         Vector desiredL = curve[i-1].position + dvL;
+//cerr << " desiredL =" << desiredL;
+         Vector tangentialL = (desiredL - curve[i].position) * springT3;
+//cerr << " tangentialL =" << tangentialL << " current=" << curve[i].position << endl;
+
+         curve[i].forces += tangentialL;
+      }
+//      else if( i == maxpoint-2 )
+      {
+         // compute where we would be if (i+1) -> (i+2) was reversed to point at us.
+         Vector dvR = curve[i+1].position - curve[i+2].position;
+         // fixup the length in case there is a large discontinuity
+         dvR.set_length( segmentLength );
+         Vector desiredR = curve[i+1].position + dvR;
+         Vector tangentialR = (desiredR - curve[i].position) * springT2;
+
+         curve[i].forces += tangentialR;
+      }
+*/
+
+      // Add in a tangential force trying to make the left and right links co-linear
+/* 
+      Vector left = curve[i].position - curve[i-1].position;
+      Vector full = curve[i+1].position - curve[i-1].position;
+      double lng = full.dotProduct(left);
+cerr << "left=" << left << " full=" << full << " lng=" << lng << endl;
+      full.set_length( left.dotProduct(full) );
+      full += curve[i-1].position;
+*/
+//      Vector tangential = (full - curve[i].position) * springT;
+//cerr << " point " << i << " current loc=" << curve[i].position /*<< " desiredLoc=" << full*/ << " tangential=" << tangential << endl;
+
+
+   // compute the joint movements induced by the torques
+   for(uint i=0; i<curve.size()-1; i++)
+   {
+/*
+if( debug )
+{
+   cerr << " force=" << curve[i].forces.x << "," << curve[i].forces.y << "," << curve[i].forces.z << endl;
+   cerr << "Total force on point " << i+1 << " = " << curve[i+1].forces.x << "," << curve[i+1].forces.y << "," << curve[i+1].forces.z << " " << endl;
+}
+*/
+      double delta = curve[i].torque / friction;
+      if( fabs(delta) > maxTheta )
+      {
+         delta = sign(delta) * maxTheta;
+      }
+
+      if( debug )
+      {
+         cerr << "Turning joint " << i << " by " << delta << " " << endl;
+      }
+//cerr << "Turning joint " << i << " by " << delta << " " << endl;
+
+      curve[i].theta += delta;
+   }
+
+   // recompute the positions and joint angles
+   computeLocations();
+}
+
+// *********************************************************************
+/// Compute the curve using a relaxation process
+void 
+FittedCurve::smoothCurve(const Vector &curLocation, const double curHeading)
+{
+//cout << "FittedCurve::smoothCurve - starting to smooth curve " << endl << *this;
+
+   // loop a few times so stuff can jiggle around
+//   for(uint i=0; i<curve.size(); i++)
+   for(uint i=0; i<smoothCycles; i++)
+   {
+      smoothOnce(curLocation, curHeading);
+
+/*
+   // compute an error bound
+ 
+   // first 2 points and last 2 points are fixed.
+   double lng = 0;
+   for(int i=1; i<(int)curve.size() - 2; i++)
+   {
+      Vector v(curve[i+1].position - curve[i].position);
+      lng += v.length();
+   }
+
+   double desired = segmentLength * (curve.size() - 3);
+   cout << "Done: Length= " << lng << " desired=" << desired << " Error=" << fabs((lng-desired) / desired) * 100 << endl;
+*/
+   }
+}
+
+// *********************************************************************
+// Stream out the value
+ostream & operator << (ostream & out, FittedCurve &c)
+{
+/*
+   // first and last points are fake.
+   out << '[' << c.curve[0].position << "]" << endl;
+   for(int i=1; i<(int)c.curve.size() - 1; i++)
+   {
+      out << c.curve[i].position << endl;
+   }
+   out << '[' << c.curve[c.curve.size()-1].position << "]" << endl;
+   out << endl;
+*/
+   return out;
+}
+
+// *********************************************************************

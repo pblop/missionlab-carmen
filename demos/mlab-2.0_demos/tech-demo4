@@ -1,0 +1,44 @@
+MISSION NAME "GT/UTA Tech Demo"
+
+SCENARIO "GT/UTA Tech Demo"
+
+OVERLAY tech-demo.ovl
+
+-- Nonholonomic 4 vehicle:
+-- NEW-ROBOT hummer "robot" ( robot_type = HUMMER )
+-- UNIT <scouts> hummer hummer hummer hummer
+
+-- Holonomic 4 vehicle:
+
+NEW-ROBOT bluerobot "mlab-2.0-robot" "blue" ""
+
+UNIT <scouts> bluerobot bluerobot bluerobot bluerobot
+
+
+COMMAND LIST:
+
+ 0. UNIT scouts START AA-AA1 5 -10
+
+ 1. UNIT scouts OCCUPY AA-AA1 FORMATION Diamond
+
+ 1. UNIT scouts MOVETO PP-0 FORMATION Diamond
+
+ 2. UNIT scouts MOVETO PP-1 FORMATION Diamond
+
+ 3. UNIT scouts MOVETO PP-2 FORMATION Line
+
+ 4. UNIT scouts MOVETO PP-3 FORMATION Wedge
+
+ 5. UNIT scouts MOVETO BP-UTA-Obs FORMATION Diamond
+ 6. UNIT scouts OCCUPY BP-UTA-Obs FORMATION Diamond
+
+ 7. UNIT scouts MOVETO BP-Telop-start FORMATION Diamond
+
+ 8. UNIT scouts MOVETO BP-Telop-end FORMATION Diamond
+
+ 9. UNIT scouts MOVETO BP-End FORMATION Diamond
+10. UNIT scouts OCCUPY BP-End FORMATION Diamond
+
+11. UNIT scouts STOP
+
+12. Quit

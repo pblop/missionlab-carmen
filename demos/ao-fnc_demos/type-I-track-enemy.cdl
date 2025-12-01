@@ -1,0 +1,203 @@
+/*************************************************
+*
+* This CDL file type-I-track-enemy.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2942 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<168,55>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2957]<893,473>|State6| = [
+                %Goal_Location = {220, 75},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2959]<515,476>|State7| = [
+                %Goal_Location = {140, 25},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2961]<133,473>|State9| = [
+                %Goal_Location = {70, 25},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2963]<132,737>|State9| = [
+                %Goal_Location = {70, 70},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2965]<528,735>|State11| = [
+                %Goal_Location = {80, 90},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2967]<898,928>|State12| = [
+                %mobility_type = {UAV}
+,
+              SetMobilityType]<10,10>
+,
+            society[$AN_2969]<889,184>|State5| = [
+                %Goal_Location = {140, 140},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2971]<621,185>|State8| = [
+              Stop]<10,10>
+,
+            society[$AN_2973]<317,186>|State9| = [
+                %Goal_Location = {140, 140},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2975]<540,927>|State10| = [
+                %Goal_Location = {255, 175},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2977]<147,927>|State11| = [
+                %color = {"orange"}
+,
+              ChangeRobotColor]<10,10>
+,
+            society[$AN_2979]<896,738>|State12| = [
+              Stop]<10,10>
+,
+            society[$AN_2981]<147,1115>|State13| = [
+              TerminateMission]<10,10>
+,
+            rules[$AN_2963]<132,737>|State9| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {70, 70}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_2965,
+            rules[$AN_2969]<889,184>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {140, 140}
+,
+              AtGoal]<0,0>|Trans17|
+ goto $AN_2957,
+            rules[$AN_2959]<515,476>|State7| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {140, 25}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_2961,
+            rules[$AN_2961]<133,473>|State9| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {70, 25}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_2963,
+            rules[$AN_2971]<621,185>|State8| = if [
+                %Delay = {5.0}
+,
+              Wait]<0,0>|Trans2|
+ goto $AN_2969,
+            rules[Start]<168,55>|Start| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_2973,
+            rules[$AN_2973]<317,186>|State9| = if [
+                %Delay = {1.0}
+,
+              Wait]<0,0>|Trans5|
+ goto $AN_2971,
+            rules[$AN_2957]<893,473>|State6| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {220, 75}
+,
+              AtGoal]<0,0>|Trans18|
+ goto $AN_2959,
+            rules[$AN_2975]<540,927>|State10| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {255, 175}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_2977,
+            rules[$AN_2965]<528,735>|State11| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {80, 90}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_2979,
+            rules[$AN_2979]<896,738>|State12| = if [
+                %Delay = {2.0}
+,
+              Wait]<0,0>|Trans2|
+ goto $AN_2967,
+            rules[$AN_2967]<898,928>|State12| = if [
+                %Delay = {1.0}
+,
+              Wait]<0,0>|Trans3|
+ goto $AN_2975,
+            rules[$AN_2977]<147,927>|State11| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2981)<292,156>|The State Machine|
+,
+        max_vel = {1.5},
+        base_vel = {1.0},
+        cautious_vel = {0.5},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_3009 from vehicle(
+  bound_to = type-I-track-enemyRobot1:DEFAULT_ROBOT(
+type-I-track-enemyRobot1:[
+          $AN_2942]
+)<51,29>|Individual Robot|
+);
+
+[
+[
+    $AN_3009]<10,10>|Group of Robots|
+]<10,10>
+

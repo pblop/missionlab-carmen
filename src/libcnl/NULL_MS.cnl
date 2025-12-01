@@ -1,0 +1,37 @@
+/**********************************************************************
+ **                                                                  **
+ **                            NULL_MS.cnl                           **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: NULL_MS.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+// Output a zero vector for use in empty FSA states
+
+procedure Vector NULL_MS with
+header
+body
+pend
+
+
+/**********************************************************************
+# $Log: NULL_MS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:00  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  1995/11/08  16:50:52  doug
+# Initial revision
+#
+#**********************************************************************/

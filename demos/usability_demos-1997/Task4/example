@@ -1,0 +1,15 @@
+MISSION NAME "example"
+OVERLAY "Empty.ovl"
+NEW-ROBOT exampleRobot1 "exampleRobot1" blue "" (
+ robot_type = "MRV2",
+ run_type= "SIMULATION")
+
+UNIT <all> exampleRobot1
+
+set show-trails on
+set scale-robots on
+set ROBOT-LENGTH 1.0
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace 10.000000 5.000000

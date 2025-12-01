@@ -1,0 +1,8 @@
+This is the configuration level. You can modify the mission plan as follows: 
+
+1) To add a task, click on 'Add Tasks' and left-click in the white space; to change a task, right-click on it; to modify the parameters, middle-click on the task.
+
+2) To add a trigger, click on 'Add triggers' and, while holding the left mouse button, drag the cursor from one task to another. To change a trigger, right-click on it; to modify the parameters, middle-click on the trigger.
+
+3) If a task or trigger is on top of another task or trigger, you can left-click on the occluding task or trigger and drag it to adjacent empty space.
+

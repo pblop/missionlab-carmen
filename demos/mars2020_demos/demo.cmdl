@@ -1,0 +1,111 @@
+/**********************************************************************
+* CMDLi mission script for mars2020 integrated demo
+* 
+* Written by:  Douglas C. MacKenzie 
+* 
+* $Id: demo.cmdl,v 1.1.1.1 2008/07/14 16:44:29 endo Exp $
+*
+* $Log: demo.cmdl,v $
+* Revision 1.1.1.1  2008/07/14 16:44:29  endo
+* MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/20 17:18:13  endo
+* MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/12 13:38:17  endo
+* MissionLab 7.0
+*
+* Revision 1.1  2006/07/11 17:21:54  endo
+* MARS 2020 demo checked-in.
+*
+* Revision 1.4  2004/11/12 21:28:12  endo
+* Support for the final demo added.
+*
+* Revision 1.2  2004/10/25 22:49:36  doug
+* Sequencing is working and shot video
+*
+*********************************************************************/
+
+MISSION NAME "Joint Demo"
+
+NEW-ROBOT atrvjrClass "atrvjrRobot"
+NEW-ROBOT truckClass "truckRobot"
+NEW-ROBOT pioneerClass "pioneerRobot"
+NEW-ROBOT segwayClass "segwayRobot"
+
+UNIT <gtechRobot1> atrvjrClass
+UNIT <gtechRobot2> atrvjrClass
+
+UNIT <upenn_1> truckClass
+UNIT <upenn_2> truckClass
+UNIT <upenn_3> truckClass
+
+UNIT <usc_pioneer1> pioneerClass
+UNIT <usc_pioneer2> pioneerClass
+UNIT <usc_segway> segwayClass
+
+UNIT <north_cache> (gtechRobot1 upenn_1 usc_pioneer2)
+UNIT <south_cache> (gtechRobot2 upenn_2 upenn_3 usc_pioneer1 usc_segway)
+UNIT <all> (gtechRobot1 gtechRobot2 upenn_1 upenn_2 upenn_3 usc_pioneer1 usc_pioneer2 usc_segway)
+
+COMMAND LIST:
+   // Deploy Georgia Tech robots (ATRV-Jr) first.
+   unit gtechRobot1 MoveTo goalLocation = [GIT-A1]
+   unit gtechRobot1 MoveTo goalLocation = [GIT-A2]
+   unit gtechRobot1 MoveTo goalLocation = [GIT-A3]
+   unit gtechRobot2 MoveTo goalLocation = [GIT-B1]
+   unit gtechRobot2 MoveTo goalLocation = [GIT-B2]
+   unit gtechRobot2 MoveTo goalLocation = [GIT-B3]
+
+   // Noth Cache: Wait for ATRV-Jr's arrival
+   unit north_cache Synchronize
+
+   // North Cache: Make the ATRV-Jr loiter
+   unit gtechRobot1 Loiter
+
+   // Noth Cache: USC Pioneer starts at the north cache
+   unit usc_pioneer2 MoveTo goalLocation = [USC-B1]
+   unit usc_pioneer2 MoveTo goalLocation = [USC-B2a]
+   unit usc_pioneer2 MoveTo goalLocation = [USC-B2b]
+   unit usc_pioneer2 TrackTarget
+
+   // Noth Cache: Send out the UPenn truck
+   unit upenn_1 MoveTo goalLocation = [UPN-A1]
+   unit upenn_1 MoveTo goalLocation = [UPN-A2a]
+   unit upenn_1 MoveTo goalLocation = [UPN-A2b]
+   unit upenn_1 TrackTarget
+
+   // South Cache: Wait for ATRV-Jr's arrival
+   unit south_cache Synchronize
+
+   // South Cache: Let the Segway go first so it doesn't run over anyone.
+   unit usc_segway MoveTo goalLocation = [USC-C4]
+
+   // South Cache: Wait for the Segway to pass USC-C4
+   unit south_cache Synchronize
+
+   // South Cache: Synchronized. Safe for the ATRV-Jr to loiter
+   unit gtechRobot2 Loiter
+
+   // South Cache: Send out the USC Pioneer
+   unit usc_pioneer1 MoveTo goalLocation = [USC-A1]
+   unit usc_pioneer1 Loiter
+
+   // South Cache: Send out the UPenn trucks
+   unit upenn_2 MoveTo goalLocation = [UPN-B1]
+   unit upenn_2 MoveTo goalLocation = [UPN-B2a]
+   unit upenn_2 MoveTo goalLocation = [UPN-B2b]
+   unit upenn_2 TrackTarget
+   unit upenn_3 MoveTo goalLocation = [UPN-C1]
+   unit upenn_3 MoveTo goalLocation = [UPN-C2a]
+   unit upenn_3 MoveTo goalLocation = [UPN-C2b]
+   unit upenn_3 TrackTarget
+
+   // South Cache: Segway circles the church.
+   unit usc_segway MoveTo goalLocation = [USC-C1]
+   unit usc_segway MoveTo goalLocation = [USC-C2]
+   unit usc_segway MoveTo goalLocation = [USC-C3]
+   unit usc_segway MoveTo goalLocation = [USC-C4]
+   unit usc_segway MoveTo goalLocation = [USC-C1]
+   unit usc_segway MoveTo goalLocation = [USC-C5]
+   unit usc_segway TrackTarget 

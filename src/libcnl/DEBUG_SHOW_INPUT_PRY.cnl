@@ -1,0 +1,26 @@
+/**********************************************************************
+ **                                                                  **
+ **                    DEBUG_SHOW_INPUT_PRY.cnl                      **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+
+//**********************************************************************
+
+procedure Vector DEBUG_SHOW_INPUT_PRY with
+   type_pry input;
+header
+body
+   fprintf(stderr,"%s received <%d %.1f %.1f %.1f>\n",
+	parms->task_name, input.status, input.pitch, input.roll, input.yaw);
+   output.x = 0;
+   output.y = 0;
+pend
+

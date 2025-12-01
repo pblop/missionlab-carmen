@@ -1,0 +1,74 @@
+/**********************************************************************
+ **                                                                  **
+ **                          AERIAL_NOISE.cnl                        **
+ **                                                                  **
+ **  Written by: Patrick Ulam                                        **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: AERIAL_NOISE.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+procedure Vector AERIAL_NOISE with
+   int    persistence;
+   double robot_heading;
+header
+   int    cntr = INT_INFINITY;
+   Vector dir = ZERO_VECTOR;
+   double theta;
+body
+   if( cntr >= persistence)
+   {
+      theta = DEGREES_TO_RADIANS((float)((rand() >> 8) % 360));
+      dir.x = cos(theta);
+      dir.y = sin(theta);
+      theta = DEGREES_TO_RADIANS((float)((rand() >> 8) % 360));
+      dir.z = cos(theta);
+      cntr = 0;
+   }
+   else
+   {
+      cntr++;
+   }
+
+   output = dir;
+
+   // The output of this behavior is relative to the current heading of the
+   // robot.  So, to generate a constant heading (in world coordinates) vector
+   // requires compensation for the heading changes.
+   rotate_z(output, -1 * robot_heading);
+
+   if( debug )
+   {
+      fprintf(stderr,"AERIAL_NOISE: output (%.1f %.1f %.1f)\n",output.x,output.y, output.z);
+   }
+pend
+
+/**********************************************************************
+# $Log: AERIAL_NOISE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/05/15 03:01:26  endo
+# gcc-3.4 upgrade
+#
+# Revision 1.1  2005/03/27 01:20:26  pulam
+# Addition of uxv behaviors
+#
+# Revision 1.1  2003/01/15 22:04:02  pulam
+# Provide a noise vector for aerial robots
+#
+# Revision 1.1.1.1  2002/10/29 18:10:14  pulam
+# First Revision V2020 Project
+#
+# Revision 1.10  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.9  1995/06/28  22:07:18  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

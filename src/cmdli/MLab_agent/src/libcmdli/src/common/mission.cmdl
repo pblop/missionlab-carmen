@@ -1,0 +1,27 @@
+MISSION NAME "fullup" 
+
+// ---------- UPenn robots -----------
+NEW-ROBOT truckClass "robotexec"
+
+unit <robot1> truckClass
+unit <robot2> truckClass
+unit <robot3> truckClass
+unit <all> (robot1 robot2 robot3 )
+
+// --------- Mission -----------
+command list:
+1. unit all Start
+2. unit all MoveTo location = [PP1a]
+3. unit all MoveTo location = [PP2a]
+/*
+2. unit robot1 MoveTo location = [PP1a]
+   unit robot2 MoveTo location = [PP2a]
+   unit robot3 MoveTo location = [PP3a]
+3. unit robot1 MoveTo location = [PP1b]
+   unit robot2 MoveTo location = [PP2b]
+   unit robot3 MoveTo location = [PP3b]
+*/
+4. unit all MoveTo location = "<0,0>"
+5. unit all Stop
+6. unit all Exit
+

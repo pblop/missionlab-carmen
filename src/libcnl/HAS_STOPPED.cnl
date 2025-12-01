@@ -1,0 +1,51 @@
+/**********************************************************************
+ **                                                                  **
+ **                          HAS_STOPPED.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **                Written by:  Willam Halliburt                     **
+ **                                                                  **
+ **                                                                  **
+ **                                                                  **
+ **********************************************************************/
+
+init
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool HAS_STOPPED with
+   int delay;
+   robot_position cur_pos;
+header
+body
+#line 25
+  static robot_position last_pos;
+  static int init = 0,running;
+  static time_t start_time;
+  time_t cur_time = time(NULL);
+  
+  if (!init) {
+     init = 1;
+     running = 0;
+     last_pos = cur_pos;
+  }
+
+  output = false;
+
+  if ((cur_pos.v.x==last_pos.v.x)&&(cur_pos.v.y==last_pos.v.y)&&(cur_pos.heading==last_pos.heading)) {
+    if (running) {
+      if (cur_time >= delay + start_time) output = true;
+    } else {
+      running = 1;
+      start_time = cur_time;
+    }
+  } else {
+    running = 0;
+  }
+
+  last_pos = cur_pos;
+
+pend

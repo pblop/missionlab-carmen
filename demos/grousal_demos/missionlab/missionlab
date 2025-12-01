@@ -1,0 +1,69 @@
+MISSION NAME "missionlab"
+OVERLAY "Empty.ovl"
+NEW-ROBOT missionlabRobot1 "missionlabRobot1" "blue" "" (
+ robot_type = HSERVER,
+ run_type = REAL,
+ hserver_name = "robot1",
+ robot_type = HSERVER,
+ danger_range = 1.0,
+ compass_type = NOCOMPASS,
+ use_reverse = 0,
+ draw_obstacles = 1,
+ lurch_mode = 0,
+ wait_for_turn = 0,
+ drive_wait_angle = 90,
+ adjust_obstacles = 1,
+ use_sonar = 1,
+ use_laser = 1,
+ use_cognachrome = 1,
+ wait_for_ack = 0,
+ multiple_hservers = 0)
+
+NEW-ROBOT missionlabRobot2 "missionlabRobot2" "red" "" (
+ robot_type = HSERVER,
+ run_type = REAL,
+ hserver_name = "robot2",
+ robot_type = HSERVER,
+ danger_range = 1.0,
+ compass_type = NOCOMPASS,
+ use_reverse = 0,
+ draw_obstacles = 1,
+ lurch_mode = 0,
+ wait_for_turn = 0,
+ drive_wait_angle = 90,
+ adjust_obstacles = 1,
+ use_sonar = 1,
+ use_laser = 1,
+ use_cognachrome = 1,
+ wait_for_ack = 0,
+ multiple_hservers = 0)
+
+NEW-ROBOT missionlabRobot3 "missionlabRobot3" "green" "" (
+ robot_type = HSERVER,
+ run_type = REAL,
+ hserver_name = "robot3",
+ robot_type = HSERVER,
+ danger_range = 1.0,
+ compass_type = NOCOMPASS,
+ use_reverse = 0,
+ draw_obstacles = 1,
+ lurch_mode = 0,
+ wait_for_turn = 0,
+ drive_wait_angle = 90,
+ adjust_obstacles = 1,
+ use_sonar = 1,
+ use_laser = 1,
+ use_cognachrome = 1,
+ wait_for_ack = 0,
+ multiple_hservers = 0)
+
+UNIT <all> missionlabRobot1 missionlabRobot2 missionlabRobot3
+
+set show-trails off
+set scale-robots off
+set use-military-style off
+set ROBOT-LENGTH 8
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace 1.000000 0.000000

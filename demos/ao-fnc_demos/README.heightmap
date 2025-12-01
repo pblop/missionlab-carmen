@@ -1,0 +1,18 @@
+README.heightmap
+
+Written by: Yoichiro Endo
+Last Update: 07/22/2005
+
+----------------------------------------------------------------------
+
+To create a height map (*.hm):
+
+1) Generate a black & white image
+   - white is high, and black is low.
+
+2) Save as a tiff file.
+
+3) Run "convert filename.tif filename.gray"
+
+4) Rename filename.gray to filename.hm
+

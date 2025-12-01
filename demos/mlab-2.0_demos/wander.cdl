@@ -1,0 +1,54 @@
+/*************************************************
+*
+* This CDL file UNTITLED was created with cfgedit
+* version 0.6
+*
+**************************************************/
+
+bindArch AuRA;
+
+instGroup cur_heading_group from [
+cur_heading:GET_HEADING(
+      cur_pos<10,30> = xyt:bbb:SHAFTENCODERS(
+)<66,155>
+)<345,50>
+];
+UNTITLED:[
+vehicle(
+      bound_to = stimpy:MRV2(
+stimpy:[
+movement(
+                  speed<0,0> = ,
+                  heading<0,0> = ,
+                  bound_to = base:aaa:DRIVE(
+                        max_vel = {0.2},
+                        v<10,70> = Wander_group:[
+Wander:COOP(
+                              weight[A] = {1.0},
+                              weight[B] = {1.0},
+                              members[A]<10,22> = noise_group:[
+noise:NOISE(
+                                    persistence = {12},
+                                    robot_heading<10,30> = cur_heading_group)<345,10>
+]<357,24>
+,
+                              members[B]<10,207> = avoid_static_obs_group:[
+avoid_static_obs:AVOID_STATIC_OBSTACLES(
+                                    sphere = {1.0},
+                                    safety_margin = {0.5},
+                                    readings<160,186> = ultra_ring:ultras:ULTRASONICS(
+                                        max_sensor_range = {2.0},
+                                        heading<10,10> = cur_heading_group)<371,75>
+)<438,438>
+]<356,42>
+)<369,13>
+]<369,13>
+,
+                        cautious_vel = {0.05},
+                        cautious_mode = {true},
+                        base_vel = {0.1})<318,10>
+)<494,107>
+]
+)<264,74>
+)<314,71>
+]<10,10>

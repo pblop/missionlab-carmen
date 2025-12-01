@@ -1,0 +1,23 @@
+#!/bin/bash -f
+###########################################################################
+#
+# configure
+#
+# - This script configures the compilation environment for cmdli.
+#
+# Written by: Yoichiro Endo
+#
+###########################################################################
+
+# $Id: configure,v 1.1.1.1 2008/07/14 16:44:15 endo Exp $
+
+# Set up the filename
+CMDLiEnv=cmdli.env
+
+# Create a make.include file.
+echo -n "Configuring cmdli: Creating $CMDLiEnv file... "
+if [ -a $CMDLiEnv ]; then 
+    rm -f $CMDLiEnv
+fi
+./PrintCMDLiEnv 1>$CMDLiEnv
+echo "Done."

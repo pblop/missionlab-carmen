@@ -1,0 +1,5 @@
+missionlabcarmen (1.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Javier Serrano <fjaviersr@usal.es>  Tue, 23 Oct 2012 11:02:41 -0700

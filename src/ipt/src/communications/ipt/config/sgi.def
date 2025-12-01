@@ -1,0 +1,9 @@
+sgi_COMPILER = CC
+sgi_FLAGS = -g -DSGI
+
+#define sgiMakeLibrary(file,depobjs,ldobjs)         @@\
+file: depobjs            							@@\
+	$(RM) $@										@@\
+	ar crv $@ ldobjs									
+
+

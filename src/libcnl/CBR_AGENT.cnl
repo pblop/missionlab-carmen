@@ -1,0 +1,61 @@
+/**********************************************************************
+ **                                                                  **
+ **                           CBRAgent.cnl                           **
+ **                                                                  **
+ ** Contains the CBRAgent function. It takes as a parameter the      **
+ ** return code from CBR and the COOP vector. As a result, if the    **
+ ** CBR return Code is 1(Success), then the function's return vector **
+ ** is the COOP vector, otherwise it returns zero vector in order    **
+ ** to stop the robot.                                               **
+ **                                                                  **
+ ** By: Max Likhachev                                                **
+ **                                                                  **
+ ** Copyright 2003, Georgia Tech Research Corporation                **
+ ** Atlanta, Georgia  30332-0415                                     **
+ ** ALL RIGHTS RESERVED, See file COPYRIGHT for details.             **
+ **********************************************************************/
+
+/* $Id: CBR_AGENT.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include "Interface.h"
+iend
+
+/***********************************************************************/
+
+
+procedure Vector CBRAgent with
+	int CBR_RetCode;
+	Vector COOPVector;
+header
+body
+	VECTOR_CLEAR(output);
+	
+	//if CBR was successful - then output = COOPVector
+	if(CBR_RetCode == 1)
+	{
+    //		printf("CBR returned 1\n");
+		plus_3d(output, COOPVector);
+    //		printf("CBR Vector: %f %f\n", output.x, output.y);
+	}
+	else
+	{
+		fprintf(stderr, "ERROR: CBR returned false\n");
+	}
+pend
+
+
+/**********************************************************************
+ * $Log: CBR_AGENT.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:58  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:05  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.1  2003/04/06 00:15:07  kaess
+ * Initial revision
+ *
+ **********************************************************************/

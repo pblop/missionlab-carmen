@@ -1,0 +1,23 @@
+MISSION NAME "Box Canyon"
+
+SCENARIO "Box Canyon"
+
+OVERLAY squeeze.ovl
+
+-- Holonomic 4 vehicle:
+UNIT <scouts> ROBOT ROBOT ROBOT ROBOT
+
+
+COMMAND LIST:
+
+ 0. UNIT scouts START AA-AA1 5 -10
+
+ 1. UNIT scouts MOVETO PP-0 
+
+ 2. UNIT scouts MOVETO BP-End 
+
+ 3. UNIT scouts OCCUPY BP-End 
+
+ 4. UNIT scouts STOP
+
+ 5. Quit

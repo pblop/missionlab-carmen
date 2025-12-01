@@ -1,0 +1,62 @@
+--******************************************************************
+--
+--	97-20B
+--	
+--      Establish observation posts at a building.
+--
+--	Two robots approach to a target building after being deployed
+--      from woods. They cross parking lot and street using parked cars
+--      as covers. When they reach to the (7th floor of ) building, one
+--      robot (R1)remains one side of exterior stairwell while the other
+--      robot (R2) goes to the other exterior stairwell through the
+--      hallway. R1 and R2 serve as observation posts.
+--       
+--	This scenario was developed for DARPA's Tactical Mobile
+--      Robotics Project.
+--
+--      12/1/98 Yoichiro Endo
+--
+--******************************************************************
+
+MISSION-AREA 200 150
+
+MISSION NAME "97-20"
+
+SCENARIO "97-20"
+
+OVERLAY 97-20B.ovl
+
+NEW-ROBOT bluerobot "AutonomousRobot1" "blue" "" (
+                --robot_type = "MRV2",
+                run_type= "SIMULATION"
+                )
+
+NEW-ROBOT PatrolCar "PatrolCarRobot1" "red" "" (
+                --robot_type = "MRV2",
+                run_type= "SIMULATION"
+                )
+
+NEW-ROBOT PedestrianRobot "PedestrianRobot1" "brown" "" (
+                --robot_type = "MRV2",
+                run_type= "SIMULATION"
+                )
+
+--SET SHOW-TRAILS ON
+SET ROBOT-LENGTH 1
+
+UNIT <scouts> (<R1> bluerobot) --(<R2> bluerobot)
+UNIT <patrol1> PatrolCar
+UNIT <patrol2> PatrolCar
+UNIT <pedestrian> PedestrianRobot
+
+COMMAND LIST:
+
+------------------------------------------------------------------
+-- Approach to the Target Building
+------------------------------------------------------------------
+
+ 0. UNIT patrol1 START AA-patrol-car1 AND
+    UNIT patrol2 START AA-patrol-car2 AND
+    UNIT pedestrian START AA-park-car AND
+    UNIT scouts START AA-Hummer --0 1.5 AND
+

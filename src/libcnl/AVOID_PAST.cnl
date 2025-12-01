@@ -1,0 +1,259 @@
+/**********************************************************************
+ **                                                                  **
+ **                          AVOID_PAST.cnl  	                     **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Antonio Sgorbissa                                  **
+ **  (from Tucker Balch and Ronald Arkin concepts)                   **
+ **                                                                  **
+ **  Copyright 2000, 2001, Georgia Tech Research Corporation         **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: AVOID_PAST.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <algorithm>
+
+using std::max;
+iend
+
+/***********************************************************************/
+
+procedure Vector AVOID_PAST with
+   int		past_horizon;
+   int		past_mark;
+   robot_position cur_pos;
+   int  	past_gridsize;
+   int  	world_to_past_scale;
+   double	overlap_ratio;	
+header
+
+/*definition of grid to remember past*/
+
+struct past_grid_struct {
+        unsigned int     **visits;
+};
+double  past_floor, past_ceiling;
+
+static struct past_grid_struct past_grid;
+
+int grid_center_x;
+int grid_center_y;
+int c_grid;
+
+int ngoal;
+body
+
+
+
+   Vector robot = cur_pos.v;
+   double myhead = cur_pos.heading;
+
+
+   char *value, *ptr;
+   if( strcmp(value=get_state("PastGrid"),""))
+   {
+    	//past_grid.visits = (unsigned int**) (strtol(value,&ptr,10));
+   	//value = ptr +1;
+    	grid_center_x =  (int) (strtol(value,&ptr,10));
+   	value = ptr +1;
+    	grid_center_y =  (int) (strtol(value,&ptr,10));
+   	value = ptr +1;
+    	c_grid =  (int) (strtol(value,&ptr,10));
+   	value = ptr +1;
+    	ngoal =  (int) (strtol(value,&ptr,10));
+   	value = ptr +1;
+    	past_floor =  (int) strtod(value,&ptr);
+   	value = ptr +1;
+    	past_ceiling =  (int) strtod(value,&ptr);
+   }
+   else
+   {
+	past_grid.visits = (unsigned int**)malloc(2*sizeof(unsigned int*)); 
+	past_grid.visits[0] = (unsigned int*)malloc(past_gridsize*past_gridsize*sizeof(unsigned int)); 
+	past_grid.visits[1] = (unsigned int*)malloc(past_gridsize*past_gridsize*sizeof(unsigned int)); 
+   	past_ceiling = 100.0;
+   	past_floor = 0.0;
+   	for ( int i = 0; i < past_gridsize; i++)
+   	{
+   		for ( int j = 0; j < past_gridsize; j++)
+        	{
+        	past_grid.visits[0][i*past_gridsize+j] = 0;
+        	past_grid.visits[1][i*past_gridsize+j] = 0;
+        	}       
+   	}
+	grid_center_x = past_gridsize/2 - (int)(world_to_past_scale*robot.x);
+	grid_center_y = past_gridsize/2 - (int)(world_to_past_scale*robot.y);
+	c_grid = 0;
+     	ngoal = 0;
+
+   }     
+
+   int cgoal = 0; 
+   if( strcmp(value=get_state("MisAtGoal"),""))
+       cgoal = (strtol(value,&ptr,10));
+
+   if (cgoal != ngoal)
+   {
+        ngoal = cgoal;
+   	for ( int i = 0; i < past_gridsize; i++)
+   	{
+   		for ( int j = 0; j < past_gridsize; j++)
+        	{
+        	past_grid.visits[0][i*past_gridsize+j] = 0;
+        	past_grid.visits[1][i*past_gridsize+j] = 0;
+        	}       
+   	}
+	grid_center_x = past_gridsize/2 - (int)(world_to_past_scale*robot.x);
+	grid_center_y = past_gridsize/2 - (int)(world_to_past_scale*robot.y);
+	c_grid = 0;
+        //printf("\nNew target");fflush(stdout);
+   }
+
+
+   //coumput avoid_past vector
+
+
+   int i = (int) (grid_center_x + world_to_past_scale * robot.x);
+   int j = (int) (grid_center_y + world_to_past_scale * robot.y);
+
+   bool scroll = false;
+   int ovl = max(past_horizon, past_mark);
+   if ((i - ovl < 0) || (i + ovl >= past_gridsize)
+   	||(j - ovl < 0) || (j + ovl >= past_gridsize))
+   scroll = true;
+
+   //printf("\n RPos %f %f %d %d", robot.x, robot.y,i,j);
+   
+   if (scroll)
+   {
+   	int lb = max (0, -i +past_gridsize/2);
+   	int rb = min (past_gridsize-1, past_gridsize/2 + past_gridsize - 1 - i);
+   	int db = max (0, -j +past_gridsize/2);
+   	int ub = min (past_gridsize-1, past_gridsize/2 + past_gridsize - 1 - j);
+	//printf("\n Ovl = %d Exiting From lb %d rb %d db %d ub %d", ovl, lb, rb, db, ub);
+
+	int o_grid = c_grid;
+	c_grid = (c_grid+1)%2;
+
+   	for ( int k = 0; k < past_gridsize; k++)
+   	{
+   		for ( int l = 0; l < past_gridsize; l++)
+        	{
+			if (l >= lb && l < rb && k >= db && k < ub)
+	        	{
+				int ok = k + j - past_gridsize/2; 
+				int ol = l + i - past_gridsize/2; 
+				past_grid.visits[c_grid][k*past_gridsize+l] = 
+	        		past_grid.visits[o_grid][ok*past_gridsize+ol];
+			}
+			else
+	        		past_grid.visits[c_grid][k*past_gridsize+l] = 0;
+        	}       
+   	}
+	grid_center_x = past_gridsize/2 - (int)(world_to_past_scale*robot.x);
+	grid_center_y = past_gridsize/2 - (int)(world_to_past_scale*robot.y);
+	i = past_gridsize/2;
+	j = past_gridsize/2;
+	//getchar();
+   } 
+
+   //printf("\n RPos %f %f %d %d", robot.x, robot.y,i,j);
+
+   int ix = 0;
+   int iy = 0;
+   int icount = 0;
+
+   int beenthere;
+
+   for (int l = (j + past_horizon); l >= (j - past_horizon); l--)
+   {
+   //printf("\n");
+   	for (int k = (i - past_horizon); k <= (i + past_horizon); k++)
+        {
+        	beenthere = past_grid.visits[c_grid][l*past_gridsize+k];
+                //cap the number of visits 
+                //if (beenthere > 1000) beenthere = 10;
+                if (k < i) ix = ix + beenthere;
+                if (k > i) ix = ix - beenthere;
+                if (l < j) iy = iy + beenthere;
+                if (l > j) iy = iy - beenthere;
+                icount = icount + beenthere;
+//		//printf("%d ",beenthere);
+        }
+   }
+
+   double x = (double) ix;
+   double y = (double) iy;
+   double count = (double) icount;
+
+   double aval = sqrt(x*x+y*y);
+   if (aval!=0)
+   {
+	x=x/aval;
+	y=y/aval;
+   }
+   //     past_magnitude = yvec.magnitude;
+
+   double past_magnitude = (count/(past_horizon * past_horizon * 4 * 10));
+   if (past_magnitude > (past_ceiling))
+   	past_magnitude = past_ceiling;
+   if (past_magnitude < (past_floor))
+        past_magnitude = past_floor;
+
+   VECTOR_CLEAR(output);
+   output.x=x*past_magnitude;
+   output.y=y*past_magnitude;
+   rotate_z(output, -1 * myhead);
+
+   //printf("\n RPos %d %d %f %f %f %f %d", i, j, x, y, output.x, output.y, icount);
+
+   //update the avoid_past_grid
+
+   for (int l = (j - past_mark); l <= (j + past_mark); l++)
+   {  
+   	for (int k = (i - past_mark); k <= (i + past_mark); k++)
+        {
+        	past_grid.visits[c_grid][l*past_gridsize+k]= past_grid.visits[c_grid][l*past_gridsize+k]+1;
+        }
+   }
+
+   value = (char*) malloc(100*sizeof(char));
+   sprintf(value, "%d %d %d %d %f %f", grid_center_x, grid_center_y, c_grid, ngoal, past_floor, past_ceiling);
+   put_state("PastGrid", value);
+   free(value);
+
+pend
+
+
+/**********************************************************************
+# $Log: AVOID_PAST.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.3  2003/04/06 12:04:03  endo
+# gcc 3.1.1
+#
+# Revision 1.2  2001/12/23 20:28:57  endo
+# RH 7.1 porting.
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+# Revision 1.10  1999/05/30 23:48:35  conrad
+# *** empty log message ***
+#
+# Revision 1.11  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.10  1995/06/28  21:37:10  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

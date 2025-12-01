@@ -1,0 +1,20 @@
+#
+# make.targets
+#
+
+#---------------------------------------------------------------------
+# define our invariant cleanup and depend stuff here, in one place
+
+clean:
+	rm -f *.o *.obj *.bak core core.* *.exe test *.map *.lst *.ps *.pdb *.output *.idb *.pdb $(TESTS) $(LY_CC) $(LY_H) $(DATAS) $(EXTRA_DELETES)
+
+
+veryclean: clean
+	rm -f build_version build_count
+	$(SUPPORT_DIR)/clean_makefile.sh makefile 
+
+depend: $(LY_CC) $(LY_H) $(DATAS) $(CC_SRCS)
+#	$(DEPENDPRG) $(DEPEND_FLAGS) $(INCLUDES) $(LY_CC) $(CC_SRCS) $(C_SRCS) 
+#	$(DEPENDPRG) $(DEPEND_FLAGS) $(INCLUDES) $(Y_SRCS) $(L_SRCS) $(CC_SRCS) $(C_SRCS) 
+
+#---------------------------------------------------------------------

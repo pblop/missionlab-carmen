@@ -1,0 +1,11 @@
+
+gcc_FLAGS = -g -DSUN4 -DNEED_PROTOTYPES
+/* gcc_COMPILER = /usr/local/bin/g++ */
+gcc_COMPILER = g++
+gcc_CCOMPILER = gcc
+
+#define gccMakeLibrary(file,depobjs,ldobjs) MakeLibrary(file,depobjs,ldobjs)
+
+install.gcc:: gcc/$(IPTLIB)
+	cp gcc/$(IPTLIB) $(INSTALL_DIR)/lib/gcc
+	#ranlib -t $(INSTALL_DIR)/lib/gcc/$(IPTLIB)

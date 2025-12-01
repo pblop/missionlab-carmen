@@ -1,0 +1,39 @@
+--******************************************************************
+--
+--	Forage.ovl
+--
+--
+--******************************************************************
+
+MISSION-AREA 60.0 60.0
+
+SCENARIO "PickUp"
+
+SITE "Simulated environment"
+
+ORIGIN 0 -4
+
+CONTROL MEASURES:
+
+
+PP StartPlace 10.0  10.0  0.2
+--PP Goal 11.0 5.5 0.2
+
+
+Object  50.1  20.5 0.25 Movable "orange"
+
+Object   50.0 20.0  0.5 Container "purple"
+
+
+
+WALL ""  5.0  5.0  55.0  5.0 
+WALL "" 55.0  5.0  55.0 55.0
+WALL "" 55.0 55.0  5.0 55.0
+WALL "" 5.0 55.0  5.0 5.0
+
+
+
+
+
+
+

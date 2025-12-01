@@ -1,0 +1,4 @@
+After having complied LOS_demo.cdl, rename _LOS_demo as LOS_demo
+(which associates the right color to each robot) and run mlab with
+
+mlab -r LOS_demo

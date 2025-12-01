@@ -1,0 +1,64 @@
+RM = rm -f
+AR = ar crv
+RANLIB = ranlib
+DEPEND = makedepend
+ALL_OBJS = *.o
+EMPTY = 
+
+SYSTEM_CC_INCLUDES = $(CCHOME)/include/CC
+INCDIR = ..
+INC_PATH_VX	= -I$(WORKSHOME)/h 
+IPTLIB = libipt.a
+IPTVXLIB = vxIPT
+
+CCINCLUDES = -I$(INCDIR)
+CCSUFFIX = cc
+CSUFFIX = c
+CCFLAGS = $(CCINCLUDES)
+
+#ifndef MakeObjectRule
+#define MakeObjectRule(compiler, object, dst,src,flags)				@@\
+object: dst.o							@@\
+dst.o: src.$(CCSUFFIX)							@@\
+	compiler flags $(CCFLAGS) -c src.$(CCSUFFIX) -o dst.o
+#endif
+
+#ifndef MakeEnvObjectRule
+#define MakeEnvObjectRule(compiler, object, dst,src,flags,env)				@@\
+object: dst.o							@@\
+dst.o: src.$(CCSUFFIX)							@@\
+	env compiler flags $(CCFLAGS) -c src.$(CCSUFFIX) -o dst.o
+#endif
+
+#define IPTLibObject(file)		@@\
+    SRCS += file.$(CCSUFFIX)    				@@\
+    UnixLibObject(file) @@ \
+ 	VxLibObject(file) 
+
+#define IPTLibObjectEnv(file,env)		@@\
+    SRCS += file.$(CCSUFFIX)    				@@\
+    UnixLibObjectEnv(file,env)    @@\
+ 	VxLibObject(file) 
+
+#define IPTVxLibObject(file)    @@\
+    SRCS += file.$(CCSUFFIX)    @@\
+    VxLibObject(file)
+
+#define IPTUnixLibObject(file)    @@\
+    SRCS += file.$(CCSUFFIX)    @@\
+    UnixLibObject(file)
+
+#define MakeLibrary(file, depobjs, ldobjs)			@@\
+file: depobjs            							@@\
+	$(RM) $@										@@\
+	$(AR) $@ ldobjs									@@\
+	$(RANLIB) $@
+
+
+#ifndef MakeObjectCRule
+#define MakeObjectCRule(compiler, object, dst,src,flags)			@@\
+object: dst.o							@@\
+dst.o: src.$(CSUFFIX)							@@\
+	compiler flags $(CCFLAGS) -c src.$(CSUFFIX) -o dst.o
+#endif
+

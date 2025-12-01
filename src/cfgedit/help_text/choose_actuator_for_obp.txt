@@ -1,0 +1,8 @@
+"Title: Choose an actuator for output binding point\n\
+\n\
+There are multiple actuators available on the robot which could be\n\
+bound to this output binding point.  Choose one and press OK.\n\
+\n\
+OK:    Bind the choosen actuator.\n\
+Abort: Abort binding operation.\n\
+Help:  This message."

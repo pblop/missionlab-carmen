@@ -1,0 +1,46 @@
+/**********************************************************************
+ **                                                                  **
+ **                       AERIAL_GLOBAL_TO_EGOCENTRIC.cnl            **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Patrick Ulam                                       **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 2003, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+// Aerial Implementation of global to egocentric behavior (ie 3d)
+
+#include "cnl.inc"
+
+
+procedure Vector AERIAL_GLOBAL_TO_EGOCENTRIC with
+   Vector global;
+   Vector robot_location;
+   double robot_heading;
+   double goal_altitude;
+header
+body
+
+
+   global.z = goal_altitude;
+   minus_3d(global, robot_location, output);
+
+
+   // -1 * heading since is left handed coordinate system (FIX THIS)
+   rotate_z(output, -1 * robot_heading);
+
+   if( debug )
+   {
+      fprintf(stderr,"AERIAL_GLOBAL_TO_EGOCENTRIC(%d):  global: <%.1f %.1f %.1f> robot: <%.1f %.1f %.1f>, %.0f degrees ==> egocentric: <%.1f %.1f %.1f>\n",
+      robot_id, 
+      global.x, global.y, global.z,
+      robot_location.x, robot_location.y, robot_location.z,robot_heading, 
+      output.x, output.y, output.z);
+   }
+pend
+
+

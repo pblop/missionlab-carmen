@@ -1,0 +1,49 @@
+/**********************************************************************
+ **                                                                  **
+ **                          MUST_FOLLOW.cnl  	                     **
+ **                                                                  **
+ **                                                                  **
+ **                Written by:  Antonio Sgorbissa                    **
+ **                                                                  **
+ **  Copyright 2000, Antonio Sgorbissa 			             **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool MUST_FOLLOW with
+  Vector g;
+  Vector f;
+header
+int get_my_visual_goal(Vector &vg, int &ptvg);
+body
+
+  bool cond1 = (g.x < -0.1); 
+  bool cond2 = ((f.x*f.x+f.y*f.y)>0);
+
+  Vector vg; 
+  int ptvg;
+  bool has_vg = (bool) get_my_visual_goal(vg, ptvg);
+  has_vg = false;
+  output = !has_vg&cond1&cond2;
+
+  if (debug) 
+	printf("\nMUSTFOLLOW %d %d %f", cond1, cond2, g.x);
+pend
+
+/**********************************************************************
+# $Log: MUST_FOLLOW.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#
+#
+#**********************************************************************/

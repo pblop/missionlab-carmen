@@ -1,0 +1,42 @@
+/*********************************************************
+**                                                      **
+**                                                      **
+**                  ESTOY_OBJETIVO.cnl                  **
+**                                                      **
+**                                                      **
+*********************************************************/
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool ESTOY_POS_ANT_LIDER with
+   bool         have_a_goal;
+   double   success_radius;
+header
+    static int inicial;
+    Vector distancia;
+    static Vector posObjetivo;
+    robot_position miPosicion;
+body
+        if(inicial == 0)
+        {
+            posObjetivo = posicion_ant_lider();
+            inicial ++;
+            //printf("Posicion objetivo (%f, %f)\n", posObjetivo.x, posObjetivo.y);
+
+        }
+        miPosicion = exec_get_position();
+        minus_2d(posObjetivo, miPosicion.v, distancia);
+        rotate_z(distancia, -1 * miPosicion.heading);
+   output = have_a_goal &&
+   vlength(distancia.x, distancia.y) <= success_radius;
+   //printf("He llegado al Ojetivo %s ---> OBJ (%f, %f) // MIA (%f, %f) distancia %f\n", output ? "SI":"NO", posObjetivo.x, posObjetivo.y, miPosicion.v.x, miPosicion.v.y, vlength(distancia.x, distancia.y));
+   if(output == true){
+        inicial = 0;
+    }
+    //printf("He llegado al ANT lider %s \n", output ? "SI":"NO");
+   if( debug )
+      fprintf(stderr,"ESTOY_OBJETIVO(%d): have_a_goal=%s goal=<%.1f %.1f> out=%s\n", robot_id, have_a_goal?"YES":"NO", distancia.x, distancia.y, output?"YES":"NO");
+pend

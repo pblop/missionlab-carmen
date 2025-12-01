@@ -1,0 +1,84 @@
+/**********************************************************************
+ **                                                                  **
+ **                        CBRGetCase.cnl                            **
+ **                                                                  **
+ ** Contains the CBRGetCase function. It retrieves, adapts and       **
+ ** returns a case based on the input parameters:                    **
+ ** readings and current case                                        **
+ **                                                                  **
+ ** By: Max Likhachev                                                **
+ **                                                                  **
+ ** Copyright 2003, Georgia Tech Research Corporation                **
+ ** Atlanta, Georgia  30332-0415                                     **
+ ** ALL RIGHTS RESERVED, See file COPYRIGHT for details.             **
+ **********************************************************************/
+
+/* $Id: CBR_GET_CASE.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <libc.h>
+#include "Interface.h"
+#include "cbr_behavioral_select.h"
+iend
+
+/***********************************************************************/
+
+
+procedure int CBRGetCase with
+	Vector goal_rel_loc;
+once
+header  
+	char sState[100], sTask[100];
+	int CBRRetCode, RetCode;
+	PT GoalPos;
+body
+//	printf("New entry to CBR\n");
+
+	//Get the current state and current task
+	RetCode = GetCurrentStateandTask(sState, sTask);
+
+	//if current state cannot use CBR - return 0
+    	if(RetCode == 0)
+	{
+		//Current task cannot use the CBR
+    fprintf(stderr, "The current task cannot use CBR\n");
+		output = 0;
+	}
+	else
+	{
+		//The CBR usable task is found
+    //		printf("The current CBR task name = %s\n", sTask);
+
+		//Print the readings
+		//PrintReadings();
+		
+		GoalPos.fX = goal_rel_loc.x;
+		GoalPos.fY = goal_rel_loc.y;
+
+		//call the CBR function to find, adapt and set the case
+		CBRRetCode = CBRSelectandApplyCase(GoalPos);
+		
+		//return The CBR Return Code
+		output = CBRRetCode;
+	}
+
+pend
+
+
+/**********************************************************************
+ * $Log: CBR_GET_CASE.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:58  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:05  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.2  2003/04/06 00:27:21  endo
+ * *** empty log message ***
+ *
+ * Revision 1.1  2003/04/06 00:15:07  kaess
+ * Initial revision
+ *
+ **********************************************************************/

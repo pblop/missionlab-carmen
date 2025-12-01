@@ -1,0 +1,26 @@
+#This file stores configuration data for a plan.
+#The data is printed in a specific format to aid reconstruction of data objects.
+
+BEGIN_PLAN
+#Plan ID
+FortBenningFullReconPlan
+#Map File Name
+FortBenningTracePoints.ovl
+#Element Ordering
+ORDERED
+#Tethered
+FALSE
+#Plan contigency location
+<150,128>
+#Number of Elements
+1
+#########	Begin element specific information
+#########	Begin element
+#Element 1 Type
+MOVETO
+#Plan step number
+1
+#Goal Position
+<141,104>
+
+

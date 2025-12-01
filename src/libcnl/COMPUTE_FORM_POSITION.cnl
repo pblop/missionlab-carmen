@@ -1,0 +1,531 @@
+/*----------------------------------------------------------
+
+	COMPUTE_FORM_POSITION
+
+	Figure out where the robot should be.
+
+	Output: An egocentric vector relative to the robot's current
+		position and heading.
+
+	Written by:  Tucker Balch
+
+        1. Doug MacKenzie - add egocentric code and comments
+        2. Jonathan Cameron - updated formation code to deal
+                with 2/3/4 robot situations
+	3. Tucker Balch - Added sweep formation.  Revised
+		indents.  Please do not change them.
+
+
+	Copyright 1995 - 2006, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+----------------------------------------------------------*/
+
+/* $Id: COMPUTE_FORM_POSITION.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+procedure Vector COMPUTE_FORM_POSITION with
+	double		spacing;
+	int	        unit_size;
+	Vector		unit_center_relative;
+	double          formation_heading;
+	Vector          robot_location;
+	double          robot_heading;
+	CNLString_t     formation_name;
+once
+	bool            reported_error = false;
+
+header
+	Vector	desired;
+	Vector	last_center;
+	Vector	unit_center_global;
+	Vector	v_last_step;
+	Vector	est_center_relative;
+	Vector	tmp;
+	int	first_time = 1;
+
+body
+
+   char *formation_type = formation_name.val;
+
+   if( formation_type == NULL ||
+       formation_type[0] == '\0' ||
+       strcasecmp(formation_type, "NO_FORMATION") == 0)
+   {
+      VECTOR_CLEAR(output);
+   }
+   else
+   {
+	// Init
+	VECTOR_CLEAR(desired);
+
+	// Estimate t+1 location of unit center using locations
+	// t-1, and t and interpolating along the heading
+
+	// Compute the global location of the unit center
+	unit_center_global = unit_center_relative;
+	rotate_z(unit_center_global, robot_heading);
+	unit_center_global.x += robot_location.x;
+	unit_center_global.y += robot_location.y;
+
+	// If first pass, then init the t-1 bucket to this location so 
+	// looks like we didn't move. This is a safe way to get started
+	if (first_time)
+		{
+		first_time = FALSE;
+		last_center = unit_center_global;      
+		}
+
+	// Compute the vector along the last movement (t-1 -> t) 
+	minus_2d(unit_center_global, last_center, v_last_step);
+
+	// Rotate the vector back to relative to our heading
+	rotate_z(v_last_step, -1*robot_heading);
+
+	// Add the vector to our current location to get a 
+	// predicted location for time t+1 
+	add_2d(unit_center_relative, v_last_step, est_center_relative);
+
+	// save current location for next time 
+	last_center = unit_center_global; 
+
+	// Compute proper position by num_vehicles, formation type, 
+	// and member id
+	/*
+	For the robots, +x is straight ahead, but for the purposes of 
+	computing the "desired" vector, the following frame of reference
+	applies.  This should eventually be corrected so that it is easier
+	to understand.
+
+                           ^
+	formation heading  |
+                            -x
+                           |
+                       -y -+- +y
+                           |
+                            +x
+	*/
+
+	// Sweep is the same no matter how many robots we have.
+	// Generate a force back to a line perpindicular to
+	// formation axis.
+	if(strcasecmp(formation_type, "SWEEP") == 0) 
+                {
+                tmp = est_center_relative;
+                rotate_z(tmp, -formation_heading);
+                desired.y = tmp.y;
+                desired.x = 0;
+                }
+	else
+		{
+		// All other formations depend on unit size
+
+      		switch (unit_size) 
+			{
+
+      			case 2:  /* 2 vehicles */
+	                        if(strcasecmp(formation_type, "LINE") == 0 ||
+				   strcasecmp(formation_type, "LINE_LEFT")==0 ||
+				   strcasecmp(formation_type, "DIAMOND") == 0 ) 
+				{
+              				/************************* 
+               				*                       *  
+               				*         ^    |        *       
+               				*  2 + 1  |   -+- +y    *       
+               				*              |        *       
+               				*              +x       *       
+               				*************************/
+            				if ( (robot_id % 2) == 1 ) 
+						{ /* station 1 */
+               					desired.x = 0;
+               					desired.y = +spacing/2;
+               					}
+            				else 
+						{/* station 2 */
+               					desired.x = 0;
+               					desired.y = -spacing/2;
+               					}
+				}
+				else if( strcasecmp(formation_type, "LINE_RIGHT")==0)
+				{
+
+              				/************************* 
+               				*                       *  
+               				*         ^    |        *       
+               				*  1 + 2  |   -+- +y    *       
+               				*              |        *       
+               				*              +x       *       
+               				*************************/
+            				if ( (robot_id % 2) == 1 ) 
+						{ /* station 1 */
+               					desired.x = 0;
+               					desired.y = -spacing/2;
+               					}
+            				else 
+						{/* station 2 */
+               					desired.x = 0;
+               					desired.y = +spacing/2;
+               					}
+				}
+				else if( strcasecmp(formation_type, "WEDGE")==0 ||
+					 strcasecmp(formation_type, "WEDGE_LEFT")==0)
+				{
+
+					/************************* 
+               				*                       *  
+               				*      1  ^    |        *       
+               				*    +    |   -+- +y    *       
+               				*  2           |        *       
+               				*              +x       *       
+               				*************************/
+					if ( (robot_id % 2) == 1 ) 
+						{ /* station 1 */
+               					desired.x = -spacing/2;
+               					desired.y = +spacing/2;
+               					}
+            				else 
+						{/* station 2 */
+               					desired.x = +spacing/2;
+               					desired.y = -spacing/2;
+               					}
+				}
+				else if( strcasecmp(formation_type, "WEDGE_RIGHT")==0)
+				{
+
+              				/************************* 
+               				*                       *  
+               				*  1      ^    |        *       
+               				*    +    |   -+- +y    *       
+               				*      2       |        *       
+               				*              +x       *       
+               				*************************/
+            				if ( (robot_id % 2) == 1 ) 
+						{ /* station 1 */
+               					desired.x = -spacing/2;
+               					desired.y = -spacing/2;
+               					}
+            				else {
+						/* station 2 */
+               					desired.x = +spacing/2;
+               					desired.y = +spacing/2;
+               					}
+				}
+				else if( strcasecmp(formation_type, "COLUMN")==0)
+				{
+
+					/************************* 
+               				*                       *  
+               				*    1   ^     |        *       
+               				*    +   |    -+- +y    *       
+               				*    2         |        *       
+               				*              +x       *       
+               				*************************/
+            				if ( (robot_id % 2) == 1 ) 
+						{ /* station 1 */
+						desired.x = -spacing/2;
+               					desired.y = 0;
+               					}
+            				else 
+						{/* station 2 */
+               					desired.x = +spacing/2;
+               					desired.y = 0;
+            			 		}
+                                }
+				else if( !reported_error )
+				{
+				   reported_error = true;
+				   
+				   fprintf(stderr,"Unknown formation type '%s'. Legal types are:\n",formation_type);
+				   fprintf(stderr,"\tLINE\n\tLINE_LEFT\n");
+				   fprintf(stderr,"\tLINE_RIGHT\n\tDIAMOND\n");
+				   fprintf(stderr,"\tWEDGE\n\tWEDGE_LEFT\n");
+				   fprintf(stderr,"\tWEDGE_RIGHT\n\tCOLUMN\n");
+				}
+
+         			break;/* 2 robots */
+
+			case 3: /* Three vehicles */
+	                        if(strcasecmp(formation_type, "LINE") == 0 ||
+				   strcasecmp(formation_type, "LINE_LEFT")==0 ||
+				   strcasecmp(formation_type, "LINE_RIGHT") == 0 ) 
+				{
+              				/***************************** 
+               				*                           *  
+               				*              ^    |       *   
+               				*  3  1  2     |   -+- +y   *   
+               				*                   |       *   
+               				*                   +x      *   
+               				*****************************/
+            				if ( (robot_id % 3) == 1 ) 
+						{ /* station 1 */
+               					desired.x = 0;
+               					desired.y = 0;
+               					}
+            				else if ( (robot_id % 3) == 2 ) 
+						{/* station 2 */
+               					desired.x = 0;
+               					desired.y = +spacing/2;
+               					}
+            				else 
+						{/* station 3 */
+               					desired.x = 0;
+               					desired.y = -spacing/2;
+               					}
+				}
+	                        else if(strcasecmp(formation_type, "WEDGE") == 0 ||
+				   strcasecmp(formation_type, "WEDGE_KEFT")==0 ||
+				   strcasecmp(formation_type, "WEDGE_RIGHT") == 0 ||
+				   strcasecmp(formation_type, "DIAMOND") == 0 ) 
+				{
+
+              				/***************************** 
+               				*                           *  
+               				*     1        ^    |       *   
+               				*     +        |   -+- +y   *   
+               				*   2   3           |       *   
+               				*                   +x      *   
+               				*****************************/
+            				if ( (robot_id % 3) == 1 ) 
+						{/* station 1 */
+               					desired.x = -2.0*spacing/3.0;
+               					desired.y = 0;
+               					}
+            				else if ( (robot_id % 3) == 2 ) 
+						{   /* station 2 */
+               					desired.x = +spacing/3;
+               					desired.y = -spacing/3;
+               					}
+            				else 
+						{/* station 3 */
+               					desired.x = +spacing/3;
+               					desired.y = +spacing/3;
+               					}
+				}
+	                        else if(strcasecmp(formation_type, "COLUMN")==0)
+				{
+
+              				/***************************** 
+               				*                           *  
+               				*     1        ^    |       *   
+               				*     2        |   -+- +y   *   
+               				*     3             |       *   
+               				*                   +x      *   
+               				*****************************/
+            				if ( (robot_id % 3) == 1 ) 
+						{/* station 1 */
+               					desired.x = -spacing/2;
+               					desired.y = 0;
+               					}
+            				else if ( (robot_id % 3) == 2 ) 
+						{   /* station 2 */
+               					desired.x = 0;
+               					desired.y = 0;
+               					}
+            				else 
+						{/* station 3 */
+               					desired.x = +spacing/2;
+               					desired.y = 0;
+               					}
+				}
+				else if( !reported_error )
+				{
+				   reported_error = true;
+				   
+				   fprintf(stderr,"Unknown formation type '%s'. Legal types are:\n",formation_type);
+				   fprintf(stderr,"\tLINE\n\tLINE_LEFT\n");
+				   fprintf(stderr,"\tLINE_RIGHT\n\tDIAMOND\n");
+				   fprintf(stderr,"\tWEDGE\n\tWEDGE_LEFT\n");
+				   fprintf(stderr,"\tWEDGE_RIGHT\n\tCOLUMN\n");
+				}
+         			break;/*3 robots*/
+
+      			case 4: /* Four vehicles */
+	                        if(strcasecmp(formation_type, "LINE") == 0 ||
+				   strcasecmp(formation_type, "LINE_LEFT")==0 ||
+				   strcasecmp(formation_type, "LINE_RIGHT") == 0 ) 
+				{
+              				/***************************** 
+               				*                           *  
+               				*              ^    |       *   
+               				*  4 3+1 2     |   -+- +y   *   
+               				*                   |       *   
+               				*                   +x      *   
+               				*****************************/
+            				if ( (robot_id % 4) == 1 ) 
+						{        /* station 1 */
+               					desired.x = 0;
+               					desired.y = +spacing/2;
+               					}
+            				else if ( (robot_id % 4) == 2 ) 
+						{   /* station 2 */
+               					desired.x = 0;
+               					desired.y = +3*spacing/2;
+               					}
+            				else if ( (robot_id % 4) == 3 ) 
+						{   /* station 3 */
+               					desired.x = 0;
+               					desired.y = -spacing/2;
+               					}
+            				else 
+						{ /* station 4 */
+               					desired.x = 0;
+               					desired.y = -3*spacing/2;
+               					}
+				}
+	                        else if(strcasecmp(formation_type, "WEDGE") == 0 ||
+				   strcasecmp(formation_type, "WEDGE_KEFT")==0 ||
+				   strcasecmp(formation_type, "WEDGE_RIGHT")==0)
+				{
+              				/***************************** 
+               				*                           *  
+               				*    3 1       ^    |       *   
+               				*     +        |   -+- +y   *   
+               				*  4     2          |       *   
+               				*                   +x      *   
+               				*****************************/
+            				if ( (robot_id % 4) == 1 ) 
+						{        /* station 1 */
+               					desired.x = -spacing/2;
+               					desired.y = +spacing/2;
+               					}
+            				else if ( (robot_id % 4) == 2 ) 
+						{   /* station 2 */
+               					desired.x = +spacing/2;
+               					desired.y = +3*spacing/2;
+               					}
+            				else if ( (robot_id % 4) == 3 ) 
+						{   /* station 3 */
+               					desired.x = -spacing/2;
+               					desired.y = -spacing/2;
+               					}
+            				else 
+						{ /* station 4 */
+               					desired.x = +spacing/2;
+               					desired.y = -3*spacing/2;
+               					}
+				}
+	                        else if(strcasecmp(formation_type,"DIAMOND")==0)
+				{
+
+              				/***************************** 
+               				*                           *  
+               				*     1        ^    |       *   
+               				*   3 + 2      |   -+- +y   *   
+               				*     4             |       *   
+               				*                   +x      *   
+               				*****************************/
+            				if ( (robot_id % 4) == 1 ) 
+						{        /* station 1 */
+               					desired.x = -spacing;
+               					desired.y = 0;
+               					}
+            				else if ( (robot_id % 4) == 2 ) 
+						{   /* station 2 */
+               					desired.x = 0;
+               					desired.y = +spacing;
+               					}
+            				else if ( (robot_id % 4) == 3 ) 
+						{   /* station 3 */
+						desired.x = 0;
+               					desired.y = -spacing;
+               					}
+            				else 
+						{ /* station 4 */
+               					desired.x = +spacing;
+               					desired.y = 0;
+               					}
+				}
+	                        else if(strcasecmp(formation_type,"COLUMN")==0)
+				{
+              				/***************************** 
+               				*     1                     *  
+               				*     3        ^    |       *   
+               				*     +        |   -+- +y   *   
+               				*     2             |       *   
+               				*     4             +x      *   
+               				*****************************/
+            				if ( (robot_id % 4) == 1 ) 
+						{        /* station 1 */
+               					desired.x = -3*spacing/2;
+               					desired.y = 0;
+               					}
+            				else if ( (robot_id % 4) == 2 ) 
+						{   /* station 2 */
+               					desired.x = +spacing/2;
+               					desired.y = 0;
+               					}
+            				else if ( (robot_id % 4) == 3 ) 
+						{   /* station 3 */
+               					desired.x = -spacing/2;
+               					desired.y = 0;
+               					}
+            				else 
+						{ /* station 4 */
+               					desired.x = +3*spacing/2;
+               					desired.y = 0;
+               					}
+				}
+				else if( !reported_error )
+				{
+				   reported_error = true;
+				   
+				   fprintf(stderr,"Unknown formation type '%s'. Legal types are:\n",formation_type);
+				   fprintf(stderr,"\tLINE\n\tLINE_LEFT\n");
+				   fprintf(stderr,"\tLINE_RIGHT\n\tDIAMOND\n");
+				   fprintf(stderr,"\tWEDGE\n\tWEDGE_LEFT\n");
+				   fprintf(stderr,"\tWEDGE_RIGHT\n\tCOLUMN\n");
+				}
+
+         			break;/*4 robots*/
+
+      				default:
+         				/* complain! */
+         				fprintf(stderr, "Error in COMPUTE_FORM_POSITION:\n");
+         				fprintf(stderr, "   unexpected number of vehicles (%d)\n", unit_size);
+         				desired.x = 0;
+         				desired.y = 0;
+         				break;
+			}/*switch # robots*/
+		}/*if not SWEEP*/
+
+
+      	// Rotate the desired vector by the formation heading.
+      	// This allows the above math to assume formation is
+      	// directly ahead and eliminated trig functions
+
+      	// NOTE: Formation heading is relative to current heading
+      	rotate_z(desired, formation_heading);
+   
+      	// Add on the unit center location to create an egocentric vector.
+      	minus_2d(est_center_relative, desired, output);
+   	}
+
+if( debug ) 
+	{
+	fprintf(stderr,"COMPUTE_FORM_POSITION (%d) output=(%.1f %.1f)\n",
+                robot_id, output.x,output.y);
+	}
+
+pend
+
+
+/**********************************************************************
+# $Log: COMPUTE_FORM_POSITION.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.1.1.1  2005/02/06 22:59:55  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  1996/06/02  20:55:30  doug
+# *** empty log message ***
+#
+# Revision 1.7  1995/06/28  21:51:47  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

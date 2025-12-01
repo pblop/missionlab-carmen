@@ -1,0 +1,49 @@
+/**********************************************************************
+ **                                                                  **
+ **                        MakeUnitVector.cnl                        **
+ **                                                                  **
+ ** Contains the MakeUnitVector function. It takes as parameters     **
+ ** the X and Y components of a vector(doubles) and returns a        **
+ ** vector of the same direction but normalized.                     **
+ **                                                                  **
+ ** By: Max Likhachev                                                **
+ **                                                                  **
+ ** Copyright 2003, Georgia Tech Research Corporation                **
+ ** Atlanta, Georgia  30332-0415                                     **
+ ** ALL RIGHTS RESERVED, See file COPYRIGHT for details.             **
+ **********************************************************************/
+
+/* $Id: MAKE_UNIT_VECTOR.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+
+procedure Vector MakeUnitRelHeadV with
+	double XComp;
+	double YComp;
+header
+body
+	VECTOR_CLEAR(output);
+	output.x = XComp;
+	output.y = YComp;	
+	unit_2d(output);
+//	printf("Bias.x = %f, Bias.y = %f\n", output.x, output.y);
+
+pend
+
+
+/**********************************************************************
+ * $Log: MAKE_UNIT_VECTOR.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:59  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:04  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.1  2003/04/06 00:15:07  kaess
+ * Initial revision
+ *
+ **********************************************************************/

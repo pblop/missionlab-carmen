@@ -1,0 +1,24 @@
+======================================================================
+README.DEMO
+
+Instruction for running mars2020 demo
+
+Written by Yoichiro Endo (07-12-2006)
+======================================================================
+
+* To run the first CMDLi demo
+ 
+  0) ./run-mini-demo
+  1) compile and run
+
+* To run the second CMDLi demo
+ 
+  0) cfgedit gtech.cdl
+  1) compile, but do not run
+  2) quit cfgedit
+  3) cfgedit non-gtech.cdl
+  4) compile, but do not run
+  5) quit cfgedit
+  6) ./CopyDemoRobots
+  7) ./run-big-demo
+

@@ -1,0 +1,253 @@
+/**********************************************************************
+ **                                                                  **
+ **                       ENTER_DOORWAY.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Jonathan F. Diaz                                   **
+ **                                                                  **
+ **  Copyright 1999, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+/* $Id: ENTER_DOORWAY.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+iend
+
+procedure Vector ENTER_DOORWAY with 
+double distance;
+int unmarked;
+header
+bool init = false;
+bool lost = false;
+int timestamp = 0;
+body
+{
+  Vector pt1, pt2, mid, inpt, testpt;
+  robot_position loc;
+  double dx, dy, len, dockxy, cone_angle, controlled_radius;
+  double l1, l2, d1, d2, dist;
+  boolean stat;
+  int newtime = 0;
+
+  // node_name is the name of this node instance (AN_xxx)
+  char *node_name = parms->node_name;
+
+  VECTOR_CLEAR(output);
+  loc = exec_get_position();
+
+  if (unmarked == ENTER_UNMARKED_ONLY) 
+    stat = exec_detect_nearest_unmarked_doorway(&pt1, &pt2);
+  else if (unmarked == ENTER_ANY) 
+    stat = exec_detect_nearest_doorway(&pt1, &pt2, &newtime);
+  else stat = exec_detect_nearest_doorway(&pt1, &pt2, &newtime);
+
+  if (!init || (newtime > timestamp)) {
+    timestamp = newtime;
+    if (!init || (stat == TRUE && !lost)) {
+      printf("begining math\n");
+      fflush(stdout);
+      /*determine the midpoint*/
+      mid.x = (pt1.x + pt2.x)/2.0; 
+      mid.y = (pt1.y + pt2.y)/2.0;
+
+      /*calculate the slope of perpendicular line*/
+      dy = pt1.x - pt2.x; 
+      dx = pt1.y - pt2.y;
+      dy *= -1;
+      
+      len = sqrt(dx*dx + dy*dy);
+      if (len == 0.0) {
+	printf("len has zero length\n");
+	fflush(stdout);
+      }
+      else {
+	/*normalize the length to be 0.5*/
+	len = 0.5/sqrt(dx*dx + dy*dy);
+	dx *= len;
+	dy *= len;
+      }
+      /* calculate a test point */
+      inpt.x = mid.x + dx*2*distance;
+      inpt.y = mid.y + dy*2*distance;
+      testpt.x = mid.x - dx*2*distance;
+      testpt.y = mid.y - dy*2*distance;
+      /* Determine which side of the door is further from the robot*/
+      
+      printf("second stage\n");
+      fflush(stdout);
+      d1 = sqrt(pow((loc.v.x - inpt.x),2) + pow((loc.v.y - inpt.y), 2));
+      d2 = sqrt(pow((loc.v.x - testpt.x),2) + pow((loc.v.y - testpt.y), 2));
+      if (d2 > d1) {
+	inpt.x = testpt.x;
+	inpt.y = testpt.y;
+      }
+
+      /* Dock angle is the angle from the center point to
+	 the midpoint of the doorway */
+      dockxy = atan2(mid.y - inpt.y, mid.x - inpt.x);
+      /* Cone angle is twice the angle from the center point
+	 to the doorway midpoint to either endpoint */
+      l1 = sqrt((pt1.x - mid.x)*(pt1.x - mid.x) + (pt1.y - mid.y)*(pt1.y - mid.y));
+      l2 = sqrt((inpt.x - mid.x)*(inpt.x - mid.x) + (inpt.y - mid.y)*(inpt.y - mid.y));
+      cone_angle = 2*fabs(atan2(l1, l2));
+      /* Controlled radius is the distance from the center to any point
+	 on the circle. */
+      controlled_radius = 2.0; //sqrt((pt1.x - inpt.x)*(pt1.x - inpt.x) + (pt1.y - inpt.y)*(pt1.y - inpt.y)) + 1.0;
+      
+      printf("will call put_state\n");
+      fflush(stdout);
+      put_state_double((char *)node_name, "dockxy", dockxy);
+      put_state_double((char *)node_name, "cradius", controlled_radius);
+      put_state_double((char *)node_name, "cangle", cone_angle);
+      put_state_vector((char *)node_name, "inpt", inpt);
+      printf("done\n");
+      fflush(stdout);
+    }
+    else {
+      fprintf(stderr, "No doorways around to enter\n");
+      lost = true;
+    }
+    init = true;
+  }
+  get_state_double((char *)node_name, "dockxy", &dockxy);
+  get_state_double((char *)node_name, "cradius", &controlled_radius);
+  get_state_double((char *)node_name, "cangle", &cone_angle);
+  get_state_vector((char *)node_name, "inpt", &inpt);
+  get_state_vector((char *)node_name, "mid", &mid);
+
+  /* Call DOCK with both ballistic and controlled gains set to 1.0 */
+  printf("will dock\n");
+  fflush(stdout);
+  output = compute_dock_force_on_robot(loc.v, inpt, dockxy, controlled_radius,
+				       cone_angle, 1.0, 1.0);
+  printf("done\n");
+  fflush(stdout);
+  
+  rotate_z(output, -1*loc.heading);
+  output.z = 0.0;
+  // Close enough to the door, complete on ded reckoning
+  dist = sqrt(pow(mid.x - loc.v.x, 2) + pow(mid.y - loc.v.y, 2));
+  if (dist < 0.35) lost = true;
+}
+pend
+
+procedure bool THROUGH_DOORWAY with 
+int unmarked;
+header
+bool init = false;
+int timestamp = 0;
+bool lost = false;
+bool prev_crossed = false;
+body
+{
+  Vector pt1, pt2, start, mid;
+  robot_position loc;
+  boolean stat;
+  lineRec2d_t door, path;
+  point2d_t inters;
+  int newtime;
+  double dist, Ux, Uy, length, Vx, Vy;
+
+  // node_name is the name of this node instance (AN_xxx)
+  char *node_name = parms->node_name;
+
+  loc = exec_get_position();
+
+  if (unmarked == ENTER_UNMARKED_ONLY) 
+    stat = exec_detect_nearest_unmarked_doorway(&pt1, &pt2);
+  else if (unmarked == ENTER_ANY) 
+    stat = exec_detect_nearest_doorway(&pt1, &pt2, &newtime);
+  else stat = exec_detect_nearest_doorway(&pt1, &pt2, &newtime);
+  
+  if (!init || (newtime > timestamp)) {
+    timestamp = newtime;
+    if (stat == true && !lost) {
+      put_state_vector((char *)node_name, "pt1", pt1);
+      put_state_vector((char *)node_name, "pt2", pt2);
+    }
+    else lost = true;
+    if (!init) {
+      start.x = loc.v.x;
+      start.y = loc.v.y;
+      put_state_vector((char *)node_name, "start", start);
+      init = true;
+    }
+  }
+  get_state_vector((char *)node_name, "pt1", &pt1);
+  get_state_vector((char *)node_name, "pt2", &pt2);
+  get_state_vector((char *)node_name, "start", &start);
+  
+  setLineRec(pt1.x, pt1.y, pt2.x, pt2.y, &door);
+  setLineRec(start.x, start.y, loc.v.x, loc.v.y, &path);
+  
+  /* If path crosses door then the robot has passed through a door*/
+  
+  if (prev_crossed || intersectTwoLinesegs(&door, &path, &inters)) {
+    prev_crossed = true;
+    
+    // calculate perpendicular distance to door
+    // create a unit vector along the line 
+    Ux = pt2.x - pt1.x;
+    Uy = pt2.y - pt1.y;
+    length = sqrt(Ux*Ux + Uy*Uy);
+    Ux /= length;
+    Uy /= length;
+    
+    // create a vector to the point
+    Vx = loc.v.x - pt1.x;
+    Vy = loc.v.y - pt1.y;
+    
+    // now calculate the distance via the cross product.
+    // recall cross product gives perpendicular component of resultant 
+    // vector
+    dist = fabs(Ux * Vy - Uy * Vx);
+    printf("dist %f\n", dist);
+    if (dist >= 0.75) output = true;
+    else output = false;
+  }
+  else output = false;
+
+  put_state_vector((char *)node_name, "start", start);
+    // Close enough to the door, complete on ded reckoning
+  /*determine the midpoint*/
+  mid.x = (pt1.x + pt2.x)/2.0; 
+  mid.y = (pt1.y + pt2.y)/2.0;
+
+  dist = sqrt(pow(mid.x - loc.v.x, 2) + pow(mid.y - loc.v.y, 2));
+  if (dist < 0.35) lost = true;
+}
+pend
+
+
+
+
+
+
+/**********************************************************************
+ * $Log: ENTER_DOORWAY.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:58  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:03  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.5  2001/12/23 20:28:57  endo
+ * RH 7.1 porting.
+ *
+ * Revision 1.4  2000/10/16 21:32:17  endo
+ * Code modified at Rockville, MD.
+ *
+ * Revision 1.3  2000/10/16 19:21:31  endo
+ * Modified due to the compiler upgrade.
+ *
+ * Revision 1.2  2000/08/12 18:58:00  saho
+ * Revidsed for laser readings.
+ *
+  **********************************************************************/
+

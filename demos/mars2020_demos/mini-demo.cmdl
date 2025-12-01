@@ -1,0 +1,38 @@
+MISSION NAME "Mini Demo"
+
+NEW-ROBOT robotClass "defaultRobot"
+
+UNIT <mini-demoRobot1> robotClass
+UNIT <mini-demoRobot2> robotClass
+UNIT <mini-demoRobot3> robotClass
+UNIT <mini-demoRobot4> robotClass
+
+UNIT <blue_team> (mini-demoRobot1 mini-demoRobot2)
+UNIT <red_team> (mini-demoRobot3 mini-demoRobot4)
+UNIT <all> (blue_team red_team)
+
+COMMAND LIST:
+   // Send all the robots to P2
+   unit all MoveTo goalLocation = [P1]
+   unit all MoveTo goalLocation = [P2]
+
+   // Send the blue team to the north side waypoint.
+   unit blue_team MoveTo goalLocation = [N1]
+
+   // Send the red team to the west side waypoint.
+   unit red_team MoveTo goalLocation = [W1]
+
+   // Synchronize the team
+   unit all Synchronize
+
+   // Make one blue robot to get closer to the building while
+   // the other stands by at the current location.
+   unit mini-demoRobot1 Loiter
+   unit mini-demoRobot2 MoveTo goalLocation = [N2]
+   unit mini-demoRobot2 TrackTarget
+
+   // Do the same thing for the red team.
+   unit mini-demoRobot3 Loiter
+   unit mini-demoRobot4 MoveTo goalLocation = [W2]
+   unit mini-demoRobot4 TrackTarget
+

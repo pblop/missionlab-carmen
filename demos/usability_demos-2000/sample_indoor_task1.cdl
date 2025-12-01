@@ -1,0 +1,147 @@
+/*************************************************
+*
+* This CDL file /home/demo3/mission.portable/demos/usability_demos-2000/sample_indoor_task1.cdl was created with cfgedit
+* version 5.0.00
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_1405 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1421]<176,210>|State1| = [
+                %proceed_direction = {Facing},
+                %move_to_location_gain = {1.0},
+                %off_path_gain = {1.0},
+                %avoid_obstacle_gain = {0.33},
+                %avoid_obstacle_sphere = {0.7},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              ProceedAlongHallway]<10,10>
+,
+            society[$AN_1423]<709,216>|State2| = [
+              AboutFace]<10,10>
+,
+            society[$AN_1425]<707,60>|State3| = [
+              Terminate]<10,10>
+,
+            society[$AN_1427]<174,722>|State4| = [
+                %enter_room_gain = {1.0},
+                %distance_to_enter = {1.0},
+                %enter_which = {ENTER_UNMARKED_ONLY},
+                %avoid_obstacles_gain = {0.33},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              EnterRoom]<10,10>
+,
+            society[$AN_1429]<590,728>|State5| = [
+              SurveyRoom*]<10,10>
+,
+            society[$AN_1431]<589,551>|State6| = [
+                %leave_room_gain = {1.0},
+                %avoid_obstacles_gain = {0.33},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              LeaveRoom]<10,10>
+,
+            society[$AN_1433]<827,426>|State7| = [
+                %alert_subject = {"Warning: Biohazard Found!!!"},
+                %alert_message = {"The robot has found a biohazard."},
+                %sends_email = {NO_Email},
+                %recipient = {""}
+,
+              Alert]<10,10>
+,
+            society[$AN_1435]<825,747>|State8| = [
+              Terminate]<10,10>
+,
+            society[$AN_1437]<346,552>|State9| = [
+              MarkDoorway]<10,10>
+,
+            society[$AN_1439]<585,359>|State10| = [
+                %proceed_direction = {Left},
+                %move_to_location_gain = {1.0},
+                %off_path_gain = {1.0},
+                %avoid_obstacle_gain = {0.33},
+                %avoid_obstacle_sphere = {0.7},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              ProceedAlongHallway]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1421,
+            rules[$AN_1421]<176,210>|State1| = if [
+                %Goal_Tolerance = {0.5}
+,
+              AtEndOfHall]<0,0>|Trans2|
+ goto $AN_1423,
+            rules[$AN_1423]<709,216>|State2| = if [
+              AboutFaceCompleted]<0,0>|Trans3|
+ goto $AN_1421,
+            rules[$AN_1421]<176,210>|State1| = if [
+                %Objects = {Start_Place},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans4|
+ goto $AN_1425,
+            rules[$AN_1421]<176,210>|State1| = if [
+                %direction = {Left},
+                %detect_which = {DETECT_UNMARKED_ONLY},
+                %Robot_Clearance = {0.5},
+                %Hallway_Width = {2.0}
+,
+              AtDoorway]<0,0>|Trans1|
+ goto $AN_1427,
+            rules[$AN_1427]<174,722>|State4| = if [
+              InRoom]<0,0>|Trans2|
+ goto $AN_1429,
+            rules[$AN_1429]<590,728>|State5| = if [
+                %notify_message = {"NO BIOHAZARD DETECTED"}
+,
+              TaskExited]<0,0>|Trans3|
+ goto $AN_1431,
+            rules[$AN_1429]<590,728>|State5| = if [
+                %notify_message = {"TEST POSITIVE"}
+,
+              TaskExited]<0,0>|Trans4|
+ goto $AN_1433,
+            rules[$AN_1433]<827,426>|State7| = if [
+              Alerted]<0,0>|Trans5|
+ goto $AN_1435,
+            rules[$AN_1431]<589,551>|State6| = if [
+              InHallway]<0,0>|Trans6|
+ goto $AN_1437,
+            rules[$AN_1437]<346,552>|State9| = if [
+              MarkedDoorway]<0,0>|Trans8|
+ goto $AN_1439,
+            rules[$AN_1439]<585,359>|State10| = if [
+              InHallway]<10,10>|Trans9|
+ goto $AN_1421)<292,156>|Mission|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1465 from vehicle(
+  bound_to = sample_indoor_task1Robot1:PIONEERAT(
+sample_indoor_task1Robot1:[
+          $AN_1405]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_1465]<10,10>|Group of Robots|
+]<10,10>
+

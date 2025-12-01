@@ -1,0 +1,11 @@
+
+sun4_FLAGS = -g -DSUN4 -DSCREWED_GNU
+/* sun4_COMPILER = /usr/local/bin/g++ */
+sun4_COMPILER = g++
+sun4_CCOMPILER = gcc
+
+#define sun4MakeLibrary(file,depobjs,ldobjs) MakeLibrary(file,depobjs,ldobjs)
+
+install.sun4:: sun4/$(IPTLIB)
+	cp sun4/$(IPTLIB) $(INSTALL_DIR)/lib/sun4
+	ranlib $(INSTALL_DIR)/lib/sun4/$(IPTLIB)

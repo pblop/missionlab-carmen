@@ -1,0 +1,50 @@
+/**********************************************************************
+ **                                                                  **
+ **                           SETXYTHETA.cnl                         **
+ **                                                                  **
+ **                 Written by:  Yoichiro Endo                       **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SETXYTHETA.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure Vector SETXYTHETA with
+   Vector new_robot_location;
+   double new_theta;
+header
+body
+   output.x = 0.;
+   output.y = 0.;
+   output.z = 0.;
+   exec_setxyTheta((double) new_robot_location.x, 
+                   (double) new_robot_location.y, (double)new_theta);
+pend
+
+/**********************************************************************
+# $Log: SETXYTHETA.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:02  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.12  2001/01/24 23:08:33  saho
+# Fixed the call to  exec_setxyTheta() to take double instead of float.
+#
+# Revision 1.11  2000/03/22 02:21:27  saho
+# Fixed a bug. the cnl now calls exec_setxyTheta and not setxy() in robot_side_com.c.
+#
+# Revision 1.10  1999/06/28 19:58:51  endo
+# This cnl resets the x-y coordinates and theta of the robot.
+#
+#
+#**********************************************************************/

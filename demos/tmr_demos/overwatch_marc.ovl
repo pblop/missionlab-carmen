@@ -1,0 +1,387 @@
+--******************************************************************
+--
+--	overwatch_marc.ovl
+--
+--
+--******************************************************************
+
+MISSION-AREA 45.0 45.0
+
+SCENARIO "overwatch"
+
+SITE "MaRC Bldg. 3rd Floor, NE, Georgia Tech"
+
+ORIGIN -2 0
+
+CONTROL MEASURES:
+
+-- Mobile Robot Lab
+Boundary "Mobile Robot Lab" 32.1 17.3 38.9 17.3
+Boundary "" 35.9  7.5 38.9  7.5
+Boundary "" 32.1  5.5 35.9  5.5
+Boundary "" 32.1 17.3 32.1  5.5
+Boundary "" 35.9  7.5 35.9  5.5
+Boundary "" 38.9 17.3 38.9  7.5
+
+Gap "" 34.4 17.4 34.4 17.2 1.5
+
+Obstacle 35.9  7.5 0.1
+Obstacle 36.0  7.5 0.1
+Obstacle 37.0  7.5 0.1
+Obstacle 38.0  7.5 0.1
+Obstacle 38.9  7.5 0.1
+
+Obstacle 32.1  5.5 0.1
+Obstacle 33.0  5.5 0.1
+Obstacle 34.0  5.5 0.1
+Obstacle 35.0  5.5 0.1
+Obstacle 35.9  5.5 0.1
+
+Obstacle 38.9 17.3 0.1
+Obstacle 38.9 17.0 0.1
+Obstacle 38.9 16.0 0.1
+Obstacle 38.9 15.0 0.1
+Obstacle 38.9 14.0 0.1
+Obstacle 38.9 13.0 0.1
+Obstacle 38.9 12.0 0.1
+Obstacle 38.9 11.0 0.1
+Obstacle 38.9 10.0 0.1
+Obstacle 38.9  9.0 0.1
+Obstacle 38.9  8.0 0.1
+Obstacle 38.9  7.5 0.1
+
+Obstacle 32.1 17.3 0.1
+Obstacle 32.1 17.0 0.1
+Obstacle 32.1 16.0 0.1
+Obstacle 32.1 15.0 0.1
+Obstacle 32.1 14.0 0.1
+Obstacle 32.1 13.0 0.1
+Obstacle 32.1 12.0 0.1
+Obstacle 32.1 11.0 0.1
+Obstacle 32.1 10.0 0.1
+Obstacle 32.1  9.0 0.1
+Obstacle 32.1  8.0 0.1
+Obstacle 32.1  7.0 0.1
+Obstacle 32.1  6.0 0.1
+Obstacle 32.1  5.5 0.1
+
+
+
+-- Elec. Closet
+Boundary "" 35.9  7.5 38.9  7.5
+Boundary "" 35.9  5.5 38.9  5.5
+Boundary "" 35.9  7.5 35.9  5.5
+Boundary "" 38.9  7.5 38.9  5.5
+
+-- Copy & Mail Room
+Boundary "Rm 361" 28.0 17.3 32.1 17.3
+Boundary "" 28.0  5.5 32.1  5.5
+Boundary "" 28.0 17.3 28.0  5.5
+Boundary "" 32.1 17.3 32.1  5.5
+
+-- Room 360
+Boundary "Rm 360" 19.7 17.3 28.0 17.3
+Boundary "" 19.7 11.4 28.0 11.4
+Boundary "" 19.7 17.3 19.7 11.4
+Boundary "" 28.0 17.3 28.0 11.4
+
+-- Room 360A
+Boundary "Rm 360A" 19.7 11.4 28.0 11.4
+Boundary "" 19.7  5.5 28.0  5.5
+Boundary "" 19.7 11.4 19.7  5.5
+Boundary "" 28.0 11.4 28.0  5.5
+
+-- Data Closet
+Boundary "" 14.3 17.3 16.8 17.3
+Boundary "" 14.3 16.2 16.8 16.2
+Boundary "" 14.3 17.3 14.3 16.2
+Boundary "" 16.8 17.3 16.8 16.2
+
+
+-- CIMS Lab
+Boundary "" 11.5 17.3 14.3 17.3
+Boundary "" 16.8 17.3 19.7 17.3
+Boundary "CIMS Lab" 14.3 16.2 16.8 16.2
+Boundary "" 11.5  5.5 19.7  5.5
+Boundary "" 11.5 17.3 11.5  5.5
+Boundary "" 14.3 17.3 14.3 16.2
+Boundary "" 16.8 17.3 16.8 16.2
+Boundary "" 19.7 17.3 19.7  5.5
+
+Gap "" 17.6 17.4 17.6 17.2 1.5
+
+Obstacle 14.3 16.2 0.1
+Obstacle 15.0 16.2 0.1
+Obstacle 16.0 16.2 0.1
+Obstacle 16.8 16.2 0.1
+
+Obstacle 11.5  5.5 0.1
+Obstacle 12.0  5.5 0.1
+Obstacle 13.0  5.5 0.1
+Obstacle 14.0  5.5 0.1
+Obstacle 15.0  5.5 0.1
+Obstacle 16.0  5.5 0.1
+Obstacle 17.0  5.5 0.1
+Obstacle 18.0  5.5 0.1
+Obstacle 19.0  5.5 0.1
+Obstacle 19.7  5.5 0.1
+
+Obstacle 19.7 17.3 0.1
+Obstacle 19.7 17.0 0.1
+Obstacle 19.7 16.0 0.1
+Obstacle 19.7 15.0 0.1
+Obstacle 19.7 14.0 0.1
+Obstacle 19.7 13.0 0.1
+Obstacle 19.7 12.0 0.1
+Obstacle 19.7 11.0 0.1
+Obstacle 19.7 10.0 0.1
+Obstacle 19.7  9.0 0.1
+Obstacle 19.7  8.0 0.1
+Obstacle 19.7  7.0 0.1
+Obstacle 19.7  6.0 0.1
+Obstacle 19.7  5.5 0.1
+
+Obstacle 16.8 17.3 0.1
+Obstacle 16.8 17.0 0.1
+Obstacle 16.8 16.2 0.1
+
+Obstacle 14.3 17.3 0.1
+Obstacle 14.3 17.0 0.1
+Obstacle 14.3 16.2 0.1
+
+Obstacle 11.5 17.3 0.1
+Obstacle 11.5 17.0 0.1
+Obstacle 11.5 16.0 0.1
+Obstacle 11.5 15.0 0.1
+Obstacle 11.5 14.0 0.1
+Obstacle 11.5 13.0 0.1
+Obstacle 11.5 12.0 0.1
+Obstacle 11.5 11.0 0.1
+Obstacle 11.5 10.0 0.1
+Obstacle 11.5  9.0 0.1
+Obstacle 11.5  8.0 0.1
+Obstacle 11.5  7.0 0.1
+Obstacle 11.5  6.0 0.1
+Obstacle 11.5  5.5 0.1
+
+-- Room 358
+Boundary "Rm 358"  2.8 17.3 11.5 17.3
+Boundary ""  2.8  5.5 11.5  5.5
+Boundary ""  2.8 17.3  2.8  5.5
+Boundary "" 11.5 17.3 11.5  5.5
+
+-- Room 351
+Boundary "Rm 351" 32.1 23.4 36.2 23.4
+Boundary "" 32.1 19.0 36.2 19.0
+Boundary "" 32.1 23.4 32.1 19.0
+Boundary "" 36.2 23.4 36.2 19.0
+
+-- Room 352
+Boundary "Rm 352" 23.7 23.4 32.1 23.4
+Boundary "" 23.7 19.0 32.1 19.0
+Boundary "" 23.7 23.4 23.7 19.0
+Boundary "" 32.1 23.4 32.1 19.0
+
+-- Room 353
+Boundary "Rm 353" 19.7 23.4 23.7 23.4
+Boundary "" 19.7 19.0 23.7 19.0
+Boundary "" 19.7 23.4 19.7 19.0
+Boundary "" 23.7 23.4 23.7 19.0
+
+-- Room 354
+Boundary "Rm 354" 15.6 23.4 19.7 23.4
+Boundary "" 15.6 19.0 19.7 19.0
+Boundary "" 15.6 23.4 15.6 19.0
+Boundary "" 19.7 23.4 19.7 19.0
+
+-- Room 355
+Boundary "Rm 355" 11.5 23.4 15.6 23.4
+Boundary "" 11.5 19.0 15.6 19.0
+Boundary "" 11.5 23.4 11.5 19.0
+Boundary "" 15.6 23.4 15.6 19.0
+
+-- Room 357
+Boundary "Rm 357"  0.0 23.4 11.5 23.4
+Boundary ""  2.8 22.4  4.4 22.4
+Boundary ""  4.4 19.0 11.5 19.0
+Boundary ""  2.8 23.4  2.8 22.4
+Boundary ""  4.4 22.4  4.4 19.0
+Boundary "" 11.5 23.4 11.5 19.0
+
+-- Room 371
+Boundary "Rm 371" 44.5 23.4 50.0 23.4
+Boundary "" 44.5 19.0 48.6 19.0
+Boundary "" 44.5 23.4 44.5 19.0
+Boundary "" 48.6 23.4 48.6 19.0
+
+-- Bathrooms Etc.
+Boundary "" 41.8 17.3 48.6 17.3
+Boundary "" 41.8  5.5 48.6  5.5
+Boundary "" 41.8 17.3 41.8  5.5
+Boundary "" 48.6 17.3 48.6  5.5
+
+
+-- MaRC
+Boundary ""  0.0 23.3 36.2 23.3
+Boundary "" 44.5 23.3 50.0 23.3
+Boundary ""  0.0 19.0  4.4 19.0
+Boundary ""  0.0 18.9  2.8 18.9
+Boundary "" 36.2 19.1 44.5 19.1
+Boundary "East Entry" 36.2 19.0 44.5 19.0
+Boundary ""  2.8 19.0  2.8  0.0
+Boundary ""  2.7 19.0  2.7  0.0
+Boundary "" 36.1 23.4 36.1 19.0
+Boundary "" 44.6 23.4 44.6 19.0
+Boundary "" 36.2  5.5 36.2  0.0
+Boundary "" 44.5  5.5 44.5  0.0
+
+Gap "" 40.4 19.2 40.4 18.9 2.0
+
+-- Columns
+Obj "" 36.2 22.7 0.6
+Obj "" 36.2 22.7 1.4
+Obj "" 36.2 19.0 0.4
+Obj "" 36.2 17.3 0.6
+Obj "" 28.0 22.7 0.6
+Obj "" 28.0 17.3 0.6
+Obj "" 19.7 22.7 0.6
+Obj "" 19.7 17.3 0.6
+Obj "" 11.5 22.7 0.6
+Obj "" 11.5 17.3 0.6
+Obj ""  3.1 22.7 0.6
+Obj ""  3.1 17.3 0.6
+Obj "" 44.5 22.7 0.6
+Obj "" 44.5 22.7 1.4
+Obj "" 44.5 19.0 0.4
+
+Obstacle 36.2 19.0 0.2
+Obstacle 44.5 19.0 0.2
+Obstacle 36.2 17.3 0.3
+Obstacle 28.0 17.3 0.3
+Obstacle 19.7 17.3 0.3
+Obstacle 11.5 17.3 0.3
+Obstacle  3.1 17.3 0.3
+
+--Wall
+Obstacle  2.8 19.0 0.1
+Obstacle  3.0 19.0 0.1
+Obstacle  4.0 19.0 0.1
+Obstacle  5.0 19.0 0.1
+Obstacle  6.0 19.0 0.1
+Obstacle  7.0 19.0 0.1
+Obstacle  8.0 19.0 0.1
+Obstacle  9.0 19.0 0.1
+Obstacle 10.0 19.0 0.1
+Obstacle 11.0 19.0 0.1
+Obstacle 12.0 19.0 0.1
+Obstacle 13.0 19.0 0.1
+Obstacle 14.0 19.0 0.1
+Obstacle 15.0 19.0 0.1
+Obstacle 16.0 19.0 0.1
+Obstacle 17.0 19.0 0.1
+Obstacle 18.0 19.0 0.1
+Obstacle 19.0 19.0 0.1
+Obstacle 20.0 19.0 0.1
+Obstacle 21.0 19.0 0.1
+Obstacle 22.0 19.0 0.1
+Obstacle 23.0 19.0 0.1
+Obstacle 24.0 19.0 0.1
+Obstacle 25.0 19.0 0.1
+Obstacle 26.0 19.0 0.1
+Obstacle 27.0 19.0 0.1
+Obstacle 28.0 19.0 0.1
+Obstacle 29.0 19.0 0.1
+Obstacle 10.0 19.0 0.1
+Obstacle 31.0 19.0 0.1
+Obstacle 32.0 19.0 0.1
+Obstacle 33.0 19.0 0.1
+Obstacle 34.0 19.0 0.1
+Obstacle 35.0 19.0 0.1
+Obstacle 36.0 19.0 0.1
+Obstacle 37.0 19.0 0.1
+Obstacle 38.0 19.0 0.1
+Obstacle 38.9 19.0 0.1
+
+Obstacle  2.8 17.3 0.1
+Obstacle  3.0 17.3 0.1
+Obstacle  4.0 17.3 0.1
+Obstacle  5.0 17.3 0.1
+Obstacle  6.0 17.3 0.1
+Obstacle  7.0 17.3 0.1
+Obstacle  8.0 17.3 0.1
+Obstacle  9.0 17.3 0.1
+Obstacle 10.0 17.3 0.1
+Obstacle 11.0 17.3 0.1
+Obstacle 12.0 17.3 0.1
+Obstacle 13.0 17.3 0.1
+Obstacle 14.0 17.3 0.1
+Obstacle 15.0 17.3 0.1
+Obstacle 16.0 17.3 0.1
+Obstacle 16.8 17.3 0.1
+--Obstacle 17.0 17.3 0.1
+--Obstacle 18.0 17.3 0.1
+Obstacle 18.4 17.3 0.1
+Obstacle 19.0 17.3 0.1
+Obstacle 20.0 17.3 0.1
+Obstacle 21.0 17.3 0.1
+Obstacle 22.0 17.3 0.1
+Obstacle 23.0 17.3 0.1
+Obstacle 24.0 17.3 0.1
+Obstacle 25.0 17.3 0.1
+Obstacle 26.0 17.3 0.1
+Obstacle 27.0 17.3 0.1
+Obstacle 28.0 17.3 0.1
+Obstacle 29.0 17.3 0.1
+Obstacle 10.0 17.3 0.1
+Obstacle 31.0 17.3 0.1
+Obstacle 32.0 17.3 0.1
+Obstacle 33.0 17.3 0.1
+Obstacle 33.6 17.3 0.1
+--Obstacle 34.0 17.3 0.1
+--Obstacle 35.0 17.3 0.1
+Obstacle 35.2 17.3 0.1
+Obstacle 36.0 17.3 0.1
+Obstacle 37.0 17.3 0.1
+Obstacle 38.0 17.3 0.1
+Obstacle 38.9 17.3 0.1
+
+Obstacle 41.8 17.3 0.1
+Obstacle 41.8 17.0 0.1
+Obstacle 41.8 16.0 0.1
+Obstacle 41.8 15.0 0.1
+Obstacle 41.8 14.0 0.1
+Obstacle 41.8 13.0 0.1
+Obstacle 41.8 12.0 0.1
+Obstacle 41.8 11.0 0.1
+Obstacle 41.8 10.0 0.1
+Obstacle 41.8  9.0 0.1
+Obstacle 41.8  8.0 0.1
+Obstacle 41.8  7.0 0.1
+Obstacle 41.8  6.0 0.1
+Obstacle 41.8  5.5 0.1
+
+
+
+PP P1a 39.4  17.3  0.2
+
+PP P1b 41.3  17.3  0.2
+
+PP P2  38.9  18.0  0.2
+
+PP P3  35.2  18.0  0.2
+
+PP P4  34.4  17.3  0.2
+
+PP P5  35.5  11.4  0.2
+
+PP P6  33.6  18.0  0.2
+
+PP P7  18.4  18.0  0.2
+
+PP P8  17.6  17.3  0.2
+
+PP P9  15.6  11.4  0.2
+
+PP P10 16.8  18.0  0.2
+
+

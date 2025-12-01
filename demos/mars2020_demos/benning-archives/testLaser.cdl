@@ -1,0 +1,48 @@
+/*************************************************
+*
+* This CDL file testLaser.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_1567 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1586]<265,245>|State1| = [
+                %move_forward_gain = {0.0},
+                %avoid_obstacle_gain = {0.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveForward]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1586)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1583 from vehicle(
+  bound_to = defaultRobot1:DEFAULT_ROBOT(
+defaultRobot1:[
+          $AN_1567]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_1583]<10,10>|Group of Robots|
+]<10,10>
+

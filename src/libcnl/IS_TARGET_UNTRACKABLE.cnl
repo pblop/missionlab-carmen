@@ -1,0 +1,61 @@
+/**********************************************************************
+ **                                                                  **
+ **                     IS_TARGET_UNTRACKABLE.cnl                    **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  CNP_SAVE_TARGET_LOCATION saves the location of a target.        **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: IS_TARGET_UNTRACKABLE.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+//***********************************************************************
+// This function checks to see if the target is trackable by this robot
+// or not.
+//***********************************************************************
+procedure bool IS_TARGET_UNTRACKABLE with
+    ObjectReading object;
+header
+body
+{
+    bool untrackable = false;
+
+    untrackable = exec_check_target_untrackable(object.id);
+
+    if (debug)
+    {
+        fprintf(stderr, "IS_TARGET_UNTRACKABLE: untrackable = %d\n", untrackable);
+    }
+
+    output = untrackable;
+}
+pend
+
+/**********************************************************************
+# $Log: IS_TARGET_UNTRACKABLE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/05/02 04:18:06  endo
+# TrackTask improved for the experiment.
+#
+# Revision 1.2  2006/03/01 09:27:39  endo
+# Check-in for Type-I Intercept Experiment.
+#
+# Revision 1.1  2006/02/19 22:42:06  endo
+# CNP_SAVE_TARGET_LOCATION stuff.
+#
+#**********************************************************************/

@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <math.h>
+#include "mxn_matrix.h"
+#include "kf_sensormodel.h"
+#include "ekf_gyrosensormodel.h"
+
+#define D2R(val) ((val)*M_PI/180.0)
+
+EKF_GyroSensorModel::EKF_GyroSensorModel(char *name, mxn_Matrix &var) : KF_SensorModel(name, var) {
+}
+
+EKF_GyroSensorModel::~EKF_GyroSensorModel(void) {
+
+  free(Name);
+}
+
+void EKF_GyroSensorModel::Set_Measurement(double val) {
+  GyroVal = D2R(val);
+}
+
+mxn_Matrix EKF_GyroSensorModel::Get_Measurement(void) {
+  mxn_Matrix tempm(1,1);
+  //tempm[0][0] = 0.0;
+  //tempm[1][0] = 0.0;
+  tempm[0][0] = GyroVal;
+
+  return tempm;
+}
+
+mxn_Matrix EKF_GyroSensorModel::Get_Measurement(mxn_Matrix &state) {
+  mxn_Matrix tempm(1,1);
+  //tempm[0][0] = 0.0;
+  //tempm[1][0] = 0.0;
+  tempm[0][0] = GyroVal;
+  return tempm;
+}
+
+
+
+mxn_Matrix EKF_GyroSensorModel::Get_Model(double dtime, mxn_Matrix &statemodel) {
+  
+  mxn_Matrix promod(1,1);
+  promod[0][0] = 1.0;
+
+  return promod;
+}
+
+mxn_Matrix EKF_GyroSensorModel::Get_ModelJacobian(double dtime, mxn_Matrix &statemodel) {
+  mxn_Matrix jac(1,3);
+  jac[0][0] = 0.0;
+  jac[0][1] = 0.0;
+  jac[0][2] = 1.0;
+  //jac[1][0] = 0.0;
+  //jac[1][1] = 1.0;
+  //jac[1][2] = 0.0;
+  //jac[2][0] = 0.0;
+  //jac[2][1] = 0.0;
+  //jac[2][2] = 1.0;
+  
+  return jac;
+}
+
+mxn_Matrix EKF_GyroSensorModel::Get_ErrorJacobian(double dtime, mxn_Matrix &statemodel) {
+ 
+  mxn_Matrix jac(3,3);
+  jac[0][0] = 0.0;
+  jac[0][1] = 0.0;
+  jac[0][2] = 0.0;
+  jac[1][0] = 0.0;
+  jac[1][1] = 0.0;
+  jac[1][2] = 0.0;
+  jac[2][0] = 0.0;
+  jac[2][1] = 0.0;
+  jac[2][2] = 1.0;
+
+  return jac;
+}
+
+  
+
+
+

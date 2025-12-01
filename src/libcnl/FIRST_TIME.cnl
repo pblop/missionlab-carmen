@@ -1,0 +1,43 @@
+/**********************************************************************
+ **                                                                  **
+ **                       CONSTANT.cnl                       **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: FIRST_TIME.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool FIRST_TIME with
+header
+body
+   output = true;
+pend
+
+
+/**********************************************************************
+# $Log: FIRST_TIME.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:57  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  1996/01/31  02:08:05  doug
+# Initial revision
+#
+# Revision 1.1  1995/10/19  17:53:10  doug
+# Initial revision
+#
+#
+#**********************************************************************/

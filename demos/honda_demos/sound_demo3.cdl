@@ -1,0 +1,153 @@
+/*************************************************
+*
+* This CDL file sound_test4.cdl was created with cfgedit
+* version 3.1.02
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_623 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_632,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_632]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_635 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_651]<151,296>|State1| = [
+                %New_Location = {15.0, 12.0},
+                %New_Heading = {180.0}
+,
+              Localize]<10,10>
+,
+            society[$AN_653]<524,299>|State2| = [
+              Stop]<10,10>
+,
+            society[$AN_655]<138,909>|State4| = [
+              Stop]<10,10>
+,
+            society[$AN_657]<138,604>|State5| = [
+                %Goal_Location = {15.0, 12.0},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {0.45},
+                %avoid_obstacle_sphere = {0.68},
+                %avoid_obstacle_safety_margin = {0.28}
+,
+              GoTo]<10,10>
+,
+            society[$AN_659]<908,558>|State5| = [
+                %Goal_Location = {17.0, 12.0},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %avoid_obstacle_sphere = {0.56},
+                %avoid_obstacle_safety_margin = {0.22}
+,
+              GoTo]<10,10>
+,
+            society[$AN_661]<910,917>|State6| = [
+              Stop]<10,10>
+,
+            society[$AN_663]<494,918>|State7| = [
+                %Goal_Location = {17.0, 14.0},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {0.51},
+                %avoid_obstacle_sphere = {0.49},
+                %avoid_obstacle_safety_margin = {0.24}
+,
+              GoTo]<10,10>
+,
+            society[$AN_665]<1013,281>|State8| = [
+                %avoid_obstacle_gain = {0.48},
+                %avoid_obstacle_sphere = {0.62},
+                %avoid_obstacle_safety_margin = {0.22}
+,
+              GoToSoundSource]<10,10>
+,
+            society[$AN_667]<769,268>|State9| = [
+              Stop]<10,10>
+,
+            rules[$AN_651]<151,296>|State1| = if [
+              Immediate]<10,10>|Trans2|
+ goto $AN_653,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_651,
+            rules[$AN_655]<138,909>|State4| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_657,
+            rules[$AN_657]<138,604>|State5| = if [
+                %Goal_Tolerance = {0.28},
+                %Goal_Location = {15.0, 12.0}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_653,
+            rules[$AN_653]<524,299>|State2| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_659,
+            rules[$AN_659]<908,558>|State5| = if [
+                %Goal_Tolerance = {0.19},
+                %Goal_Location = {17.0, 12.0}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_661,
+            rules[$AN_661]<910,917>|State6| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_663,
+            rules[$AN_663]<494,918>|State7| = if [
+                %Goal_Tolerance = {0.24},
+                %Goal_Location = {17.0, 14.0}
+,
+              AtGoal]<0,0>|Trans4|
+ goto $AN_655,
+            rules[$AN_659]<908,558>|State5| = if [
+                %Volume_threshold = {3.37}
+,
+              DetectSound]<0,0>|Trans1|
+ goto $AN_665,
+            rules[$AN_665]<1013,281>|State8| = if [
+                %Desired_distance = {0.7}
+,
+              MovedDistance]<0,0>|Trans2|
+ goto $AN_667,
+            rules[$AN_667]<769,268>|State9| = if [
+                %Delay = {5.09}
+,
+              Wait]<0,0>|Trans3|
+ goto $AN_659)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_691 from vehicle(
+  bound_to = sound_test4Robot1:PIONEERAT(
+sound_test4Robot1:[
+          $AN_635,
+          $AN_623]
+)<0,0>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_691]<10,10>|Group of Robots|
+]<10,10>
+

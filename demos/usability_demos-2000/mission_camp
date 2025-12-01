@@ -1,0 +1,19 @@
+MISSION NAME "sample_camp"
+OVERLAY "refugee_camp.ovl"
+NEW-ROBOT sample_campRobot1 "sample_campRobot1" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+NEW-ROBOT sample_campRobot2 "sample_campRobot2" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+UNIT <all> sample_campRobot1 sample_campRobot2
+
+set show-trails off
+set scale-robots on
+set ROBOT-LENGTH 10
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace 10.000000 0.000000

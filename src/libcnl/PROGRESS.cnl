@@ -1,0 +1,380 @@
+/**********************************************************************
+ **                                                                  **
+ **                           PROGRESS.cnl                           **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  This cnl code deals with how the robot is progressing towards   **
+ **  the goal. IS_NOT_PROGRESSING is a trigger that tells whether    **
+ **  the robot is having progress or not. Progress is determined by  **
+ **  the followings                                                  **
+ **                                                                  **
+ **   *) How much the current distance from the goal is off from     **
+ **      the shortest distance it could have been.                   **
+ **      (i.e., desired_distance/actual_distance.)                   **
+ **   *) If the robot is stalled or not.                             **
+ **                                                                  **
+ **  The desired distance will be measured freshly if the robot      **
+ **  consideres itself that it is moving forward.                    **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: PROGRESS.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+init
+#define MAXHIST     20
+#define THRESHOLD   0.2
+#define STALL_SPEED 0.0
+iend
+
+/***********************************************************************/
+procedure bool IS_NOT_PROGRESSING with
+   Vector       desired_location;
+   double       patient;
+header
+   bool           initialize  = TRUE;
+   bool           buffering = FALSE;
+   int            history = 0;
+   double         init_distance = 0.0;
+   double         last_distance, past_distance[MAXHIST];
+   double         last_time = 0.0;
+   robot_position last_pos;
+body
+   robot_position init_pos, cur_pos;
+   double x, y, dx, dy, dl;
+   double desired_distance, actual_distance, ave_past_distance;
+   double abs_time, cur_time, dt;
+   double init_time = 0.0;
+   double cur_speed;
+   double ave_speed = 0.0;
+   double forwardness, progress;
+   bool stalled = FALSE;
+
+   // Obtaining the time of the day. 
+   struct timeval tvp;
+   gettimeofday( &tvp, NULL );
+   abs_time = (double)tvp.tv_sec + (((double)tvp.tv_usec)/1000000);
+
+   // Calculating the distance between the robot and the goal
+   // location.
+   cur_pos = exec_get_position();
+   x = desired_location.x - cur_pos.v.x;
+   y = desired_location.y - cur_pos.v.y;
+   actual_distance = sqrt(x*x + y*y);
+
+   // Initialize the values if it is specified.
+   if (initialize)
+   {
+     init_distance = actual_distance;
+     last_distance = actual_distance;
+
+     init_time = abs_time;
+     cur_time = 0;
+     last_time = 0;
+
+     init_pos = cur_pos;
+     last_pos = cur_pos;
+
+     history = 0;
+     memset(past_distance, 0, sizeof(double)*MAXHIST);
+     buffering = TRUE;
+     progress = 1.0;
+     forwardness = 1.0+THRESHOLD*patient;
+
+     initialize = FALSE;
+   }
+
+   // Get the current time.
+   cur_time = abs_time - init_time;
+
+   // Calculating current and average speed.
+   dx = cur_pos.v.x - last_pos.v.x;
+   dy = cur_pos.v.y - last_pos.v.y;
+   dl = sqrt(dx*dx + dy*dy);
+   dt = cur_time - last_time;
+   cur_speed = dl/dt;
+   if (cur_time < EPS_ZERO)
+      ave_speed = 0;
+   else
+      ave_speed = (ave_speed*last_time + dl)/cur_time;
+
+   // If the average speed is zero, we can considered that
+   // the robot is stalled.
+   if (cur_speed <= STALL_SPEED)
+     stalled = TRUE;
+
+   if (debug)
+     fprintf(stderr, "IS_NOT_PROGRESSING: ave_speed = %5.3f, cur_speed = %5.3f\n",
+	     ave_speed, cur_speed);
+
+   // From the speed, getting the desired distance from the goal the
+   // robot should be.
+   desired_distance = init_distance - ave_speed*cur_time;
+   if (desired_distance < 0)
+     desired_distance = 0;
+
+   // Checking the progress the robot is making.
+   progress = desired_distance/actual_distance;
+
+   // Return true or false according to the progress. If the progress
+   // is small and/or if the robot is stalled, return true as long
+   // as it is not in the middle of buffering process.
+   if (((progress <= (1 - patient))||(stalled))&&(!buffering))
+      output = true;
+   else
+      output = false;
+
+   // Now, checking to see if we can reset the init_distance and
+   // other variables. If the robot is always moving forward, we can
+   // say that the robot is progressing, and we can reset the values.
+   past_distance[history] = actual_distance;
+
+   ave_past_distance = 0;
+   if (!buffering)
+   {
+     for (int i = 0; i<MAXHIST; i++)
+       {
+	 ave_past_distance = (ave_past_distance*i + past_distance[i])/(i+1);
+       }
+   }
+
+   if (actual_distance < EPS_ZERO)
+   {
+     forwardness = 1.0+THRESHOLD*patient;
+     initialize = false;
+   }
+   else   
+   {
+     forwardness = ave_past_distance/actual_distance;
+     if (forwardness < 1.0+THRESHOLD*patient)
+       initialize = false;
+     else
+       initialize = true;
+   }
+
+   if (debug)
+     fprintf(stderr, "IS_NOT_PROGRESSING: patient = %5.3f, progress = %5.3f, forwardness = %5.3f\n",
+	     patient, progress, forwardness);
+
+   // Giving new values for the parameters that will be used for
+   // the next round.
+   history++;
+   if (history >= MAXHIST)
+   {
+     history = 0;
+     buffering = FALSE;
+   }
+     
+   last_time = cur_time;
+   last_pos = cur_pos;
+   last_distance = actual_distance;
+pend
+
+
+
+/***********************************************************************/
+procedure bool IS_NOT_PROGRESSING_MEM with
+   Vector       desired_location;
+   double       patient;
+header
+   bool           initialize  = TRUE;
+   bool           buffering = FALSE;
+   int            history = 0;
+   double         init_distance = 0.0;
+   double         last_distance;
+   static double  *past_distance=NULL;
+   double         last_time = 0.0;
+   robot_position last_pos;
+   bool get_colID(char *&colId);
+body
+
+   char *colId;
+   get_colID(colId);
+
+   char *value,*ptr;
+   if( strcmp(value=get_state("ProgressDB"),"") )
+   {
+        initialize    = (int)strtol(value,&ptr,10);
+        value = ptr+1;
+        buffering    = (int)strtol(value,&ptr,10);
+        value = ptr+1;
+        history    = (int)strtol(value,&ptr,10);
+        value = ptr+1;
+        init_distance = strtod(value,&ptr);
+        value = ptr+1;
+        last_distance = strtod(value,&ptr);
+        value = ptr+1;
+        last_time = strtod(value,&ptr);
+        value = ptr+1;
+        last_pos.v.x = strtod(value,&ptr);
+        value = ptr+1;
+        last_pos.v.y = strtod(value,&ptr);
+        //value = ptr+1;
+        //past_distance  = (double*)strtol(value,&ptr,10);
+   }
+
+
+   robot_position init_pos, cur_pos;
+   double x, y, dx, dy, dl;
+   double desired_distance, actual_distance, ave_past_distance;
+   double abs_time;
+   double init_time = 0.0;
+   double cur_time, dt;
+   double cur_speed;
+   double ave_speed = 0.0;
+   double forwardness, progress;
+   bool stalled = FALSE;
+
+   // Obtaining the time of the day. 
+   struct timeval tvp;
+   gettimeofday( &tvp, NULL );
+   abs_time = (double)tvp.tv_sec + (((double)tvp.tv_usec)/1000000);
+
+   // Calculating the distance between the robot and the goal
+   // location.
+   cur_pos = exec_get_position();
+   x = desired_location.x - cur_pos.v.x;
+   y = desired_location.y - cur_pos.v.y;
+   actual_distance = sqrt(x*x + y*y);
+
+   // Initialize the values if it is specified.
+   if (initialize)
+   {
+     init_distance = actual_distance;
+     last_distance = actual_distance;
+
+     init_time = abs_time;
+     cur_time = 0;
+     last_time = 0;
+
+     init_pos = cur_pos;
+     last_pos = cur_pos;
+
+     history = 0;
+     if (!past_distance)
+     	past_distance = (double*)malloc(MAXHIST*sizeof(double));
+     memset(past_distance, 0, sizeof(double)*MAXHIST);
+     buffering = TRUE;
+     progress = 1.0;
+     forwardness = 1.0+THRESHOLD*patient;
+
+     initialize = FALSE;
+   }
+
+   // Get the current time.
+   cur_time = abs_time - init_time;
+
+   // Calculating current and average speed.
+   dx = cur_pos.v.x - last_pos.v.x;
+   dy = cur_pos.v.y - last_pos.v.y;
+   dl = sqrt(dx*dx + dy*dy);
+   dt = cur_time - last_time;
+   cur_speed = dl/dt;
+   if (cur_time < EPS_ZERO)
+      ave_speed = 0;
+   else
+      ave_speed = (ave_speed*last_time + dl)/cur_time;
+
+   // If the average speed is zero, we can considered that
+   // the robot is stalled.
+   if (cur_speed <= STALL_SPEED)
+     stalled = TRUE;
+
+   if (debug)
+     fprintf(stderr, "IS_NOT_PROGRESSING: ave_speed = %5.3f, cur_speed = %5.3f\n",
+	     ave_speed, cur_speed);
+
+   // From the speed, getting the desired distance from the goal the
+   // robot should be.
+   desired_distance = init_distance - ave_speed*cur_time;
+   if (desired_distance < 0)
+     desired_distance = 0;
+
+   // Checking the progress the robot is making.
+   progress = desired_distance/actual_distance;
+
+   // Return true or false according to the progress. If the progress
+   // is small and/or if the robot is stalled, return true as long
+   // as it is not in the middle of buffering process.
+   if (((progress <= (1 - patient))||(stalled))&&(!buffering))
+      output = true;
+   else
+      output = false;
+
+   // Now, checking to see if we can reset the init_distance and
+   // other variables. If the robot is always moving forward, we can
+   // say that the robot is progressing, and we can reset the values.
+   past_distance[history] = actual_distance;
+
+   ave_past_distance = 0;
+   if (!buffering)
+   {
+     for (int i = 0; i<MAXHIST; i++)
+       {
+	 ave_past_distance = (ave_past_distance*i + past_distance[i])/(i+1);
+       }
+   }
+
+   if (actual_distance < EPS_ZERO)
+   {
+     forwardness = 1.0+THRESHOLD*patient;
+     initialize = false;
+   }
+   else   
+   {
+     forwardness = ave_past_distance/actual_distance;
+     if (forwardness < 1.0+THRESHOLD*patient)
+       initialize = false;
+     else
+       initialize = true;
+   }
+
+   if (debug)
+     fprintf(stderr, "IS_NOT_PROGRESSING: patient = %5.3f, progress = %5.3f, forwardness = %5.3f\n",
+	     patient, progress, forwardness);
+
+   // Giving new values for the parameters that will be used for
+   // the next round.
+   history++;
+   if (history >= MAXHIST)
+   {
+     history = 0;
+     buffering = FALSE;
+   }
+     
+   last_time = cur_time;
+   last_pos = cur_pos;
+   last_distance = actual_distance;
+
+   value = (char*)malloc(200*sizeof(char));
+   sprintf(value, "%d %d %d %f %f %f %f %f", initialize, buffering, history,
+        init_distance, last_distance, last_time, last_pos.v.x, last_pos.v.y);
+   put_state("ProgressDB", value);
+   free (value);
+
+pend
+
+/**********************************************************************
+# $Log: PROGRESS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.3  2001/12/23 20:28:57  endo
+# RH 7.1 porting.
+#
+# Revision 1.2  2000/12/02 21:46:37  sgorbiss
+# Added cnl code for line-of-sight navigation
+# MicroNavigation and Avoid The Past
+#
+# Revision 1.1  2000/05/19 21:42:15  endo
+# Initial revision
+#
+#**********************************************************************/

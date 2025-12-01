@@ -1,0 +1,7 @@
+DEFINES_VXL	= -DVXWORKS -DCPU=R4000 -DVXWORKS -Dsigned= 
+vxl_FLAGS = -g -I/usr/vxworks/vx5.2-mips/h $(DEFINES_VXL) \
+		-mcpu=r4000 -V2.5.7 -funroll-loops \
+		-ansi -pipe -nostdinc +V -DNO_VXCONNECTION
+vxl_COMPILER  = CCmips
+vxl_CCOMPILER  = gcc-sde
+vxl_LD = ld-sde

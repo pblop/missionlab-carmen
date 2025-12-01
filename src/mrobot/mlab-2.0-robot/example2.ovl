@@ -1,0 +1,33 @@
+--******************************************************************
+--
+--	example2.ovl
+--
+--	Example overlay file for four robots.
+--	
+--	This file describes a set of positions in the
+--	world used by the script example2.  The robots
+--	in that script are commanded to move to each of
+--	the points in sequence.
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+SCENARIO "example2"
+
+SITE "Demo B site, Colorado"
+
+ORIGIN 0 0 -- All the following coordinades are with respect to this origin
+
+CONTROL MEASURES:  -- This marks the end of the information section and 
+                   -- the beginning of the description data
+
+PP Bravo 100 250
+
+PP Charlie 500 250
+
+PP Delta 500 600
+
+PP Gamma 800 600
+

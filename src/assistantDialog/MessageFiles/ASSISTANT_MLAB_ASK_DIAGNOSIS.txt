@@ -1,0 +1,3 @@
+Click "yes" if you'd like CBR Wizard help you repair the mission. You will be able to replay the mission you've just run, select the point at which it failed, and answer a few simple questions to help the wizard retrieve a solution for you.
+
+Click "no" if you'd rather correct the mission yourself manually.

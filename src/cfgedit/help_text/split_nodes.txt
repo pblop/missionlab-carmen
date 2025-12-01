@@ -1,0 +1,29 @@
+"Title: Splitting the subtree\n\
+\n\
+When a nodes is linked to more than one page\n\
+and one of the instances is changed there is\n\
+a choice to be made.  Should the changes effect\n\
+only the copy actually modified or should they be\n\
+global to all instances of the node?  If the changes\n\
+are to be local, then the subtree is split so that\n\
+there are two copies of the node, one with the new\n\
+values on the current page and the old copy which remains\n\
+unchanged.\n\
+\n\
+For example, given that node C occurs in both pages A and B\n\
+in the drawing below and the copy if drawing A is modified,\n\
+the following two cases can occur.\n\
+\n\
+  A     B                          A    B\n\
+   \\   /     -- with split -->     |    |\n\
+    \\ /                            |    |\n\
+     C                             C1   C\n\
+\n\
+      -- with a global change -->  A     B\n\
+                                    \\   /\n\
+                                     \\ /\n\
+                                      C\n\
+\n\
+Change only this instance:  Split the tree, making a new copy\n\
+Change all copies:       	Make a global change \n\
+Help:         			    This message."

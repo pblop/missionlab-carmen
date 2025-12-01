@@ -1,0 +1,11 @@
+You can:
+
+1) Left-click on the overlay to create a task of the type selected in the toolbox. Please note that though you can have multiple Waypoint tasks, only one of each other tasks can be used.
+
+2) Middle-click on a task to delete it.
+
+3) Right-click on a task to modify its properties.
+
+4) Set the global properties for the entire mission by adjusting the slider bars.
+
+4) Click 'Finish' if the mission plan is complete.

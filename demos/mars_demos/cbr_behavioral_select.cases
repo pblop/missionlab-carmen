@@ -1,0 +1,905 @@
+7
+1 - modifiable library
+1 - CaseType
+1 - Case ID
+DEFAULT*1 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+55.900089 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+0.098933 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+22.099998 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.251187 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+1.500000 - Value
+1 - Adapt
+Adaptation:
+0.087349 - Value
+Noise_Gain - StringID
+0 - Value Type
+1.500000 - Value
+1 - Adapt
+Adaptation:
+0.135886 - Value
+Noise_Persistence - StringID
+2 - Value Type
+50 - Value
+1 - Adapt
+Adaptation:
+2 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+3.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+1.642285 - Value
+1 - Adapt
+Adaptation:
+0.032596 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+0.000000 - CaseSuccess
+0.469662 - Heuristics Threshold
+2.000000 - Improvement
+
+1 - CaseType
+2 - Case ID
+DEFAULT*2 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+55.900089 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+0.098933 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+22.099998 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.251187 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+0.701552 - Value
+1 - Adapt
+Adaptation:
+-0.074612 - Value
+Noise_Gain - StringID
+0 - Value Type
+1.010777 - Value
+1 - Adapt
+Adaptation:
+0.202694 - Value
+Noise_Persistence - StringID
+2 - Value Type
+14 - Value
+1 - Adapt
+Adaptation:
+1 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+1.712329 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+0.764784 - Value
+1 - Adapt
+Adaptation:
+-0.183804 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+-0.000000 - CaseSuccess
+0.456178 - Heuristics Threshold
+0.000000 - Improvement
+
+1 - CaseType
+3 - Case ID
+DEFAULT*3 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+49.183232 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.684301 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.730689 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.826017 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.648074 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.661129 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.303291 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+4.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+0.824114 - Value
+1 - Adapt
+Adaptation:
+-0.136870 - Value
+Noise_Gain - StringID
+0 - Value Type
+0.365824 - Value
+1 - Adapt
+Adaptation:
+-0.143447 - Value
+Noise_Persistence - StringID
+2 - Value Type
+11 - Value
+1 - Adapt
+Adaptation:
+2 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+1.470256 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+1.283233 - Value
+1 - Adapt
+Adaptation:
+0.045148 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+-0.030000 - CaseSuccess
+0.000814 - Heuristics Threshold
+1.000000 - Improvement
+
+1 - CaseType
+4 - Case ID
+DEFAULT*4 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+51.140686 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+0.885329 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.319470 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+0.882163 - Value
+1 - Adapt
+Adaptation:
+-0.052319 - Value
+Noise_Gain - StringID
+0 - Value Type
+0.612111 - Value
+1 - Adapt
+Adaptation:
+-0.100285 - Value
+Noise_Persistence - StringID
+2 - Value Type
+5 - Value
+1 - Adapt
+Adaptation:
+-2 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+1.646878 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+1.416268 - Value
+1 - Adapt
+Adaptation:
+0.057421 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+-0.005000 - CaseSuccess
+0.285968 - Heuristics Threshold
+1.000000 - Improvement
+
+1 - CaseType
+5 - Case ID
+DEFAULT*5 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+49.667122 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+0.847602 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.166596 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.817395 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.229484 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.628471 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.570993 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+0.360106 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.240506 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+0.936830 - Value
+1 - Adapt
+Adaptation:
+0.087452 - Value
+Noise_Gain - StringID
+0 - Value Type
+0.251414 - Value
+1 - Adapt
+Adaptation:
+-0.066474 - Value
+Noise_Persistence - StringID
+2 - Value Type
+7 - Value
+1 - Adapt
+Adaptation:
+-2 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+1.470256 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+1.301014 - Value
+1 - Adapt
+Adaptation:
+-0.052683 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+-0.010000 - CaseSuccess
+0.015017 - Heuristics Threshold
+1.000000 - Improvement
+
+1 - CaseType
+6 - Case ID
+DEFAULT*6 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+49.825719 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+0.651840 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.359390 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.567230 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.605006 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.674617 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.265026 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+0.018906 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.240646 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+1.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+0.857974 - Value
+1 - Adapt
+Adaptation:
+0.003761 - Value
+Noise_Gain - StringID
+0 - Value Type
+0.676098 - Value
+1 - Adapt
+Adaptation:
+-0.155712 - Value
+Noise_Persistence - StringID
+2 - Value Type
+12 - Value
+1 - Adapt
+Adaptation:
+-2 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+1.686024 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+1.323502 - Value
+1 - Adapt
+Adaptation:
+0.027565 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+-0.010000 - CaseSuccess
+0.475271 - Heuristics Threshold
+1.000000 - Improvement
+
+1 - CaseType
+7 - Case ID
+DEFAULT*7 - CaseName
+12 - Features Vector Size
+Goal_Distance - Name
+50.340594 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+0 - Feature ID
+Region_Density - Name
+0.491143 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.873485 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.782298 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.275032 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+0.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Density - Name
+0.654038 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+Region_Distance - Name
+1.579907 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+1 - Feature ID
+ShortTerm_Motion - Name
+0.688181 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+2 - Feature ID
+LongTerm_Motion - Name
+0.298168 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+3 - Feature ID
+Case_Time - Name
+11.000000 - Value
+1.000000 - Prob
+1.000000 - ImportDegree
+1.000000 - Membership Degree
+4 - Feature ID
+8 - Output Vector Size
+MoveToGoal_Gain - StringID
+0 - Value Type
+0.793483 - Value
+1 - Adapt
+Adaptation:
+-0.112803 - Value
+Noise_Gain - StringID
+0 - Value Type
+0.772896 - Value
+1 - Adapt
+Adaptation:
+0.084682 - Value
+Noise_Persistence - StringID
+2 - Value Type
+16 - Value
+1 - Adapt
+Adaptation:
+2 - Value
+Obstacle_Gain - StringID
+0 - Value Type
+1.686024 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Obstacle_Sphere - StringID
+0 - Value Type
+1.371257 - Value
+1 - Adapt
+Adaptation:
+0.006385 - Value
+Bias_Vector_X - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Y - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+Bias_Vector_Gain - StringID
+0 - Value Type
+0.000000 - Value
+0 - Adapt
+Adaptation:
+0.000000 - Value
+0.010000 - CaseSuccess
+0.352823 - Heuristics Threshold
+2.000000 - Improvement
+

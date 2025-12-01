@@ -1,0 +1,4 @@
+#!/bin/csh
+
+find . \( \( -name SCCS -prune \) -o \( -name \*.c -o -name \*.cc -o -name \*.C -o -name \*.h -o -name Makefile -o -name Imakefile -o -name \*.def \) -print -exec subipt {} \; \)
+

@@ -1,0 +1,48 @@
+/**********************************************************************
+ **                                                                  **
+ **                         IS_AT_GOAL.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: IS_AT_GOAL.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool IS_AT_GOAL with
+   bool         have_a_goal;
+   Vector 	goal_rel_loc;
+   double 	success_radius;
+header
+body
+   output = have_a_goal &&
+	    vlength(goal_rel_loc.x, goal_rel_loc.y) <= success_radius;
+
+   if( debug )
+      fprintf(stderr,"IS_AT_GOAL(%d): have_a_goal=%s goal=<%.1f %.1f> out=%s\n",
+	robot_id, have_a_goal?"YES":"NO", goal_rel_loc.x, goal_rel_loc.y,
+	output?"YES":"NO");
+pend
+
+
+/**********************************************************************
+# $Log: IS_AT_GOAL.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:58  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  1995/10/11  22:04:41  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/10/09  21:45:12  doug
+# Initial revision
+#
+#**********************************************************************/

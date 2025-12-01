@@ -1,0 +1,37 @@
+--******************************************************************
+--
+--	peaceful.ovl
+--
+--      Non-military demo in the robot lab and copy room.	
+--	
+--	Khaled S. Ali
+--
+--******************************************************************
+
+
+MISSION-AREA 15.0 15.0
+
+ORIGIN 0.25 0.5
+
+SCENARIO "peaceful"
+
+SITE "Robot Lab and Copy Room"
+
+CONTROL MEASURES:  
+
+Boundary "Robot Lab"  1.7 2.7  1.7 5.4  0 5.4  0 8.8  10.7 8.8  10.7 2.7  1.7 2.7 
+Boundary "Copy Room"  0 8.8  0 12.6  10.7 12.6  10.7 8.8  0 8.8
+Boundary "Hallway*"  0.0 0.0  0.0 2.7  10.7 2.7  10.7 12.6  12.5 12.6  12.5 0.0  0.0 0.0
+                      
+Gap "Door1"  10.6 6.9    10.8 6.9  1.5
+Gap "Door2"  10.6 10.2    10.8 10.2  1.5
+
+SP Start*  3.4 4.54 
+PP DoorWay1  11.6 6.9 0.4
+PP DoorWay2  11.6 10.2 0.4
+PP Printer   6.7 9.8 0.4
+
+-- PP north 3.4 100.0 0.4
+-- PP south 3.4 -100.0 0.4
+-- PP east  100 1.84 0.4
+-- PP west	 -100 1.84 0.4

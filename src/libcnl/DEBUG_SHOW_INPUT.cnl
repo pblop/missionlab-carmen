@@ -1,0 +1,47 @@
+/**********************************************************************
+ **                                                                  **
+ **                    DEBUG_SHOW_INPUT.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DEBUG_SHOW_INPUT.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+
+//**********************************************************************
+
+procedure Vector DEBUG_SHOW_INPUT with
+   CNLString_t msg;
+   Vector input;
+header
+body
+   fprintf(stderr,"Robot %d: %s is <%.1f, %.1f>\n",
+	robot_id, msg.val, input.x,input.y);
+   output = input;
+pend
+
+
+/**********************************************************************
+# $Log: DEBUG_SHOW_INPUT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  1996/06/17  22:58:23  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/11/02  21:14:48  doug
+# Initial revision
+#
+#**********************************************************************/

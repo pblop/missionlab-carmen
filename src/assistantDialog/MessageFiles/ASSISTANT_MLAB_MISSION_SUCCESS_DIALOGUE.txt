@@ -1,0 +1,4 @@
+Click "yes" if the mission was
+successful. Click "no" to start
+the repair process.
+

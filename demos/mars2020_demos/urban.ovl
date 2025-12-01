@@ -1,0 +1,695 @@
+--******************************************************************
+--
+--	government_building.ovl
+--
+--	This overlay was developed for DARPA MARS program.
+--  (After TMR's overwatch_capitol.ovl)
+--
+--  Yoichiro Endo
+--
+--  01/13/2004
+--
+--******************************************************************
+
+MISSION-AREA 400.0 400.0
+--MISSION-AREA 600.0 600.0
+
+SCENARIO "hostage monitoring"
+
+SITE "Downtown, Atlanta, GA"
+
+--ORIGIN -450 -340
+ORIGIN 0 0
+--ORIGIN 265 170
+
+CONTROL MEASURES:
+
+-- ************************ Start Place **************************** 
+-- Start Place
+PP StartPlace* 85 192.5 4.0
+PP "Command Post" 85 192.5 4.0
+
+-- ************************ Waypoints **************************** 
+PP "P1" 124 212 4
+PP "P2" 192 212 4
+PP "N1" 215 212 4
+PP "N2" 271 186 4
+PP "W1" 192 170 4
+PP "W2" 211 142 4
+
+-- ********************** Objet Location **************************
+
+-- Possible Hostage in State Capitol Room A
+--OBJECT 237.5 150 2.0 Fixed lightblue
+--PP "ppphscrma01*" 237.5 150 2.0
+--BOUNDARY "bdphscrma01*" 236.5 150 238.5 150
+--BOUNDARY "bdphscrma02*" 236.0 148 239.0 148
+--BOUNDARY "bdphscrma04*" 237.5 149 237.5 147
+--BOUNDARY "bdphscrma05*" 238.5 150 239.0 148.5
+--BOUNDARY "bdphscrma06*" 238.5 150 239.5 149
+
+-- Possible Hostage in State Capitol Room B
+OBJECT 257.5 170 2.0 Movable lightblue
+PP "ppphscrmb01*" 257.5 170 2.0
+BOUNDARY "bdphscrmb01*" 256.5 170 258.5 170
+BOUNDARY "bdphscrmb02*" 256.0 168 259.0 168
+BOUNDARY "bdphscrmb04*" 257.5 169 257.5 167
+BOUNDARY "bdphscrmb05*" 258.5 170 259.0 168.5
+BOUNDARY "bdphscrmb06*" 258.5 170 259.5 169
+
+-- Possible Hostage in State Capitol Room C
+--OBJECT 272.5 170 2.0 Fixed lightblue
+--PP "ppphscrmc01*" 272.5 170 2.0
+--BOUNDARY "bdphscrmc01*" 271.5 170 273.5 170
+--BOUNDARY "bdphscrmc02*" 271.0 168 274.0 168
+--BOUNDARY "bdphscrmc04*" 272.5 169 272.5 167
+--BOUNDARY "bdphscrmc05*" 273.5 170 274.0 168.5
+--BOUNDARY "bdphscrmc06*" 273.5 170 274.5 169
+
+-- Possible Hostage in State Capitol Room F
+OBJECT 302.5 135 2.0 Fixed lightblue
+PP "ppphscrmf01*" 302.5 135 2.0
+BOUNDARY "bdphscrmf01*" 301.5 135 303.5 135
+BOUNDARY "bdphscrmf02*" 301.0 133 304.0 133
+BOUNDARY "bdphscrmf04*" 302.5 134 302.5 132
+BOUNDARY "bdphscrmf05*" 303.5 135 304.0 133.5
+BOUNDARY "bdphscrmf06*" 303.5 135 304.5 134
+
+-- Possible Hostage in State Capitol Room G
+OBJECT 287.5 135 2.0 Fixed lightblue
+PP "ppphscrmg01*" 287.5 135 2.0
+BOUNDARY "bdphscrmg01*" 286.5 135 288.5 135
+BOUNDARY "bdphscrmg02*" 286.0 133 289.0 133
+BOUNDARY "bdphscrmg04*" 287.5 134 287.5 132
+BOUNDARY "bdphscrmg05*" 288.5 135 289.0 133.5
+BOUNDARY "bdphscrmg06*" 288.5 135 289.5 134
+
+-- Possible Hostage in State Capitol Room H
+OBJECT 272.5 135 2.0 Fixed lightblue
+PP "ppphscrmh01*" 272.5 135 2.0
+BOUNDARY "bdphscrmh01*" 271.5 135 273.5 135
+BOUNDARY "bdphscrmh02*" 271.0 133 274.0 133
+BOUNDARY "bdphscrmh04*" 272.5 134 272.5 132
+BOUNDARY "bdphscrmh05*" 273.5 135 274.0 133.5
+BOUNDARY "bdphscrmh06*" 273.5 135 274.5 134
+
+-- *************************** Map ********************************
+
+-- State Capitol
+BOUNDARY "bdsc000*" 200 205 300 205
+BOUNDARY "bdsc001*" 200 80 350 80
+BOUNDARY "bdsc002*" 200 205 200 80
+BOUNDARY "bdsc003*" 300 205 350 80
+
+--WALL "wlsc004*" 250 180 295 180
+WALL "wlsc0041*" 250 180 265 180
+WALL "wlsc0042*" 265 180 280 180
+WALL "wlsc0043*" 280 180 295 180
+WALL "wlsc005*" 225 155 250 155
+WALL "wlsc006*" 295 155 310 155
+WALL "wlsc007*" 225 130 250 130
+WALL "wlsc008*" 295 130 310 130
+--WALL "State Capitol" 250 105 295 105
+WALL "Target Building" 250 105 295 105
+WALL "wlsc009*" 225 155 225 130 -- Entrace to the building
+WALL "wlsc0091*" 225 155 225 145
+WALL "wlsc0092*" 225 140 225 130
+WALL "wlsc010*" 250 180 250 155
+WALL "wlsc011*" 250 130 250 105
+WALL "wlsc012*" 295 180 295 155
+WALL "wlsc013*" 310 155 310 130
+WALL "wlsc014*" 295 130 295 105
+
+OBSTACLE 230 197.5 5
+OBSTACLE 220 87.5 5
+OBSTACLE 230 87.5 5
+OBSTACLE 210 185 5
+OBSTACLE 210 170 5
+OBSTACLE 210 110 5
+
+OBJECT 230 197.5 5 Fixed DarkSeaGreen
+OBJECT 220 87.5 5 Fixed DarkSeaGreen
+OBJECT 230 87.5 5 Fixed DarkSeaGreen
+OBJECT 210 185 5 Fixed DarkSeaGreen
+OBJECT 210 170 5 Fixed DarkSeaGreen
+OBJECT 210 110 5 Fixed DarkSeaGreen
+
+OBSTACLE 245 197.5 5
+OBSTACLE 260 197.5 5
+OBSTACLE 275 197.5 5
+OBSTACLE 290 197.5 5
+
+OBJECT 245 197.5 5 Fixed DarkSeaGreen
+OBJECT 260 197.5 5 Fixed DarkSeaGreen
+OBJECT 275 197.5 5 Fixed DarkSeaGreen
+OBJECT 290 197.5 5 Fixed DarkSeaGreen
+
+OBSTACLE 240 87.5 5
+OBSTACLE 250 87.5 5
+OBSTACLE 260 87.5 5
+OBSTACLE 270 87.5 5
+OBSTACLE 280 87.5 5
+OBSTACLE 290 87.5 5
+OBSTACLE 300 87.5 5
+OBSTACLE 310 87.5 5
+OBSTACLE 320 87.5 5
+OBSTACLE 330 87.5 5
+
+OBJECT 240 87.5 5 Fixed DarkSeaGreen
+OBJECT 250 87.5 5 Fixed DarkSeaGreen
+OBJECT 260 87.5 5 Fixed DarkSeaGreen
+OBJECT 270 87.5 5 Fixed DarkSeaGreen
+OBJECT 280 87.5 5 Fixed DarkSeaGreen
+OBJECT 290 87.5 5 Fixed DarkSeaGreen
+OBJECT 300 87.5 5 Fixed DarkSeaGreen
+OBJECT 310 87.5 5 Fixed DarkSeaGreen
+OBJECT 320 87.5 5 Fixed DarkSeaGreen
+OBJECT 330 87.5 5 Fixed DarkSeaGreen
+
+OBSTACLE 301 184.0 2
+OBSTACLE 304 177.0 2
+OBSTACLE 307 170.0 2
+OBSTACLE 310 163.0 2
+OBSTACLE 313 156.0 2
+OBSTACLE 316 149.0 2
+OBSTACLE 319 142.0 2
+OBSTACLE 322 135.0 2
+OBSTACLE 325 128.0 2
+OBSTACLE 328 121.0 2
+OBSTACLE 331 114.0 2
+OBSTACLE 334 107.0 2
+OBSTACLE 337 100.0 2
+
+OBJECT 301 184.0 2 Fixed DarkSeaGreen
+OBJECT 304 177.0 2 Fixed DarkSeaGreen
+OBJECT 307 170.0 2 Fixed DarkSeaGreen
+OBJECT 310 163.0 2 Fixed DarkSeaGreen
+OBJECT 313 156.0 2 Fixed DarkSeaGreen
+OBJECT 316 149.0 2 Fixed DarkSeaGreen
+OBJECT 319 142.0 2 Fixed DarkSeaGreen
+OBJECT 322 135.0 2 Fixed DarkSeaGreen
+OBJECT 325 128.0 2 Fixed DarkSeaGreen
+OBJECT 328 121.0 2 Fixed DarkSeaGreen
+OBJECT 331 114.0 2 Fixed DarkSeaGreen
+OBJECT 334 107.0 2 Fixed DarkSeaGreen
+OBJECT 337 100.0 2 Fixed DarkSeaGreen
+
+-- State Capitol Floor Plan
+
+-- Hallway
+--WALL "wlschw000*" 225 145 310 145
+--WALL "wlschw001*" 225 140 310 140
+HALLWAY "hwschw000*" CENTERLINE 225.7 142.5 309.3 142.5 WIDTH 5 EXTENTS 225 145 310 145 310 140 225 140
+
+-- Room A
+--BOUNDARY "Rm A" 225 155 250 155
+--ROOM "rmscrma000*" 225 145 225 155 250 155 250 145
+--WALL "wlscrma000*" 250 155 250 145
+--GAP "gpscrma000*" 237.5 144.9 237.5 145.1 2.0
+--DOOR "drscrma000*" 236.5 145 238.5 145
+--WALL "drscrma000*" 236.5 145 238.5 145 -- door closed
+--WALL "wlscrma0011*" 225 145 236.5 145
+--WALL "wlscrma0012*" 238.5 145 250 145
+
+-- Room B
+--BOUNDARY "Rm B" 250 180 265 180
+--ROOM "rmscrmb000*" 250 145 250 180 265 180 265 145
+--WALL "wlscrmb000*" 265 180 265 145
+--GAP "gpscrmb000*" 257.5 144.9 257.5 145.1 2.0
+--DOOR "drscrmb000*" 256.5 145 258.5 145
+--WALL "wlscrmb0011*" 250 145 256.5 145
+--WALL "wlscrmb0012*" 258.5 145 265 145
+
+-- Room C
+--BOUNDARY "Rm C" 265 180 280 180
+--ROOM "rmscrmc000*" 265 145 265 180 280 180 280 145
+--WALL "wlscrmc000*" 280 180 280 145
+--GAP "gpscrmc000*" 272.5 144.9 272.5 145.1 2.0
+--DOOR "drscrmc000*" 271.5 145 273.5 145
+--WALL "drscrmc000*" 271.5 145 273.5 145 -- door closed
+--WALL "wlscrmc0011*" 265 145 271.5 145
+--WALL "wlscrmc0012*" 273.5 145 280 145
+
+-- Room D
+--BOUNDARY "Rm D" 280 180 295 180
+--ROOM "rmscrmd000*" 280 145 280 180 295 180 295 145
+--WALL "wlscrmd000*" 295 155 295 145
+--GAP "gpscrmd000*" 287.5 144.9 287.5 145.1 2.0 
+--DOOR "drscrmd000*" 286.5 145 288.5 145
+--WALL "drscrmd000*" 286.5 145 288.5 145 -- door closed
+--WALL "wlscrmd0011*" 280 145 286.5 145
+--WALL "wlscrmd0012*" 288.5 145 295 145
+
+-- Room E
+--BOUNDARY "Rm E" 295 155 310 155
+--ROOM "rmscrme000*" 295 145 295 155 310 155 310 145
+--GAP "gascrme000*" 302.5 144.9 302.5 145.1 2.0
+--DOOR "drscrme000*" 301.5 145 303.5 145
+--WALL "drscrme000*" 301.5 145 303.5 145 -- door closed
+--WALL "wlscrme0001*" 295 145 301.5 145
+--WALL "wlscrme0002*" 303.5 145 310 145
+
+-- Room F
+--ROOM "Rm F" 295 130 295 140 310 140 310 130
+--WALL "wlscrmf000*" 295 140 295 130
+--GAP "gpsrcrmf000*" 302.5 139.9 302.5 140.1 2.0
+--DOOR "drscrmf000*" 301.5 140 303.5 140
+--WALL "wlscrmf0011*" 295 140 301.5 140
+--WALL "wlscrmf0012*" 303.5 140 310 140
+
+-- Room G
+--ROOM "Rm G" 280 105 280 140 295 140 295 105
+--WALL "wlscrmg000*" 280 140 280 105
+--GAP "gpscrmg000*" 287.5 139.9 287.5 140.1 2.0 
+--DOOR "drscrmg000*" 286.5 140 288.5 140
+--WALL "wlscrmg0011*" 280 140 286.5 140
+--WALL "wlscrmg0012*" 288.5 140 295 140
+
+-- Room H
+--ROOM "Rm H" 265 105 265 140 280 140 280 105
+--WALL "wlscrmh000*" 265 140 265 105
+--GAP "gpscrmh000*" 272.5 139.9 272.5 140.1 2.0
+--DOOR "drscrmg000*" 271.5 140 273.5 140
+--WALL "wlscrmh0011*" 265 140 271.5 140
+--WALL "wlscrmh0012*" 273.5 140 280 140
+
+-- Room I
+--ROOM "Rm I" 250 105 250 140 265 140 265 105
+--WALL "rmscrmi000*" 250 140 250 130
+--GAP "gpscrmi000*" 257.5 139.9 257.5 140.1 2.0
+--DOOR "drscrmi000*" 256.5 140 258.5 140
+--WALL "drscrmi000*" 256.5 140 258.5 140 -- door closed
+--WALL "wlscrmi0011*" 250 140 256.5 140
+--WALL "wlscrmi0012*" 258.5 140 265 140
+
+-- Room J
+--ROOM "Rm J" 225 130 225 140 250 140 250 130
+--GAP "gpscrmj000*" 237.5 139.9 237.5 140.1 2.0
+--DOOR "drscrmj000*" 236.5 140 238.5 140
+--WALL "drscrmj000*" 236.5 140 238.5 140 -- door closed
+--WALL "wlscrmj0011*" 225 140 236.5 140
+--WALL "wlscrmj0012*" 238.5 140 250 140
+
+-- City Hall
+BOUNDARY "bdch000*" 50 60 175 60
+BOUNDARY "bdch001*" 50 -65 175 -65
+BOUNDARY "bdch002*" 50 60 50 -65
+BOUNDARY "bdch003*" 175 60 175 -65
+
+WALL "wlch004*" 90 30 135 30
+WALL "wlch005*" 70 0 90 0
+WALL "wlch006*" 135 0 155 0
+WALL "City Hall" 70 -45 155 -45
+WALL "wlch008*" 70 0 70 -45
+WALL "wlch009*" 90 30 90 0
+WALL "wlch010*" 135 30 135 0
+WALL "wlch011*" 155 0 155 -45
+
+OBSTACLE 57 43 5
+OBSTACLE 70 53 5
+OBSTACLE 85 53 5
+OBSTACLE 85 43 5
+OBSTACLE 100 53 5
+OBSTACLE 125 53 5
+OBSTACLE 145 43 5
+OBSTACLE 140 53 5
+OBSTACLE 155 53 5
+OBSTACLE 168 43 5
+
+OBSTACLE 55 30 2.5
+OBSTACLE 65 30 2.5
+OBSTACLE 75 30 2.5
+OBSTACLE 150 30 2.5
+OBSTACLE 160 30 2.5
+OBSTACLE 170 30 2.5
+
+OBSTACLE 55 -60 2.5
+OBSTACLE 65 -60 2.5
+OBSTACLE 75 -60 2.5
+OBSTACLE 85 -60 2.5
+OBSTACLE 95 -60 2.5
+OBSTACLE 130 -60 2.5
+OBSTACLE 140 -60 2.5
+OBSTACLE 150 -60 2.5
+OBSTACLE 160 -60 2.5
+OBSTACLE 170 -60 2.5
+
+OBSTACLE 55 20 2.5
+OBSTACLE 55 10 2.5
+OBSTACLE 55 0 2.5
+OBSTACLE 55 -10 2.5
+OBSTACLE 55 -20 2.5
+OBSTACLE 55 -30 2.5
+OBSTACLE 55 -40 2.5
+OBSTACLE 55 -50 2.5
+
+OBSTACLE 170 20 2.5
+OBSTACLE 170 10 2.5
+OBSTACLE 170 0 2.5
+OBSTACLE 170 -10 2.5
+OBSTACLE 170 -20 2.5
+OBSTACLE 170 -30 2.5
+OBSTACLE 170 -40 2.5
+OBSTACLE 170 -50 2.5
+
+OBJECT 57 43 5 Fixed DarkSeaGreen
+OBJECT 70 53 5 Fixed DarkSeaGreen
+OBJECT 85 53 5 Fixed DarkSeaGreen
+OBJECT 85 43 5 Fixed DarkSeaGreen
+OBJECT 100 53 5 Fixed DarkSeaGreen
+OBJECT 125 53 5 Fixed DarkSeaGreen
+OBJECT 145 43 5 Fixed DarkSeaGreen
+OBJECT 140 53 5 Fixed DarkSeaGreen
+OBJECT 155 53 5 Fixed DarkSeaGreen
+OBJECT 168 43 5 Fixed DarkSeaGreen
+
+OBJECT 55 30 2.5  Fixed DarkSeaGreen
+OBJECT 65 30 2.5  Fixed DarkSeaGreen
+OBJECT 75 30 2.5  Fixed DarkSeaGreen
+OBJECT 150 30 2.5  Fixed DarkSeaGreen
+OBJECT 160 30 2.5  Fixed DarkSeaGreen
+OBJECT 170 30 2.5  Fixed DarkSeaGreen
+
+OBJECT 55 -60 2.5  Fixed DarkSeaGreen
+OBJECT 65 -60 2.5  Fixed DarkSeaGreen
+OBJECT 75 -60 2.5  Fixed DarkSeaGreen
+OBJECT 85 -60 2.5  Fixed DarkSeaGreen
+OBJECT 95 -60 2.5  Fixed DarkSeaGreen
+OBJECT 130 -60 2.5  Fixed DarkSeaGreen
+OBJECT 140 -60 2.5  Fixed DarkSeaGreen
+OBJECT 150 -60 2.5  Fixed DarkSeaGreen
+OBJECT 160 -60 2.5  Fixed DarkSeaGreen
+OBJECT 170 -60 2.5  Fixed DarkSeaGreen
+
+OBJECT 55 20 2.5  Fixed DarkSeaGreen
+OBJECT 55 10 2.5  Fixed DarkSeaGreen
+OBJECT 55 0 2.5  Fixed DarkSeaGreen
+OBJECT 55 -10 2.5  Fixed DarkSeaGreen
+OBJECT 55 -20 2.5  Fixed DarkSeaGreen
+OBJECT 55 -30 2.5  Fixed DarkSeaGreen
+OBJECT 55 -40 2.5  Fixed DarkSeaGreen
+OBJECT 55 -50 2.5  Fixed DarkSeaGreen
+
+OBJECT 170 20 2.5  Fixed DarkSeaGreen
+OBJECT 170 10 2.5  Fixed DarkSeaGreen
+OBJECT 170 0 2.5  Fixed DarkSeaGreen
+OBJECT 170 -10 2.5  Fixed DarkSeaGreen
+OBJECT 170 -20 2.5  Fixed DarkSeaGreen
+OBJECT 170 -30 2.5  Fixed DarkSeaGreen
+OBJECT 170 -40 2.5  Fixed DarkSeaGreen
+OBJECT 170 -50 2.5  Fixed DarkSeaGreen
+
+-- State Health Building
+BOUNDARY "bdsh000*" 200 60 325 60
+BOUNDARY "bdsh001*" 200 -65 325 -65
+BOUNDARY "bdsh002*" 200 60 200 -65
+BOUNDARY "bdsh003*" 325 60 325 -65
+
+WALL "wlsh004*" 210 50 320 50
+WALL "State Health Bldg" 210 -60 320 -60
+WALL "wlsh005*" 210 50 210 -60
+WALL "wlsh006*" 320 50 320 -60
+
+-- State D.O.T.
+BOUNDARY "bdsdot000*" 335 60 360 60
+BOUNDARY "bdsdot001*" 335 -65 355 -65
+BOUNDARY "bdsdot002*" 335 60 335 -65
+BOUNDARY "bdsdot003*" 360 60 385 10
+BOUNDARY "bdsdot004*" 385 10 375 -40
+BOUNDARY "bdsdot005*" 375 -40 355 -65
+
+WALL "wlsdot006*" 340 55 355 55
+WALL "State D.O.T." 340 -50 360 -50
+WALL "wlsdot007*" 340 55 340 -50
+WALL "wlsdot008*" 355 55 380 10
+WALL "wlsdot009*" 380 10 370 -40
+WALL "wlsdot010*" 370 -40 360 -50
+
+-- Fulton County Government Center
+BOUNDARY "bdfcgc000*" -240 205 -115 205
+BOUNDARY "bdfcgc001*" -240 80 -115 80
+BOUNDARY "bdfcgc002*" -240 205 -240 80
+BOUNDARY "bdfcgc003*" -115 205 -115 80
+
+WALL "County Government Ctr" -230 195 -125 195
+WALL "wlfcgc004*" -230 90 -125 90
+WALL "wlfcgc005*" -230 195 -230 90
+WALL "wlfcgc006*" -125 195 -125 90
+
+-- County Courthouse
+BOUNDARY "bdcc000*" -95 205 25 205
+BOUNDARY "bdcc001*" -95 80 30 80
+BOUNDARY "bdcc002*" -95 205 -95 80
+BOUNDARY "bdcc003*" 25 205 30 155
+BOUNDARY "bdcc004*" 30 155 30 80
+
+WALL "County Courthouse" -85 195 20 195
+WALL "wlcc005*" -85 90 20 90
+WALL "wlcc006*" -85 195 -85 90
+WALL "wlcc007*" 20 195 20 90
+
+-- Central Ave & Mitchell
+BOUNDARY "bdcam001*" 50 205 175 205
+BOUNDARY "bdcam002*" 50 80 175 80
+BOUNDARY "bdcam003*" 50 205 50 80
+BOUNDARY "bdcam004*" 175 205 175 80
+
+WALL "wlcam005*" 135 200 170 200
+WALL "wlcam006*" 135 140 170 140
+WALL "wlcam007*" 135 200 135 140
+WALL "wlcam008*" 170 200 170 140
+
+OBSTACLE 55 160 3
+OBSTACLE 65 160 3
+OBSTACLE 75 160 3
+OBSTACLE 85 160 3
+
+OBSTACLE 55 150 2.5
+OBSTACLE 55 140 2.5
+OBSTACLE 55 130 2.5
+OBSTACLE 55 120 2.5
+OBSTACLE 55 110 2.5
+OBSTACLE 55 100 2.5
+
+OBSTACLE 65 150 2.5
+OBSTACLE 65 140 2.5
+OBSTACLE 65 130 2.5
+OBSTACLE 65 120 2.5
+OBSTACLE 65 110 2.5
+OBSTACLE 65 100 2.5
+
+OBSTACLE 75 90 3
+
+OBSTACLE 125 132.5 5
+OBSTACLE 135 132.5 5
+OBSTACLE 145 132.5 5
+OBSTACLE 155 132.5 5
+OBSTACLE 165 132.5 5
+
+OBSTACLE 125 87.5 5
+OBSTACLE 135 87.5 5
+OBSTACLE 145 87.5 5
+OBSTACLE 155 87.5 5
+OBSTACLE 165 87.5 5
+
+OBSTACLE 125 192.5 5
+OBSTACLE 125 182.5 5
+OBSTACLE 125 172.5 5
+OBSTACLE 125 162.5 5
+OBSTACLE 125 152.5 5
+OBSTACLE 125 142.5 5
+OBSTACLE 125 132.5 5
+
+OBJECT 55 160 3 Fixed DarkSeaGreen
+OBJECT 65 160 3 Fixed DarkSeaGreen
+OBJECT 75 160 3 Fixed DarkSeaGreen
+OBJECT 85 160 3 Fixed DarkSeaGreen
+
+OBJECT 55 150 2.5 Fixed DarkSeaGreen
+OBJECT 55 140 2.5 Fixed DarkSeaGreen
+OBJECT 55 120 2.5 Fixed DarkSeaGreen
+OBJECT 55 130 2.5 Fixed DarkSeaGreen
+OBJECT 55 110 2.5 Fixed DarkSeaGreen
+OBJECT 55 100 2.5 Fixed DarkSeaGreen
+
+OBJECT 65 150 2.5 Fixed DarkSeaGreen
+OBJECT 65 140 2.5 Fixed DarkSeaGreen
+OBJECT 65 130 2.5 Fixed DarkSeaGreen
+OBJECT 65 120 2.5 Fixed DarkSeaGreen
+OBJECT 65 110 2.5 Fixed DarkSeaGreen
+OBJECT 65 100 2.5 Fixed DarkSeaGreen
+
+OBJECT 75 90 3 Fixed DarkSeaGreen
+
+OBJECT 125 132.5 5 Fixed DarkSeaGreen
+OBJECT 135 132.5 5 Fixed DarkSeaGreen
+OBJECT 145 132.5 5 Fixed DarkSeaGreen
+OBJECT 155 132.5 5 Fixed DarkSeaGreen
+OBJECT 165 132.5 5 Fixed DarkSeaGreen
+
+OBJECT 125 87.5 5 Fixed DarkSeaGreen
+OBJECT 135 87.5 5 Fixed DarkSeaGreen
+OBJECT 145 87.5 5 Fixed DarkSeaGreen
+OBJECT 155 87.5 5 Fixed DarkSeaGreen
+OBJECT 165 87.5 5 Fixed DarkSeaGreen
+
+OBJECT 125 192.5 5 Fixed DarkSeaGreen
+OBJECT 125 182.5 5 Fixed DarkSeaGreen
+OBJECT 125 172.5 5 Fixed DarkSeaGreen
+OBJECT 125 162.5 5 Fixed DarkSeaGreen
+OBJECT 125 152.5 5 Fixed DarkSeaGreen
+OBJECT 125 142.5 5 Fixed DarkSeaGreen
+OBJECT 125 132.5 5 Fixed DarkSeaGreen
+
+-- Pryor & Trinity Ave
+BOUNDARY "bdprta001*" -95 60 30 60
+BOUNDARY "bdprta002*" -95 -65 30 -65
+BOUNDARY "bdprta003*" -95 60 -95 -65
+BOUNDARY "bdprta004*" 30 60 30 -65
+
+WALL "wlprta005*" -90 55 20 55
+WALL "wlprta006*" -90 -25 -35 -25
+WALL "wlprta007*" -35 -60 20 -60
+WALL "wlprta008*" -90 55 -90 -25
+WALL "wlprta009*" -35 -25 -35 -60
+WALL "wlprta010*" 20 55 20 -60
+
+-- Peachtree & Trinity Ave
+BOUNDARY "bdpta001*" -240 60 -115 60
+BOUNDARY "bdpta002*" -240 -65 -115 -65
+BOUNDARY "bdpta003*" -240 60 -240 -65
+BOUNDARY "bdpta004*" -115 60 -115 -65
+
+WALL "wlpta005*" -235 55 -145 55
+WALL "wlpta006*" -235 25 -145 25
+WALL "wlpta007*" -235 55 -235 25
+WALL "wlpta008*" -145 55 -145 25
+
+WALL "wlpta009*" -235 5 -185 5
+WALL "wlpta010*" -235 -5 -185 -5
+WALL "wlpta011*" -235 5 -235 -5
+WALL "wlpta012*" -185 5 -185 -5
+
+WALL "wlpta013*" -200 -30 -145 -30
+WALL "wlpta014*" -235 -50 -200 -50
+WALL "wlpta015*" -235 -60 -145 -60
+WALL "wlpta016*" -235 -50 -235 -60
+WALL "wlpta017*" -200 -30 -200 -50
+WALL "wlpta018*" -145 -30 -145 -60
+
+OBSTACLE -132 55 2.5
+OBSTACLE -126 55 2.5
+OBSTACLE -120 55 2.5
+OBSTACLE -120 25 2.5
+
+OBJECT -132 55 2.5 Fixed DarkSeaGreen
+OBJECT -126 55 2.5 Fixed DarkSeaGreen
+OBJECT -120 55 2.5 Fixed DarkSeaGreen
+OBJECT -120 25 2.5 Fixed DarkSeaGreen
+
+-- World of Coca-Cola
+BOUNDARY "bdwcc000*" 45 355 175 355
+BOUNDARY "bdwcc001*" 45 230 175 230
+BOUNDARY "bdwcc002*" 45 355 45 230
+BOUNDARY "bdwcc003*" 175 355 175 230
+
+WALL "wlwcc004*" 90 285 130 285
+WALL "World of Coca-Cola*" 90 245 130 245
+WALL "wlwcc005*" 90 285 90 245
+WALL "wlwcc006*" 130 285 130 245
+
+-- Underground
+BOUNDARY "bdug000*" -95 355 25 355
+BOUNDARY "bdug001*" -95 230 25 230
+BOUNDARY "bdug002*" -95 355 -95 230
+BOUNDARY "bdug003*" 25 355 25 230
+
+WALL "wlug004*" -90 350 20 350
+WALL "wlug005*" -90 235 20 235
+WALL "wlug006*" -90 350 -90 235
+WALL "wlug007*" 20 350 20 235
+
+BOUNDARY "bdug008*" -240 355 -115 355
+BOUNDARY "bdug009*" -240 230 -115 230
+BOUNDARY "bdug010*" -240 355 -240 230
+BOUNDARY "bdug011*" -115 355 -115 230
+
+WALL "wlug012*" -235 350 -120 350
+WALL "wlug013*" -235 235 -120 235
+WALL "wlug014*" -235 350 -235 235
+WALL "wlug015*" -120 350 -120 235
+
+-- Courtland & M. L. King Jr. Dr
+BOUNDARY "bdctmlk001*" 200 355 300 355
+BOUNDARY "bdctmlk002*" 200 230 300 230
+BOUNDARY "bdctmlk003*" 200 355 200 230
+BOUNDARY "bdctmlk004*" 300 355 300 230
+
+WALL "wlctmlk005*" 210 290 290 290
+WALL "wlctmlk006*" 210 235 290 235
+WALL "wlctmlk007*" 210 290 210 235
+WALL "wlctmlk008*" 290 290 290 235
+
+-- Traffic Court + City Hall Annex
+BOUNDARY "bdtccha001*" 50 -85 175 -85
+BOUNDARY "bdtccha002*" 50 -210 540 -240
+BOUNDARY "bdtccha003*" 540 -240 175 -185
+BOUNDARY "bdtccha004*" 50 -85 50 -210
+BOUNDARY "bdtccha005*" 175 -85 175 -185
+
+WALL "wltccha006*" 70 -105 95 -105
+WALL "Traffic Court" 70 -150 95 -150
+WALL "wltccha007*" 70 -105 70 -150
+WALL "wltccha008*" 95 -105 95 -150
+
+WALL "wltccha009*" 55 -170 105 -170
+WALL "wltccha010*" 55 -200 105 -200
+WALL "wltccha011*" 55 -170 55 -200
+WALL "wltccha012*" 105 -170 105 -200
+
+WALL "wltccha013*" 125 -90 170 -90
+WALL "wltccha014*" 125 -115 170 -115
+WALL "wltccha015*" 125 -90 125 -115
+WALL "wltccha016*" 170 -90 170 -115
+
+-- Board of Education
+BOUNDARY "bdboe000*" -95 -85 30 -85
+BOUNDARY "bdboe001*" -95 -210 30 -210
+BOUNDARY "bdboe002*" -95 -85 -95 -210
+BOUNDARY "bdboe003*" 30 -85 30 -210
+
+WALL "wlboe004*" -90 -90 -35 -90
+WALL "wlboe005*" -55 -110 -35 -110
+WALL "Board of Education" -90 -145 -55 -145
+WALL "wlboe006*" -90 -90 -90 -145
+WALL "wlboe007*" -55 -110 -55 -145
+WALL "wlboe008*" -35 -90 -35 -110
+
+-- Peachtree & Garnett
+BOUNDARY "bdpg000*" -240 -85 -115 -85
+BOUNDARY "bdpg001*" -240 -210 -115 -210
+BOUNDARY "bdpg002*" -240 -85 -240 -210
+BOUNDARY "bdpg003*" -115 -85 -115 -210
+
+WALL "wlpg004*" -200 -90 -120 -90
+WALL "wlpg005*" -200 -120 -120 -120
+WALL "wlpg006*" -200 -90 -200 -120
+WALL "wlpg007*" -120 -90 -120 -120
+
+-- Washington & Memorial Dr
+BOUNDARY "bdwmd000*" 200 -85 290 -85
+BOUNDARY "bdwmd001*" 200 -175 310 -110
+BOUNDARY "bdwmd002*" 200 -85 200 -175
+BOUNDARY "bdwmd003*" 290 -85 310 -110
+
+WALL "wlwmd004*" 205 -90 275 -90
+WALL "wlwmd005*" 230 -125 275 -125
+WALL "wlwmd006*" 205 -150 230 -150
+WALL "wlwmd007*" 205 -90 205 -150
+WALL "wlwmd008*" 230 -125 230 -150
+WALL "wlwmd009*" 275 -90 275 -125
+
+BOUNDARY "bdwmd010*" 305 -85 340 -85
+BOUNDARY "bdwmd011*" 305 -85 320 -105
+BOUNDARY "bdwmd012*" 320 -105 340 -85
+

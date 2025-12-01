@@ -1,0 +1,93 @@
+/**********************************************************************
+ **                                                                  **
+ **                        HeadRelUnitV.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ ** By: Max Likhachev                                                **
+ **                                                                  **
+ ** Copyright 2003, Georgia Tech Research Corporation                **
+ ** Atlanta, Georgia  30332-0415                                     **
+ ** ALL RIGHTS RESERVED, See file COPYRIGHT for details.             **
+ **********************************************************************/
+
+/* $Id: HEAD_REL_UNIT_V.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure Vector HeadRelUnitV with
+   Vector Goal_Location;
+   robot_position Robot_Pos;
+   double XComp;
+   double YComp;
+header
+   Vector dir = ZERO_VECTOR;
+   Vector Goal_Pos;
+   double  angle;
+   double goal_angle;
+body
+   {
+      if ( (XComp == 0.0) && (YComp == 0.0) )
+        angle = 0.0;
+      else
+        angle = atan2(YComp, XComp);
+
+      dir.x = cos(angle);
+      dir.y = sin(angle);
+   }
+   VECTOR_CLEAR(Goal_Pos);
+   Goal_Pos.x = Goal_Location.x;
+   Goal_Pos.y = Goal_Location.y;
+
+//   printf("Goal Pos (global): %f, %f\n", Goal_Pos.x, Goal_Pos.y);
+
+   //translate the goal pos into the coordinates relative to robot
+   Goal_Pos.x = Goal_Pos.x - Robot_Pos.v.x;
+   Goal_Pos.y = Goal_Pos.y - Robot_Pos.v.y;
+
+//   printf("Goal Pos (relative): %f, %f\n", Goal_Pos.x, Goal_Pos.y);
+//   printf("Robot Pos : %f %f \n", Robot_Pos.v.x, Robot_Pos.v.y);
+//   printf("Robot Head: %f \n", Robot_Pos.heading);
+
+   //compute the goal angle
+   if ( (Goal_Pos.x == 0.0) && (Goal_Pos.y == 0.0) )
+      goal_angle = 0.0;
+   else
+      goal_angle = atan2(Goal_Pos.y, Goal_Pos.x);
+
+//   printf("Goal Angle = %f\n", goal_angle);
+
+   output = dir;
+   
+//   printf("out before goal rotate: %f, %f\n", output.x, output.y);
+   
+   //rotate by goal angle to get into the global coordinates
+   rotate_z(output, (360.0/(2*PI))*goal_angle);
+
+//   printf("Heading = %f\n", 2*PI/360.0*Robot_Pos.heading);
+
+//   printf("out before heading rotate: %f, %f\n", output.x, output.y);
+
+   // The output of this behavior is relative to the current heading of the
+   // robot.  So, to generate a constant heading (in world coordinates) vector
+   // requires compensation for the heading changes.
+   rotate_z(output, -1 * Robot_Pos.heading);
+
+//   printf("out after heading rotate: %f, %f\n", output.x, output.y);
+
+pend
+
+
+/**********************************************************************
+ * $Log: HEAD_REL_UNIT_V.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:58  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 22:59:58  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.1  2003/04/06 00:15:07  kaess
+ * Initial revision
+ *
+ **********************************************************************/

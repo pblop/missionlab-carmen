@@ -1,0 +1,74 @@
+/**********************************************************************
+ **                                                                  **
+ **                       DETECT_OBJECTS.cnl                       **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DETECT_OBJECTS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure ObjectList DETECT_OBJECTS with
+   double max_sensor_range;
+header
+body
+   output = exec_detect_objects(max_sensor_range);
+
+   if( debug )
+   {
+      fprintf(stderr,"detect_objects(%d): max_sensor_range = %.1f returning %d objects:\n",robot_id, max_sensor_range, output.count);
+      for(int i=0; i<output.count; i++)
+      {
+	 cerr << "   " << output.objects[i] << '\n';
+      }
+   }
+pend
+
+
+
+/**********************************************************************
+# $Log: DETECT_OBJECTS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.7  1996/03/19  23:16:40  doug
+# added better debug message
+#
+# Revision 1.6  1995/11/07  16:42:30  doug
+# use real print
+#
+# Revision 1.5  1995/10/09  15:25:25  doug
+# change ObjectClasses to ObjectColors
+#
+# Revision 1.4  1995/10/06  20:53:37  doug
+# *** empty log message ***
+#
+# Revision 1.3  1995/10/03  21:30:46  doug
+# problems with debug prints
+#
+# Revision 1.2  1995/10/03  21:26:46  doug
+# add DETECT_OBJECTS.cnl
+#
+# Revision 1.1  1995/10/03  20:53:26  doug
+# Initial revision
+#
+# Revision 1.11  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.10  1995/06/28  21:58:17  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

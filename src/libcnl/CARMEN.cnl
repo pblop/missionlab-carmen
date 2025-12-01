@@ -1,0 +1,22 @@
+
+#include "cnl.inc"
+
+procedure Vector CARMEN_NAVIGATE with
+   Vector 	goal;
+header
+ 	extern Point carmenAdvise;
+ 	carmenAdvise.x = 0;
+	carmenAdvise.y = 0;
+	carmenAdvise.z = 0;
+	exec_init_carmen_navigate();
+	exec_carmen_navigate(goal.x, goal.y);
+body
+		exec_read_carmen_advise();
+		if((carmenAdvise.x==0) && (carmenAdvise.y==0))
+			exec_carmen_navigate(goal.x, goal.y);
+		output.x=carmenAdvise.x;
+		output.y=carmenAdvise.y;
+		output.z=carmenAdvise.z;
+	
+pend
+

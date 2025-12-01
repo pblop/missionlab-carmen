@@ -1,0 +1,1 @@
+The robot is performing the mission. Please wait until the mission is completed or the robot not moving any longer. Then go to File -> Quit to quit the current run; please don't close the window forcefully by clicking on the cross in the upper right corner. 

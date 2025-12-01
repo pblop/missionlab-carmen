@@ -1,0 +1,196 @@
+# Make file for Vector object
+#
+# Written by: Douglas C. MacKenzie
+#
+# Copyright 1996-2002.  All Rights Reserved.                      
+# Mobile Intelligence Corporation                                
+# Livonia, Michigan, USA                                           
+#                                                              
+#********************************************************************
+
+# $Id: makefile,v 1.1.1.1 2008/07/14 16:44:16 endo Exp $
+
+# ---------------------------------------------------
+
+# Get system wide defaults
+include $(SUPPORT_DIR)/make.include
+include ../../make.local
+
+# ---------------------------------------------------
+
+CC_SRCS = Vector.cc 
+
+# ---------------------------------------------------
+
+INCLUDES = -I../common 
+
+../$(ARCHIVE): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
+	
+all: ../$(ARCHIVE)
+
+LLIBS = -L../$(ADIR) -l$(ALIB)
+
+test: test.cc
+	$(CC) $(CFLAGS) $(INCLUDES) test.cc $(LDOPTS) $(LDFLAGS) $(LLIBS) $(LIBS) -o test
+	test
+
+doc: Vector.ps
+
+# Get general, invariant targets
+include $(SUPPORT_DIR)/make.targets
+
+#######################################################################
+# $Log: makefile,v $
+# Revision 1.1.1.1  2008/07/14 16:44:16  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:46  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:37:55  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/07/01 00:30:29  endo
+# CMDLi from MARS 2020 migrated into AO-FNC repository.
+#
+# Revision 1.1.1.1  2006/06/29 20:42:07  endo
+# cmdli local repository.
+#
+# Revision 1.30  2004/03/26 16:57:14  doug
+# switched to using make.target
+#
+# Revision 1.29  2004/03/25 20:32:34  doug
+# fix depend flags
+#
+# Revision 1.28  2004/03/24 22:04:49  doug
+# fixed typo
+#
+# Revision 1.27  2004/03/22 23:09:05  doug
+# tweaking for win32
+#
+# Revision 1.26  2004/03/12 20:36:40  doug
+# snap
+#
+# Revision 1.25  2004/03/08 14:52:13  doug
+# cross compiles on visual C++
+#
+# Revision 1.24  2004/02/28 19:26:10  doug
+# builds clean on Fedora (commented out a matcon call)
+#
+# Revision 1.23  2004/02/28 16:35:18  doug
+# getting cmdli to work in sara
+#
+# Revision 1.22  2004/02/20 20:55:09  doug
+# barriers work
+#
+# Revision 1.21  2003/12/10 17:23:32  doug
+# working on tasker
+#
+# Revision 1.20  2003/11/26 22:50:36  doug
+# working on state machines
+#
+# Revision 1.19  2003/11/07 22:54:28  doug
+# working on cmdl_io
+#
+# Revision 1.18  2003/11/07 20:29:04  doug
+# added cmdli interpreter library
+#
+# Revision 1.17  2003/11/03 22:43:37  doug
+# adding defComposite support
+#
+# Revision 1.16  2003/10/22 20:34:10  doug
+# still working on glyph_editor
+#
+# Revision 1.15  2003/10/07 21:02:35  doug
+# working on open click
+#
+# Revision 1.14  2003/09/29 19:09:06  doug
+# getting hooked into mouse events
+#
+# Revision 1.13  2003/08/25 19:59:33  doug
+# moved pixmaps to libmic
+#
+# Revision 1.12  2003/08/22 21:23:46  doug
+# Back from Benning
+#
+# Revision 1.11  2003/06/30 22:30:36  doug
+# Added altitude to robots
+#
+# Revision 1.10  2003/06/27 19:13:39  doug
+# got tomahawk to display
+#
+# Revision 1.9  2003/04/25 22:11:52  doug
+# changed encryptBuffer so does not pad and requires the buffer length to be a multiple of the blocksize
+#
+# Revision 1.8  2003/04/07 12:44:38  doug
+# moving to RedHat 9
+#
+# Revision 1.7  2003/03/10 16:31:34  doug
+# FittedCurve is closer
+#
+# Revision 1.6  2002/12/23 22:23:21  doug
+# added draw trails support
+#
+# Revision 1.5  2002/11/05 21:58:00  doug
+# gaining
+#
+# Revision 1.4  2002/10/22 21:05:59  doug
+# updated to gcc 3.0
+#
+# Revision 1.3  2002/10/03 18:42:47  doug
+# fixed include directive
+#
+# Revision 1.2  2002/10/03 18:42:10  doug
+# fixed include directive
+#
+# Revision 1.1  2002/10/01 20:15:41  doug
+# Added makefiles
+#
+# Revision 1.14  2002/05/10 20:25:07  doug
+# updated dependencies
+#
+# Revision 1.13  2002/05/10 20:24:51  doug
+# updated dependencies
+#
+# Revision 1.12  2002/04/29 13:16:52  doug
+# updated dependencies
+#
+# Revision 1.11  2001/08/15 20:21:10  doug
+# updated dependencies
+#
+# Revision 1.10  2001/08/15 15:50:37  doug
+# updated dependencies
+#
+# Revision 1.9  2001/08/15 15:46:33  doug
+# *** empty log message ***
+#
+# Revision 1.8  1998/02/04 22:13:05  doug
+# *** empty log message ***
+#
+# Revision 1.7  1998/02/04 20:28:29  doug
+# *** empty log message ***
+#
+# Revision 1.6  1997/12/30 17:30:02  doug
+# docified
+#
+# Revision 1.5  1997/12/10 11:59:07  doug
+# *** empty log message ***
+#
+# Revision 1.4  1997/12/09 15:59:33  doug
+# *** empty log message ***
+#
+# Revision 1.3  1997/11/25 11:23:55  doug
+# Changed rotate functions to be in radians and added
+# rotateA_degrees variants
+#
+#
+#######################################################################
+
+
+
+###########################################################################
+# dependencies generated by makedepend
+
+# DO NOT DELETE
+

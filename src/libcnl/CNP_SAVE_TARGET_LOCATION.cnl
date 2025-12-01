@@ -1,0 +1,86 @@
+/**********************************************************************
+ **                                                                  **
+ **                   CNP_SAVE_TARGET_LOCATION.cnl                   **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  CNP_SAVE_TARGET_LOCATION saves the location of a target.        **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CNP_SAVE_TARGET_LOCATION.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+//***********************************************************************
+// This function saves the location of the target for CNP.
+//***********************************************************************
+procedure Vector CNP_SAVE_TARGET_LOCATION with
+    ObjectReading object;
+header
+    bool saved = false;
+body
+{
+    gt_Point objRelPos;
+    Vector objAbsPos;
+    robot_position robotPos;
+    char valueBuf[1024];
+
+    VECTOR_CLEAR(output);
+    VECTOR_CLEAR(objAbsPos);
+
+    if (!saved)
+    {
+        if (object.id != NOID)
+        {
+            objRelPos = object.closest_point();
+            robotPos = exec_get_position();
+
+            objAbsPos.x = objRelPos.x;
+            objAbsPos.y = objRelPos.y;
+            rotate_z(objAbsPos, robotPos.heading);
+            plus_2d(objAbsPos, robotPos.v);
+
+            // Send out X.
+            sprintf(valueBuf, "%.2f", objAbsPos.x);
+            put_state((char *)(CNP_TARGET_LOC_X_KEY.c_str()), valueBuf);
+
+            // Send out Y.
+            sprintf(valueBuf, "%.2f", objAbsPos.y);
+            put_state((char *)(CNP_TARGET_LOC_Y_KEY.c_str()), valueBuf);
+
+            // Send out Z.
+            sprintf(valueBuf, "%.2f", objAbsPos.z);
+            put_state((char *)(CNP_TARGET_LOC_Z_KEY.c_str()), valueBuf);
+
+            // Send out confirmation.
+            put_state((char *)(CNP_TARGET_LOC_DONE_KEY.c_str()), "1");
+
+            saved = true;
+        }
+    }
+}
+pend
+
+/**********************************************************************
+# $Log: CNP_SAVE_TARGET_LOCATION.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/03/01 09:27:39  endo
+# Check-in for Type-I Intercept Experiment.
+#
+# Revision 1.1  2006/02/19 22:42:06  endo
+# CNP_SAVE_TARGET_LOCATION stuff.
+#
+#**********************************************************************/

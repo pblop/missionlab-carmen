@@ -1,0 +1,56 @@
+/**********************************************************************
+ **                                                                  **
+ **                       MAP_LOCATION.cnl                           **
+ **                                                                  **
+ ** Find and return the location of the named map feature            **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MAP_LOCATION.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector MAP_LOCATION with
+   CNLString_t feature_name;
+header
+body
+   output = exec_get_map_position(feature_name.val);
+
+   if( debug )
+   {
+      cerr << "MAP_LOCATION(" << robot_id << "): " << feature_name.val 
+           << "  is at <" << output.x << ',' << output.y << ">\n";
+   }
+pend
+
+
+/**********************************************************************
+# $Log: MAP_LOCATION.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  1996/02/28  03:54:40  doug
+# Initial revision
+#
+# Revision 1.2  1995/10/11  22:04:41  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/10/10  20:17:49  doug
+# Initial revision
+#
+#**********************************************************************/

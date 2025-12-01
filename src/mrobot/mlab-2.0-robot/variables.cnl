@@ -1,0 +1,256 @@
+/**********************************************************************
+ **                                                                  **
+ **                          variables.cnl                           **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: variables.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+/* variable nodes used to set parameters */
+
+node db_base_vel is DATABASE_DOUBLE with
+   key = {"base_velocity"};
+   initial = 5.0;
+nend
+
+node db_max_vel is DATABASE_DOUBLE with
+   key = {"max_velocity"};
+   initial = 7.0;
+nend
+
+node db_cautious_vel is DATABASE_DOUBLE with
+   key = {"cautious_velocity"};
+   initial = 0.5;
+nend
+
+node db_cautious_mode is DATABASE_BOOLEAN with
+   key = {"cautious_mode"};
+   initial = {false};
+nend
+
+node db_detect_obs_range is DATABASE_DOUBLE with
+   key = {"detect_obs_range"};
+   initial = 30.0;
+nend
+
+node db_avoid_obs_sphere is DATABASE_DOUBLE with
+   key = {"avoid_obstacle_sphere"};
+   initial = 30.0;
+nend
+
+node db_avoid_obs_safety_margin is DATABASE_DOUBLE with
+   key = {"avoid_obstacle_safety_margin"};
+   initial = 5.0;
+nend
+
+node db_nav_avoid_obs_gain is DATABASE_DOUBLE with
+   key = {"navigation_avoid_obstacle_gain"};
+   initial = 1.5;
+nend
+
+node db_nav_move_to_goal_gain is DATABASE_DOUBLE with
+   key = {"navigation_move_to_goal_gain"};
+   initial = 0.8;
+nend
+
+node db_occ_move_to_goal_gain is DATABASE_DOUBLE with
+   key = {"occupy_move_to_goal_gain"};
+   initial = 0.4;
+nend
+
+node db_occ_avoid_obs_gain is DATABASE_DOUBLE with
+   key = {"occupy_avoid_obstacle_gain"};
+   initial = 1.5;
+nend
+
+node db_move_to_goal_success_radius is DATABASE_DOUBLE with
+   key = {"move_to_goal_success_radius"};
+   initial = 5.0;
+nend
+
+node db_nav_at_goal_success_radius is DATABASE_DOUBLE with
+   key = {"navigation_success_radius"};
+   initial = 10.0;
+nend
+
+node db_nav_formation_gain is DATABASE_DOUBLE with
+   key = {"navigation_formation_gain"};
+   initial = 1.0;
+nend
+
+node db_nav_noise_gain is DATABASE_DOUBLE with
+   key = {"navigation_noise_gain"};
+   initial = 0.1;
+nend
+
+node db_formation_spacing is DATABASE_DOUBLE with
+   key = {"formation_spacing"};
+   initial = 50.0;
+nend
+
+node db_formation_saturation_length is DATABASE_DOUBLE with
+   key = {"formation_saturation_length"};
+   initial = 20.0;
+nend
+
+node db_formation_dead_zone_radius is DATABASE_DOUBLE with
+   key = {"formation_dead_zone_radius"};
+   initial = 5.0;
+nend
+
+node db_formation_slop is DATABASE_DOUBLE with
+   key = {"formation_slop"};
+   initial = 10.0;
+nend
+
+node db_formation_default_trigger is DATABASE_DOUBLE with
+   key = {"formation_default_trigger"};
+   initial = 100.0;
+nend
+
+node db_occ_avoid_robot_min_range is DATABASE_DOUBLE with
+   key = {"occupy_avoid_robot_min_range"};
+   initial = 15;
+nend
+
+node db_occ_avoid_robot_sphere is DATABASE_DOUBLE with
+   key = {"occupy_avoid_robot_sphere"};
+   initial = 30.0;
+nend
+
+node db_occ_avoid_robot_gain is DATABASE_DOUBLE with
+   key = {"occupy_avoid_robot_gain"};
+   initial = 2.0;
+nend
+
+node db_nav_avoid_robot_min_range is DATABASE_DOUBLE with
+   key = {"navigation_avoid_robot_min_range"};
+   initial = 15;
+nend
+
+node db_nav_avoid_robot_sphere is DATABASE_DOUBLE with
+   key = {"navigation_avoid_robot_sphere"};
+   initial = 30.0;
+nend
+
+node db_nav_avoid_robot_gain is DATABASE_DOUBLE with
+   key = {"navigation_avoid_robot_gain"};
+   initial = 2.0;
+nend
+
+#ifdef INC_TELOP
+node db_telop_mode is DATABASE_INT with
+   key = {"telop_mode"};
+   initial = 0;
+nend
+
+node db_joystick_x is DATABASE_DOUBLE with
+   key = {"joystick_x"};
+   initial = 0.0;
+nend
+
+node db_joystick_y is DATABASE_DOUBLE with
+   key = {"joystick_y"};
+   initial = 0.0;
+nend
+
+node db_joystick2_x is DATABASE_DOUBLE with
+   key = {"joystick2_x"};
+   initial = 0.0;
+nend
+
+node db_joystick2_y is DATABASE_DOUBLE with
+   key = {"joystick2_y"};
+   initial = 0.0;
+nend
+
+node db_slider_1 is DATABASE_DOUBLE with
+   key = {"slider_1"};
+   initial = 0.0;
+nend
+
+node db_slider_2 is DATABASE_DOUBLE with
+   key = {"slider_2"};
+   initial = 0.0;
+nend
+
+node db_joy_buttons is DATABASE_INT with
+   key = {"joy_buttons"};
+   initial = 0.0;
+nend
+
+node db_joystick_magnitude is DATABASE_DOUBLE with
+   key = {"joystick_magnitude"};
+   initial = 0.0;
+nend
+
+node teleop_complete is DATABASE_BOOLEAN with
+   key = {"teleop_complete"};
+   initial = {false};
+nend
+
+#endif
+
+node db_nav_swirl_gain is DATABASE_DOUBLE with
+   key = {"navigation_swirl_gain"};
+   initial = 0.0;
+nend
+
+node db_swirl_sphere is DATABASE_DOUBLE with
+   key = {"swirl_sphere"};
+   initial = 1.0;
+nend
+
+node db_swirl_safety_margin is DATABASE_DOUBLE with
+   key = {"swirl_safety_margin"};
+   initial = 0.1;
+nend
+
+node db_swirl_open_space is DATABASE_DOUBLE with
+   key = {"swirl_open_space"};
+   initial = 0.1;
+nend
+
+node db_swirl_open_sphere is DATABASE_DOUBLE with
+   key = {"swirl_open_sphere"};
+   initial = 0.1;
+nend
+
+node db_nav_move_to_concealment_gain is DATABASE_DOUBLE with
+   key = {"navigation_move_to_concealment_gain"};
+   initial = 0.0;
+nend
+
+
+/**********************************************************************
+# $Log: variables.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:15  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.17  2003/04/02 20:55:44  zkira
+# Added telop mode
+#
+# Revision 1.16  1995/10/27  20:30:16  doug
+# *** empty log message ***
+#
+# Revision 1.15  1995/08/31  18:33:55  kali
+# added variabel db_occ_move_to_goal_gain
+#
+# Revision 1.14  1995/06/29  13:44:01  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

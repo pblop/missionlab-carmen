@@ -1,0 +1,37 @@
+/**********************************************************************
+ **                                                                  **
+ **                       ULTRASONICS.cnl                            **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Jonathan F. Diaz                                   **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure raw_sonar_array RAW_ULTRASONICS with
+   
+header
+int i;
+body
+
+   output = exec_get_raw_sonar();
+
+   if( debug )
+   {
+      fprintf(stderr,"RAW ULTRASONICS returning %d raw sonar:\n",output.size);
+      for(i=0; i<output.size; i++)
+      {
+         fprintf(stderr,"   <%.1f>\n",
+		output.val[i].val);
+      }
+   }
+pend
+

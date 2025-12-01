@@ -1,0 +1,163 @@
+/*************************************************
+*
+* This CDL file sample_lm.cdl was created with cfgedit
+* version 5.0.04
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_1418 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1427,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1427]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1430 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1446]<334,314>|State1| = [
+                %Goal_Location = {10, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.5},
+                %avoid_obstacle_sphere = {1.19},
+                %avoid_obstacle_safety_margin = {0.29}
+,
+              GoTo]<100,100>
+,
+            society[$AN_1448]<824,318>|State2| = [
+                %Goal_Location = {50, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.5},
+                %avoid_obstacle_sphere = {1.19},
+                %avoid_obstacle_safety_margin = {0.29}
+,
+              GoTo]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1446,
+            rules[$AN_1446]<334,314>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {10, 20}
+,
+              AtGoal]<583,451>|Trans2|
+ goto $AN_1448,
+            rules[$AN_1448]<824,318>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {50, 20}
+,
+              AtGoal]<575,194>|Trans3|
+ goto $AN_1446)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_1456 from vehicle(
+  bound_to = sample_lmRobot2:DEFAULT_ROBOT(
+sample_lmRobot2:[
+          $AN_1430,
+          $AN_1418]
+)<89,180>|Individual Robot|
+);
+
+instBP<227,266> $AN_1457 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1427,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1427]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1468 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1446]<334,314>|State1| = [
+                %Goal_Location = {10, 20},
+                %move_to_goal_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5},
+                %noise_gain = {0.0}
+,
+              GoTo_LM]<10,10>
+,
+            society[$AN_1448]<824,318>|State2| = [
+                %Goal_Location = {50, 20},
+                %move_to_goal_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5},
+                %noise_gain = {0.0}
+,
+              GoTo_LM]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1446,
+            rules[$AN_1446]<334,314>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {10, 20}
+,
+              AtGoal]<583,451>|Trans2|
+ goto $AN_1448,
+            rules[$AN_1448]<824,318>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {50, 20}
+,
+              AtGoal]<575,194>|Trans3|
+ goto $AN_1446)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1492 from vehicle(
+  bound_to = sample_lmRobot1:DEFAULT_ROBOT(
+sample_lmRobot1:[
+          $AN_1468,
+          $AN_1457]
+)<34,38>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_1492,
+    $AN_1456]<10,10>|Group of Robots|
+]<10,10>
+

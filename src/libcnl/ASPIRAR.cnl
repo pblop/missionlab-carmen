@@ -1,0 +1,462 @@
+/**********************************************************************
+ **                                                                  **
+ **                        ASPIRAR.cnl                               **
+ **                                                                  **
+ **                 Written by:                                      **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+init
+//#include "hclient.h"
+#define BUFFER 10
+#define INC_X1 0.001
+#define INC_X2 0.0005
+#define INC 0.1
+#define CTE 0.25
+iend
+
+/*Aspirar en espiral*/
+ /***********************************************************************/
+
+procedure Vector ASPIRAR with
+header
+static robot_position inicial;
+robot_position pos;
+static int ini = 0;
+static int posX = 0, posY = 0;
+static int estado = 0;
+int estado_ant;
+static Vector objetivo;
+Vector dif;
+int indiceX, indiceY;
+int vueltas = 0;
+float mod;
+float lecturas[10];
+int num_lecturas;
+static bool var = true;
+static int inicioEspiral = 0;
+static float angulo = 0;
+float radio;
+static robot_position iniEspiral;
+static float headingAnterior;
+static float incX = 0.0;
+int pared = 0;
+static int choque = 0;
+
+static int bordeIzq = 0;
+static int bordeDer = 0;
+static int mem = 0;
+static float primera = 0;
+static float recorrido = 0.0;
+static float sumAngulo = 0.0;
+static robot_position ant;
+FILE *fp;
+static int imprimir = 1;
+//sensor_t *sensor;
+//sensor_reading_t* reading;
+body
+{
+    if(ini == 0)
+    {
+        /*for(int i = 0; i < 50*2; i++)
+        {
+            for(int j = 0; j < 50*2; j++)
+                casillas[i][j] = 0;
+        }*/
+
+        fp = fopen("./maqEstados.txt","w");
+        inicial = exec_get_position();
+        ant = inicial;
+        ini ++;
+        objetivo.x = 0.30;
+        objetivo.y = 0.0;
+        exec_activar_motores_limpieza(true);
+    }
+
+    pos = exec_get_position();
+    dif.x = pos.v.x - inicial.v.x;
+    dif.y = pos.v.y - inicial.v.y;
+    VECTOR_CLEAR(output);
+
+    bordeIzq = 0;
+    bordeDer = 0;
+    pared = 0;
+
+    exec_get_sensor_roomba(&num_lecturas, lecturas);
+    for(int j = 0; j < num_lecturas; j++)
+    {
+        printf("- %f -", lecturas[j]);
+            switch(j)
+            {
+                case 0: // Bumper Izquierdo
+                    if(lecturas[j] < 0.1){
+                        estado = 3;
+                        choque = 1;
+                    }
+                    break;
+
+                case 1: // Bumper Derecho
+                    if(lecturas[j] < 0.1){
+                        estado = 3;
+                        choque = 1;
+                    }
+                    break;
+
+                case 2: // Cliff izquierdo
+                    if(lecturas[j] < 0.1){
+                        estado = 3;
+                        choque = 1;
+                        //
+                        bordeIzq = 1;
+                    }
+                    break;
+
+                case 3: // Cliff Front Izquierdo
+                    if(lecturas[j] < 0.1)
+                    {//Igual hay q modificar algo
+                        estado = 3;
+                        choque = 1;
+                        //
+                        bordeIzq = 1;
+                    }
+                    break;
+
+                case 4: // Cliff Front Derecho
+                    if(lecturas[j] < 0.1){
+                        estado = 3;
+                        choque = 1;
+                        //
+                        bordeDer = 1;
+                    }
+                    break;
+
+                case 5: // Cliff Derecho
+                    if(lecturas[j] < 0.1){
+                        estado = 3;
+                        choque = 1;
+                        //
+                        bordeDer = 1;
+                    }
+                    break;
+
+                case 6: // Wall
+                    if(lecturas[j] < 0.1){
+                        pared = 1;
+                    }
+                    break;
+
+                case 7: // Wheel Drop Izquierdo
+                case 8: // Wheel Drop Caster
+                case 9: // Wheel Drop Derecho
+                    // Se pasa al estado parada
+                    if(lecturas[j] < 0.1)
+                        estado = -1;
+                    break;
+            }
+    }
+    printf("\n\n");
+
+    switch(estado)
+    {
+        case 0:// Ir hacia adelante 20 cm
+            if(imprimir)
+            {
+                fprintf(fp,"ESTADO 0: Avanzar n\n");
+                imprimir = 0;
+
+            }
+
+            minus_2d(objetivo, dif, output);
+
+                // -1 * heading since is left handed coordinate system (FIX THIS)
+            rotate_z(output, -1 * pos.heading);
+
+            output.x = output.x * 10;//6.0
+            output.y = output.y;
+            output.z = 0.0;
+
+            if(pertenece(dif.x, objetivo.x, 0.10) && pertenece(dif.y, objetivo.y, 0.10))
+            {
+                    // se pasa al siguiente estado
+                estado = 1;
+
+                // para depuracion
+                imprimir = 1;
+
+                objetivo.x = objetivo.x - 0.30;
+                objetivo.y = objetivo.y ;
+
+            }
+            break;
+
+        case 1://Ir para atras 20 cm
+            if(imprimir)
+            {
+                fprintf(fp,"ESTADO 1: Retroceder n\n");
+                imprimir = 0;
+            }
+
+            minus_2d(objetivo, dif, output);
+
+                // -1 * heading since is left handed coordinate system (FIX THIS)
+            rotate_z(output, -1 * pos.heading);
+
+            output.x = output.x;//6.0
+            output.y = output.y;
+            output.z = 0.0;
+
+            if(pertenece(dif.x, objetivo.x, 0.15) && pertenece(dif.y, objetivo.y, 0.15))
+            {
+                // se pasa al siguiente estado
+                estado = 2;
+
+                // para depuracion
+                imprimir = 1;
+            }
+            break;
+
+        case 2: //comenzar espiral
+            /*radio = 2 + CTE * angulo;
+            if(inicioEspiral == 0){
+                iniEspiral = exec_get_position();
+                headingAnterior = iniEspiral.heading;
+                inicioEspiral ++;
+            }
+            angulo = angulo + pos.heading - headingAnterior;
+            objetivo.x = iniEspiral.v.x + radio*cos(angulo);
+            objetivo.y = iniEspiral.v.y + radio*sin(angulo);
+
+            angulo = angulo + INC_ANGULO;
+            minus_2d(objetivo, dif, output);
+
+                // -1 * heading since is left handed coordinate system (FIX THIS)
+            rotate_z(output, -1 * pos.heading);
+
+            output.x = output.x;//6.0
+            output.y = output.y;
+            output.z = 0.0;
+
+            headingAnterior= pos.heading;*/
+            if(imprimir)
+            {
+                fprintf(fp,"ESTADO 2: Espiral\n");
+                imprimir = 0;
+            }
+
+            output.x = incX;
+            output.y = -1.0;
+            output.z = 0.0;
+
+            if(incX < 2.0)
+                incX += INC_X1;
+            else
+                incX += INC_X2;
+
+            if(output.x > 4.00)
+            {
+                // avanzar 4 metros para hacer otra espiral
+                objetivo.x = objetivo.x + 4.0;
+                objetivo.y = objetivo.y;
+
+                estado = 5;
+
+                // para depuracion
+                imprimir = 1;
+            }
+
+            break;
+
+        case 3: //choque
+//             if(imprimir)
+//             {
+                fprintf(fp,"ESTADO 3: Choque\n");
+//                 imprimir = 0;
+//             }
+
+            output.x = -1.0;
+            output.y = 0.0;
+            output.z = 1.0;
+
+            /*
+            if(bordeIzq == 0 && bordeDer == 1)
+                estado = 5;
+            else
+            {
+                estado = 4;
+                sumAngulo = 0;
+            }
+            */
+            estado = 4;
+            mem = 0;
+            //sumAngulo = 0.0;
+
+            // para depuracion
+            imprimir = 1;
+
+            break;
+
+        case 4: //seguir objeto
+            if(imprimir)
+            {
+                fprintf(fp,"ESTADO 4: Seguir obj\n");
+                imprimir = 0;
+            }
+
+            if(choque == 1)
+            {
+                output.x = 1.0;
+                output.y = 1.0;
+                output.z = 1.0;
+                fprintf(fp,"Despues del choque\n");
+            }
+            else
+            {
+                if(pared)
+                {
+                    fprintf(fp,"Sigue pared: \n");
+                    // va girando hacia la derecha
+                    output.x = 1.0;
+                    output.y = 0.3;
+                    output.z = 0.0;
+                }
+                else
+                {
+                    output.x = 1.0;
+                    //output.y = -0.3; // tiene que ser mayor!!!
+                    if(mem > 100)
+                        output.y = -2.0;
+
+                    else if(mem > 30 && mem < 100)
+                        output.y = -1.0;
+                        else
+                            output.y = -0.3;
+                    output.z = 0.0;
+                    fprintf(fp,"No sigue pared\n");
+                }
+            }
+            mem ++;
+            if(sumAngulo == 0.0)
+            {
+                 ant = pos;
+                 sumAngulo = 0.1;
+            }
+            if(pos.heading > 270.0 && (ant.heading >= 0.0 && ant.heading <=90.0))
+                sumAngulo += (pos.heading - 360.0) - ant.heading; //pos.heading está en el cuarto y ant. heading está en el primer cuadrante
+            else if(ant.heading > 270.0 && (pos.heading >= 0.0 && pos.heading <=90.0))
+                sumAngulo += pos.heading - (ant.heading - 360.0);
+            else
+                sumAngulo += (pos.heading - ant.heading);
+
+            recorrido += msqrt(pow(pos.v.x - ant.v.x, 2) + pow(pos.v.y - ant.v.x, 2));
+
+                    fprintf(fp,"Pos: %.2f || Ant: %.2f || sumAngulo = %.2f || %.2f\n",pos.heading,ant.heading,sumAngulo, recorrido);
+
+            if(sumAngulo >= 360.0 || sumAngulo <= -360.0 || recorrido > 5000)
+            {
+                estado = 6;
+                sumAngulo = 0.0;
+                recorrido = 0.0;
+
+                // para depuracion
+                imprimir = 1;
+            }
+            ant.heading = pos.heading;
+            //bordeIzq = 0;
+            //bordeDer = 0;
+            pared = 0;
+            choque = 0;
+
+            break;
+
+        case 5: //Avanzar hacia delante
+            if(imprimir)
+            {
+                fprintf(fp,"ESTADO 5: Avanzar 4 m\n");
+                imprimir = 0;
+            }
+
+            minus_2d(objetivo, dif, output);
+
+            // -1 * heading since is left handed coordinate system (FIX THIS)
+            rotate_z(output, -1 * pos.heading);
+
+            output.x = output.x * 10;//6.0
+            output.y = output.y;
+            output.z = 0.0;
+
+            if(pertenece(dif.x, objetivo.x, 0.10) && pertenece(dif.y, objetivo.y, 0.10))
+            {
+                // se vuelve a hacer otra espiral
+                fprintf(fp,"Volvemos a espiral\n");
+                estado = 2;
+
+                // para depuracion
+                imprimir = 1;
+            }
+            break;
+
+        case 6: //girar un angulo aleatorio
+            /**
+             * Mirar  signo y sentido de giro
+             *
+             **/
+            if(imprimir)
+            {
+                fprintf(fp,"ESTADO 6: Giro aleatorio\n");
+                imprimir = 0;
+            }
+            //fprintf(stdout, "Giro aleatoria\n");
+            if(primera == 0)
+            {
+                srand(time(NULL));
+                angulo=rand() % 180;
+                primera ++;
+                fprintf(fp,"El angulo a girar es %f\n", angulo);
+                angulo = pos.heading + angulo;
+                if(angulo >= 360.0)
+                    angulo = angulo - 360.0;
+            }
+
+            output.x = 0.0;
+            output.y = 1.0;
+            output.z = 0.0;
+            fprintf(fp,"El angulo a girar es %f \torientacion %f\n", angulo, pos.heading);
+
+            if(pertenece(pos.heading, angulo, 15))
+            {
+                objetivo.x = objetivo.x + 4.0;
+                objetivo.y = objetivo.y ;
+
+                estado = 5;
+                primera = 0;
+                output.x = 0.0;
+                output.y = 0.0;
+                output.z = 0.0;
+                fprintf(fp,"Se paso el angulo\n", angulo);
+
+                // para depuracion
+                imprimir = 1;
+            }
+            break;
+
+        default:
+            fprintf(fp,"ESTADO PARADA\n");
+
+            output.x = 0.0;
+            output.y = 0.0;
+            output.z = 0.0;
+            break;
+    }
+    //fprintf(stdout,"\nObjetivo: %.5f ** %.2f ||||%d\n", output.x, output.y, estado);
+    float marchaAtras = output.z;
+    output.z = 0;
+
+    if(output.x != 0.0 || output.y != 0.0)
+        unit_3d(output);
+
+    output.z = marchaAtras;
+}
+pend

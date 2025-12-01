@@ -1,0 +1,19 @@
+Number of sliders: 2
+
+title: Aggressiveness
+num_params: 2
+key: navigation_move_to_goal_gain
+base: 0.8
+inc: 1
+key: navigation_avoid_obstacle_gain
+base: 1.5
+inc: 0
+
+title: Wanderlust
+num_params: 2
+key: navigation_noise_gain
+base: 0.1
+inc: 1
+key: navigation_formation_gain
+base: 1.0
+inc: 0

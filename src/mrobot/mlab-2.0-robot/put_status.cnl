@@ -1,0 +1,233 @@
+/**********************************************************************
+ **                                                                  **
+ **                          put_status.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: put_status.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+init
+
+/* get the C data definitions */
+#define GT_COMMAND_C
+#include "gt_command.h"
+iend
+
+/***********************************************************************/
+
+procedure void PUT_STATUS with
+   gt_Command cmd;
+
+   /* Behaviors */
+   bool moveto_done;
+   bool follow_done;
+   bool occupy_done;
+   bool teleop_done;
+
+   /* formations */
+   bool formation_done;
+
+header
+   const int DELAY_LOOPS = 4;
+   typedef enum{MSG_NONE, MSG_DONE, MSG_EXECUTING, MSG_ERROR} Cmd_states;
+
+   Cmd_states msg;
+   Cmd_states last_msg=MSG_NONE;
+   int last_seq = -1;
+   int delay = DELAY_LOOPS;
+body
+
+
+//   if( last_seq == cmd.seq_num || --delay < 0 )
+   {
+      delay = DELAY_LOOPS;
+
+      msg = MSG_NONE;
+
+      switch(cmd.behavior)
+      {
+         case NO_BEHAVIOR:
+            msg = MSG_NONE;
+            break;
+
+         case START:
+            msg = MSG_DONE;
+            break;
+
+         case MOVETO:
+	    if( moveto_done /*&& formation_done*/ )
+	    {
+	       /* if at the goal, then give the done message */
+
+               if( cmd.completion_given )
+	       {
+	          /* do any extra stuff here */
+	       }
+   
+	       msg = MSG_DONE;
+	    }
+	    else if( last_seq == cmd.seq_num && last_msg == MSG_DONE)
+	    {
+	       /* once we have given the Done message, don't retract it */
+	       msg = MSG_DONE;
+	    }
+	    else
+	    {
+	       /* still on our way to the goal */
+	       msg = MSG_EXECUTING;
+	    }
+	    break;
+
+         case FOLLOW:
+	    if( follow_done )
+	    {
+	       /* if complete, then give the done message */
+
+               if( cmd.completion_given )
+	       {
+	          /* do any extra stuff here */
+	       }
+   
+	       msg = MSG_DONE;
+	    }
+	    else if( last_seq == cmd.seq_num && last_msg == MSG_DONE)
+	    {
+	       /* once we have given the Done message, don't retract it */
+	       msg = MSG_DONE;
+	    }
+	    else
+	    {
+	       /* still on our way to the goal */
+	       msg = MSG_EXECUTING;
+	    }
+	   break;
+
+         case OCCUPY:
+	    if( occupy_done && formation_done )
+	    {
+	       /* if complete, then give the done message */
+
+               if( cmd.completion_given )
+	       {
+	          /* do any extra stuff here */
+	       }
+   
+	       msg = MSG_DONE;
+	    }
+	    else if( last_seq == cmd.seq_num && last_msg == MSG_DONE)
+	    {
+	       /* once we have given the Done message, don't retract it */
+	       msg = MSG_DONE;
+	    }
+	    else
+	    {
+	       /* still on our way to the goal */
+	       msg = MSG_EXECUTING;
+	    }
+	   break;
+   
+         case TELEOPERATE:
+	    if( teleop_done )
+	    {
+	       /* if complete, then give the done message */
+
+               if( cmd.completion_given )
+	       {
+	          /* do any extra stuff here */
+	       }
+   
+	       msg = MSG_DONE;
+	    }
+	    else if( last_seq == cmd.seq_num && last_msg == MSG_DONE)
+	    {
+	       /* once we have given the Done message, don't retract it */
+	       msg = MSG_DONE;
+	    }
+	    else
+	    {
+	       /* still teleoping away.  Wee! */
+	       msg = MSG_EXECUTING;
+	    }
+	   break;
+   
+         case STOP:
+	   msg = MSG_DONE;
+	   break;
+
+         default:
+	   msg = MSG_ERROR;
+	   break;
+      }
+
+      if( (cmd.seq_num != last_seq) || 
+	  (cmd.behavior == STOP) ||
+	  (msg != last_msg && msg != MSG_NONE)
+	)
+      {
+         char buf[256];
+
+         switch(msg)
+         {
+            case MSG_DONE:
+	       strcpy(buf,DONE_MSG);
+	       break;
+
+            case MSG_EXECUTING:
+	       strcpy(buf,EXECUTING_MSG);
+	       break;
+
+            case MSG_ERROR:
+	       strcpy(buf,ERROR_MSG);
+	       break;
+
+            default:
+	       strcpy(buf,UNKNOWN_MSG);
+	       break;
+         }
+
+         /* append the behavior name on the end */
+         sprintf(&buf[strlen(buf)], ": %s-%d",
+         	gt_behavior_name[cmd.behavior], cmd.seq_num);
+
+         exec_put_console_state(RSP_MSG,buf);
+      }
+
+      /* remember current state */
+      last_msg = msg;
+      last_seq = cmd.seq_num;
+   }
+pend
+
+
+/**********************************************************************
+# $Log: put_status.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:14  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.14  1996/02/21  15:43:53  doug
+# fixedup so compiles with current libcnl
+#
+# Revision 1.13  1995/10/03  21:27:37  doug
+# fix some stuff that got changed in the libraries
+#
+# Revision 1.12  1995/06/29  13:42:23  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

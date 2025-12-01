@@ -1,0 +1,153 @@
+/**********************************************************************
+ **                                                                  **
+ **                      STRING_UTILITY.cnl                          **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  Various utility functions that deal with string.                **
+ **                                                                  **
+ **  Copyright 2005 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: STRING_UTILITY.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+//***********************************************************************
+// Converts string into int.
+//***********************************************************************
+
+procedure int STRING_TO_INT with
+   CNLString_t inputString;
+header
+body
+{
+    string buf;
+    int value;
+
+    // Default value is zero.
+    value = 0;
+
+    // Use std::string.
+    buf = inputString.val;
+
+    // Check the size.
+    if ((int)(buf.size()) > 0)
+    {
+        // Convert.
+        value = atoi(buf.c_str());
+    }
+
+    // Done
+    output = value;
+}
+pend
+
+//***********************************************************************
+// Converts string into bool.
+//***********************************************************************
+
+procedure bool STRING_TO_BOOL with
+   CNLString_t inputString;
+header
+body
+{
+    string buf;
+    bool value;
+
+    // Default value is zero.
+    value = 0;
+
+    // Use std::string.
+    buf = inputString.val;
+
+    // Check the size.
+    if ((int)(buf.size()) > 0)
+    {
+        // Convert.
+        value = (bool)(atoi(buf.c_str()));
+    }
+
+    // Done
+    output = value;
+}
+pend
+
+//***********************************************************************
+// Converts string into double.
+//***********************************************************************
+
+procedure double STRING_TO_DOUBLE with
+   CNLString_t inputString;
+header
+body
+{
+    string buf;
+    double value;
+
+    // Default value is zero.
+    value = 0;
+
+    // Use std::string.
+    buf = inputString.val;
+
+    // Check the size.
+    if ((int)(buf.size()) > 0)
+    {
+        // Convert.
+        value = atof(buf.c_str());
+    }
+
+    // Done
+    output = value;
+}
+pend
+
+//***********************************************************************
+// Converts string into float.
+//***********************************************************************
+
+procedure float STRING_TO_FLOAT with
+   CNLString_t inputString;
+header
+body
+{
+    string buf;
+    float value;
+
+    // Default value is zero.
+    value = 0;
+
+    // Use std::string.
+    buf = inputString.val;
+
+    // Check the size.
+    if ((int)(buf.size()) > 0)
+    {
+        // Convert.
+        value = (float)(atof(buf.c_str()));
+    }
+
+    // Done
+    output = value;
+}
+pend
+
+/**********************************************************************
+# $Log: STRING_UTILITY.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/01/10 06:19:45  endo
+# AO-FNC Type-I check-in.
+#
+#**********************************************************************/

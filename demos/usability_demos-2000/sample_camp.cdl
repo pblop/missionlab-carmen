@@ -1,0 +1,349 @@
+/*************************************************
+*
+* This CDL file sample_camp.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2387 from movement(
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA5:FSA(
+            society[Start]<120,120>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2401]<659,302>|State4| = [
+                %Objects = {Mines}
+,
+              LookFor]<100,100>
+,
+            society[$AN_2402]<470,300>|State5| = [
+                %Objects = {Mines},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2403]<291,300>|State6| = [
+                %Objects = {Mine}
+,
+              PickUp]<100,100>
+,
+            society[$AN_2404]<120,345>|State7| = [
+                %Objects = {EOD_Areas}
+,
+              LookFor]<100,100>
+,
+            society[$AN_2405]<120,570>|State8| = [
+                %Objects = {EOD_Areas},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.19},
+                %avoid_obstacle_safety_margin = {0.29}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2406]<360,570>|State9| = [
+                %Object = {Mine}
+,
+              PutInEOD]<100,100>
+,
+            society[$AN_2407]<657,570>|State10| = [
+                %Objects = {Home_Base},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.18},
+                %avoid_obstacle_safety_margin = {0.28}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2408]<490,573>|State11| = [
+              Stop]<100,100>
+,
+            society[$AN_2409]<320,96>|State12| = [
+                %Goal_Location = {420, 255},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_2410]<707,86>|State13| = [
+                %Goal_Location = {500, 180},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            rules[$AN_2401]<659,302>|State4| = if [
+                %Objects = {Mines}
+,
+              Detect]<0,0>
+ goto $AN_2402,
+            rules[$AN_2401]<659,302>|State4| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<659,427>
+ goto $AN_2407,
+            rules[$AN_2402]<470,300>|State5| = if [
+                %Objects = {Mines},
+                %Distance = {0.1}
+,
+              Near]<0,0>
+ goto $AN_2403,
+            rules[$AN_2403]<291,300>|State6| = if [
+                %Objects = {Mine}
+,
+              Holding]<0,0>
+ goto $AN_2404,
+            rules[$AN_2404]<120,345>|State7| = if [
+                %Objects = {EOD_Areas}
+,
+              Detect]<10,10>
+ goto $AN_2405,
+            rules[$AN_2405]<120,570>|State8| = if [
+                %Objects = {EOD_Areas},
+                %Distance = {0.1}
+,
+              Near]<0,0>
+ goto $AN_2406,
+            rules[$AN_2406]<360,570>|State9| = if [
+                %Objects = {Mine}
+,
+              NotHolding]<0,0>
+ goto $AN_2401,
+            rules[$AN_2407]<657,570>|State10| = if [
+                %Objects = {Home_Base},
+                %Distance = {5.0}
+,
+              Near]<0,0>
+ goto $AN_2408,
+            rules[Start]<120,120>|Start| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_2409,
+            rules[$AN_2409]<320,96>|State12| = if [
+                %Goal_Tolerance = {10.0},
+                %Goal_Location = {420, 255}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_2410,
+            rules[$AN_2410]<707,86>|State13| = if [
+                %Goal_Tolerance = {10.0},
+                %Goal_Location = {500, 180}
+,
+              AtGoal]<0,0>|Trans6|
+ goto $AN_2401,
+            rules[$AN_2402]<470,300>|State5| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<561,431>
+ goto $AN_2407)<292,156>|The State Machine|
+,
+        max_vel = {1.90},
+        base_vel = {1.27},
+        cautious_vel = {0.5},
+        cautious_mode = {true})<222,15>|The Wheels Actuator|
+);
+
+instBP<100,100> $AN_2435 from vehicle(
+  bound_to = sample_campRobot2:DEFAULT_ROBOT(
+sample_campRobot2:[
+          $AN_2387]
+)<28,179>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2436 from movement(
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<120,120>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2401]<699,328>|State4| = [
+                %Objects = {Mines}
+,
+              LookFor]<10,10>
+,
+            society[$AN_2402]<313,419>|State5| = [
+                %Objects = {Mines},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2403]<238,254>|State6| = [
+                %Objects = {Mine}
+,
+              PickUp]<10,10>
+,
+            society[$AN_2404]<120,345>|State7| = [
+                %Objects = {EOD_Areas}
+,
+              LookFor]<10,10>
+,
+            society[$AN_2405]<120,570>|State8| = [
+                %Objects = {EOD_Areas},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.19},
+                %avoid_obstacle_safety_margin = {0.29}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2406]<314,554>|State9| = [
+                %Object = {Mine}
+,
+              PutInEOD]<10,10>
+,
+            society[$AN_2407]<657,570>|State10| = [
+                %Objects = {Home_Base},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.18},
+                %avoid_obstacle_safety_margin = {0.28}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2408]<490,573>|State11| = [
+              Stop]<10,10>
+,
+            society[$AN_2409]<320,96>|State12| = [
+                %Goal_Location = {420, 255},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2410]<707,86>|State13| = [
+                %Goal_Location = {500, 180},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2461]<489,199>|State11| = [
+                %Objects = {Friendly_Robots},
+                %move_away_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.1},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              MoveAway]<10,10>
+,
+            rules[$AN_2401]<699,328>|State4| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<681,440>
+ goto $AN_2407,
+            rules[$AN_2402]<313,419>|State5| = if [
+                %Objects = {Mines},
+                %Distance = {0.1}
+,
+              Near]<0,0>
+ goto $AN_2403,
+            rules[$AN_2403]<238,254>|State6| = if [
+                %Objects = {Mine}
+,
+              Holding]<0,0>
+ goto $AN_2404,
+            rules[$AN_2404]<120,345>|State7| = if [
+                %Objects = {EOD_Areas}
+,
+              Detect]<10,10>
+ goto $AN_2405,
+            rules[$AN_2405]<120,570>|State8| = if [
+                %Objects = {EOD_Areas},
+                %Distance = {0.1}
+,
+              Near]<0,0>
+ goto $AN_2406,
+            rules[$AN_2406]<314,554>|State9| = if [
+                %Objects = {Mine}
+,
+              NotHolding]<0,0>
+ goto $AN_2401,
+            rules[$AN_2407]<657,570>|State10| = if [
+                %Objects = {Home_Base},
+                %Distance = {5.0}
+,
+              Near]<0,0>
+ goto $AN_2408,
+            rules[Start]<120,120>|Start| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_2409,
+            rules[$AN_2409]<320,96>|State12| = if [
+                %Goal_Tolerance = {10.0},
+                %Goal_Location = {420, 255}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_2410,
+            rules[$AN_2410]<707,86>|State13| = if [
+                %Goal_Tolerance = {10.0},
+                %Goal_Location = {500, 180}
+,
+              AtGoal]<0,0>|Trans6|
+ goto $AN_2401,
+            rules[$AN_2402]<313,419>|State5| = if [
+                %Objects = {Friendly_Robots},
+                %Distance = {5.0}
+,
+              Near]<0,0>|Trans7|
+ goto $AN_2461,
+            rules[$AN_2401]<699,328>|State4| = if [
+                %Objects = {Mines}
+,
+              Detect]<0,0>
+ goto $AN_2402,
+            rules[$AN_2461]<489,199>|State11| = if [
+                %Objects = {Friendly_Robots},
+                %Distance = {10.0}
+,
+              AwayFrom]<0,0>|Trans9|
+ goto $AN_2402,
+            rules[$AN_2402]<313,419>|State5| = if [
+                %Objects = {Mines}
+,
+              NotDetected]<480,493>
+ goto $AN_2407)<292,156>|The State Machine|
+,
+        max_vel = {1.90},
+        base_vel = {1.27},
+        cautious_vel = {0.5},
+        cautious_mode = {true})<222,15>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_2491 from vehicle(
+  bound_to = sample_campRobot1:DEFAULT_ROBOT(
+sample_campRobot1:[
+          $AN_2436]
+)<28,33>|Individual Robot|
+);
+
+[
+[
+    $AN_2491,
+    $AN_2435]<11,11>|Group of Robots|
+]<10,10>
+

@@ -1,0 +1,22 @@
+
+#define Make<type>Object(object,file,env)    @@\
+	MakeEnvObjectRule($(<type>_COMPILER),<type>/object,<type>/file,file,$(<type>_FLAGS),env)
+
+#define Make<type>Program(name, file)  @@\
+Make<type>Object(name,file,$(EMPTY))    @@\
+<type>/name: <type>/$(IPTLIB) @@\
+	$(<type>_COMPILER) <type>/file.o -o <type>/name <type>/$(IPTLIB) $(<type>_LINK) $(EXTRALIBS)
+
+#define Make<type>ObjectC(object, file)    @@\
+	MakeObjectCRule($(<type>_CCOMPILER),<type>/object,<type>/file,file,$(<type>_FLAGS))
+
+#define Make<type>CProgram(name, file)  @@\
+Make<type>ObjectC(name,file)    @@\
+<type>/name: <type>/$(IPTLIB) @@\
+	$(<type>_CCOMPILER) <type>/file.o -o <type>/name <type>/$(IPTLIB) $(<type>_LINK) $(EXTRALIBS)
+
+#define Make<type>Lib() <type>MakeLibrary(<type>/$(IPTLIB),$(<type>_LIB_OBJS), $(<type>_LIB_OBJS))
+
+all.<type>:: <type>/$(IPTLIB) <type>/iptserver
+
+

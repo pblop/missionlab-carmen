@@ -1,0 +1,25 @@
+ 
+Corrections and Bug Fixes:
+
+1) In map_display.c :
+    void drawline(double x1, double y1, double x2, double y2, int draw_color)
+    {
+     /* The original code was flipping the x coordinates for evey line drawn.
+	This was extremely confusing especially when using the mouse to
+	select start and end points for a path. Fixed by saho (june 26, 1999).
+     */
+       window_drawline(window,x1,y1,x2,y2,draw_color);
+       /*window_drawline(window,window->max_x-x1,y1,
+	       window->max_x-x2,y2,draw_color);*/
+    }
+
+   It turns out that hte order of verices has to be specified in 
+   counterclockwise direction. The source code says just the opposite
+   but after the above correction this is no longer corect.
+
+
+2) In main.c
+   Commented out the questions about the kind of partitioning.
+
+3) In main.c
+     Reduced the values for the size parameters (safety and robot-radius).

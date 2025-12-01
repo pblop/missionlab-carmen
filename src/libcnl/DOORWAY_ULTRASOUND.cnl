@@ -1,0 +1,74 @@
+/**********************************************************************
+ **                                                                  **
+ **                      DOORWAY_ULTRASOUND.cnl                      **
+ **                                                                  **
+ **                 Written by:  Jonathan F. Diaz                    **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DOORWAY_ULTRASOUND.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure bool DOORWAY_ULTRASOUND with
+	double robot_length;
+	double hallway_width;
+	int look_for;
+        int unmarked;
+        double max_dist;
+header
+body
+{
+  bool stat1, stat2;
+
+  if (unmarked == DETECT_UNMARKED_ONLY) {
+    if (look_for == Both) {
+      stat1 = exec_detect_unmarked_doorway(hallway_width, robot_length, 0, max_dist);
+      stat2 = exec_detect_unmarked_doorway(hallway_width, robot_length, 1, max_dist);
+      output = (stat1 || stat2);
+    } else output = exec_detect_unmarked_doorway(hallway_width, robot_length, look_for, max_dist);
+  }
+  else if (unmarked == DETECT_ANY) {
+    if (look_for == Both) {
+      stat1 = exec_detect_doorway(hallway_width, robot_length, 0, max_dist);
+      stat2 = exec_detect_doorway(hallway_width, robot_length, 1, max_dist);
+      output = (stat1 || stat2);
+    }
+    else output = exec_detect_doorway(hallway_width, robot_length, look_for, max_dist);
+  }
+  else {
+    if (look_for == Both) {
+      stat1 = exec_detect_doorway(hallway_width, robot_length, 0, max_dist);
+      stat2 = exec_detect_doorway(hallway_width, robot_length, 1, max_dist);
+      output = (stat1 || stat2);
+    }
+    else output = exec_detect_doorway(hallway_width, robot_length, look_for, max_dist);
+  }
+}   
+pend
+
+
+/**********************************************************************
+ * $Log: DOORWAY_ULTRASOUND.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:58  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:02  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.6  2000/09/19 10:01:36  endo
+ * Code modified at Rockville, MD, for TMR demo (August).
+ *
+ * Revision 1.5  2000/08/12 19:01:23  saho
+ * Revised for Laser raedings.
+ *
+  **********************************************************************/
+

@@ -1,0 +1,50 @@
+;;/*************************************************
+;;*
+;;* This file plan.lisp was created with the command
+;;* cdl -p -o /tmp/CfgEdit4140 /tmp/CfgEdit4140.cdl
+;;* using the CDL compiler, version 0.8b
+;;*
+;;**************************************************/
+
+;; =====================================
+;; SAUSAGES plan robot for tRobot1
+;; =====================================
+(setq start-loc '(1000.0 1000.0))
+
+(defplan the-plan ()
+  (sequence
+
+    ;;Start
+    (link user-wait
+          (plan-id 0)
+          (position '(1000.0 1000.0))
+          (message "Waiting for proceed message")
+    )
+
+    ;;$AN_233
+    (link xcountry
+          (plan-id 1)
+          (initial-speed 10.0)
+          (points (vector
+            '(1000.0 1000.0)
+            '(1245.0 500.0)))
+    )
+
+    ;;$AN_245
+    (link xcountry
+          (plan-id 2)
+          (initial-speed 10.0)
+          (points (vector
+            '(1245.0 500.0)
+            '(1900.0 500.0)))
+    )
+
+    ;;$AN_237
+    (link user-wait
+          (plan-id 3)
+          (position '(1000.0 1000.0))
+          (message "Waiting for proceed message")
+    )
+  )
+)
+

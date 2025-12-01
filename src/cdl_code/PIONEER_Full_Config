@@ -1,0 +1,15 @@
+MISSION NAME "PIONEER_Full_Config"
+OVERLAY "Empty.ovl"
+NEW-ROBOT PIONEER_Full_ConfigRobot1 "PIONEER_Full_ConfigRobot1" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type = SIMULATION)
+
+UNIT <all> PIONEER_Full_ConfigRobot1
+
+set show-trails off
+set scale-robots on
+set ROBOT-LENGTH 1
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace 1.000000 0.000000

@@ -1,0 +1,17 @@
+Source: missionlabcarmen
+Section: unknown
+Priority: extra
+Maintainer: Javier Serrano <fjaviersr@usal.es>
+Build-Depends: debhelper, make, lesstif2-dev | libmotif-dev, xfonts-75dpi, xfonts-100dpi, binutils, g++, gcc, tcsh, zlib1g-dev, libglu1-mesa-dev, bison, libfl-dev, flex, ncurses-dev, libssl-dev, libv4l-dev, libgtk2.0-dev, gnome-terminal, libjpeg-dev, libkrb5-dev, libxml2-dev, libxt-dev
+#ENABLE_OPENGL==1 -> libglw1-mesa-dev
+Standards-Version: 3.9.3
+Homepage: http://web.usal.es/~fjaviersr/missionlab_carmen/
+#Vcs-Git: git://git.debian.org/collab-maint/missionlabcarmen.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/missionlabcarmen.git;a=summary
+
+Package: missionlabcarmen
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, make, lesstif2-dev | libmotif-dev, xfonts-75dpi, xfonts-100dpi, binutils, g++, gcc, tcsh, zlib1g-dev, libglu1-mesa-dev, bison, libfl-dev, flex, ncurses-dev, libssl-dev, libv4l-dev, libgtk2.0-dev, gnome-terminal, libjpeg-dev, libkrb5-dev, libxml2-dev, libxt-dev
+Description: Missionlab and CARMEN integration
+ MissionLab takes high-level military-style plans and executes them with teams of real or simulated robotic vehicles. MissionLab supports execution of multiple robots both in simulation and actual robotics platforms, including device drivers for controlling iRobot's ATRV-Jr and Urban Robot, ActivMedia's AmigoBot and Pioneer AT, and Nomadics Technologies' Nomad 150 & 200. Each vehicle executes its portion of the mission using reactive control techniques developed at Georgia Tech. 
+

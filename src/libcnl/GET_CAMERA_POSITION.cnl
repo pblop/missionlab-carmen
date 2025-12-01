@@ -1,0 +1,44 @@
+/**********************************************************************
+ **                                                                  **
+ **                      GET_CAMERA_POSITION.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1999, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector GET_CAMERA_POSITION with
+header
+body
+
+   //printf( "GET_CAMERA_POSITION: getting camera data...\n" );
+
+   output = exec_get_camera_position();
+
+   //printf( "Camera returned < %2.2f, %2.2f, %2.2f > \n", 
+   //        output.x, output.y, output.z );
+
+   if( debug )
+   {
+      fprintf(stderr,"GET_CAMERA_POSITION(%d): returning (%2.2f %2.2f %2.2f)\n",robot_id, 
+	      output.x, output.y, output.z);
+   }
+
+pend
+
+
+
+
+
+
+
+
+
+
+

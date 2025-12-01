@@ -1,0 +1,120 @@
+/**********************************************************************
+ **                                                                  **
+ **               MOTIVATIONAL_UPDATE.cnl                            ** 
+ **                                                                  **
+ **  Written by:  Alexander Stoytchev                                **
+ **                                                                  **
+ **  In this file we define the update rules for each motivational   **
+ **  variable. One can think of this file as the place where the     **
+ **  "emotional profile" of the robot is defined.                    **
+ **  Motivational variables can be changed in other files in response**
+ **  to some environment situations, however, this file is designed  **
+ **  to make updates on a regular basis.                             **
+ **  For example, hunger_level is increased as a function of time,   **
+ **  anger decays over time, etc.                                    **
+ **                                                                  **
+ **  To make this file be executed all the time one needs to put it  **
+ **  in a separate FSA (like the camera FSA) and make a loop in that **
+ **  FSA of the form:                                                **
+ **                             ---------- Immediate ----            **
+ **                             |                       |            **
+ **                             v                       |            **
+ **(Start) --> Immediate --> (Stop)-->  Wait -->(MOTIVATIONAL_UPDATE)**
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOTIVATIONAL_UPDATE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+//#include <stdlib.h>
+
+/***********************************************************************/
+
+procedure Vector MOTIVATIONAL_UPDATE with
+   double anger_level;
+   double fear_level;
+   double hunger_level;
+   double curiousity_level;
+header
+body
+
+   char  value[100];
+   double new_Avalue,new_Fvalue,new_Hvalue,new_Cvalue;
+
+ 
+   // This code will update the values of the motivational variables
+   // in the DATABASE of the robot and the mission lab console. 
+   // The Motivational Vector interface will update the values of
+   // its sliders automatically
+   // (it reads the DATABASE periodically and detects any changes).
+
+
+
+   //Update Anger
+   //Anger decreases slowly over time
+
+    new_Avalue= ((anger_level-0.05)< 0.0) ? 0.0 :(anger_level- 0.05) ;
+    sprintf(value, "%f", new_Avalue);
+	exec_put_console_state("anger_level", value);
+
+
+   //Update Fear
+   // Fear can increase or decrease by +/-[0, 0.05] at every step
+
+    new_Fvalue=((fear_level+0.03)>1.0) ? 1.0 :(fear_level+0.03) ;
+	if(  new_Fvalue > 1.0)   
+		new_Fvalue=1.0;
+    sprintf(value, "%f", new_Fvalue);
+	exec_put_console_state("fear_level", value);
+
+
+   //Update Hunger
+   //Hunger increases slowly over time.
+
+    new_Hvalue= ((hunger_level+0.04)>1.0) ? 1.0 :(hunger_level+0.04) ;
+    sprintf(value, "%f", new_Hvalue);
+	exec_put_console_state("hunger_level", value);
+
+
+    //Update Curiousity
+    //Curiousity increases slowly over time.
+
+    new_Cvalue= ((curiousity_level+0.02)>1.0) ? 1.0 :(curiousity_level +0.02) ;
+    sprintf(value, "%f", new_Cvalue);
+	exec_put_console_state("curiousity_level", value);
+
+
+
+   //This cnl only produces side effects (changes the motivational variables)
+   //Otherwise it generates a zero vector.
+   output.x=0.0;
+   output.y=0.0;
+   output.z=0.0;
+
+     
+   if(debug )
+	{
+	  printf("MOTIVATIONAL_UPDATE: New values < anger=%g, fear=%g, "
+                        "hunger=%g, curiousity=%g>\n",
+                        new_Avalue,new_Fvalue,new_Hvalue,new_Cvalue);
+	}
+pend
+
+
+/**********************************************************************
+# $Log: MOTIVATIONAL_UPDATE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2001/01/24 23:19:50  saho
+# Initial revision
+#
+#**********************************************************************/

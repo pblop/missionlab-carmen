@@ -1,0 +1,80 @@
+/*************************************************
+*
+* This CDL file sample_observe.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2306 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2324]<264,246>|State1| = [
+              Stop]<10,10>
+,
+            society[$AN_2328]<606,246>|State2| = [
+              Stop]<10,10>
+,
+            society[$AN_2332]<607,442>|State3| = [
+                %alert_subject = {"Warning: Enemy is leaving"},
+                %alert_message = {""},
+                %sends_email = {NO_Email},
+                %recipient = {""},
+                %sends_image = {NO_Image}
+,
+              Alert]<10,10>
+,
+            society[$AN_2336]<268,441>|State4| = [
+                %notify_message = {"Intercept."}
+,
+              NotifyRobots]<10,10>
+,
+            society[$AN_2342]<270,668>|State5| = [
+              Stop]<10,10>
+,
+            rules[$AN_2324]<264,246>|State1| = if [
+                %Objects = {Enemies},
+                %Distance = {100}
+,
+              Near]<0,0>|Trans2|
+ goto $AN_2328,
+            rules[$AN_2328]<606,246>|State2| = if [
+                %Objects = {Enemies},
+                %Distance = {110.0}
+,
+              AwayFrom]<0,0>|Trans3|
+ goto $AN_2332,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2324,
+            rules[$AN_2332]<607,442>|State3| = if [
+              Alerted]<0,0>|Trans5|
+ goto $AN_2336,
+            rules[$AN_2336]<268,441>|State4| = if [
+              MessageSent]<0,0>|Trans6|
+ goto $AN_2342)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_2321 from vehicle(
+  bound_to = defaultRobot1:DEFAULT_ROBOT(
+defaultRobot1:[
+          $AN_2306]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_2321]<10,10>|Group of Robots|
+]<10,10>
+

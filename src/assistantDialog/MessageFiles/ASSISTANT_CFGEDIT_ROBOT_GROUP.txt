@@ -1,0 +1,13 @@
+Middle-click on the text below
+'Individual Robot' to view the 
+next level of detail. 
+
+Keep middle-clicking on the leftmost 
+dialogue box until you reach
+the desired level. Most often, 
+it will be the FSA level.
+
+Use the 'Up 1 Level' button to
+view the previous level of
+detal.
+

@@ -1,0 +1,159 @@
+/*--------------------------------------------------------------------
+
+	AVOID_OBJECTS.cnl
+
+
+	Written by:  Doug MacKenzie
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: AVOID_OBJECTS.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector AVOID_OBJECTS with
+   double	sphere;
+   double	safety_margin;
+   ObjectList   objlist;
+header
+   int          first_time=TRUE; 
+   double       old_safety_margin = 0;
+body
+   if( debug )
+   {
+      fprintf(stderr,"AVOID_OBJECTS(sphere = %.1f, safety_margin = %.1f\n",
+	sphere, safety_margin);
+   }
+
+   if( first_time || old_safety_margin != safety_margin )
+   {
+      /* 
+       * Report the safety margin we are using to the console so the
+       * graphics can use it for showing virtual collisions
+       */
+      char buf[80];
+
+      sprintf(buf, "%f",safety_margin);
+      exec_put_console_state(SAFETY_MARGIN_MSG,buf);
+
+      old_safety_margin = safety_margin;
+      first_time = FALSE;
+   }
+
+   VECTOR_CLEAR(output);
+
+   // For each object
+   for(int i=0; i<objlist.count; i++)
+   {
+      if( debug )
+         cerr << objlist.objects[i] << '\n';
+
+      gt_Point contribution;
+
+      // compute the closest point of the obstacle to the center of the robot.
+      gt_Point pt = objlist.objects[i].closest_point();
+      double dist = len_2d(pt);
+
+      /* Handle the case where within the max repulsion zone */
+      if (dist < safety_margin )
+      {
+	 /* generate an infinite (around 100000) vector away from the obstacle*/
+
+         if (dist < EPS_ZERO) // Epsilon Zero (~0.00001): Stop divide by 0 error
+         {
+	    /* Handle the case where an obstacle is EXACTLY centered
+	       where the robot is as a special case because we can't
+	       use the vector to determine a direction to move.
+	       So, arbitraily choose straight ahead direction for vector.
+	    */
+	    contribution.x = -GT_INFINITY;
+	    contribution.y = 0;
+	 }
+	 else
+	 {
+	    contribution = pt;
+            unit_2d(contribution);
+            mult_2d(contribution, GT_INFINITY);
+	 }
+      }
+
+      /* handle case where within the linear repulsion zone */
+      else if (dist <= safety_margin + sphere )
+      {
+         /* set the magnitude of the repulsion vector (0...1) based on how 
+	    far we have intruded into the zone.
+	    Magnitude is 0 on outside edge (dist = sphere).
+	    Magnitude is 1 on inside edge (dist = safety_margin)
+
+	    sphere is the size of the zone.
+	    We are at distance (dist - safety_margin) beyond the inner edge of
+	    the zone or (sphere - (dist - safety_margin)) from the outer edge.
+
+	    So, take our distance from the outer edge and divide by the size
+	    of the zone to get a ratio from 0 to 1 with zero at the outside
+	    and 1 at the inside.
+	  */
+
+         double mag = (sphere - (dist - safety_margin)) / sphere;
+
+	 contribution = pt;
+         unit_2d(contribution);
+         mult_2d(contribution, mag);
+      }
+
+      /* otherwise, outside obstacle's sphere of influence, so ignore it */
+      else
+      {
+         contribution.x = 0;
+         contribution.y = 0;
+      }
+
+      if( debug )
+         fprintf(stderr,"contribution = <%.1f, %.1f>\n",
+	    contribution.x, contribution.y);
+
+      // Add it to the running sum */
+      plus_2d(output, contribution);
+   }
+
+   // Note: Vector generated is pointing towards the obstacle,
+   //       now flip it to be a movement vector away from the obstacles
+   output.x = -output.x;
+   output.y = -output.y;
+
+   if( debug )
+   {
+      fprintf(stderr,"AVOID_OBJECTS: output vector <%.1f %.1f>\n",
+	 output.x, output.y);
+   }
+pend
+
+
+/**********************************************************************
+# $Log: AVOID_OBJECTS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:55  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.4  2003/04/06 12:04:03  endo
+# gcc 3.1.1
+#
+# Revision 1.3  1996/03/03  23:58:41  doug
+# *** empty log message ***
+#
+# Revision 1.2  1996/02/28  03:54:13  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/10/12  20:15:35  doug
+# Initial revision
+#
+#**********************************************************************/

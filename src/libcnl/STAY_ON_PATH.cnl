@@ -1,0 +1,129 @@
+/**********************************************************************
+ **                                                                  **
+ **                          STAY_ON_PATH.cnl                        **
+ **                                                                  **
+ **  Author: Jonathan Diaz                                           **    
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: STAY_ON_PATH.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+procedure Vector STAY_ON_PATH with
+  Vector Start;
+  Vector End;
+  double Path_Width;
+header
+  double a, b, c, A, tmp, dist, output_direction, output_magnitude;
+  robot_position loc;
+  Vector tmpv;
+body
+
+/*clear our output vector*/
+  output.x = 0.;
+  output.y = 0.;
+  output.z = 0.;
+/*get the robot's position*/
+  loc = exec_get_position();
+
+/*assure start is before end in x, if not then swap */
+  if (End.x < Start.x) {
+    tmpv.x = End.x;
+    tmpv.y = End.y;
+    End.x = Start.x;
+    End.y = Start.y;
+    Start.x = tmpv.x;
+    Start.y = tmpv.y;
+  }
+
+/*Use the pythagorean thm. to determine the angle the path makes with
+  a vertical line*/
+/*a^2 = b^2 + c^2 - 2bc*Cos(A)*/
+/*A = ArcCos((b^2 + c^2 - a^2)/2bc)*/
+/*c will be the path, b will be the imaginary vertical line,
+  and a will be the line that completes the triangle*/
+
+  c = sqrt((Start.x - End.x)*(Start.x - End.x) + (Start.y - End.y)*(Start.y - End.y));
+  
+  b = sqrt((Start.y - (Start.y + 5000))*(Start.y - (Start.y + 5000))); /*vert. line no delta x*/
+  a = sqrt((Start.x - End.x)*(Start.x - End.x) + 
+	   ((Start.y + 5000) - End.y)*((Start.y + 5000) - End.y));
+
+/*if c is zero Start and End are indeed the same point to within double floating point
+  precision, and math errors will occur if we continue*/
+  if (c != 0.0) {
+    tmp = ((b*b)+(c*c)-(a*a))/(2*b*c);
+  
+    A = acos(tmp);
+    
+    /*A now holds the angle the path makes with the vertical line. We want
+      a angle perpendicular to this. Since Start.x is less than End.x we can
+      add PI/2 radians to achieve this*/
+    
+    A += M_PI/2.0;
+      
+    /*We must determine which side of the path we are on, and possibly adjust
+      the angle A by a half turn. */
+    if (!correctside(Start.x,Start.y,End.x,End.y,loc.v.x,loc.v.y)) A += M_PI;
+    
+    /*store the value of A in some more appropriately named variable*/
+    output_direction = A;
+  
+    /*to determine the magnitude of the vector we must calculate our distance from the 
+      perpendicular distance from our current location to line that passes through the 
+      points Start and End.*/
+    
+    /*There is perhaps a more clever way to do this. I will find the desired distance by
+      taking the length of the line segment from Start to our current position, and multipling it
+      by the sine of the angle cut from our position to Start to End. */
+    
+    /*We will once again use Pythagorean's theorem*/
+    /*a will be from loc to End, b will be from loc to Start and c will once again be the path*/
+    b = sqrt((loc.v.x - Start.x)*(loc.v.x - Start.x) + (loc.v.y - Start.y)*(loc.v.y - Start.y));
+    a = sqrt((loc.v.x - End.x)*(loc.v.x - End.x) + (loc.v.y - End.y)*(loc.v.y - End.y));
+    
+    /* if b equals zero we are on the path so once again our magnitude should be zero*/
+    if (b != 0.0) {
+      A = acos(((b*b)+(c*c)-(a*a))/(2*b*c));
+      /*We are now ready to get distance*/
+      dist = b*sin(A);
+      
+      /*Our magnitude will be one if we are outside of the path, and
+	linear with respect to the path width otherwise*/
+      
+      if (dist > Path_Width) output_magnitude = 1.0;
+      else output_magnitude = dist/Path_Width;
+      
+      /*Mlab expects angles to have 0 at East and turn counterclockwise,
+	our angle has 0 at North and turns clockwise*/
+      output_direction = ((2*M_PI) - output_direction) + (M_PI/2.0);
+      
+      /*Convert from direction/magnitude to a vector x,y. This is equivalent to taking the sine and
+	cosine of the direction and multipling by the magnitude*/
+      output.x = cos(output_direction)*output_magnitude;
+      output.y = sin(output_direction)*output_magnitude;
+      
+      /* now rotate vector so it is egocentric */
+      rotate_z(output, -1 * loc.heading);
+    
+    } 
+  } 
+pend
+
+/**********************************************************************
+ * $Log: STAY_ON_PATH.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:59  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.1.1.1  2005/02/06 23:00:02  endo
+ * AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+ *
+ * Revision 1.2  2000/09/19 10:01:36  endo
+ * Code modified at Rockville, MD, for TMR demo (August).
+ *
+ **********************************************************************/

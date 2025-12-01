@@ -1,0 +1,12 @@
+
+MISSION-AREA 20.0 20.0
+--MISSION-AREA 45.0 45.0
+ORIGIN 0.1 0.1
+
+CONTROL MEASURES:  
+
+--PP StartPlace* 9.5 4.5  0.01
+--PP StartPlace* 39.4  17.3 0.01
+--PP StartPlace 35.5  11.4  0.2 -- (center of MRL)
+PP StartPlace 10.0  10.0  0.2
+

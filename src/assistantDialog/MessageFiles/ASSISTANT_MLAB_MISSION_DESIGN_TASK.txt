@@ -1,0 +1,11 @@
+You can:
+
+1) Left-click on the overlay
+   to create a task of the type
+   selected in the toolbox.
+
+2) Middle-click on a task to
+   delete it.
+
+3) Right-click on a task to
+   modify its properties.

@@ -1,0 +1,133 @@
+/**********************************************************************
+ **                                                                  **
+ **                       IS_A_FROBOT.cnl                            **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Antonio Sgorbissa                                  **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 2000, Antonio Sgorbissa               		     **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool IS_A_FROBOT with
+   ObjectList    object_list;
+   robot_position cur_pos;
+header
+   bool set_pos_shot(Vector pos, double heading);
+body
+
+   char **robcol = (char**)malloc(4*sizeof (char*));
+   for (int i = 0; i < 4; i++)
+	robcol[i] = (char*)malloc(10*sizeof (char));
+
+   strcpy(robcol[0], "PSblue"); 
+   strcpy(robcol[1], "PSred"); 
+   strcpy(robcol[2], "PSgreen"); 
+   strcpy(robcol[3], "PSyellow"); 
+
+   Vector mypos = cur_pos.v;
+   double myhead = cur_pos.heading;
+
+   bool lsee[4];
+   bool csee[4];	
+   int mr[4];
+   char *ptr;
+
+   for (int i = 0; i < 4; i++)
+   {
+	char *value = get_state(robcol[i]+1);
+	if (!strcmp(value, ""))
+		lsee[i] = false;
+	else
+		lsee[i] = (bool) strtol(value, &ptr, 10); 
+
+	//lsee[i] = (bool) strtol(get_state(robcol[i]+1), &ptr, 10); 
+	csee[i] = false;
+	mr[i] = -1;
+   }	
+   for (int j =0; j < object_list.count; j++)
+   {
+   	for (int i = 0; i < 4; i++)
+	{
+		if (!strcmp(robcol[i]+2, object_list.objects[j].objcolor))
+		{
+			csee[i] = true;
+			mr[i] = j;
+		}
+	}
+   }
+   output = false;
+
+   struct timeval tv; 
+   struct timezone tz;
+   gettimeofday(&tv, &tz);		
+   double cur_time = (double)tv.tv_sec + ((double)tv.tv_usec)/1000000;
+
+   double last_time = 0;
+   char *value = get_state("NotTime");
+   if (strcmp(value, ""))
+   	last_time = (double)strtod(value, &ptr);  
+
+   for (int i = 0; i < 4; i++)
+   {	
+	if (!output && csee[i] && (!lsee[i] || (cur_time-last_time > 0.2)))
+	{
+		output = true;
+		value = (char*)malloc(100*sizeof(char));
+  		sprintf(value, "%f", cur_time);
+  		put_state("NotTime", value);
+		free(value);
+	}
+	if (csee[i] && !lsee[i])
+		output = true;
+	if (csee[i]) 
+	{
+		value = (char*)malloc(100*sizeof(char));
+		gt_Point pos = object_list.objects[mr[i]].closest_point();
+		if (!lsee[i]) 
+  			sprintf(value, "1 %f %f", pos.x, pos.y);
+		else
+  			sprintf(value, "2 %f %f", pos.x, pos.y);
+
+  		put_state(robcol[i]+1, value);
+		free(value);
+	}
+	else 		
+		put_state(robcol[i]+1, "0");
+        lsee[i] = csee[i];
+        
+   }
+
+   if (debug && output) 
+   	for (int j =0; j < object_list.count; j++)
+	      printf("\n I see a %s robot ", object_list.objects[j].objcolor); 
+ 
+   set_pos_shot(mypos, myhead);
+
+   for (int i = 0; i < 4; i++)
+	free(robcol[i]);
+   free (robcol);
+
+
+pend
+
+
+/**********************************************************************
+# $Log: IS_A_FROBOT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#
+#**********************************************************************/

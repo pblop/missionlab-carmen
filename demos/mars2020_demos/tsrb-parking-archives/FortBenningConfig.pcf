@@ -1,0 +1,45 @@
+#This file stores configuration data for a plan.
+#The data is printed in a specific format to aid reconstruction of data objects.
+
+BEGIN_PLAN
+#Plan ID
+FortBenningFullReconPlan
+#Map File Name
+TSRB_Parking-8F.ovl
+#Element Ordering
+ORDERED
+#Tethered
+FALSE
+#Plan contigency location
+<53.08,37.432>
+#Number of Elements
+4
+#########	Begin element specific information
+#########	Begin element
+#Element 1 Type
+MOVETO
+#Plan step number
+1
+#Goal Position
+<53.08,97.68>
+#########	Begin element
+#Element 2 Type
+MOVETO
+#Plan step number
+2
+#Goal Position
+<23.31,97.68>
+#########	Begin element
+#Element 3 Type
+MOVETO
+#Plan step number
+3
+#Goal Position
+<53.08,97.68>
+#########	Begin element
+#Element 4 Type
+MOVETO
+#Plan step number
+4
+#Goal Position
+<53.08,37.432>

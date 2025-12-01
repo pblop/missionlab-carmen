@@ -1,0 +1,8 @@
+"Title: Choose a sensor for input binding point\n\
+\n\
+There are multiple sensors available on the robot which could be\n\
+bound to this input binding point.  Choose one and press OK.\n\
+\n\
+OK:    Bind the choosen sensor.\n\
+Abort: Abort binding operation.\n\
+Help:  This message."

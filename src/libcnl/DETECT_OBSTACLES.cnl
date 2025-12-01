@@ -1,0 +1,64 @@
+/**********************************************************************
+ **                                                                  **
+ **                       DETECT_OBSTACLES.cnl                       **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DETECT_OBSTACLES.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure obs_array DETECT_OBSTACLES with
+   double max_sensor_range;
+header
+   int          i;
+body
+   if( debug )
+      fprintf(stderr,"procedure detect_obstacles: max_sensor_range=%.1f\n",max_sensor_range);
+
+   output = exec_detect_obstacles(max_sensor_range);
+
+   if( debug )
+   {
+      fprintf(stderr,"detect_obstacles returning %d obstacles:\n",output.size);
+      for(i=0; i<output.size; i++)
+      {
+         fprintf(stderr,"   <%.1f %.1f> r=%.1f dist=%.1f\n",
+		output.val[i].center.x,
+		output.val[i].center.y,
+		output.val[i].r,
+		len_2d(output.val[i].center));
+      }
+   }
+pend
+
+
+
+/**********************************************************************
+# $Log: DETECT_OBSTACLES.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.12  1999/05/31 23:32:07  conrad
+# *** empty log message ***
+#
+# Revision 1.11  1995/09/08 14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.10  1995/06/28  21:58:17  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

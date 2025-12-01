@@ -1,0 +1,4 @@
+FIX POSITION 32.36969 -84.80479 140.00
+LOG com1 rtcm3 ontime 10
+LOG com1 rtcm59 ontime 2
+LOG com1 rtcm ontime 5

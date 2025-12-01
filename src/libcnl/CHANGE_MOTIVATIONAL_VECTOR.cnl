@@ -1,0 +1,135 @@
+/**********************************************************************
+ **                                                                  **
+ **              CHANGE_MOTIVATIONAL_VECTOR.cnl                      **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Alexander Stoytchev                                **
+ **                                                                  **
+ **  Copyright 2001, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CHANGE_MOTIVATIONAL_VECTOR.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <unistd.h>
+#include "sys/time.h"
+iend
+
+/***********************************************************************/
+
+procedure Vector    CHANGE_MOTIVATIONAL_VECTOR with
+   double        anger_change;			// Thresholds
+   double        fear_change;
+   double        hunger_change;
+   double        curiousity_change;
+   double        anger_level;		// The global anger level.
+   double        fear_level;
+   double 	     hunger_level;
+   double 	     curiousity_level;
+header
+
+
+body
+
+
+    double new_anger, new_fear, new_hunger, new_curiousity;
+    char value[100];
+
+    /* Used to measure time */
+    struct timeval tv1;
+    struct timezone tz;
+    double Time;
+
+/*    int start=1;
+
+    if(start)
+    {
+      gettimeofday(&tv0, &tz);
+      start=0;
+    }
+*/
+	new_anger=anger_level+anger_change/100;
+	if(new_anger > 1.0) 
+	  new_anger =1.0;
+    else if(new_anger < 0.0) 
+	  new_anger =0.0;
+
+
+	new_fear=fear_level + fear_change/100;
+	if(new_fear > 1.0) 
+	  new_fear =1.0;
+    else if(new_fear < 0.0) 
+	  new_fear =0.0;
+
+
+	new_hunger=hunger_level +hunger_change/100;
+	if(new_hunger > 1.0) 
+	  new_hunger =1.0;
+    else if(new_hunger < 0.0) 
+	  new_hunger =0.0;
+
+
+	new_curiousity=curiousity_level +curiousity_change/100;
+	if(new_curiousity > 1.0) 
+	  new_curiousity =1.0;
+    else if(new_curiousity < 0.0) 
+	  new_curiousity =0.0;
+
+
+
+   // DO THE DATABASE DOUBLE UPDATE
+    sprintf(value, "%f", new_anger);
+	exec_put_console_state("anger_level", value);
+
+    sprintf(value, "%f", new_fear);
+	exec_put_console_state("fear_level", value);
+
+    sprintf(value, "%f", new_hunger);
+	exec_put_console_state("hunger_level", value);
+
+    sprintf(value, "%f", new_curiousity);
+	exec_put_console_state("curiousity_level", value);
+
+  
+    if (1||debug)
+    {	
+	   gettimeofday(&tv1, &tz);
+/*	   Time= 1000000*(tv1.tv_sec - tv0.tv_sec) 
+                  + (tv1.tv_usec - tv0.tv_usec); */
+
+	   Time= tv1.tv_sec +0.000001*tv1.tv_usec;
+
+	   fprintf(stderr, "CHANGE_MOTIVATIONAL_VECTOR: new vector< %9.2f %f %f %f %f >\n",
+		Time, anger_level, fear_level, hunger_level, curiousity_level);
+
+	  fprintf(stderr, "CHANGE_MOTIVATIONAL_VECTOR: changes< %f %f %f %f >\n",
+	   anger_change, fear_change, hunger_change, curiousity_change);
+    }
+
+	output.x=0.0;
+	output.y=0.0;
+	output.z=0.0;
+
+pend
+
+
+/**********************************************************************
+# $Log: CHANGE_MOTIVATIONAL_VECTOR.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  2001/12/23 20:28:57  endo
+# RH 7.1 porting.
+#
+# Revision 1.1  2001/01/24 23:16:50  saho
+# Initial revision
+#
+#**********************************************************************/

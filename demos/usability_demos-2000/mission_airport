@@ -1,0 +1,19 @@
+MISSION NAME "sample_airport"
+OVERLAY "airport.ovl"
+NEW-ROBOT sample_airportRobot1 "sample_airportRobot1" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+NEW-ROBOT sample_airportRobot2 "sample_airportRobot2" "blue" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+UNIT <all> sample_airportRobot1 sample_airportRobot2
+
+set show-trails off
+set scale-robots on
+set ROBOT-LENGTH 5
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace 1.000000 0.000000

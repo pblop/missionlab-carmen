@@ -1,0 +1,79 @@
+/*************************************************
+*
+* This CDL file sample_track.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2376 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2392]<241,263>|State1| = [
+              Stop]<10,10>
+,
+            society[$AN_2416]<468,265>|State2| = [
+              Stop]<10,10>
+,
+            society[$AN_2420]<839,270>|State3| = [
+                %Objects = {Enemy},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              Follow]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_2392,
+            rules[$AN_2392]<241,263>|State1| = if [
+                %Objects = {Enemies},
+                %Distance = {70.0}
+,
+              Near]<359,284>|Trans4|
+ goto $AN_2416,
+            rules[$AN_2416]<468,265>|State2| = if [
+                %Objects = {Enemies},
+                %Distance = {15.0}
+,
+              AwayFrom]<0,0>|Trans5|
+ goto $AN_2420,
+            rules[$AN_2420]<839,270>|State3| = if [
+                %Objects = {Enemies},
+                %Distance = {10.0}
+,
+              Near]<0,0>|Trans6|
+ goto $AN_2416,
+            rules[$AN_2416]<468,265>|State2| = if [
+                %Objects = {Enemies},
+                %Distance = {80.0}
+,
+              AwayFrom]<361,230>|Trans7|
+ goto $AN_2392)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_2403 from vehicle(
+  bound_to = sample_trackRobot1:DEFAULT_ROBOT(
+sample_trackRobot1:[
+          $AN_2376]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_2403]<10,10>|Group of Robots|
+]<10,10>
+

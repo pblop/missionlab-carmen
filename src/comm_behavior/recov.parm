@@ -1,0 +1,13 @@
+1,1,30,4,2,30,0,1,0
+
+RobotId=1  // not used
+NumRobots=1 // not used
+Timeout=30  
+Waypoint_Interval=4
+
+Retro_Priority=1 // not used
+Nearest_Priority=2 // not used
+Sequence_Time=30
+TeamRecovery=0 // not used
+SoloRecovery=1 // not used
+

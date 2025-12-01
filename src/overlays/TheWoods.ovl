@@ -1,0 +1,23 @@
+
+MISSION-AREA 21.0 15.0
+
+ORIGIN 0.1 0.1
+
+SITE "The Woods"
+
+CONTROL MEASURES:  
+
+PP StartPlace* 3.2 4.54  0.01
+
+-- Plant some trees
+Object   1.0  1.0 1.0 Fixed "DarkSeaGreen"
+Object   3.0  2.0 0.85 Fixed "DarkSeaGreen"
+Object   5.0 10.0 1.0 Fixed "DarkSeaGreen"
+Object   7.0  7.0 1.7 Fixed "DarkSeaGreen"
+Object  10.0  2.0 1.0 Fixed "DarkSeaGreen"
+Object  12.0 10.0 1.3 Fixed "DarkSeaGreen"
+Object  20.0 10.0 1.0 Fixed "DarkSeaGreen"
+Object  20.5  7.0 0.8 Fixed "DarkSeaGreen"
+
+AA "Home" 1.0 3.0 2.0 3.0 2.0 4.0 1.0 4.0
+Object  1.5 3.5 0.01 Fixed White 

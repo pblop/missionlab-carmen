@@ -1,0 +1,283 @@
+/*************************************************
+*
+* This CDL file missionlab.cdl was created with cfgedit
+* version 7.0.00
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_3148 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA3:FSA(
+            society[Start]<850,420>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_3163]<230,160>|State1| = [
+                %Goal_Location = {5, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_3165]<228,423>|State2| = [
+                %Goal_Location = {5, 5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_3167]<574,417>|State3| = [
+                %Goal_Location = {20, 5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_3169]<575,159>|State4| = [
+                %Goal_Location = {20, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            rules[$AN_3163]<230,160>|State1| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {5, 20}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_3165,
+            rules[$AN_3165]<228,423>|State2| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {5, 5}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_3167,
+            rules[$AN_3167]<574,417>|State3| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {20, 5}
+,
+              AtGoal]<575,295>|Trans4|
+ goto $AN_3169,
+            rules[$AN_3169]<575,159>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {20, 20}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_3163,
+            rules[Start]<850,420>|Start| = if [
+              Immediate]<10,10>|Trans7|
+ goto $AN_3167)<292,156>|The State Machine|
+,
+        max_vel = {1},
+        base_vel = {1},
+        cautious_vel = {1},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_3181 from vehicle(
+  bound_to = missionlabRobot3:DEFAULT_ROBOT(
+missionlabRobot3:[
+          $AN_3148]
+)<621,43>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_3182 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA2:FSA(
+            society[Start]<871,160>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_3163]<230,160>|State1| = [
+                %Goal_Location = {5, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_3165]<228,423>|State2| = [
+                %Goal_Location = {5, 5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_3167]<574,417>|State3| = [
+                %Goal_Location = {20, 5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_3169]<575,159>|State4| = [
+                %Goal_Location = {20, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            rules[$AN_3163]<230,160>|State1| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {5, 20}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_3165,
+            rules[$AN_3165]<228,423>|State2| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {5, 5}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_3167,
+            rules[$AN_3167]<574,417>|State3| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {20, 5}
+,
+              AtGoal]<0,0>|Trans4|
+ goto $AN_3169,
+            rules[$AN_3169]<575,159>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {20, 20}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_3163,
+            rules[Start]<871,160>|Start| = if [
+              Immediate]<0,0>|Trans6|
+ goto $AN_3169)<292,156>|The State Machine|
+,
+        max_vel = {1},
+        base_vel = {1},
+        cautious_vel = {1},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_3211 from vehicle(
+  bound_to = missionlabRobot2:DEFAULT_ROBOT(
+missionlabRobot2:[
+          $AN_3182]
+)<339,41>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_3212 from movement(
+  base_vel = {2.5},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<13,16> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_3163]<231,161>|State1| = [
+                %Goal_Location = {5, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_3165]<228,423>|State2| = [
+                %Goal_Location = {5, 5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_3167]<574,417>|State3| = [
+                %Goal_Location = {20, 5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_3169]<575,159>|State4| = [
+                %Goal_Location = {20, 20},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_3163,
+            rules[$AN_3163]<231,161>|State1| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {5, 20}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_3165,
+            rules[$AN_3165]<228,423>|State2| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {5, 5}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_3167,
+            rules[$AN_3167]<574,417>|State3| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {20, 5}
+,
+              AtGoal]<0,0>|Trans4|
+ goto $AN_3169,
+            rules[$AN_3169]<575,159>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {20, 20}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_3163)<292,156>|The State Machine|
+,
+        max_vel = {1},
+        base_vel = {1},
+        cautious_vel = {1},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_3241 from vehicle(
+  bound_to = missionlabRobot1:DEFAULT_ROBOT(
+missionlabRobot1:[
+          $AN_3212]
+)<52,39>|Individual Robot|
+);
+
+[
+[
+    $AN_3241,
+    $AN_3211,
+    $AN_3181]<56,26>|Group of Robots|
+]<10,10>
+

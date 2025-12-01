@@ -1,0 +1,107 @@
+/**********************************************************************
+ **                                                                  **
+ **                             main.cnl                             **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: main.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+init
+  #include "cnl.h"
+  #include "gt_simulation.h"
+iend
+
+/* library procs */
+#include "cnl.inc"
+
+type <gt_Behavior,"int">;
+type <gt_Technique,"int">;
+
+/* executive stuff */
+#include "put_status.cnl"
+#include "extract.cnl"
+#include "executive.cnl"
+
+/* nodes */
+#include "formnodes.cnl"
+#include "commonnodes.cnl"
+#include "navnodes.cnl"
+#include "occnodes.cnl"
+#include "telop_nodes.cnl"
+#include "variables.cnl"
+
+node get_command is GET_COMMAND with
+nend
+
+node executive is EXECUTIVE with
+   cmd = get_command;
+
+   /* Behaviors */
+   moveto = navigate;
+   follow = {0.0, 0.0, 0.0};
+   occupy = occupy;
+   teleop = teleop;
+
+   /* techniques */
+   traveling = {0.0, 0.0, 0.0};
+   traveling_overwatch = {0.0, 0.0, 0.0};
+   bounding_overwatch = {0.0, 0.0, 0.0};
+nend
+
+
+/*--- Move the robot ---*/
+node move_robot is MOVE_ROBOT with
+   v = executive;
+   max_vel = db_max_vel;
+   base_vel= db_base_vel;
+   cautious_vel = db_cautious_vel;
+   cautious_mode = db_cautious_mode;
+nend
+
+/*--- Report status ---*/
+node response is PUT_STATUS with
+   cmd = get_command;
+
+   /* Behaviors */
+   moveto_done = nav_at_goal;
+   follow_done = 1;
+   occupy_done = nav_at_goal;
+   teleop_done = teleop_complete;
+
+   /* formations */
+   formation_done = detect_in_form_position;
+nend
+
+
+
+/**********************************************************************
+# $Log: main.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:14  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.25  1996/02/21  15:43:53  doug
+# fixedup so compiles with current libcnl
+#
+# Revision 1.24  1995/10/03  21:27:37  doug
+# fix some stuff that got changed in the libraries
+#
+# Revision 1.23  1995/06/30  15:16:14  doug
+# *** empty log message ***
+#
+# Revision 1.22  1995/06/29  13:39:51  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

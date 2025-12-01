@@ -1,0 +1,44 @@
+/*************************************************
+*
+* This CDL file wander.cdl was created with cfgedit
+* version 1.0a
+*
+**************************************************/
+
+bindArch AuRA;
+
+instGroup $AN_221 from [
+  Stop];
+instBP<565,111> |The Wheels Binding Point| $AN_222 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE(
+        v<292,156> = FSA(
+            society[Start]<50,50>|Start| = $AN_221,
+            society[$AN_238]<313,115>|State1| = [
+                %curious = {1.0},
+                %cautious = {0.12}
+,
+              Wander]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              FirstTime]<0,0>|FirstTime|
+ goto $AN_238)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_246 from vehicle(
+  bound_to = wanderRobot1:MRV2(
+wanderRobot1:[
+          $AN_222]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_246]<0,0>|The Configuration|
+]<10,10>

@@ -1,0 +1,44 @@
+/*********************************************************
+**                                                      **
+**                                                      **
+**                  ENTRAR_HABITACION.cnl               **
+**                                                      **
+**                                                      **
+ *********************************************************/
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+procedure Vector ENTRAR_HABITACION with
+    Vector entrar;
+    Vector obstaculos;
+    Vector teleop;
+    double pesoEntrar;
+    double pesoObstaculos;
+    double pesoTeleop;
+header
+    //Vector posObjetivo;
+body
+{
+
+    //double dx, dy, len, dockxy, cone_angle, controlled_radius;
+    //double l1, l2;
+    //double distance = 0.5;
+    robot_position loc;
+    Vector objetivo;
+
+    VECTOR_CLEAR(output);
+
+    loc = exec_get_position();
+
+    objetivo = posicion_habitacion();
+
+    minus_2d(objetivo, loc.v, output);
+    rotate_z(output, -1 * loc.heading);
+
+    output.x += obstaculos.x * pesoObstaculos;
+    output.y += obstaculos.y * pesoObstaculos;
+
+}
+pend

@@ -1,0 +1,34 @@
+======================================================================
+README.DEMO
+
+Instruction for running demo programs for '05 August PI meeting.
+
+Written by Yoichiro Endo (08-14-2005)
+======================================================================
+
+* To run CBR demo (with the mission repair feature)
+
+  0) cd demos/usability_demos-2004
+  1) ./demo_cbr	
+  2) Select "New Robot", and "Yes" for Mission Expert.
+  3) Select "factory.ovl".
+  4) Set MaxVelocity to be 0.90.
+  5) Close the Global Setting window.
+  6) Click on the "Waypoints" icon.
+  7) Place multiple WaypointTasks from StartPlace upto the
+     "Factory Entrance".
+  6) Click on the "Biohazard" icon.
+  7) Place BiohazardTask in the hallway near the entrance.
+  8) Click "Finish" button.
+  9) Show FSAs.
+  10) Compile & Run
+  11) Robot will stop at the end of the hallway.
+  12) Quit mlab & Click "No" to successful mission.
+  13) Say "Yes" to diagnose.
+  14) Jog the robot until the end of the hallway
+  15) Click "Fix It!"
+  16) Click on "The robot did not perform a necessary action at this point"
+  17) Click on "The robot has to turn around at the end of the hallway"
+  18) Click "Yes" to apply the change.
+  19) In FSA, show that AboutFace was added.
+  20) Compile and Run

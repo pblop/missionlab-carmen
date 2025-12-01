@@ -1,0 +1,1429 @@
+/*************************************************
+*
+* This is the generic CDL library file containing agent definitions
+*
+* $Id: agents.AuRA,v 1.1.1.1 2006/07/12 13:37:54 endo Exp $
+*
+* $Log: agents.AuRA,v $
+* Revision 1.1.1.1  2006/07/12 13:37:54  endo
+* MissionLab 7.0
+*
+* Revision 1.2  2006/07/11 08:34:30  endo
+* Clean-up for MissionLab 7.0 release.
+*
+* Revision 1.1.1.1  2005/02/06 22:59:29  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+* Revision 1.46  2000/06/18 01:50:09  endo
+* MoveAhead modified.
+*
+* Revision 1.45  2000/03/30 01:07:58  endo
+* DetectAlternateHallway NotDetectAltHallway deleted
+* since they belong to AuRA.urban.
+*
+* Revision 1.44  2000/02/18 02:18:22  endo
+* fixed the "Wait" trigger's warning problem. (changed from
+* 'int' to 'double' on delay_time).
+*
+* Revision 1.43  2000/02/07 07:44:41  jdiaz
+* added undetect alt hallway
+*
+* Revision 1.41  2000/01/24 18:47:57  ellenber
+* Fixed Objects/Obstacles conflict.  Now works with Obstacles.
+*
+* Revision 1.40  1999/12/18 03:41:26  endo
+* *** empty log message ***
+*
+* Revision 1.39  1999/10/05 13:56:38  endo
+* IsLookingAtDegree:[] terminated.
+*
+* Revision 1.38  1999/08/11 21:57:25  jdiaz
+* added STAY_ON_PATH schema and CORRIDOR_FOLLOWING behavior
+*
+* Revision 1.37  1999/07/16 20:29:45  endo
+* MoveToMem changed, so that it moves towards the
+* object instead of a goal location.
+*
+* Revision 1.36  1999/07/03 01:45:54  mjcramer
+* *** empty log message ***
+*
+* Revision 1.25  1999/05/31 02:35:42  conrad
+* Added SPIN, ISFACING, VECTOR_COMPASS_DIFFERIENTAIL, GET_COMPASS_HEADING
+*
+* Revision 1.24  1999/05/28 00:29:51  mjcramer
+* Fixed "object" and "obstacle" confusion, added vision
+*
+* Revision 1.23  1999/03/09 17:07:04  endo
+* Changed the parameters on MoveTo and GoTo,
+* so that users can change the sphere of
+* influence and safty margin. Also, telop
+* option was added to those tasks.
+*
+# Revision 1.22  1996/06/21  22:48:53  doug
+# *** empty log message ***
+#
+# Revision 1.21  1996/06/17  22:58:36  doug
+# *** empty log message ***
+#
+# Revision 1.20  1996/06/14  15:23:11  doug
+# *** empty log message ***
+#
+# Revision 1.19  1996/06/05  20:28:31  doug
+# *** empty log message ***
+#
+# Revision 1.18  1996/06/04  22:44:05  doug
+# *** empty log message ***
+#
+# Revision 1.17  1996/06/02  20:56:09  doug
+# *** empty log message ***
+#
+# Revision 1.16  1996/06/01  21:55:00  doug
+# *** empty log message ***
+#
+# Revision 1.15  1996/03/13  04:13:59  doug
+# *** empty log message ***
+#
+# Revision 1.14  1996/03/13  01:51:35  doug
+# *** empty log message ***
+#
+# Revision 1.14  1996/03/13  01:51:35  doug
+# *** empty log message ***
+#
+# Revision 1.13  1996/03/09  01:10:31  doug
+# *** empty log message ***
+#
+# Revision 1.12  1996/03/08  22:49:24  doug
+# make stop really just idle
+#
+# Revision 1.11  1996/03/08  20:43:55  doug
+# *** empty log message ***
+#
+# Revision 1.10  1996/03/08  00:47:14  doug
+# *** empty log message ***
+#
+# Revision 1.9  1996/03/06  23:39:00  doug
+# *** empty log message ***
+#
+# Revision 1.8  1996/03/04  00:00:14  doug
+# *** empty log message ***
+#
+# Revision 1.7  1996/03/01  00:48:13  doug
+# *** empty log message ***
+#
+# Revision 1.6  1996/02/29  01:48:38  doug
+# *** empty log message ***
+#
+# Revision 1.5  1996/02/28  03:57:57  doug
+# *** empty log message ***
+#
+# Revision 1.4  1996/02/27  05:09:12  doug
+# *** empty log message ***
+#
+# Revision 1.2  1996/02/25  01:14:53  doug
+# *** empty log message ***
+#
+# Revision 1.1  1996/02/19  21:59:46  doug
+# Initial revision
+#
+# Revision 1.1  1996/02/16  15:37:34  doug
+# Initial revision
+#
+*
+**************************************************/
+
+// switch to the AuRA namespace
+bindArch AuRA;
+
+//**************************************************/
+
+// This is an ugly mess.
+// I can't figure out how to bind library components without
+// copying their definition into the configuration.
+// So, I'll bind them here.....
+
+instBP<10,40> |Get list of obstacles| $ListOfObstacles from sense_obstacles(
+  bound_to = sonars:DETECT_OBSTACLES(
+        max_sensor_range = {^})<10,10>
+|Return a list of unclassified obstacles detected within the sonar range (meters)|
+);
+
+instBP<10,10> |Get list of objects| $ListOfObjects from sense_objects(
+  bound_to = vision_system:DETECT_OBJECTS(
+        max_sensor_range = {^})<10,10>
+|Return a list of objects recognized by a visual sensor|
+);
+
+instBP<10,10> |Need heading info.| $RobotLocation from sense_location(
+  bound_to = shaft_encoders:GET_LOCATION()<10,10>
+);
+
+instBP<10,10> |Need compass heading info.| $CompassHeading from sense_compass(
+  bound_to = compass_heading:GET_COMPASS_HEADING()<10,10>
+);
+
+instBP<10,10> |Get raw sonar readings from the robot| $RawSonarReadings from sense_raw_sonar(
+ bound_to = raw_sonars:RAW_ULTRASONICS()<10,10>
+);
+
+/********************* Filters *****************************/
+
+$DesiredObjects:[
+   %classes = {^},
+   %max_sensor_range = {^},
+   FILTER_OBJECTS_BY_CLASS(
+      remove_these = {false},
+      classes = {^},
+      %max_sensor_range = {^},
+      full_list<19,34> = $ListOfObjects)<460,16>|pass only oranges|
+]<66,36>|Get the list of objects in the desired classes|
+
+//**********************************************************
+
+$GoalRelLoc:[
+   %Goal_Location = {^},
+   GLOBAL_TO_EGOCENTRIC(
+         global = {^Map_Location %Goal_Location},
+         robot_location = GET_XY( cur_pos = $RobotLocation),
+         robot_heading = GET_HEADING(  cur_pos = $RobotLocation)
+   )<500,514>|move to object|
+]<10,10>|Determine where the global goal is relative to the robot|
+
+//***********************************************************
+$PosAntLiderRelLoc:[
+    POS_ANT_LIDER_REL_LOC(pos = $RobotLocation)<500,514>|mover el objeto|
+]<10,10>|Determina la posición anterior que tiene almacenada del lider en las coordenadas del robot|
+
+//**********************************************************
+$RejectedObjects:[
+   %classes = {^},
+   %max_sensor_range = {^},
+   FILTER_OBJECTS_BY_CLASS(
+      remove_these = {true},
+      classes = {^},
+      %max_sensor_range = {^},
+      full_list<19,34> = $ListOfObjects)<460,16>|pass only oranges|
+]<66,36>|Get the list of objects not one of the rejection classes|
+
+//**********************************************************
+
+$ClosestObject:[
+   %max_sensor_range = {^},
+   %classes = {^},
+   CLOSEST_OBJECT(
+      %max_sensor_range = {^},
+      object_list<295,22> = $DesiredObjects,
+      %classes = {^})<129,200>|closest object|
+]<66,36>|Pick the closest object of the desired classes|
+
+
+//**********************************************************
+
+$ClosestObstacle:[
+   %max_sensor_range = {^},
+   %classes = {^},
+   CLOSEST_OBSTACLE(
+      %max_sensor_range = {^},
+      obstacle_list<295,22> = $ListOfObstacles)
+]<66,36>|Pick the closest object of the undesired classes|
+
+
+/********************* Agents *****************************/
+
+
+
+//**********************************************************
+$Wander:[
+   %persistence = {10},
+   NOISE(
+	persistence = {^},
+        robot_heading<265,157> = GET_HEADING(
+            cur_pos<14,138> = $RobotLocation)<297,156>|get just the heading|
+   )<493,119>|generate random motion|
+]<66,36> |Generates random motion|
+
+//**********************************************************
+// Avoids obstacles
+$Avoid_Obstacles:[
+   %avoid_obstacle_sphere = {^},
+   %avoid_obstacle_safety_margin  = {^},
+   %max_sensor_range = {^},
+   AVOID_OBSTACLES(
+        %max_sensor_range = {^},
+        sphere = {^Distances_10 %avoid_obstacle_sphere},
+        safety_margin = {^Distances_10 %avoid_obstacle_safety_margin },
+        readings<10,81> = $ListOfObstacles
+   )<393,26>|avoid obstacles|
+]<66,36>|Move the robot away from obstacles|
+
+//**********************************************************
+// Avoids obstacles
+$Avoid_Obstacles_Mem:[
+   %classes = {^},
+   %avoid_obstacle_sphere = {^},
+   %avoid_obstacle_safety_margin  = {^},
+   %max_sensor_range = {^},
+   %Decay_rate = {^},
+   AVOID_OBSTACLES_MEM(
+        %max_sensor_range = {^},
+        sphere = {^Distances_10 %avoid_obstacle_sphere},
+        safety_margin = {^Distances_10 %avoid_obstacle_safety_margin },
+        %classes = {^},
+        readings = $ListOfObstacles,
+        cur_pos = $RobotLocation,
+	decay_rate = {^Range_01 %Decay_rate}
+   )<393,26>|avoid obstacles with memory|
+]<66,36>|Move the robot away from objects not listed as OK|
+
+//**********************************************************
+// Avoids objects except those listed in the classes
+$Avoid_Other_Objects:[
+   %classes = {^},
+   %max_sensor_range = {^},
+   AVOID_OBJECTS(
+        %max_sensor_range = {^},
+        %classes = {^},
+        sphere = {1.0},
+        safety_margin = {0.5},
+        objlist<10,81> = $RejectedObjects
+   )<393,26>|avoid obstacles|
+]<66,36>|Move the robot away from objects not listed as OK|
+
+//**********************************************************
+// Avoids only those objects listed in the classes
+$Avoid_These_Objects:[
+   %classes = {^},
+   %max_sensor_range = {^},
+   AVOID_OBJECTS(
+        %max_sensor_range = {^},
+        %classes = {^},
+        sphere = {1.0},
+        safety_margin = {0.5},
+        objlist<10,81> = $DesiredObjects
+   )<394,26>|avoid obstacles|
+]<66,36>|Move the robot away from the objects listed|
+
+//**********************************************************
+$Probe:[
+   %horizon = {2.0},
+   %max_sensor_range = {2.0},
+   MOVE_TO_FREE_SPACE(
+      horizon = {^},
+      %max_sensor_range = {^},
+      readings<10,81> = $ListOfObstacles
+   )<395,26>|Move the robot towards open areas|
+]<66,36>|Move the robot towards open areas|
+
+//**********************************************************
+$MoveToObject:[
+   %max_sensor_range = {^},
+   %classes = {^},
+   MOVE_TO(
+      %max_sensor_range = {^},
+      have_a_goal = IS_VALID_OBJECT(
+         %max_sensor_range = {^},
+         %classes = {^},
+         object = $ClosestObject ),
+      goal_rel_loc<78,528> = OBJECT_LOCATION(
+         %max_sensor_range = {^},
+         object<237,266> = $ClosestObject,
+         %classes = {^})<45,312>|location of object|,
+      %classes = {^})<500,514>|move to object|
+]<66,36>|Move the robot towards the closest object with this color|
+
+
+//**********************************************************
+$MoveToGoal:[
+   %Goal_Location = {^},
+   MOVE_TO(
+         %Goal_Location = {^},
+         have_a_goal = {true},
+         goal_rel_loc<10,50> = $GoalRelLoc
+      )<350,50>|move to goal|
+]<66,36>|Move the robot to the goal|
+
+//**********************************************************
+$CARMENMoveToGoal:[
+   %Goal_Location = {^},
+   CARMEN_NAVIGATE(
+         goal = {^Map_Location %Goal_Location}
+      )<350,50>|move to goal|
+]<66,36>|Move the robot to the goal|
+
+//**********************************************************
+CARMEN_Navigate:[
+	%Goal_Location = {^},
+	CARMEN_NAVIGATE(
+		goal = {^Map_Location %Goal_Location}
+	)<100,10>
+]<66,36>
+
+//**********************************************************
+$MoveAhead:[
+   %desired_heading = {^},
+   MOVE_AHEAD(
+         heading = {^Heading_360 %desired_heading}
+	 )<350,50>|move to the direction specified|
+]<66,36>|Move the robot to the direction specified|
+
+//**********************************************************
+$StayOnPath:[
+   %Start = {^},
+   %End = {^},
+   %Path_Width = {^},
+   STAY_ON_PATH(
+      Start = {^},
+      End = {^},
+      Path_Width = {^}
+   )<350,50>|Stay on the path given by two points start and end|
+]<66,36>|Stay on Path|
+
+//**********************************************************
+$VectorCompassDifferential:[
+    %Desired_heading = {^},
+    %Tolerance = {^},
+    VECTOR_COMPASS_DIFFERENTIAL(
+	Desired_heading = {^},
+        Tolerance = {^},
+	Compass_heading = $CompassHeading
+	)<350,50>|determine the vector as computed|
+]<66,36>|return the vector that will bring us to the desired heading|
+
+
+//**********************************************************
+$MoveToCompassHeading:[
+    %Desired_heading = {^},
+    %Tolerance = {^},
+    MOVE_TO(
+	%Desired_heading = {^},
+        %Tolerance = {^},
+	have_a_goal = {true},
+        goal_rel_loc<10,50> = $VectorCompassDifferential
+      )<350,50>|move to goal|
+]<66,36>|Move the robot by following a desired compass heading|
+
+
+//**********************************************************
+$Telop:[
+   %max_sensor_range = {^},
+   %classes = {^},
+   SCALE_VECTOR(
+	multiplier<475,10> = DATABASE_DOUBLE(
+           key = {"joystick_magnitude"},
+           initial = {0.0}),
+        v<500,200> = TELOP(
+           telop_mode<250,440> = DATABASE_INT(
+           	   key = {"telop_mode"},
+           	   initial = {0} ),
+    	   robot_heading<250,10> = GET_HEADING(
+               cur_pos<2,10>|get just the heading| = $RobotLocation),
+	   joystick_x<250,120> = DATABASE_DOUBLE(
+               key = {"joystick_x"},
+               initial = {0.0}),
+	   joystick_y<250,275> = DATABASE_DOUBLE(
+               key = {"joystick_y"},
+               initial = {0.0}),
+       joystick2_x<250,120> = DATABASE_DOUBLE(
+               key = {"joystick2_x"},
+               initial = {0.0}),
+	   joystick2_y<250,275> = DATABASE_DOUBLE(
+               key = {"joystick2_y"},
+               initial = {0.0}),
+       slider_1<250,120> = DATABASE_DOUBLE(
+               key = {"slider_1"},
+               initial = {0.0}),
+	   slider_2<250,275> = DATABASE_DOUBLE(
+               key = {"slider_2"},
+               initial = {0.0}),
+       joy_buttons<250,275> = DATABASE_INT(
+               key = {"joy_buttons"},
+               initial = {0})
+        )
+   )<700,10>
+]<705,80>|move the robot towards the joystic direction|
+
+//**********************************************************
+$GROUSAL_Telop_CSB:[
+   %max_sensor_range = {^},
+   %classes = {^},
+   SCALE_VECTOR(
+	multiplier<475,10> = DATABASE_DOUBLE(
+           key = {"joystick_magnitude"},
+           initial = {0.0}),
+        v<500,200> = GROUSAL_TELOP_CSB(
+           telop_mode<250,440> = DATABASE_INT(
+           	   key = {"telop_mode"},
+           	   initial = {0} ),
+    	   robot_heading<250,10> = GET_HEADING(
+               cur_pos<2,10>|get just the heading| = $RobotLocation),
+	   joystick_x<250,120> = DATABASE_DOUBLE(
+               key = {"joystick_x"},
+               initial = {0.0}),
+	   joystick_y<250,275> = DATABASE_DOUBLE(
+               key = {"joystick_y"},
+               initial = {0.0}),
+       joystick2_x<250,120> = DATABASE_DOUBLE(
+               key = {"joystick2_x"},
+               initial = {0.0}),
+	   joystick2_y<250,275> = DATABASE_DOUBLE(
+               key = {"joystick2_y"},
+               initial = {0.0}),
+       slider_1<250,120> = DATABASE_DOUBLE(
+               key = {"slider_1"},
+               initial = {0.0}),
+	   slider_2<250,275> = DATABASE_DOUBLE(
+               key = {"slider_2"},
+               initial = {0.0}),
+       joy_buttons<250,275> = DATABASE_INT(
+               key = {"joy_buttons"},
+               initial = {0})
+        )
+   )<700,10>
+]<705,80>|move the robot towards the joystic direction|
+
+//**********************************************************
+DropFlag:[
+   ADD_OBJECT(
+	color = {"purple"},
+        style = {1},
+        place = GET_XY(cur_pos = $RobotLocation),
+        diameter = {0.7}
+   )
+]<66,36>|Causes the robot to drop a flag at the current location|
+
+//**********************************************************
+GoTo:[
+   %Goal_Location = {1.0, 1.0},
+   %move_to_location_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %Goal_Location = {^},
+      %classes = {0},	// Will avoid everything.
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $MoveToGoal,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %move_to_location_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Move to the specified location|
+
+//**********************************************************
+CARMEN_GoTo:[
+   %Goal_Location = {1.0, 1.0},
+   %move_to_location_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %Goal_Location = {^},
+      %classes = {0},	// Will avoid everything.
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $CARMENMoveToGoal,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %move_to_location_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Move to the specified location|
+
+//**********************************************************
+GROUSAL_GoTo_CSB:[
+   %Goal_Location = {1.0, 1.0},
+   %move_to_location_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %Goal_Location = {^},
+      %classes = {0},	// Will avoid everything.
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $MoveToGoal,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $GROUSAL_Telop_CSB,
+      weight[A] = {^Range_01 %move_to_location_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Move to the specified location|
+
+//**********************************************************
+IrARoomba:[
+	%Goal_Location = {1.0, 1.0},
+	%ir_a_roomba_location_gain = {1.0},
+	%ir_a_roomba_obstacle_gain = {1.0},
+	%ir_a_roomba_sphere = {3.0},
+	IR_A_ROOMBA(
+        %Goal_Location = {^},
+		location_gain = {^Range_01 %ir_a_roomba_location_gain},
+		obstacle_gain = {^Range_01 %ir_a_roomba_obstacle_gain},
+		sphere = {^Range_01 %ir_a_roomba_sphere},
+		goal_rel_loc = $GoalRelLoc
+	)<444,26>||
+]<10,10>|Mueve un Robot de tipo roomba a una localización específica|
+
+IrPosicionObjetivo:[
+    //%avoid_obstacle_gain = {1.0},
+    //%avoid_obstacle_sphere = {3.0},
+    //%avoid_obstacle_safety_margin = {0.5},
+    //%max_sensor_range = {1000},
+    IR_POSICION_OBJETIVO(
+        %avoid_obstacle_gain = {1.0},
+        %avoid_obstacle_sphere = {3.0},
+        %avoid_obstacle_safety_margin = {0.5},
+        %max_sensor_range = {1000},
+        obstaculo<10,130> = $Avoid_Obstacles
+    )<444,26>||
+]<10,10>|Mueve el Robot a la posicion que te indica el robot lider|
+
+SeguirLider:[
+    SEGUIR_LIDER(
+        %avoid_obstacle_gain = {1.0},
+        %avoid_obstacle_sphere = {3.0},
+        %max_sensor_range = {1000},
+        %avoid_obstacle_safety_margin = {0.5},
+        obstaculo<10,130> = $Avoid_Obstacles
+    )<444,26>||
+]<10,10>|Sigue al robot lider|
+
+//IrPosicionAntLider:[
+//    IR_POSICON_ANT_LIDER(
+//        %avoid_obstacle_gain = {1.0},
+//        %avoid_obstacle_sphere = {3.0},
+//        %max_sensor_range = {1000},
+//        %avoid_obstacle_safety_margin = {0.5},
+//        obstaculo<10,130> = $Avoid_Obstacles
+//    )<444,26>||
+//]<10,10>|El robot va a la ultima posición en la que estaba siguiendo al lider|
+
+Aspirar:[
+    ASPIRAR()<444,26>||
+]<10,10>|Aspira una habiatción|
+
+
+//GuiarRobot:[
+//    %num_robot = {1},
+//    GUIAR_ROBOT(
+//        Obstaculos<10,130> = $Avoid_Obstacles
+//        num = {^Range_5 %num_robot})<444,26>||
+//]<10,10>|Guia a un robot|
+
+
+
+Aspirar560:[
+    ASPIRAR560()<444,26>||
+]<10,10>|Aspira una habiatción roomb560|
+
+//GoalRelLoc:[
+//   %Goal_Location = {^},
+//   GLOBAL_TO_EGOCENTRIC(
+//         global = {^Map_Location %Goal_Location},
+//         robot_location = GET_XY( cur_pos = $RobotLocation),
+//         robot_heading = GET_HEADING(  cur_pos = $RobotLocation)
+//   )<500,514>|move to object|
+//]<10,10>|Determine where the global goal is relative to the robot|
+
+
+//**********************************************************
+GoToMem:[
+   %Goal_Location = {1.0, 1.0},
+   %move_to_location_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   %Decay_rate = {0.01},
+   COOP(
+      %Goal_Location = {^},
+      %classes = {0},	// Will avoid everything.
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %Decay_rate = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $MoveToGoal,
+      members[B]<10,130> = $Avoid_Obstacles_Mem,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %move_to_location_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Move to the specified location|
+
+//**********************************************************
+CorridorFollowing:[
+   %Goal_Location = {1.0,1.0},
+   %Corridor_start = {1.0,1.0},
+   %Corridor_end = {1.0,1.0},
+   %Corridor_Width = {2.5},
+   %move_to_location_gain = {1.0},
+   %off_path_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %Goal_Location = {^},
+      %Start = {^Start_Location %Corridor_start},
+      %End = {^End_Location %Corridor_end},
+      %Path_Width = {^Range_5 %Corridor_Width},
+      %classes = {0},	// Will avoid everything.
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $MoveToGoal,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $StayOnPath,
+      members[D]<10,400> = $Telop,
+      weight[A] = {^Range_01 %move_to_location_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {^Range_01 %off_path_gain},
+      weight[D] = {1.0})<350,10>|go to|
+]<10,10>|Move to the specified location|
+
+//**********************************************************
+MoveCompassHeading:[
+   %desired_heading = {180.0},
+   %tolerance = {25},
+   %move_to_location_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %Desired_heading = {^Heading_360 %desired_heading},
+      %Tolerance = {^Heading_360 %tolerance},
+      %classes = {0},	// Will avoid everything.
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $MoveToCompassHeading,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %move_to_location_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Move to the specified compass heading|
+
+//**********************************************************
+SetXY:[
+   %X = {0.0},
+   %Y = {0.0},
+   SETXY(
+        x = {^Distances_100 %X},
+	y = {^Distances_100 %Y}
+   )<350,50>|reset the robot's x and y|
+]<66,36>|Reset the robot's x and y|
+
+
+//**********************************************************
+SetXYTheta:[
+   %New_Location = {0.0, 0.0},
+   %New_Heading = {0.0},
+   SETXYTHETA(
+        new_robot_location = {^Map_Location %New_Location},
+	new_theta = {^Heading_360 %New_Heading}
+   )<350,50>|reset the robot's x, y, and theta|
+]<66,36>|Reset the robot's x, y, and theta|
+
+//**********************************************************
+MarkObjectAs:[
+   %Object = {0},
+   MARK_OBJECT(
+      new_class = {^OneObjectClass %Object},
+      %classes = {AnyObject},          // Don't filter
+      %max_sensor_range = {1.0},
+      object = $ClosestObject
+   )
+]<66,36>|Mark an object to be of the indicated type|
+
+//**********************************************************
+MoveAhead:[
+   %desired_heading = {0.0},
+   %move_ahead_gain = {1.0},
+   %avoid_obstacles_gain = {0.33},
+   %wander_gain = {0.0},
+   %avoid_obstacle_sphere = {0.5},
+   %avoid_obstacle_safety_margin  = {0.3},
+   COOP(
+      %desired_heading = {^},
+      %max_sensor_dist = {1000.0},
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {^Distances_100 %max_sensor_dist},
+      members[A]<10,10>  = $MoveAhead,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,280>  = $Wander,
+      members[D]<10,265> = $Telop,
+      weight[A] = {^Range_01 %move_ahead_gain},
+      weight[B] = {^Range_01 %avoid_obstacles_gain},
+      weight[C] = {^Range_01 %wander_gain},
+      weight[D] = {1.0})<350,10>|go to|
+]<10,10>|Move to the compass direction specified (East = 0, North = 90)|
+
+//**********************************************************
+$Enter_Room:[
+   %distance_to_enter = {^},
+   ENTER_ROOM(
+      distance = {^Range_5 %distance_to_enter})
+]<10,10>|Enter the room|
+
+//**********************************************************
+EnterRoom:[
+   %enter_room_gain = {1.0},
+   %distance_to_enter = {1.0},
+   %avoid_obstacles = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %distance_to_enter = {^},
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %classes = {0},	// Will avoid everything.
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $Enter_Room,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %enter_room_gain},
+      weight[B] = {^Range_01 %avoid_obstacles},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Enter the room behind the nearest door.|
+
+//**********************************************************
+$Leave_Room:[
+   LEAVE_ROOM()
+]<10,10>|Leave the room|
+
+//**********************************************************
+LeaveRoom:[
+   %leave_room_gain = {1.0},
+   %avoid_obstacles = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %classes = {0},	// Will avoid everything.
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $Leave_Room,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %leave_room_gain},
+      weight[B] = {^Range_01 %avoid_obstacles},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Leave the room behind the nearest door.|
+
+//**********************************************************
+$Enter_Alternate_Hallway:[
+   %distance_to_enter = {^},
+   ENTER_ALTERNATE_HALLWAY(
+      distance = {^Range_5 %distance_to_enter})
+]<10,10>|Enter the room|
+
+//**********************************************************
+EnterAlternateHallway:[
+   %enter_hall_gain = {1.0},
+   %distance_to_enter = {1.0},
+   %avoid_obstacles = {1.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %distance_to_enter = {^},
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %classes = {0},	// Will avoid everything.
+      %max_sensor_range = {1000},
+      members[A]<10,10>  = $Enter_Alternate_Hallway,
+      members[B]<10,130> = $Avoid_Obstacles,
+      members[C]<10,265> = $Telop,
+      weight[A] = {^Range_01 %enter_hall_gain},
+      weight[B] = {^Range_01 %avoid_obstacles},
+      weight[C] = {1.0})<350,10>|go to|
+]<10,10>|Enter a joining hallway randomly|
+
+
+//**********************************************************
+MoveFrom:[
+   %Objects = {0},
+   COOP(
+      %classes = {^ObjectClasses %Objects},
+      %max_sensor_range = {50.0},
+      members[A]<10,10>  = $Wander,
+      members[B]<10,152> = $Avoid_These_Objects,
+      weight[A] = {0.05},
+      weight[B] = {1.0})<444,26>|move away from the object|
+]<10,10>|Move the robot away from selected types objects|
+
+//**********************************************************
+MoveTo:[
+   %Objects = {0},
+   %move_to_object_gain = {1.0},
+   %avoid_obstacle_gain = {1.0},
+   %wander_gain = {0.0},
+   %avoid_obstacle_sphere = {3.0},
+   %avoid_obstacle_safety_margin  = {0.5},
+   COOP(
+      %classes = {^ObjectClasses %Objects},
+      %avoid_obstacle_sphere = {^},
+      %avoid_obstacle_safety_margin  = {^},
+      %max_sensor_range = {1000},
+      members[A]<10,10> = $MoveToObject,
+      members[B]<10,145> = $Avoid_Obstacles,
+      members[C]<10,280>  = $Wander,
+      members[D]<10,400> = $Telop,
+      weight[A] = {^Range_01 %move_to_object_gain},
+      weight[B] = {^Range_01 %avoid_obstacle_gain},
+      weight[C] = {^Range_01 %wander_gain},
+      weight[D] = {1.0})<350,10>|move to|
+]<10,10>|Move the robot to the closest object of a certain type|
+//**********************************************************
+IsFacing:[
+   %Desired_heading = {0.0},
+   %Accuracy = {2.0},
+   ISFACING(
+	desired_heading = {^Heading_360 %Desired_heading},
+	accuracy = {^Heading_360 %Accuracy},
+	robot_heading = GET_HEADING(cur_pos = $RobotLocation))
+]<10,10>|Trigger on heading|
+//**********************************************************
+
+MoveToMem:[
+    %Objects = {0},
+    %move_to_object_gain = {1.0},
+    %avoid_obstacle_gain = {1.0},
+    %wander_gain = {0.0},
+    %avoid_obstacle_sphere = {3.0},
+    %avoid_obstacle_safety_margin  = {0.5},
+    %Decay_rate = {0.01},
+    COOP(
+       %classes = {^ObjectClasses %Objects},
+       %avoid_obstacle_sphere = {^},
+       %avoid_obstacle_safety_margin  = {^},
+       %Decay_rate = {^},
+       %max_sensor_range = {1000},
+       members[A]<10,10> = $MoveToObject,
+       members[B]<10,130> = $Avoid_Obstacles_Mem,
+       members[C]<10,280>  = $Wander,
+       members[D]<10,400> = $Telop,
+       weight[A] = {^Range_01 %move_to_object_gain},
+       weight[B] = {^Range_01 %avoid_obstacle_gain},
+       weight[C] = {^Range_01 %wander_gain},
+       weight[D] = {1.0})<350,10>|move to|
+]<10,10>|Move toward the object with Short Term Memory|
+
+//**********************************************************
+
+HasTurned:[
+   %Desired_turn_angle = {90.0},
+   %Off_Set = {0},
+   HAS_TURNED(
+	desired_turn_angle = {^Heading_360 %Desired_turn_angle},
+	robot_heading = GET_HEADING(cur_pos = $RobotLocation),
+        off_set = {^Heading_360 %Off_Set}
+   )
+]<10,10>|Trigger on turn angle|
+
+
+//**********************************************************
+
+MovedDistance:[
+   %Desired_distance = {5.0},
+   MOVED_DISTANCE(
+        desired_distance = {^Distances_50 %Desired_distance},
+	position = $RobotLocation)
+]<10,10>|Trigger on distance moved|
+
+
+//**********************************************************
+
+Spin:[
+   %Angular_velocity = {20.0},
+   %Slippage_Factor = {1.0},
+   SPIN(
+	angular_velocity = {^Ang_Velocity %Angular_velocity},
+        slippageFactor = {^Slippage_Factor %Slippage_Factor})
+]<10,10>|Stationary rotation (Pioneer only)|
+
+//**********************************************************
+// A series of motor behaviors associated with camera movement
+//**********************************************************
+
+LookTo:[
+   %Look_Theta = {0.0},
+   %Look_Psi = {0.0},
+   LOOK_TO(
+	look_theta = {^Heading_90 %Look_Theta},
+	look_psi = {^Heading_45 %Look_Psi} )
+]<10,10>|Look direction (camera only)|
+
+//**********************************************************
+LookAt:[
+   %classes = {^},
+   MOVE_TO(
+      %max_sensor_range = {1000},
+      have_a_goal = IS_VALID_OBJECT(
+         %max_sensor_range = {^},
+         %classes = {^},
+         object = $ClosestObject ),
+      goal_rel_loc<78,528> = OBJECT_LOCATION(
+         %max_sensor_range = {^},
+         object<237,266> = $ClosestObject,
+         %classes = {^})<45,312>|location of object|,
+      %classes = {^})<500,514>|move to object|
+]<66,36>|Move the camera towards the closest object with this color|
+
+
+//**********************************************************
+
+
+
+//**********************************************************
+PickUp:[
+   %Objects = {0},
+   PICKUP_OBJECT(
+      %classes = {^ObjectClasses %Objects},
+      %max_sensor_range = {1.0},
+      object<237,266> = $ClosestObject
+   )<444,26>||
+]<10,10>|Pickup the closest object of the desired type|
+
+//**********************************************************
+ProbeObject:[
+   PROBE_OBJECT(
+      %classes = {AnyObject},          // Don't filter
+      %max_sensor_range = {2.0},
+      object = $ClosestObject)
+]<66,36>|Check the type of the object|
+
+//**********************************************************
+PutDown:[
+   NOOP()
+]<10,10>|Put the object we are carrying down|
+
+//**********************************************************
+PutInBasket:[
+   DROP_IN_BASKET(
+      %classes = {3},	// BAD BAD BAD ::: Index for basket in object_defs array
+      %max_sensor_range = {1.0},
+      basket<237,266> = $ClosestObject
+   )<444,26>||
+]<10,10>|Put the object we are carrying into the Basket |
+
+//**********************************************************
+PutInEOD:[
+   DROP_IN_BASKET(
+      %classes = {3},	// BAD BAD BAD ::: Index for basket in object_defs array
+      %max_sensor_range = {1.0},
+      basket<237,266> = $ClosestObject
+   )<444,26>||
+]<10,10>|Put the object we are carrying into the EOD Area|
+
+//**********************************************************
+Stop:[
+   NOOP()
+]<66,36>|The robot doesn't move|
+
+//**********************************************************
+Telop:[
+   COOP(
+      %classes = {0},	// Avoids all objects
+      %max_sensor_range = {50.0},
+      members[A]<10,10>  = $Telop,
+      members[B]<10,150> = $Avoid_Other_Objects,
+      weight[A] = {1.0},
+      weight[B] = {1.0})<350,10>|telop|
+]<10,10>|Engage the teleoperation control|
+
+//**********************************************************
+GROUSAL_Telop_CSB:[
+   COOP(
+      %classes = {0},	// Avoids all objects
+      %max_sensor_range = {50.0},
+      members[A]<10,10>  = $GROUSAL_Telop_CSB,
+      members[B]<10,150> = $Avoid_Other_Objects,
+      weight[A] = {1.0},
+      weight[B] = {1.0})<350,10>|telop|
+]<10,10>|Engage the teleoperation control|
+
+
+//**********************************************************
+Terminate:[
+   HALT()
+]<66,36>|Kills the robot|
+
+//**********************************************************
+TerminateEnemy:[
+   PICKUP_OBJECT(
+      %classes = {2},  // BAD BAD BAD ::: bit number for enemy robots
+		       // in object_defs array
+      %max_sensor_range = {10.0},
+      object<237,266> = $ClosestObject
+   )<444,26>||
+]<10,10>|Terminate the nearest enemy robot|
+
+//**********************************************************
+Wander:[
+   COOP(
+      %avoid_obstacle_sphere = {3.0},
+      %avoid_obstacle_safety_margin  = {1.0},
+      %classes = {0},	// Will avoid everything.
+      %max_sensor_range = {2},
+      members[A]<10,10>  = $Wander,
+      members[B]<10,152> = $Avoid_Other_Objects,
+      members[C]<10,252> = $Probe,
+      weight[A] = {0.8},
+      weight[B] = {^Range_01 %cautious},
+      weight[C] = {^Range_01 %curious})<444,26>|Explore the environment|,
+   %curious = {0.8},
+   %cautious = {0.5}
+]<10,10>|The robot wanders about|
+
+
+
+//**********************************************************
+// TRIGGERS
+//**********************************************************
+FirstTime:[
+   CONSTANT(value = {true})
+]<66,36>|Causes an immediate transition|
+
+//**********************************************************
+//DetectAlternateHallway:[
+//   DETECT_ALTERNATE_HALLWAY()
+//]<66,36>|Detects a fork in the road|
+//
+//**********************************************************
+//NotDetectAltHallway:[
+//   NOT(
+//   a = DETECT_ALTERNATE_HALLWAY())
+//]<66,36>|Undetects a fork in the road|
+//
+//**********************************************************
+Never:[
+   CONSTANT(value = {false})
+]<66,36>|Never take this transition|
+
+//**********************************************************
+Wait:[
+   WAIT(delay_time = {^Time_30 %Delay}),
+   %Delay = {20}
+]<66,36>|Causes a transition after the delay expires|
+
+//**********************************************************
+Holding:[
+   %Objects = {1},
+   CONSTANT(value = {^ObjectClasses %Objects})
+]<66,36>|Are we holding one of the objects?|
+
+//**********************************************************
+NotHolding:[
+   %Objects = {0},
+   CONSTANT(value = {^ObjectClasses %Objects})
+]<66,36>|True if we are NOT holding one of the objects|
+
+//**********************************************************
+Near:[
+   %Objects = {0},
+   %Distance = {0.1},
+   IS_AT_GOAL(
+      %classes = {^ObjectClasses %Objects},
+      success_radius = {^Nearness_10 %Distance},
+      %max_sensor_range = {^Nearness_10 %Distance},
+      have_a_goal = IS_AN_OBJECT(
+         %classes = {^},
+         %max_sensor_range = {^},
+         object_list = $DesiredObjects
+      ),
+      goal_rel_loc = OBJECT_LOCATION(
+         %max_sensor_range = {^},
+         %classes = {^},
+	 object = $ClosestObject
+      )
+   )
+]<66,36>|Are we close to one of the objects?|
+
+//**********************************************************
+
+AtDoorwayUltrasound:[
+   %direction = {Right},
+   %Robot_Clearance = {0.5},
+   %Hallway_Width = {2.0},
+   DOORWAY_ULTRASOUND(
+      robot_length = {^Range_5 %Robot_Clearance},
+      hallway_width = {^Range_5 %Hallway_Width},
+      look_for = {^DirectionTypes %direction}
+    )
+]<66,36>|Causes a transition when the robot detects a doorway using sonar|
+
+//**********************************************************
+
+AtGoal:[
+   %Goal_Tolerance = {0.5},
+   %Goal_Location = {1.0, 1.0},
+   IS_AT_GOAL(
+      %Goal_Location = {^},
+      have_a_goal = {true},
+      goal_rel_loc = $GoalRelLoc,
+      success_radius = {^Distances_10 %Goal_Tolerance}
+   )
+]<66,36>|Causes a transition when the robot reaches the goal|
+
+//**********************************************************
+EstoyEnObjetivo:[
+   %Goal_Tolerance = {0.5},
+   ESTOY_OBJETIVO(
+      have_a_goal = {true},
+      success_radius = {^Distances_10 %Goal_Tolerance}
+   )
+]<66,36>|Produce una transicion cuando el robot alcanza su objetivo|
+
+EstoyPosAntLider:[
+   %Goal_Tolerance = {0.8},
+   ESTOY_POS_ANT_LIDER(
+      have_a_goal = {true},
+      success_radius = {^Distances_10 %Goal_Tolerance}
+   )
+]<66,36>|Produce una transicion cuando el robot alcanza la posicion en la que antes estaba el lider|
+
+
+FinAspirar:[
+   %Tiempo = {5},
+   FIN_ASPIRAR(
+      tiempo_limpieza = {^Tiempo_30 %Tiempo}
+   )
+]<66,36>|Realiza una transición cuando ha expirar el tiempo dedicado a la limpieza|
+
+//***********************************************************
+NuevaTarea:[
+   NUEVA_TAREA()
+]<66,36>|Cuando recibe un mensaje realiza una transición de estado|
+
+
+//**********************************************************
+AwayFrom:[
+   %Objects = {0},
+   %Distance = {0.9},
+   NOT(
+      %Objects = {^},
+      %Distance = {^Awayness_10 %Distance},
+      a = Near )
+]<66,36>|Are away from all objects of these types?|
+
+//**********************************************************
+TelopComplete:[
+   DATABASE_BOOLEAN(key = {"teleop_complete"}, initial = {false})
+]<66,36>|Are away from all objects of these types?|
+
+//**********************************************************
+
+Detect:[
+   %Objects = {0},
+   IS_AN_OBJECT(
+      %classes = {^ObjectClasses %Objects},
+      %max_sensor_range = {15},
+      object_list<10,10> = $DesiredObjects
+   )<312,10>|Is there one of the objects we are looking for?|
+]<66,36>|Is there one of the objects we are looking for?|
+
+//**********************************************************
+
+UnDetect:[
+   %Objects = {0},
+   NOT(
+      %Objects = {^},
+      a = Detect )
+]<66,36>|Causes a transition when an object is not detected|
+
+//**********************************************************
+//
+//IsLookingAtDegree:[
+//   %LookFor = {0},
+//   %Desired_Theta = {0.0},
+//   %Theta_Accuracy = {5.0},
+//   %Desired_Psi = {0.0},
+//   %Psi_Accuracy = {5.0},
+//   IS_LOOKING_AT_DEGREE(
+//	lookfor = {^ThetaPsiMode %LookFor},
+//	desired_theta = {^Heading_90 %Desired_Theta},
+//	delta_theta = {^Degrees_90 %Theta_Accuracy},
+//	desired_psi = {^Heading_45 %Desired_Psi},
+//	delta_psi = {^Degrees_45 %Psi_Accuracy} )
+//]<10,10>|Trigger on camera heading|
+//
+//**********************************************************
+
+SigSense:[
+   %Signal = {0},
+   EQUAL_INT(
+        a = {^KeyPress %Signal},
+        b = LAST_KEY_PRESS())
+]<66,36>|Check the last signal sent (remains true until a new one arrives)|
+
+//**********************************************************
+
+
+
+
+
+instAgent<304,144> $FormationSize from SUM(
+            values[A] = {1},
+            values[B] = COUNT_OBJECTS(
+              objlist<16,129> = FILTER_OBJECTS(
+                 %max_sensor_range = {400.0},
+                 desired_color = {"Blue"},
+                 full_list<9,186> = $ListOfObjects)<283,129>) );
+
+
+// Generate an egocentric vector to the unit center
+instAgent<304,144> $UnitCenterLoc from COMPUTE_UNIT_CENTER(
+   robots<318,174> = FILTER_OBJECTS(
+      %max_sensor_range = {400.0},
+      desired_color = {"Blue"},
+      full_list<9,186> = $ListOfObjects)<283,129>
+);
+
+
+// Determine our offset from where we should be in the formation
+instGroup $AN_413 from [
+    %formation_name = {^FormationTypes %Formation},
+    %spacing = {^Distances_100 %Spacing},
+    %Goal_Location = {^},
+COMPUTE_FORM_POSITION(
+      %formation_name = {^},
+      %Goal_Location = {^},
+      spacing = {^},
+      unit_size<32,148> = $FormationSize,
+      unit_center_relative<256,13> = $UnitCenterLoc,
+      formation_heading<11,30> = [
+          %Goal_Location = {^}
+,
+DETECT_FORM_HEADING(
+            %Goal_Location = {^},
+            relative_goal<46,16> = [
+                %Goal_Location = {^}
+,
+GLOBAL_TO_EGOCENTRIC(
+                  global = {^Map_Location %Goal_Location},
+                  robot_location<224,56> = GET_XY(
+                      cur_pos<100,100> = $RobotLocation)<129,191>
+,
+                  robot_heading<233,419> = GET_HEADING(
+                      cur_pos<100,100> = $RobotLocation)<100,100>
+)<146,170>
+]<100,100>
+,
+            telop_input<73,166> = [
+SCALE_VECTOR(
+                  multiplier<499,32> = DATABASE_DOUBLE(
+                      key = {"joystick_magnitude"},
+                      initial = {0.0})<11,179>
+,
+                  v<465,250> = TELOP(
+                      robot_heading<233,75> = GET_HEADING(
+                          cur_pos<14,138> = $RobotLocation)<223,509>|get just the heading|
+,
+                      joystick_x<22,233> = DATABASE_DOUBLE(
+                          key = {"joystick_x"},
+                          initial = {0.0})<100,100>
+,
+                      joystick_y<22,409> = DATABASE_DOUBLE(
+                          key = {"joystick_y"},
+                          initial = {0.0})<100,100>
+)<100,100>
+)<740,253>
+]<64,163>|Engage the teleoperation control|
+,
+            telop_mag<47,291> = DATABASE_DOUBLE(
+                key = {"joystick_magnitude"},
+                initial = {0.0})<11,179>
+,
+            default_trigger = { 200.0      },
+            robot_heading<223,509> = GET_HEADING(
+                cur_pos<14,138> = $RobotLocation)<223,509>|get just the heading|
+)<523,111>|Determine the heading of the formation|
+]<12,64>|Determine the heading of the formation|
+,
+      robot_heading<207,263> = GET_HEADING(
+          cur_pos<7,33> = $RobotLocation)<83,226>
+,
+      formation_name = {^},
+      robot_location<209,366> = GET_XY(
+          cur_pos<100,100> = $RobotLocation)<290,39>
+)<537,83>|get egocentric vector to our correct position in the formation|
+];
+
+
+// Outputs an egocentric vector giving the goal for the unit center
+instAgent<304,144> $UnitGoal from GLOBAL_TO_EGOCENTRIC(
+   global = {^Map_Location %Goal_Location},
+   robot_location<224,56> = GET_XY(cur_pos = $RobotLocation)<129,191>,
+   robot_heading<233,419> = GET_HEADING(cur_pos = $RobotLocation)<100,100>
+);
+
+
+
+// Outputs an egocentric vector giving the goal for this robot
+// It is the unit center goal compensated by our position in the formation
+// from the unit center.
+instAgent<304,144> $FormationGoal from SUBTRACT_VECTORS(
+   %Goal_Location = {^},
+   A<105,101> = $UnitGoal,
+   B<113,252> = $UnitCenterLoc);
+
+instGroup $AN_459 from [
+    %Goal_Location = {^} ,
+    MOVE_TO(
+      have_a_goal = {true},
+      %Goal_Location = {^},
+      goal_rel_loc<372,166> = $FormationGoal
+    )<660,105>|move to object|
+];
+
+MoveInFormation:[
+      %Goal_Location = {600,800},
+      %Formation = {"Line"},
+      %Spacing = {20}
+,
+COOP(
+        %Goal_Location = {^},
+        members[$AN_457]<55,119> = $AN_459,
+        members[$AN_465]<66,369> = [
+            %Goal_Location = {^},
+            %Formation = {^},
+            %Spacing = {^}
+,
+MAINTAIN_FORM(
+              %Goal_Location = {^},
+              %Formation = {^},
+              offset<139,124> = $AN_413,
+              dead_zone_radius = {0.5},
+              saturation_length = {5.0},
+              %Spacing = {^})<463,78>|Maintain our position in the formation|
+]<87,434>|Formation Control|
+,
+        weight[$AN_457] = {1.0},
+        weight[$AN_465] = {1.0},
+        %Formation = {^},
+        %Spacing = {^})<431,97>
+]<100,100>|Move to a goal location in formation|
+
+//**********************************************************
+
+AtGoalInFormation:[
+   %Goal_Tolerance = {10.0},
+   %Goal_Location = {600, 800},
+   IS_AT_GOAL(
+      %Goal_Location = {^},
+      have_a_goal = {true},
+      goal_rel_loc = $FormationGoal,
+      success_radius = {^Distances_10 %Goal_Tolerance}
+   )
+]<66,36>|Causes a transition when the robot reaches the goal|
+
+
+
+
+//**********************************************************
+// Need to switch back to the generic namespace
+bindArch free;

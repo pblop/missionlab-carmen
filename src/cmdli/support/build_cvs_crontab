@@ -1,0 +1,7 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=doug
+
+# build the head each weekday morning at 4:15am.
+5 * * * mon-fri  cd /shares/builds/sara/; cvs -d :pserver:builds@oak:/cvsroot checkout support/build_head.sh ; support/build_head.sh >& /shares/builds/sara/build.log ;
+

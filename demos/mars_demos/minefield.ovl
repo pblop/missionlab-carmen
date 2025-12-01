@@ -1,0 +1,55 @@
+--******************************************************************
+--
+--	minefield.ovl
+--
+--	This overlay was developed for DARPA's Tactical Mobile
+--      Robotics Project.
+--
+--
+--      Yoichiro Endo
+--
+--      04/24/2000
+--
+--******************************************************************
+
+MISSION-AREA 40.0 30.0
+
+--ORIGIN 0.1 0.1
+
+CONTROL MEASURES:  
+
+PP StartPlace* 3.5 4.5  0.01
+
+-- Plant some trees
+Obstacle  18.0 17.0 0.8
+Obstacle  13.0 16.0 0.8
+Obstacle  15.0 24.5 0.5
+Obstacle  22.0 21.0 2.0
+Obstacle  20.0 23.0 1.0
+Obstacle  20.5 19.0 0.8
+
+--Object   8.0  7.0 0.4 Fixed "DarkSeaGreen"
+--Object   3.0  6.0 0.4 Fixed "DarkSeaGreen"
+--Object   5.0 14.5 0.5 Fixed "DarkSeaGreen"
+--Object  12.0 11.0 1.25 Fixed "DarkSeaGreen"
+--Object  10.0 13.0 0.5 Fixed "DarkSeaGreen"
+--Object  10.5  9.0 0.4 Fixed "DarkSeaGreen"
+
+-- And some more obstacles
+Obstacle  21.0 20.0 0.4
+Obstacle  27.0 23.0 0.5
+Obstacle  11.0 13.0 0.8
+Obstacle  19.0 21.0 0.3
+
+-- And some mines
+Object 11.0 18.0 1.0 Movable orange
+Object 17.0 16.0 1.0 Movable orange
+Object 17.0 24.0 1.0 Movable orange
+Object 13.0 22.0 1.0 Movable orange
+Object 28.0 11.0 1.0 Movable orange
+
+AA "Home" 1.0 1.0 2.0 1.0 2.0 2.0 1.0 2.0
+Object  1.5 1.5 0.01 Fixed White 
+
+Object  18.0 11.0 2.0 Container green 
+PP "EOD Area" 18.0 11.0 2.0

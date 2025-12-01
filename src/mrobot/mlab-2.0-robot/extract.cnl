@@ -1,0 +1,99 @@
+/**********************************************************************
+ **                                                                  **
+ **                           extract.cnl                            **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: extract.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+
+/***********************************************************************/
+
+procedure gt_Command GET_COMMAND with
+header
+   extern gt_Command *command;
+body
+   if( command != NULL )
+      output = *command;
+
+   if( debug )
+   {
+     fprintf(stderr,"GET_COMMAND(%d) behavior=%d\n", robot_id, output.behavior);
+   }
+pend
+
+/***********************************************************************/
+
+procedure gt_Behavior EXTRACT_BEHAVIOR with
+gt_Command cmd;
+header
+body
+   output = cmd.behavior;
+pend
+
+/***********************************************************************/
+
+procedure gt_Formation EXTRACT_FORMATION with
+gt_Command cmd;
+header
+body
+   output = cmd.formation;
+pend
+
+/***********************************************************************/
+
+procedure gt_Technique EXTRACT_TECHNIQUE with
+gt_Command cmd;
+header
+body
+   output = cmd.technique;
+pend
+
+/***********************************************************************/
+
+procedure gt_Unit_Members EXTRACT_UNIT with
+gt_Command cmd;
+header
+   int i;
+body
+   output.unit_size = cmd.unit_size;
+   if( output.unit_size > MAX_UNIT_SIZE )
+   {
+      fprintf(stderr,"EXTRACT_UNIT: unit_size=%d, MAX_UNIT_SIZE=%d\n",
+                     output.unit_size, MAX_UNIT_SIZE );
+
+      output.unit_size = MAX_UNIT_SIZE;
+   }
+   for(i=0; i< output.unit_size; i++)
+      output.unit[i] = cmd.unit[i];
+pend
+
+
+/**********************************************************************
+# $Log: extract.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:00  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:14  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.7  1996/02/21  15:43:53  doug
+# fixedup so compiles with current libcnl
+#
+# Revision 1.6  1995/10/03  21:27:37  doug
+# fix some stuff that got changed in the libraries
+#
+# Revision 1.5  1995/06/29  13:38:20  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

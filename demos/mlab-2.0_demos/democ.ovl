@@ -1,0 +1,40 @@
+SCENARIO "Demo-C"
+
+SITE "Demo C site, Colorado"
+
+MISSION-AREA 1600 1600
+
+ORIGIN 50 50
+
+CONTROL MEASURES: 
+
+
+Boundary Left* 356 100  0 750
+Boundary Right* 542 1000 890 345
+
+Boundary Gamma* 356 100 890 345
+
+AA Alpha-1 480  70
+           490  95
+           560 100
+           630  95
+           640  70
+           630  45
+           560  40
+           490  45
+
+PP Split* 500 170 4
+BP Rec-1 470 260 8
+BP Rec-2 590 330 8
+
+BP Op-1 280 490 8
+BP Op-2 350 580 8
+
+OBJ Recon  30 900
+           50 950
+          165 960
+          280 950
+          300 900
+          280 850
+          165 840
+           50 850

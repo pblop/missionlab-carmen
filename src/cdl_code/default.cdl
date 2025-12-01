@@ -1,0 +1,36 @@
+/*************************************************
+*
+* This CDL file default.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2318 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_2334 from vehicle(
+  bound_to = defaultRobot1:DEFAULT_ROBOT(
+defaultRobot1:[
+          $AN_2318]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_2334]<10,10>|Group of Robots|
+]<10,10>
+

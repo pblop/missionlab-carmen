@@ -1,0 +1,56 @@
+/**********************************************************************
+**                                                                  **
+**                           SEGUIR_LIDER.cnl                       **
+**                                                                  **
+**                                                                  **
+**  Written by:  Alberto Rodríguez Valle                            **
+**                                                                  **
+**                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+init
+#include "dstar.hpp"
+iend
+
+
+/***********************************************************************/
+
+procedure Vector SEGUIR_LIDER with
+        Vector obstaculo;
+header
+        robot_position posicionLider, miPosicion;
+        Vector diferencia;
+        static int inicial = 0;
+        Vector goal_rel_loc;
+body
+    if(hay_lider() == false){
+        escucho_broadCast(true);
+        sleep(1);
+    }
+
+    if(get_inicial_nueva_tarea() == 1){
+        set_inicial_nueva_tarea(0);
+        sigo_lider();
+        //printf("SIGO LIDER primera ejecución\n");
+    }
+    VECTOR_CLEAR(output);
+    posicionLider = posicion_lider();
+    miPosicion = exec_get_position();
+    //printf("MI pos = (%.1f, %.1f) PosLider = (%.1f, %.1f) /// %s \n", miPosicion.v.x, miPosicion.v.y, posicionLider.v.x, posicionLider.v.y, hay_lider() ? "TRUE":"FALSE");
+    minus_2d(posicionLider.v, miPosicion.v, output);
+    rotate_z(output, -1 * miPosicion.heading);
+    //printf("VECTOR DESPLAZAMIENTO= (%.1f, %.1f)\n",  output.x, output.y);
+
+    //printf("SIGO LIDER obstaculo (%f, %f)\n", obstaculo.x, obstaculo.y);
+
+    if(output.x == 0.0 && output.y == 0.0){
+        VECTOR_CLEAR(output);
+    }else{
+        output.x += obstaculo.x * 0.3;
+        output.y += obstaculo.y * 0.3;
+        //printf("SIGO LIDER obstaculo (%f, %f)\n", output.x, output.y);
+        set_posicion_ant_lider(posicionLider.v);
+    }
+pend

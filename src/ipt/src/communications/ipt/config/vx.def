@@ -1,0 +1,6 @@
+DEFINES_VX	= -DVXWORKS -DCPU=SPARC -fno-builtin 
+vx_FLAGS = -g $(INC_PATH_VX) $(DEFINES_VX) -DSUN4 -DNO_VXCONNECTION
+vx_COMPILER  = g++
+vx_CCOMPILER  = gcc
+vx_LD = ld
+

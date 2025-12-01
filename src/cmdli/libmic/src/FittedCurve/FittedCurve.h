@@ -1,0 +1,166 @@
+#ifndef FittedCurve_H
+#define FittedCurve_H
+/**********************************************************************
+ **                                                                  **
+ **  FittedCurve.h                                                   **
+ **                                                                  **
+ **  Create a 3D curve with specified end points and tangents with   **
+ **  the specified length.                                           **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **  Copyright 1996-2002.  All Rights Reserved.                      **
+ **  Mobile Intelligence Corporation                                 **
+ **  Alto, Michigan, USA                                             **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: FittedCurve.h,v 1.1.1.1 2008/07/14 16:44:16 endo Exp $ */
+
+/**********************************************************************
+* $Log: FittedCurve.h,v $
+* Revision 1.1.1.1  2008/07/14 16:44:16  endo
+* MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/20 17:17:46  endo
+* MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/12 13:37:55  endo
+* MissionLab 7.0
+*
+* Revision 1.1  2006/07/01 00:30:28  endo
+* CMDLi from MARS 2020 migrated into AO-FNC repository.
+*
+* Revision 1.1.1.1  2006/06/29 20:42:07  endo
+* cmdli local repository.
+*
+* Revision 1.11  2004/05/11 19:34:29  doug
+* massive changes to integrate with USC and GaTech
+*
+* Revision 1.10  2003/03/21 15:55:30  doug
+* moved libccl_code to the sara namespace
+*
+* Revision 1.9  2003/03/10 16:31:34  doug
+* FittedCurve is closer
+*
+* Revision 1.8  2003/03/03 13:44:23  doug
+* seems to work
+*
+* Revision 1.7  2002/09/30 14:34:54  doug
+* *** empty log message ***
+*
+* Revision 1.6  2002/09/06 13:16:52  doug
+* *** empty log message ***
+*
+* Revision 1.5  2002/08/29 02:23:37  doug
+* *** empty log message ***
+*
+* Revision 1.4  2002/08/27 18:58:09  doug
+* *** empty log message ***
+*
+* Revision 1.3  2002/08/26 19:51:34  doug
+* *** empty log message ***
+*
+* Revision 1.2  2002/08/23 19:07:56  doug
+* *** empty log message ***
+*
+* Revision 1.1  2002/08/23 18:03:22  doug
+* Initial revision
+*
+**********************************************************************/
+
+#include "mic.h"
+#include "Vector.h"
+#include <deque>
+
+namespace sara
+{
+class FittedCurve
+{
+public:
+   /**@name Public Member Functions */
+   //@{
+   /// Create the FittedCurve object
+   FittedCurve();
+
+   /// Destroy the FittedCurve
+   ~FittedCurve();
+
+   /// Create a new FittedCurve
+   void initCurve(const uint numSegments, const double segmentLength, const Vector &point1, const Vector &point2, const Vector &heading1, const Vector &heading2);
+
+   /// Specify the actual location and heading, and get the next point along the curve
+   Vector computeNextPoint(const Vector &actualPoint, const Vector &actualHeading);
+
+   /// Specify the actual location and heading, and get the next point along the curve
+   /// also returns the length of the path after this leg just returned
+   Vector computeNextPoint(const Vector &actualPoint, const Vector &actualHeading, double &remainingLength);
+
+   /// test harness
+   void test();
+
+   // Stream out the value
+   friend ostream & operator << (ostream & out, FittedCurve &v);
+   //@}
+
+protected:
+   /**@name Protected Data */
+   //@{
+   /// Store the data for a single waypoint along the curve
+   class waypoint
+   {
+      public:
+	 waypoint(const Vector &v) {position = v; latched=false;}
+	 waypoint(const Vector &v, bool initialLatch) {position = v; latched=initialLatch;}
+
+         Vector position;
+	 Vector forces;
+	 bool   latched;
+   };
+   
+   /// A curve is stored as a deque of waypoints
+   /// The start point is curve[0] and the end point is curve[curve.size() - 1]
+   typedef deque<waypoint> curve_T;
+   curve_T curve;   
+   //@}
+   
+private:
+   /**@name Private Member Functions */
+   //@{
+   /// Compute the forces acting on a node using a spring model
+   void computeForces();
+
+   /// Compute the curve using a relaxation process
+   void smoothCurve();
+
+   /// Compute a smoothness score for 5 points.
+   double score(const Vector &p0, const Vector &p1, const Vector &p2, const Vector &p3, const Vector &p4);
+
+   /// Compute a smoothness score for the curve
+   /// We mostly care about a smooth curve, reward constant curvature
+   double score(const uint newPointIndex, const Vector &newPoint);
+
+   /// Compute where to move the center point (p2) given 5 points
+   /// p0 and p4 are used to smooth the curve.
+   ///    p0------p1     p2     p3-----p4
+   /// Copies the result into p2 and returns the distance the point moved.
+   double placeMidPoint(const Vector &p0, const Vector &p1, Vector &p2, const Vector &p3, const Vector &p4, const double gain);
+   //@}
+
+   /**@name Private Data */
+   //@{
+   /// The length of segments
+   double segmentLength;
+
+   /// Termination condition for curve smoothing
+   double smoothnessBound;
+
+   /// Maximum loops allowed for curve smoothing in any one pass
+   int maxSmoothingLoops;
+
+   /// Remember the target point
+   Vector finalPoint;
+   //@}
+};
+}
+#endif

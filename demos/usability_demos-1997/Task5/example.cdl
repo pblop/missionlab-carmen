@@ -1,0 +1,88 @@
+/*************************************************
+*
+* This CDL file example.cdl was created with cfgedit
+* version 1.0a
+*
+**************************************************/
+
+bindArch AuRA;
+
+instGroup $AN_221 from [
+  TerminateEnemy];
+instGroup $AN_222 from [
+    %Objects = {Enemy_Robots}
+,
+  MoveTo];
+instGroup $AN_223 from [
+    %curious = {0.80},
+    %cautious = {0.50}
+,
+  Wander];
+instGroup $AN_224 from [
+  Stop];
+instBP<565,111> |The Wheels Binding Point| $AN_225 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE(
+        v<292,156> = FSA(
+            society[Start]<65,101>|Start| = $AN_224,
+            society[$AN_241]<315,103>|State2| = $AN_223,
+            society[$AN_245]<592,415>|State3| = $AN_222,
+            society[$AN_253]<172,414>|State4| = $AN_221,
+            society[$AN_269]<734,99>|State5| = [
+                %Objects = {Home_Base}
+,
+              MoveTo]<10,10>
+,
+            rules[$AN_241]<315,103>|State2| = if [
+                %Objects = {Enemy_Robots}
+,
+              Detect]<0,0>|Trans4|
+ goto $AN_245,
+            rules[$AN_245]<592,415>|State3| = if [
+                %Objects = {Enemy_Robots},
+                %Distance = {1.1}
+,
+              Near]<0,0>|Trans5|
+ goto $AN_253,
+            rules[$AN_269]<734,99>|State5| = if [
+                %Objects = {Home_Base},
+                %Distance = {0.3}
+,
+              Near]<537,39>|Trans7|
+ goto $AN_241,
+            rules[Start]<65,101>|Start| = if [
+              FirstTime]<0,0>|Trans1|
+ goto $AN_241,
+            rules[$AN_253]<172,414>|State4| = if [
+              FirstTime]<0,0>|Trans2|
+ goto $AN_241,
+            rules[$AN_241]<315,103>|State2| = if [
+                %Objects = {Home_Base},
+                %Distance = {4.0}
+,
+              AwayFrom]<10,10>|Trans3|
+ goto $AN_269,
+            rules[$AN_269]<734,99>|State5| = if [
+                %Objects = {Enemy_Robots}
+,
+              Detect]<10,10>|Trans4|
+ goto $AN_245)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_563 from vehicle(
+  bound_to = exampleRobot1:MRV2(
+exampleRobot1:[
+          $AN_225]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_563]<11,11>|The Configuration|
+]<10,10>

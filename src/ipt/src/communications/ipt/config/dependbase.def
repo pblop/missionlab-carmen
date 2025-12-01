@@ -1,0 +1,7 @@
+depend:: 			
+	echo "" > dep.make
+	$(DEPEND) -w40 -fdep.make -s "#" -- $(CCFLAGS) -I$(SYSTEM_CC_INCLUDES) $(INC_PATH_VX) -- $(SRCS)
+	grep ipt dep.make > tmp
+	mv tmp dep.make
+	sed -n -f strip.sed Makefile > temp.make
+	echo "# DO NOT DELETE" >> temp.make

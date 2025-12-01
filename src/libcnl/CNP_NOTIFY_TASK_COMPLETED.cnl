@@ -1,0 +1,111 @@
+/**********************************************************************
+ **                                                                  **
+ **                  CNP_NOTIFY_TASK_COMPLETED.cnl                   **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  CNP_NOTIFY_TASK_COMPLETED:                                      **
+ **   Notifies to everybody that the executing CNP task has been     **
+ **   completed.                                                     **
+ **                                                                  **
+ **  CNP_TASK_COMPLETION_NOTIFIED:                                   **
+ **   Checks to see if a specified CNP task has been completed.      **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CNP_NOTIFY_TASK_COMPLETED.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+/***********************************************************************/
+
+procedure Vector CNP_NOTIFY_TASK_COMPLETED with
+   bool reneged;
+header
+   bool firstTime = true;
+body
+{
+    VECTOR_CLEAR(output);
+
+    if (firstTime)
+    {
+        if (reneged)
+        {
+            exec_notify_cnp_task_reneged();
+        }
+        else
+        {
+            exec_notify_cnp_task_completed();
+        }
+
+        firstTime = false;
+    }
+}   
+pend
+
+/***********************************************************************/
+
+procedure bool CNP_TASK_COMPLETION_NOTIFIED with
+   int cnpTaskSelection;
+   CNLString_t specificTaskName;
+   bool reneged;
+header
+   const string EMPTY_STRING = "";
+body
+{
+    string specificCNPTaskName = EMPTY_STRING;
+    bool selectWonCNPTask = false;
+    bool notified = false;
+
+    switch (cnpTaskSelection) {
+
+    case CHECK_WON_CNP_TASK:
+        selectWonCNPTask = true;
+        specificCNPTaskName = EMPTY_STRING;
+        break;
+
+    case CHECK_SPECIFIC_CNP_TASK:
+        selectWonCNPTask = false;
+        specificCNPTaskName = specificTaskName.val;
+        break;
+    }
+
+    if (reneged)
+    {
+        notified = exec_cnp_task_reneging_notified(
+            selectWonCNPTask,
+            specificCNPTaskName);
+    }
+    else
+    {
+        notified = exec_cnp_task_completion_notified(
+            selectWonCNPTask,
+            specificCNPTaskName);
+    }
+
+    output = notified;
+}   
+pend
+
+/**********************************************************************
+# $Log: CNP_NOTIFY_TASK_COMPLETED.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.2  2006/05/06 04:26:03  endo
+# Bugs of TrackTask fixed.
+#
+# Revision 1.1  2006/01/10 06:19:45  endo
+# AO-FNC Type-I check-in.
+#
+#**********************************************************************/

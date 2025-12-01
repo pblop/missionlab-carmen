@@ -1,0 +1,114 @@
+/**********************************************************************
+ **                                                                  **
+ **                       AERIAL_AVOID_ROBOT.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Patrick Ulam                                       **
+ **    Based on: AVOID_ROBOT.cnl   by: Tucker Balch                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+ 
+ // Aerial implementation of the avoid robot behaviour.   
+ //    Parameters:    Sphere:  radius of avoidance sphere
+ //                   min_range: safety radius in which infinite repulsion take place
+ 
+#include "cnl.inc"
+
+procedure Vector AERIAL_AVOID_ROBOT with
+
+double	sphere;
+double	min_range;
+
+header
+
+Vector	sum;
+Vector	t1,t2;
+int	i;
+double	len, mag;
+RobotReadings rtn;
+Robots readings;
+int max_dist;
+
+body
+
+max_dist = 100;
+
+// Grab our robot information and make a list of robot readings
+   rtn = exec_detect_robots(max_dist);
+
+   readings.cnt = min(MAX_ROBOT_READINGS,rtn.num_readings);
+   for(i=0; i<readings.cnt; i++)
+   {
+      readings.id[i] = rtn.readings[i].id;
+      readings.v[i].x = rtn.readings[i].v.x;
+      readings.v[i].y = rtn.readings[i].v.y;
+      readings.v[i].z = rtn.readings[i].v.z;
+   } 
+
+
+VECTOR_CLEAR(output);
+VECTOR_CLEAR(sum);
+for(i=0; i<readings.cnt; i++)
+	{
+
+  if( debug )
+   fprintf(stderr, "AVOID_ROBOT: robot detected at <%.1f %.1f %.1f>\n",
+     readings.v[i].x, readings.v[i].y, readings.v[i].z);
+
+	len = len_3d(readings.v[i]);
+	if (len == 0.0)
+		{
+		len = 0.0001;
+		readings.v[i].y = 1.0;
+		}
+	mag = 0;
+	if (len <= min_range)
+		{
+		mag = INFINITY;
+		}
+	else if (len < sphere)
+		{
+		mag = (sphere - len) / (sphere - min_range);
+		}
+	if (mag != 0)
+		{
+		t1.x = -readings.v[i].x;
+		t1.y = -readings.v[i].y;
+		t1.z = -readings.v[i].z;
+		unit_3d(t1);
+		times_3d(t1, mag, t2);
+		add_3d(t2, sum, sum);
+		}
+	}
+output = sum;
+
+if( debug )
+   fprintf(stderr,"AERIAL_AVOID_ROBOT: <%.1f %.1f %.1f>\n",output.x, output.y, output.z);
+
+pend
+
+
+/**********************************************************************
+# $Log: AERIAL_AVOID_ROBOT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2005/03/27 01:20:26  pulam
+# Addition of uxv behaviors
+#
+# Revision 1.2  2003/01/27 18:18:24  pulam
+# Clean ip of old behaviours as well as new comm triggers
+#
+# Revision 1.1  2003/01/15 22:17:56  pulam
+# Initial addition to cvs
+#
+# Revision 1.1.1.1  2002/10/29 18:10:14  pulam
+# First Revision V2020 Project
+#
+# Revision 1.5  1995/06/28  21:35:46  jmc
+# Added RCS id and log strings.
+#*********************************************************************/

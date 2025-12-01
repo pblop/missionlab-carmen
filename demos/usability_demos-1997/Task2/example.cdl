@@ -1,0 +1,99 @@
+/*************************************************
+*
+* This CDL file example.cdl was created with cfgedit
+* version 1.0a
+*
+**************************************************/
+
+bindArch AuRA;
+
+instGroup $AN_221 from [
+  Stop];
+instGroup $AN_222 from [
+  PutInEOD];
+instGroup $AN_223 from [
+    %Objects = {EOD_Areas}
+,
+  MoveTo];
+instGroup $AN_224 from [
+    %Objects = {Mines}
+,
+  PickUp];
+instGroup $AN_225 from [
+    %Objects = {Mines}
+,
+  MoveTo];
+instGroup $AN_226 from [
+  Stop];
+instBP<565,111> |The Wheels Binding Point| $AN_227 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE(
+        v<292,156> = FSA(
+            society[Start]<50,50>|Start| = $AN_226,
+            society[$AN_243]<258,152>|State1| = $AN_225,
+            society[$AN_247]<574,168>|State2| = $AN_224,
+            society[$AN_255]<571,323>|State3| = $AN_223,
+            society[$AN_271]<264,340>|State4| = $AN_222,
+            society[$AN_303]<636,515>|State5| = $AN_221,
+            society[$AN_367]<276,516>|State6| = [
+                %Objects = {Home_Base}
+,
+              MoveTo]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+                %Objects = {Mines}
+,
+              Detect]<10,10>|Trans1|
+ goto $AN_243,
+            rules[$AN_243]<258,152>|State1| = if [
+                %Objects = {Mines},
+                %Distance = {0.2}
+,
+              Near]<0,0>|Trans2|
+ goto $AN_247,
+            rules[$AN_247]<574,168>|State2| = if [
+                %Objects = {EOD_Areas}
+,
+              Detect]<10,10>|Trans3|
+ goto $AN_255,
+            rules[$AN_255]<571,323>|State3| = if [
+                %Objects = {EOD_Areas},
+                %Distance = {0.2}
+,
+              Near]<0,0>|Trans4|
+ goto $AN_271,
+            rules[$AN_271]<264,340>|State4| = if [
+                %Objects = {Mines}
+,
+              Detect]<10,10>|Trans5|
+ goto $AN_243,
+            rules[$AN_271]<264,340>|State4| = if [
+                %Objects = {Mines}
+,
+              UnDetect]<10,10>|Trans6|
+ goto $AN_367,
+            rules[$AN_367]<276,516>|State6| = if [
+                %Objects = {Home_Base},
+                %Distance = {0.2}
+,
+              Near]<0,0>|Trans7|
+ goto $AN_303)<292,156>|The State Machine|
+,
+        max_vel = {0.3},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_757 from vehicle(
+  bound_to = exampleRobot1:MRV2(
+exampleRobot1:[
+          $AN_227]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_757]<0,0>|The Configuration|
+]<10,10>

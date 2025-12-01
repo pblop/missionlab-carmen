@@ -1,0 +1,55 @@
+/**********************************************************************
+ **                                                                  **
+ **                        LAST_KEY_PRESS.cnl                        **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: LAST_KEY_PRESS.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+// Gets the last key press at the terminal.
+// This value is also stuffed by the PROBE_OBJECT behavior
+
+// NOTE: DOES NOT delete the entry after returning it. 
+//       The next read will see it again!
+
+procedure int LAST_KEY_PRESS with
+header
+body
+   char *key_string = get_state(KEYPRESS);
+
+   // If we got a string, then return it as an integer.
+   // Else, return an EOF marker.
+   if( key_string && key_string[0] != '\0' )
+      output = key_string[0];
+   else
+      output = -1;
+pend
+
+
+
+/**********************************************************************
+# $Log: LAST_KEY_PRESS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.9  1996/03/03  23:58:41  doug
+# *** empty log message ***
+#
+# Revision 1.8  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.7  1995/06/28  22:04:35  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

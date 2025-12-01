@@ -1,0 +1,7 @@
+Changes have been made to the workspace.
+
+Click Yes if you want to discard the
+unsaved changes.
+
+Click Cancel if you don't want to
+discard it.

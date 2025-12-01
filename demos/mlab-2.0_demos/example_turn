@@ -1,0 +1,45 @@
+--******************************************************************
+--
+--	example_turn
+--
+--	Formation mission script for 4 robots.
+--	
+--	This example spawns four robots.
+--	The companion overlay file that defines the points to move to 
+--	is example_formation.ovl .
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+MISSION NAME "Formation Demo"
+
+SCENARIO "Formation Demo"
+
+OVERLAY example_turn.ovl
+
+SET OBSTACLE-COVERAGE 1.0
+SET MIN-OBSTACLE-RADIUS 4.0
+SET MAX-OBSTACLE-RADIUS 10.0
+SET SEED 8 -- 16565, 5052, 450, 206885425, 1003573794, 96165
+SET HIGHLIGHT-REPELLING-OBSTACLES
+CREATE-OBSTACLES
+
+UNIT <scouts> (<scouts-1> ROBOT ROBOT) (<scouts-2> ROBOT ROBOT)
+
+COMMAND LIST:
+
+ 0. UNIT scouts START PP-CHARLIE 0 20
+
+ 1. UNIT scouts MOVETO PP-DELTA1 FORMATION diamond
+
+ 2. UNIT scouts MOVETO PP-ECHO FORMATION diamond
+
+ 3. UNIT scouts MOVETO PP-DELTA1 FORMATION diamond
+
+ 4. UNIT scouts MOVETO PP-CHARLIE  FORMATION diamond
+
+11. UNIT scouts STOP
+
+12. Quit

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -z $2 ]; then
+	echo "Usage: RTA inputfile outputfile"
+	exit 1
+else
+	cd /tmp
+	echo $1 >>$2
+	echo OK >>$2
+fi

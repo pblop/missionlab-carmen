@@ -1,0 +1,28 @@
+/**********************************************************************
+ **                                                                  **
+ **                           SETXY.cnl                              **
+ **                                                                  **
+ **                 Written by:  Jonathan F. Diaz                    **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure Vector SETXY with
+	double x;
+	double y;
+header
+body
+   exec_setxy(x, y);
+   output.x = 0.;
+   output.y = 0.;
+   output.z = 0.;
+pend

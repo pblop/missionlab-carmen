@@ -1,0 +1,8 @@
+You can:
+
+1.) Choose a task from the
+    toolbox, and place it on the
+    overlay.
+
+2.) Set the global setup in the
+    window on the top right.

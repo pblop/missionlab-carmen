@@ -1,0 +1,163 @@
+#---------------------------------------------------------------------
+# RC file for RepairPlan in CBRServer
+#
+# Written by Yoichir Endo
+#
+# Copyright 2003 - 2005, Georgia Tech Research Corporation 
+# Atlanta, Georgia  30332-0415
+# ALL RIGHTS RESERVED, See file COPYRIGHT for details. 
+#
+# $Id: .repair_planrc,v 1.1.1.1 2008/07/14 16:44:14 endo Exp $
+#---------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+# Note
+#---------------------------------------------------------------------
+#
+# PROBLEM-TYPE (Defined in src/cbrserver/repair_plan_types.h.)
+#   NO_QUESTION = 0
+#   TOGGLE = 1
+#   ADD_MAP_POINT = 2
+#   MOD_MAP_POINT = 3
+#   DEL_MAP_POINT = 4
+#   STATE_NAME = 5
+#
+# PROBLEM-DESC and PROBLEM-OPTION should be enclosed with "".
+#
+# PROBLEMS
+#   * It should be enclosed with [].
+#   * The value should be either PROBLEM-ID or PROBLEM-ID:OPTION#,
+#     separated by a space.
+#
+# REPAIR-SOLUTION-NUMBER is 0 if there is no solution.
+#
+#---------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+# Problems Types
+#---------------------------------------------------------------------
+
+<PROBLEM BEGIN>
+PROBLEM-ID 0
+PROBLEM-NAME Overall
+PROBLEM-DESC "Please select the overall nature of the problem:"
+PROBLEM-TYPE 1
+PROBLEM-OPTION "The route needs to be fixed."
+PROBLEM-OPTION "The robot did not perform a necessary action at this point."
+PROBLEM-OPTION "The robot peformed a wrong action at this point."
+PROBLEM-OPTION "None of the above."
+<PROBLEM END>
+
+<PROBLEM BEGIN>
+PROBLEM-ID 1
+PROBLEM-NAME Area
+PROBLEM-DESC "Please select what area the robot did not enter:"
+PROBLEM-TYPE 1
+PROBLEM-OPTION "The robot did not enter a building."
+PROBLEM-OPTION "None of the above."
+<PROBLEM END>
+
+<PROBLEM BEGIN>
+PROBLEM-ID 2
+PROBLEM-NAME WaypointProblem
+PROBLEM-DESC "Please select one:"
+PROBLEM-TYPE 1
+PROBLEM-OPTION "An additional via point needs to be placed."
+PROBLEM-OPTION "A waypoint or via point was placed on a wrong place."
+PROBLEM-OPTION "An excessive waypoint or via point needs to be eliminated."
+<PROBLEM END>
+
+<PROBLEM BEGIN>
+PROBLEM-ID 3
+PROBLEM-NAME WaypointType
+PROBLEM-DESC "Is the specified point indoor or outdoor?"
+PROBLEM-TYPE 1
+PROBLEM-OPTION "The specified point is indoor."
+PROBLEM-OPTION "The specified point is outdoor."
+<PROBLEM END>
+
+<PROBLEM BEGIN>
+PROBLEM-ID 4
+PROBLEM-NAME NecessaryActionType
+PROBLEM-DESC "What action was necessary for the robot to perform?"
+PROBLEM-TYPE 1
+PROBLEM-OPTION "The robot has to turn around at the end of the hallway."
+PROBLEM-OPTION "None of the above."
+<PROBLEM END>
+
+<PROBLEM BEGIN>
+PROBLEM-ID 5
+PROBLEM-NAME WrongActionType
+PROBLEM-DESC "What action do you wish the robot to perform instead?"
+PROBLEM-TYPE 1
+PROBLEM-OPTION "The robot should stay with the hostage."
+PROBLEM-OPTION "None of the above."
+<PROBLEM END>
+
+#---------------------------------------------------------------------
+# Repair Types
+#
+# * See type definition in src/cbrserver/repair_plan_solution.h
+# * See RepairPlan::prepareSolutions_() in src/cbrserver/repair_plan.cc
+#
+# REPAIR-SOLUTION-NUMBER 0 = No Solution
+# REPAIR-SOLUTION-NUMBER 1 = RPS_EnterBuilding
+# REPAIR-SOLUTION-NUMBER 2 = RPS_EnterRoom
+# REPAIR-SOLUTION-NUMBER 3 = RPS_AddIndoorPoint
+# REPAIR-SOLUTION-NUMBER 4 = RPS_AddOutdoorPoint
+# REPAIR-SOLUTION-NUMBER 5 = RPS_MovePoint
+# REPAIR-SOLUTION-NUMBER 6 = RPS_DeletePoint
+# REPAIR-SOLUTION-NUMBER 7 = RPS_AddTurnAroundHallway
+# REPAIR-SOLUTION-NUMBER 8 = RPS_ReplaceWithStayWithHostage
+#
+#---------------------------------------------------------------------
+
+#<REPAIR BEING>
+#REPAIR-PROBLEMS [0:0 2:0 3:0]
+#REPAIR-SOLUTION-NUMBER 3
+#<REPAIR END>
+
+#<REPAIR BEING>
+#REPAIR-PROBLEMS [0:0 2:0 3:1]
+#REPAIR-SOLUTION-NUMBER 4
+#<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:0 2:0]
+REPAIR-SOLUTION-NUMBER 4
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:0 2:1]
+REPAIR-SOLUTION-NUMBER 5
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:0 2:2]
+REPAIR-SOLUTION-NUMBER 6
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:1 4:0]
+REPAIR-SOLUTION-NUMBER 7
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:1 4:1]
+REPAIR-SOLUTION-NUMBER 0
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:2 5:0]
+REPAIR-SOLUTION-NUMBER 8
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:2 5:1]
+REPAIR-SOLUTION-NUMBER 0
+<REPAIR END>
+
+<REPAIR BEING>
+REPAIR-PROBLEMS [0:3]
+REPAIR-SOLUTION-NUMBER 0
+<REPAIR END>

@@ -1,0 +1,508 @@
+--******************************************************************
+--
+--	factory.ovl
+--
+--	This overlay was developed for the DARPA MARS Usability
+--      Study.
+--
+--      Yoichiro Endo
+--
+--      11/12/2001
+--
+--******************************************************************
+
+SCENARIO "Biohazard"
+
+SITE "Possible Biohazard Factory Site"
+
+MISSION-AREA 304 253
+
+LOAD-MAP "factory.mapinfo"
+
+ORIGIN 0 0
+
+--******************************************************************
+CONTROL MEASURES: 
+--******************************************************************
+-- Start / Home
+
+PP StartPlace 100 106 4
+--PP StartPlace 254 110 4
+--OBJECT 100 106 4 Fixed blue
+
+--******************************************************************
+-- Possible Factory for Biological Weapons
+
+-- Room A
+WALL "wlrmA001*" 253 108 236 127
+DOOR "drrmA001*" 236 127 232 132
+WALL "wlrmA001b*" 232 132 229 135
+WALL "wlrmA002*" 229 135 216 123
+WALL "wlrmA003*" 216 123 239 95
+WALL "wlrmA004*" 239 95 253 108
+ROOM "rmrmA001*" 253 108 229 135 216 123 239 95
+OBJECT 235 120 2.0 Fixed brown
+OBJECT 240 115 2.0 Fixed brown
+
+-- Room B
+WALL "wlrmB001*" 229 135 218 148
+DOOR "drrmB001*" 218 148 214 153
+WALL "wlrmB001b*" 214 153 212 155
+WALL "wlrmB002*" 212 155 199 144
+WALL "wlrmB003*" 199 144 216 123
+WALL "wlrmB004*" 216 123 229 135
+ROOM "rmrmB001*" 229 135 212 155 199 144 216 123
+OBJECT 220 138 2.0 Fixed brown
+OBJECT 207 142 2.0 Fixed brown
+
+-- Room C
+--WALL "wlrmC001*" 212 155 199 169
+WALL "wlrmC001*" 212 155 203 164
+--DOOR "drrmC001*" 199 169 195 174
+--DOOR "drrmC001*" 203 164 199 169
+WALL "wldrrmC001*" 203 164 199 169 -- door closed
+--WALL "wlrmC001b*" 195 174 193 176
+WALL "wlrmC001b*" 199 169 193 176
+WALL "wlrmC002*" 193 176 181 165
+WALL "wlrmC003*" 181 165 199 144
+WALL "wlrmC004*" 199 144 212 155
+--ROOM "rmrmC001*" 212 155 193 176 181 165 199 144
+--OBJECT 204 156 2.0 Fixed brown
+--OBJECT 197 163 2.0 Fixed brown
+--OBJECT 192 159 2.0 Fixed brown
+
+-- Room D
+WALL "wlrmD001*" 276 128 265 141
+WALL "wlrmD002*" 265 141 245 123
+WALL "wlrmD003*" 245 123 256 111
+WALL "wlrmD004*" 256 111 276 128
+ROOM "rmrmD001*" 276 128 265 141 245 123 256 111
+
+-- Room E
+WALL "wlrmE001*" 265 141 252 156
+WALL "wlrmE002*" 252 156 233 137
+WALL "wlrmE003*" 233 137 238 131
+DOOR "drrmE003*" 238 131 243 125
+WALL "wlrmE003b*" 243 125 245 123
+WALL "wlrmE004*" 245 123 265 141
+ROOM "rmrmE001*" 265 141 252 156 233 137 245 123
+OBJECT 255 139 2.0 Fixed brown
+
+-- Room F
+WALL "wlrmF001*" 252 156 235 177
+WALL "wlrmF002*" 235 177 215 158
+WALL "wlrmF003*" 215 158 225 146
+DOOR "drrmF003*" 225 146 230 140
+WALL "wlrmF003b*" 230 140 233 137
+WALL "wlrmF004*" 233 137 252 156
+ROOM "rmrmF001*" 252 156 235 177 215 158 233 137
+OBJECT 232 166 2.0 Fixed brown
+OBJECT 237 160 2.0 Fixed brown
+
+-- Room G
+WALL "wlrmG001*" 235 177 217 197
+WALL "wlrmG002*" 217 197 196 179
+WALL "wlrmG003*" 196 179 208 166
+DOOR "drrmG003*" 208 166 213 160
+WALL "wlrmG003b*" 213 160 215 158
+WALL "wlrmG004*" 215 158 235 177
+ROOM "rmrmG001*" 235 177 217 197 196 179 215 158
+OBJECT 212 184 2.0 Fixed brown
+OBJECT 217 189 2.0 Movable brown
+
+-- Hallway
+WALL "wlhw001*" 196 179 193 176
+--HALLWAY hwhw001* CENTERLINE 254 109 195 177 WIDTH 14 EXTENTS 256 111 196 179 193 176 253 108
+--HALLWAY hwhw001* CENTERLINE 195.5 176.5 253.5 110.5 WIDTH 14 EXTENTS 256 111 196 179 193 176 253 108
+HALLWAY hwhw001* CENTERLINE 196 176.5 253.5 110.5 WIDTH 14 EXTENTS 256 111 196 179 193 176 253 108
+--Boundary bdhw001 253.5 110.5 195.5 176.5
+--Boundary bdhw002 256 111 196 179 193 176 253 108 256 111
+
+-- Factory Label
+Boundary "bdfl001*" 229 138 208 87
+PP "Possible Factory for" 208 83 0.1
+PP "Biological Weapons  " 208 78 0.1
+
+-- Entrace Label
+PP "Factory" 263 110 0.1
+PP "Entrance" 263 105 0.1
+
+--******************************************************************
+-- Some Buildings
+
+-- Building A
+WALL "wlbdA001*" 187 132 169 152
+WALL "wlbdA002*" 169 152 157 142
+WALL "wlbdA003*" 157 142 161 137
+WALL "wlbdA004*" 161 137 157 132
+WALL "wlbdA005*" 157 132 164 124
+WALL "wlbdA006*" 164 124 168 127
+WALL "wlbdA007*" 168 127 173 121
+WALL "wlbdA008*" 173 121 187 132
+
+-- Building B
+WALL "wlbdB001*" 126 125 123 128
+WALL "wlbdB002*" 123 128 113 120
+WALL "wlbdB003*" 113 120 116 117
+WALL "wlbdB004*" 116 117 126 125
+
+-- Building C
+WALL "wlbdC001*" 132 78 126 98
+WALL "wlbdC002*" 126 98 115 95
+WALL "wlbdC003*" 115 95 117 87
+WALL "wlbdC004*" 117 87 111 85
+WALL "wlbdC005*" 111 85 114 77
+WALL "wlbdC006*" 114 77 120 80
+WALL "wlbdC007*" 120 80 123 73
+WALL "wlbdC008*" 123 73 132 78
+
+-- Building D
+WALL "wlbdD001*" 242 15 241 19
+WALL "wlbdD002*" 241 19 228 14
+WALL "wlbdD003*" 228 14 229 10
+WALL "wlbdD004*" 229 10 242 15
+
+-- Building E
+WALL "wlbdE001*" 298 62 289 84
+WALL "wlbdE002*" 289 84 281 80
+WALL "wlbdE003*" 281 80 291 58
+WALL "wlbdE004*" 291 58 298 62
+
+--******************************************************************
+-- Obstacles
+
+OBSTACLE 228 24 2
+OBSTACLE 230 41 2
+OBSTACLE 243 60 4
+OBSTACLE 193 89 3
+OBSTACLE 180 106 3
+OBSTACLE 193 122 2
+OBSTACLE 170 187 3
+
+--******************************************************************
+-- Trees
+
+--OBSTACLE 154 5 2 
+--OBSTACLE 146 8 2
+--OBSTACLE 151 16 2
+--OBSTACLE 135 15 2
+--OBSTACLE 141 21 2
+--OBSTACLE 135 21 2
+--OBSTACLE 125 22 2
+--OBSTACLE 133 31 2
+--OBSTACLE 123 30 2
+--OBSTACLE 131 37 2
+--OBSTACLE 136 41 2
+--OBSTACLE 141 47 2
+--OBSTACLE 122 43 2
+--OBSTACLE 127 47 2
+--OBSTACLE 136 54 2
+--OBSTACLE 120 54 2
+--OBSTACLE 115 61 2
+--OBSTACLE 127 62 2
+--OBSTACLE 140 67 2
+--OBSTACLE 127 71 2
+--OBSTACLE 115 72 2
+
+--OBJECT 154 5 2 Fixed DarkSeaGreen
+--OBJECT 146 8 2 Fixed DarkSeaGreen
+--OBJECT 151 16 2 Fixed DarkSeaGreen
+--OBJECT 135 15 2 Fixed DarkSeaGreen
+--OBJECT 141 21 2 Fixed DarkSeaGreen
+--OBJECT 135 21 2 Fixed DarkSeaGreen
+--OBJECT 125 22 2 Fixed DarkSeaGreen
+--OBJECT 133 31 2 Fixed DarkSeaGreen
+--OBJECT 123 30 2 Fixed DarkSeaGreen
+--OBJECT 131 37 2 Fixed DarkSeaGreen
+--OBJECT 136 41 2 Fixed DarkSeaGreen
+--OBJECT 141 47 2 Fixed DarkSeaGreen
+--OBJECT 122 43 2 Fixed DarkSeaGreen
+--OBJECT 127 47 2 Fixed DarkSeaGreen
+--OBJECT 136 54 2 Fixed DarkSeaGreen
+--OBJECT 120 54 2 Fixed DarkSeaGreen
+--OBJECT 115 61 2 Fixed DarkSeaGreen
+--OBJECT 127 62 2 Fixed DarkSeaGreen
+--OBJECT 140 67 2 Fixed DarkSeaGreen
+--OBJECT 127 71 2 Fixed DarkSeaGreen
+--OBJECT 115 72 2 Fixed DarkSeaGreen
+
+--OBSTACLE 114 2 2
+--OBSTACLE 103 2 2
+--OBSTACLE 91 2 2
+--OBSTACLE 82 1 2
+--OBSTACLE 71 2 2
+--OBSTACLE 61 1 2
+--OBSTACLE 55 2 2
+--OBSTACLE 48 2 2
+--OBSTACLE 36 2 2
+--OBSTACLE 24 2 2
+--OBSTACLE 15 2 2
+--OBSTACLE 4 2 2
+--OBSTACLE 108 8 2
+--OBSTACLE 92 8 2
+--OBSTACLE 83 12 2
+--OBSTACLE 70 9 2
+--OBSTACLE 57 9 2
+--OBSTACLE 46 7 2
+--OBSTACLE 40 8 2
+--OBSTACLE 31 8 2
+--OBSTACLE 21 8 2
+--OBSTACLE 9 10 2
+--OBSTACLE 4 15 2
+--OBSTACLE 18 21 2
+--OBSTACLE 32 17 2
+--OBSTACLE 44 20 2
+--OBSTACLE 51 20 2
+--OBSTACLE 63 18 2
+--OBSTACLE 73 13 2
+--OBSTACLE 88 17 2
+--OBSTACLE 102 15 2
+--OBSTACLE 107 20 2
+--OBSTACLE 102 27 2
+--OBSTACLE 93 22 2
+--OBSTACLE 76 22 2
+--OBSTACLE 66 24 2
+--OBSTACLE 56 28 2
+--OBSTACLE 48 32 2
+--OBSTACLE 38 24 2
+--OBSTACLE 31 38 2
+--OBSTACLE 25 28 2
+--OBSTACLE 17 28 2
+--OBSTACLE 4 30 2
+--OBSTACLE 10 38 2
+--OBSTACLE 2 46 2
+--OBSTACLE 15 44 2
+--OBSTACLE 24 45 2
+--OBSTACLE 36 45 2
+--OBSTACLE 48 39 2
+--OBSTACLE 60 38 2
+--OBSTACLE 69 37 2
+--OBSTACLE 74 33 2
+--OBSTACLE 86 31 2
+--OBSTACLE 102 35 2
+--OBSTACLE 101 46 2
+--OBSTACLE 89 45 2
+--OBSTACLE 78 41 2
+--OBSTACLE 70 44 2
+--OBSTACLE 59 50 2
+--OBSTACLE 51 53 2
+--OBSTACLE 33 53 2
+--OBSTACLE 20 51 2
+--OBSTACLE 6 55 2
+--OBSTACLE 3 65 2
+--OBSTACLE 21 58 2
+--OBSTACLE 36 62 2
+--OBSTACLE 55 60 2
+--OBSTACLE 66 59 2
+--OBSTACLE 79 59 2
+--OBSTACLE 88 62 2
+--OBSTACLE 97 64 2
+--OBSTACLE 88 72 2
+--OBSTACLE 77 69 2
+--OBSTACLE 66 69 2
+--OBSTACLE 59 72 2
+--OBSTACLE 47 70 2
+--OBSTACLE 36 69 2
+--OBSTACLE 27 71 2
+--OBSTACLE 13 69 2
+--OBSTACLE 5 78 2
+--OBSTACLE 15 78 2
+--OBSTACLE 27 78 2
+--OBSTACLE 37 77 2
+--OBSTACLE 48 79 2
+--OBSTACLE 59 79 2
+--OBSTACLE 72 78 2
+--OBSTACLE 80 78 2
+--OBSTACLE 87 79 2
+--OBSTACLE 94 89 2
+--OBSTACLE 78 86 2
+--OBSTACLE 73 91 2
+--OBSTACLE 65 87 2
+--OBSTACLE 58 89 2
+--OBSTACLE 46 86 2
+--OBSTACLE 41 86 2
+--OBSTACLE 26 89 2
+--OBSTACLE 18 89 2
+--OBSTACLE 12 91 2
+--OBSTACLE 3 91 2
+--OBSTACLE 5 102 2
+--OBSTACLE 13 101 2
+--OBSTACLE 21 96 2
+--OBSTACLE 28 100 2
+--OBSTACLE 39 98 2
+--OBSTACLE 53 99 2
+--OBSTACLE 64 100 2
+--OBSTACLE 73 102 2
+--OBSTACLE 77 101 2
+--OBSTACLE 85 105 2
+--OBSTACLE 78 110 2
+--OBSTACLE 73 110 2
+--OBSTACLE 58 110 2
+--OBSTACLE 44 111 2
+--OBSTACLE 34 108 2
+--OBSTACLE 21 112 2
+--OBSTACLE 6 107 2
+--OBSTACLE 3 118 2
+--OBSTACLE 19 119 2
+--OBSTACLE 35 120 2
+--OBSTACLE 60 121 2
+--OBSTACLE 77 121 2
+--OBSTACLE 74 125 2
+--OBSTACLE 76 133 2
+--OBSTACLE 62 136 2
+--OBSTACLE 63 128 2
+--OBSTACLE 46 126 2
+--OBSTACLE 38 127 2
+--OBSTACLE 42 136 2
+--OBSTACLE 26 138 2
+--OBSTACLE 17 138 2
+--OBSTACLE 9 128 2
+
+--OBJECT 114 2 2 Fixed DarkSeaGreen
+--OBJECT 103 2 2 Fixed DarkSeaGreen
+--OBJECT 91 2 2 Fixed DarkSeaGreen
+--OBJECT 82 1 2 Fixed DarkSeaGreen
+--OBJECT 71 2 2 Fixed DarkSeaGreen
+--OBJECT 61 1 2 Fixed DarkSeaGreen
+--OBJECT 55 2 2 Fixed DarkSeaGreen
+--OBJECT 48 2 2 Fixed DarkSeaGreen
+--OBJECT 36 2 2 Fixed DarkSeaGreen
+--OBJECT 24 2 2 Fixed DarkSeaGreen
+--OBJECT 15 2 2 Fixed DarkSeaGreen
+--OBJECT 4 2 2 Fixed DarkSeaGreen
+--OBJECT 108 8 2 Fixed DarkSeaGreen
+--OBJECT 92 8 2 Fixed DarkSeaGreen
+--OBJECT 83 12 2 Fixed DarkSeaGreen
+--OBJECT 70 9 2 Fixed DarkSeaGreen
+--OBJECT 57 9 2 Fixed DarkSeaGreen
+--OBJECT 46 7 2 Fixed DarkSeaGreen
+--OBJECT 40 8 2 Fixed DarkSeaGreen
+--OBJECT 31 8 2 Fixed DarkSeaGreen
+--OBJECT 21 8 2 Fixed DarkSeaGreen
+--OBJECT 9 10 2 Fixed DarkSeaGreen
+--OBJECT 4 15 2 Fixed DarkSeaGreen
+--OBJECT 18 21 2 Fixed DarkSeaGreen
+--OBJECT 32 17 2 Fixed DarkSeaGreen
+--OBJECT 44 20 2 Fixed DarkSeaGreen
+--OBJECT 51 20 2 Fixed DarkSeaGreen
+--OBJECT 63 18 2 Fixed DarkSeaGreen
+--OBJECT 73 13 2 Fixed DarkSeaGreen
+--OBJECT 88 17 2 Fixed DarkSeaGreen
+--OBJECT 102 15 2 Fixed DarkSeaGreen
+--OBJECT 107 20 2 Fixed DarkSeaGreen
+--OBJECT 102 27 2 Fixed DarkSeaGreen
+--OBJECT 93 22 2 Fixed DarkSeaGreen
+--OBJECT 76 22 2 Fixed DarkSeaGreen
+--OBJECT 66 24 2 Fixed DarkSeaGreen
+--OBJECT 56 28 2 Fixed DarkSeaGreen
+--OBJECT 48 32 2 Fixed DarkSeaGreen
+--OBJECT 38 24 2 Fixed DarkSeaGreen
+--OBJECT 31 38 2 Fixed DarkSeaGreen
+--OBJECT 25 28 2 Fixed DarkSeaGreen
+--OBJECT 17 28 2 Fixed DarkSeaGreen
+--OBJECT 4 30 2 Fixed DarkSeaGreen
+--OBJECT 10 38 2 Fixed DarkSeaGreen
+--OBJECT 2 46 2 Fixed DarkSeaGreen
+--OBJECT 15 44 2 Fixed DarkSeaGreen
+--OBJECT 24 45 2 Fixed DarkSeaGreen
+--OBJECT 36 45 2 Fixed DarkSeaGreen
+--OBJECT 48 39 2 Fixed DarkSeaGreen
+--OBJECT 60 38 2 Fixed DarkSeaGreen
+--OBJECT 69 37 2 Fixed DarkSeaGreen
+--OBJECT 74 33 2 Fixed DarkSeaGreen
+--OBJECT 86 31 2 Fixed DarkSeaGreen
+--OBJECT 102 35 2 Fixed DarkSeaGreen
+--OBJECT 101 46 2 Fixed DarkSeaGreen
+--OBJECT 89 45 2 Fixed DarkSeaGreen
+--OBJECT 78 41 2 Fixed DarkSeaGreen
+--OBJECT 70 44 2 Fixed DarkSeaGreen
+--OBJECT 59 50 2 Fixed DarkSeaGreen
+--OBJECT 51 53 2 Fixed DarkSeaGreen
+--OBJECT 33 53 2 Fixed DarkSeaGreen
+--OBJECT 20 51 2 Fixed DarkSeaGreen
+--OBJECT 6 55 2 Fixed DarkSeaGreen
+--OBJECT 3 65 2 Fixed DarkSeaGreen
+--OBJECT 21 58 2 Fixed DarkSeaGreen
+--OBJECT 36 62 2 Fixed DarkSeaGreen
+--OBJECT 55 60 2 Fixed DarkSeaGreen
+--OBJECT 66 59 2 Fixed DarkSeaGreen
+--OBJECT 79 59 2 Fixed DarkSeaGreen
+--OBJECT 88 62 2 Fixed DarkSeaGreen
+--OBJECT 97 64 2 Fixed DarkSeaGreen
+--OBJECT 88 72 2 Fixed DarkSeaGreen
+--OBJECT 77 69 2 Fixed DarkSeaGreen
+--OBJECT 66 69 2 Fixed DarkSeaGreen
+--OBJECT 59 72 2 Fixed DarkSeaGreen
+--OBJECT 47 70 2 Fixed DarkSeaGreen
+--OBJECT 36 69 2 Fixed DarkSeaGreen
+--OBJECT 27 71 2 Fixed DarkSeaGreen
+--OBJECT 13 69 2 Fixed DarkSeaGreen
+--OBJECT 5 78 2 Fixed DarkSeaGreen
+--OBJECT 15 78 2 Fixed DarkSeaGreen
+--OBJECT 27 78 2 Fixed DarkSeaGreen
+--OBJECT 37 77 2 Fixed DarkSeaGreen
+--OBJECT 48 79 2 Fixed DarkSeaGreen
+--OBJECT 59 79 2 Fixed DarkSeaGreen
+--OBJECT 72 78 2 Fixed DarkSeaGreen
+--OBJECT 80 78 2 Fixed DarkSeaGreen
+--OBJECT 87 79 2 Fixed DarkSeaGreen
+--OBJECT 94 89 2 Fixed DarkSeaGreen
+--OBJECT 78 86 2 Fixed DarkSeaGreen
+--OBJECT 73 91 2 Fixed DarkSeaGreen
+--OBJECT 65 87 2 Fixed DarkSeaGreen
+--OBJECT 58 89 2 Fixed DarkSeaGreen
+--OBJECT 46 86 2 Fixed DarkSeaGreen
+--OBJECT 41 86 2 Fixed DarkSeaGreen
+--OBJECT 26 89 2 Fixed DarkSeaGreen
+--OBJECT 18 89 2 Fixed DarkSeaGreen
+--OBJECT 12 91 2 Fixed DarkSeaGreen
+--OBJECT 3 91 2 Fixed DarkSeaGreen
+--OBJECT 5 102 2 Fixed DarkSeaGreen
+--OBJECT 13 101 2 Fixed DarkSeaGreen
+--OBJECT 21 96 2 Fixed DarkSeaGreen
+--OBJECT 28 100 2 Fixed DarkSeaGreen
+--OBJECT 39 98 2 Fixed DarkSeaGreen
+--OBJECT 53 99 2 Fixed DarkSeaGreen
+--OBJECT 64 100 2 Fixed DarkSeaGreen
+--OBJECT 73 102 2 Fixed DarkSeaGreen
+--OBJECT 77 101 2 Fixed DarkSeaGreen
+--OBJECT 85 105 2 Fixed DarkSeaGreen
+--OBJECT 78 110 2 Fixed DarkSeaGreen
+--OBJECT 73 110 2 Fixed DarkSeaGreen
+--OBJECT 58 110 2 Fixed DarkSeaGreen
+--OBJECT 44 111 2 Fixed DarkSeaGreen
+--OBJECT 34 108 2 Fixed DarkSeaGreen
+--OBJECT 21 112 2 Fixed DarkSeaGreen
+--OBJECT 6 107 2 Fixed DarkSeaGreen
+--OBJECT 3 118 2 Fixed DarkSeaGreen
+--OBJECT 19 119 2 Fixed DarkSeaGreen
+--OBJECT 35 120 2 Fixed DarkSeaGreen
+--OBJECT 60 121 2 Fixed DarkSeaGreen
+--OBJECT 77 121 2 Fixed DarkSeaGreen
+--OBJECT 74 125 2 Fixed DarkSeaGreen
+--OBJECT 76 133 2 Fixed DarkSeaGreen
+--OBJECT 62 136 2 Fixed DarkSeaGreen
+--OBJECT 63 128 2 Fixed DarkSeaGreen
+--OBJECT 46 126 2 Fixed DarkSeaGreen
+--OBJECT 38 127 2 Fixed DarkSeaGreen
+--OBJECT 42 136 2 Fixed DarkSeaGreen
+--OBJECT 26 138 2 Fixed DarkSeaGreen
+--OBJECT 17 138 2 Fixed DarkSeaGreen
+--OBJECT 9 128 2 Fixed DarkSeaGreen
+
+--******************************************************************
+-- Labels
+
+-- Tree
+Boundary "bdltr001*" 142 46 166 36
+PP "Tree" 166 36 0.1
+
+-- Obstacle
+Boundary "bdlob001*" 245 57 258 44
+PP "Obstacle" 258 44 0.1
+
+-- Obstacle
+Boundary "bdlob002*" 128 82 152 75
+PP "Building" 152 75 0.1
+
+

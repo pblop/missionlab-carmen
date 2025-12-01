@@ -1,0 +1,82 @@
+/**********************************************************************
+ **                                                                  **
+ **                          MOVED_DISTANCE.cnl                      **
+ **                                                                  **
+ **                                                                  **
+ **                Written by:  Jonathan F. Diaz                     **
+ **                                                                  **
+ **   Copyright 1999 - 2005, Georgia Tech Research Corporation       **
+ **   Atlanta, Georgia  30332-0415                                   **
+ **   ALL RIGHTS RESERVED, See file COPYRIGHT for details.           **
+ **                                                                  **
+***********************************************************************/
+
+/* $Id: MOVED_DISTANCE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+init
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool MOVED_DISTANCE with
+   double   desired_distance;
+   robot_position position;
+header
+  double dx = 0;
+  double dy = 0;
+  bool firsttime = true;
+  robot_position last_pos;
+body
+  //static double dx, dy;
+  //static int init = 0;
+  //static robot_position last_pos;
+  double desiredDistanceSquare, currentDistanceSquare;
+
+  /*
+  if (!init) {
+     init = 1;
+     dx = 0; dy = 0;
+     last_pos.v.x  = position.v.x;
+     last_pos.v.y  = position.v.y;
+  }
+  */
+  if (firsttime)
+  {
+      last_pos.v.x  = position.v.x;
+      last_pos.v.y  = position.v.y;
+      firsttime = false;     
+  }
+
+  //desiredDistanceSquare = desired_distance*desired_distance;
+  desiredDistanceSquare = pow(desired_distance, 2);
+  
+  dx += fabs(last_pos.v.x - position.v.x);
+  dy += fabs(last_pos.v.y - position.v.y);
+  currentDistanceSquare = dx*dx + dy*dy;
+  last_pos.v.x  = position.v.x;
+  last_pos.v.y  = position.v.y;
+  
+  //if (currentDistanceSquare > desiredDistanceSquare)
+  if (currentDistanceSquare >= desiredDistanceSquare)
+  {
+    //init = 0;
+    output = true;
+  }
+  else
+  {
+    output = false;  
+  }
+
+pend
+
+/**********************************************************************
+ * $Log: MOVED_DISTANCE.cnl,v $
+ * Revision 1.1.1.1  2006/07/12 13:37:59  endo
+ * MissionLab 7.0
+ *
+ * Revision 1.2  2005/02/08 00:07:28  endo
+ * Mods from usability-2004
+ *
+ **********************************************************************/

@@ -1,0 +1,112 @@
+/*************************************************
+*
+* This is the UGV CDL library file containing agent definitions
+*
+* $Id: agents.UGV,v 1.1.1.1 2006/07/12 13:37:54 endo Exp $
+*
+* $Log: agents.UGV,v $
+* Revision 1.1.1.1  2006/07/12 13:37:54  endo
+* MissionLab 7.0
+*
+* Revision 1.1.1.1  2005/02/06 22:59:29  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+* Revision 1.5  1996/06/05 20:28:31  doug
+* *** empty log message ***
+*
+# Revision 1.4  1996/06/04  22:44:05  doug
+# *** empty log message ***
+#
+# Revision 1.3  1996/06/01  21:55:00  doug
+# *** empty log message ***
+#
+# Revision 1.2  1996/05/14  23:17:57  doug
+# *** empty log message ***
+#
+# Revision 1.1  1996/05/14  18:22:57  doug
+# Initial revision
+#
+*
+**************************************************/
+
+// switch to the UGV namespace
+bindArch UGV;
+
+//**************************************************/
+
+/*
+// This is an ugly mess.
+// I can't figure out how to bind library components without
+// copying their definition into the configuration.  
+// So, I'll bind them here.....
+
+instBP<14,138> |Get list of objects| $ListOfObjects from sense_objects(
+  bound_to = detect_objs:DETECT_OBJECTS(
+        max_sensor_range = {^})<14,138>|Return a list of all objects detected within the sensor range (meters)|
+);
+
+instBP<14,138> |Need heading info.| $RobotLocation from localization(
+  bound_to = xyt:SHAFTENCODERS()<14,138>
+);
+*/
+
+// AGENTS
+//**********************************************************
+
+GoTo:[
+//   %Speed = {3.0},
+//   %Goal_Tolerance = {5.0},
+   %Goal_Location = {1245.0, 811.0},
+   xcountry(
+//      initial_speed = {^Speeds_10 %Speed},
+      initial_speed = {40.0},
+//      tolerance = {^Distances_10 %Goal_Tolerance},
+      points[A] = {^Map_Location %Goal_Location}
+      )<444,26>|move to|
+]<10,10>|move to the specified location|
+
+//**********************************************************
+Telop:[
+   teleoperate(
+      initial_speed = {40.0},
+      start = {10.0, 10.0},
+      end = {11.0, 10.0}
+   )
+]<10,10>|Engage the teleoperation control|
+
+//**********************************************************
+Stop:[
+   user_wait(
+      position = {^Map_Location %Goal_Location},
+      message = {"Waiting for proceed message"})
+]<66,36>|The robot doesn't move|
+
+
+// TRIGGERS
+//**********************************************************
+
+FirstTime:[
+   CONSTANT(value = {true})
+]<66,36>|Causes an immediate transition|
+
+//**********************************************************
+TelopComplete:[
+   CONSTANT(value = {true})
+]<66,36>|Transition taken when teleoperation is complete|
+
+
+//**********************************************************
+
+AtGoal:[
+   %Goal_Tolerance = {0.5},
+   %Goal_Location = {1.0, 1.0},
+   list_of_inputs(
+	input[A] = {^Distances_10 %Goal_Tolerance},
+   	input[B] = {^Map_Location %Goal_Location}
+   )
+]<66,36>|Causes a transition when the robot reaches the goal|
+
+
+//**********************************************************
+// Need to switch back to the generic namespace
+bindArch free;

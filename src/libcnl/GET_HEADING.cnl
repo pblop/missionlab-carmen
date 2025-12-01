@@ -1,0 +1,41 @@
+/**********************************************************************
+ **                                                                  **
+ **                         GET_HEADING.cnl                          **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: GET_HEADING.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure double GET_HEADING with
+   robot_position cur_pos;
+header
+body
+   output = cur_pos.heading;
+pend
+
+
+
+/**********************************************************************
+# $Log: GET_HEADING.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:57  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.7  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.6  1995/06/28  22:00:31  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

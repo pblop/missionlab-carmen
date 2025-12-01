@@ -1,0 +1,131 @@
+--******************************************************************
+--
+--	overwatch_capitol
+--
+--******************************************************************
+
+MISSION NAME "Urban Maneuver"
+
+SCENARIO "overwatch"
+
+OVERLAY overwatch_capitol.ovl
+
+-- SET OBSTACLE-COVERAGE 2
+-- SET MIN-OBSTACLE-RADIUS 6
+-- SET MAX-OBSTACLE-RADIUS 15
+-- SET SEED 945816565 -- 5052, 450, 206885425, 1003573794, 96165
+-- SET HIGHLIGHT-REPELLING-OBSTACLES
+-- CREATE-OBSTACLES
+
+NEW-ROBOT bluerobot "tmr_robot-1998" "blue" "" (
+		avoid_obstacle_sphere=2.5,
+		avoid_obstacle_safety_margin=1.5,
+		navigation_avoid_obstacle_gain=0.025,
+		navigation_avoid_robot_gain=0.025,
+		navigation_avoid_robot_min_range=1.5,
+		navigation_avoid_robot_sphere=2.5,
+		navigation_formation_gain=1.0,
+		navigation_move_to_goal_gain=1.0,
+		navigation_success_radius=6.0,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0.05,
+		detect_concealments_range=15,
+		occupy_avoid_robot_gain=0.5,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=5.0,
+		occupy_avoid_robot_sphere=5.0,
+		formation_spacing=3.0,
+		formation_slop=0,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 0.3, 
+		max_velocity =0.9
+		)
+
+NEW-ROBOT redrobot "tmr_robot-1998" "red" "" (
+		avoid_obstacle_sphere=2.5,
+		avoid_obstacle_safety_margin=1.5,
+		navigation_avoid_obstacle_gain=0.025,
+		navigation_avoid_robot_gain=0.023,
+		navigation_avoid_robot_min_range=1.5,
+		navigation_avoid_robot_sphere=2.5,
+		navigation_formation_gain=1.0,
+		navigation_move_to_goal_gain=1.0,
+		navigation_success_radius=6.0,
+		navigation_noise_gain=0,
+		navigation_move_to_concealment_gain=0.05,
+		detect_concealments_range=15,
+		occupy_avoid_robot_gain=0.5,
+		occupy_avoid_obstacle_gain=0.5,
+		occupy_avoid_robot_min_range=5.0,
+		occupy_avoid_robot_sphere=5.0,
+		formation_spacing=3.0,
+		formation_slop=0,
+		formation_saturation_length=0.5,
+		formation_dead_zone_radius=0.1,
+		move_to_goal_success_radius=1.0,
+		base_velocity = 0.3, 
+		max_velocity =0.9
+		)
+
+
+--SET ROBOT-LENGTH 0.5
+SET ROBOT-LENGTH 3.0
+
+--SET SHOW-TRAILS ON
+
+UNIT <troop> (<blue-team> bluerobot bluerobot bluerobot bluerobot) (<red-team> redrobot redrobot redrobot redrobot)
+
+COMMAND LIST:
+
+ 0. UNIT blue-team START PP-P1a 0 3.0 AND
+    UNIT red-team START PP-P1b 0 -3.0
+ --0. UNIT blue-team START PP-P6a -3.0 0 AND
+   -- UNIT red-team START PP-P6b -3.0 0
+
+ 1. UNIT blue-team MOVETO PP-P2a FORMATION Column
+
+ 2. UNIT red-team MOVETO PP-P2b FORMATION Column
+
+ 3. UNIT blue-team MOVETO PP-P3a FORMATION Column
+
+ 4. UNIT red-team MOVETO PP-P3b FORMATION Column
+
+ 5. UNIT blue-team MOVETO PP-P4a FORMATION Wedge 
+
+ 6. UNIT blue-team MOVETO PP-P5a FORMATION Column
+
+ 7. UNIT red-team MOVETO PP-P4b FORMATION Wedge
+
+ 8. UNIT red-team MOVETO PP-P5b FORMATION Column
+
+ 9. UNIT blue-team MOVETO PP-P6a FORMATION Column
+
+10. UNIT red-team MOVETO PP-P6b FORMATION Column
+
+11. UNIT blue-team MOVETO PP-P7a FORMATION Line
+
+12. UNIT blue-team MOVETO PP-P8a FORMATION Line
+
+13. UNIT blue-team MOVETO PP-P9a FORMATION Wedge
+
+14. UNIT blue-team MOVETO PP-P10a FORMATION Column
+
+15. UNIT red-team MOVETO PP-P7a FORMATION Line
+
+16. UNIT red-team MOVETO PP-P7b FORMATION Wedge
+
+17. UNIT red-team MOVETO PP-P8b FORMATION Column
+
+18. UNIT blue-team MOVETO PP-P11a FORMATION Column
+
+19. UNIT red-team MOVETO PP-P9b FORMATION Wedge
+
+20. UNIT red-team MOVETO PP-P10b FORMATION Line
+
+21. UNIT blue-team MOVETO PP-P12a FORMATION Wedge
+
+--22. UNIT troop STOP
+
+--23. Quit

@@ -1,0 +1,399 @@
+/*--------------------------------------------------------------------
+
+	FREE_US_PATH.cnl
+
+
+	Written by: 	Antonio Sgorbissa 
+
+	Copyright 2000, Antonio Sgorbissa 
+
+--------------------------------------------------------------------*/
+
+/* $Id: FREE_US_PATH.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector FREE_US_PATH with
+   Vector	goal_rel_loc;
+   obs_array    readings;
+   robot_position cur_pos;
+   bool 	progress;
+   int		state_sharing;
+header
+
+  bool has_less_stale(int oth);
+  void fill_id_string(char **&robcid);
+  void fill_goal_string(char **&robgoal);
+  void fill_los_string(char **&robcol);
+  bool get_colID(char *&colId);
+  int get_state_info(char *about);
+  void set_helper(char *rob);
+  char* get_helper();
+  void update_my_stale(int stale);
+  int get_my_stale();
+  void reset_my_stale();
+  bool get_goal_info(char *about, int &ts, Vector &goal);
+  int  get_my_visual_goal(Vector &vg, int &ptvg);
+  void set_my_visual_goal(int see, Vector vg, int ptvg);
+  bool get_pos_shot(Vector &pos, double &heading);
+  bool has_los(char *name, Vector &pos);
+  bool has_visual_goal(Vector, obs_array, double);
+  bool get_visual_goal(char* sender, char *about, int &goalID,
+                        Vector &pos, int &ptg, int &pptg);
+  bool put_visual_goal(char* sender, char *about, bool see, int goalID,
+                        Vector pos, int ptg, int optg);
+  Vector rel_to_abs(Vector pos, double heading, Vector p_to_pos);
+  Vector abs_to_rel(Vector pos, double heading, Vector p_to_abs);
+
+body
+
+//this is for printing on a file the number of steps
+//required to reach the goal
+
+   char *value, *ptr;
+   value = get_state("Steps");
+   int steps = (int)strtol(value, &ptr,10);
+
+   value = (char*) malloc(100*sizeof(int));
+   sprintf(value, "%d", steps+1);
+   put_state("Steps", value);
+   free (value);
+
+//initialize variables
+   VECTOR_CLEAR(output);
+
+//get the color ID of the robot
+
+   char *colId;
+   get_colID(colId);
+
+   Vector mypos = cur_pos.v;
+   double myhead = cur_pos.heading;
+
+//initialize variables that are needed for goal-sharing
+   char **robcol, **robgoal, **robcid;
+   fill_los_string(robcol);
+   fill_goal_string(robgoal);
+   fill_id_string(robcid);
+
+//update the state of the robot if it is not progressing
+//towards the goal
+
+   update_my_stale((int)progress);
+
+/************************************************************************
+* 1. check if I have reached my current VisGoal. If so, delete it	*
+************************************************************************/
+
+   Vector vcvg;
+   int iptg;
+   if ((bool)get_my_visual_goal(vcvg, iptg))
+   {
+	fflush(stdout);
+	return_state("ProgressDB");
+	Vector dtg;
+	minus_2d(vcvg, mypos, dtg);
+	
+	if (len_2d(dtg) < 0.5)
+	{
+		set_my_visual_goal(0, vcvg, iptg);
+		set_helper("");
+		if (debug)
+			printf("\n %s VGoal Reached", colId);
+	}
+   } 
+
+/************************************************************************
+* 2. check if it can find a free path to MY goal			*
+************************************************************************/
+ 
+
+   bool vgoal = has_visual_goal(goal_rel_loc, readings, 0.9);
+
+   if (vgoal)
+   {
+	Vector gal = rel_to_abs(mypos, myhead, goal_rel_loc);
+	set_my_visual_goal(1, gal, 0);
+
+// the first value is the score: 1 if I am seeing the goal
+   }  
+
+  
+/************************************************************************
+* 3. check if somebody else found a free path to MY goal		* 
+************************************************************************/
+
+   if (!vgoal)
+   {
+
+//retrieve the ID of MY current goal
+   int cgID;
+   Vector goal; 
+   for (int i = 0; i < 4; i++)
+   {
+	if (!strcmp(robcid[i], colId))
+	{
+	   if (!get_goal_info(robgoal[i], cgID, goal))	
+		cgID = 4;	
+	}
+   }
+
+//ask robots that it is currently seeing
+
+   for (int i = 0; i < 4; i++)
+   {
+	Vector pos;
+        if (has_los(robcol[i], pos))
+        {
+		int gID, ptg, peptg;
+		Vector dpos;
+
+//check if I already have a visible goal
+
+		if(get_visual_goal(robcid[i], colId, gID, dpos, ptg, peptg))
+		{
+			int optg;
+			Vector vg;
+			get_my_visual_goal(vg, optg);			
+			if (debug)
+				printf(" Last Optg %d ptg %d Id %d mID %d", optg, ptg, gID,cgID);
+
+//check if the new received information is better than the previous one
+
+			if ( (ptg < optg  - 10) && ((gID+3)/4 >= (cgID+3)/4))
+			{ 
+
+//remember the position in which I was when I saw the robot
+//with whom I am communicating goals
+
+			   	Vector mypos2;
+   				double myhead2;
+   				if (!get_pos_shot(mypos2, myhead2))
+   				{
+					mypos2 = mypos;
+					myhead2= myhead;
+   				}   
+
+//compute i-th robot's relative position
+
+			Vector rrl = rel_to_abs(mypos2, myhead2, pos);
+			vgoal = true;
+			set_my_visual_goal(1, rrl, ptg);
+
+			if (debug)
+				printf("\n%s sees my goal, the robot is in %f %f dist %d", robcol[i],  rrl.x, rrl.y, ptg);
+			}	
+		}
+        }
+   }
+   }
+
+/************************************************************************
+* 4. If I am not progressing, check if I can see a robot which can help	* 
+************************************************************************/
+
+   if (state_sharing)
+   {
+     Vector dvg;
+     int dptg;
+
+     int vg = get_my_visual_goal(dvg, dptg);
+
+//check if I don't have a visible goal as a consequence of
+//the goal-sharing mechanism
+ 
+     if (vg != 1)
+     {
+	int my_stale = get_my_stale();
+	int min_stale = my_stale;
+	Vector rrl;
+	
+   	for (int i = 0; i < 4; i++)
+   	{
+		Vector pos;
+        	if (has_los(robcol[i], pos))
+        	{
+			Vector mypos2;
+   			double myhead2;
+   			if (!get_pos_shot(mypos2, myhead2))
+   			{
+				mypos2 = mypos;
+				myhead2= myhead;
+   			}   
+
+			rrl = rel_to_abs(mypos2, myhead2, pos);
+
+//get the state of the robot that I am talking with 
+
+			int othstale = get_state_info(robcid[i]);
+			bool hlp_free = !strcmp("", get_helper())||!strcmp(robcol[i],get_helper()); 
+
+//if the robot is in a better situation than I am, it becomes my goal 
+
+			if (hlp_free && has_less_stale(othstale) &&othstale < min_stale)
+			{
+				set_my_visual_goal(2, rrl, dptg);
+				set_helper(robcol[i]);
+				min_stale = othstale;
+			}
+		}
+	}
+	if (min_stale==my_stale && !vg)
+		set_my_visual_goal(0, rrl, dptg);
+     }
+     else
+     {
+
+//if I have a visible goal (as a consequence of the goal-sharing
+//mechanism) I reset my stale
+ 
+	update_my_stale(-1);
+   	set_helper("");
+     }
+   }
+/************************************************************************
+* 5. check if I can see somebody else's goal				* 
+************************************************************************/
+
+   for (int i = 0; i < 4; i++)					//1
+   {					
+
+//if the robot knows i-th robot's goal then look for it
+
+        int gID;
+	Vector goal_loc;
+
+	if ( strcmp(robcid[i],colId) 
+	&& get_goal_info(robgoal[i],gID, goal_loc))
+        {
+//compute the i-th robot's goal in relative coordinates
+
+		Vector grl=abs_to_rel(mypos, myhead, goal_loc);
+
+//check if there is a free path to the goal
+
+		bool see = has_visual_goal(grl, readings, 0.9);
+
+		if (see) 
+		{
+
+			int ptg = (int)(10*len_2d(grl));
+			put_visual_goal(colId, robcid[i], 1, gID, mypos, ptg, ptg);
+			if (debug)
+				printf("\n :::::::::::::::::%s can see %s goal %d ", colId, robcid[i], gID);
+		}
+		else
+		{
+			int lgID, ptg, pptg;
+			Vector lsp;
+			if (get_visual_goal(colId, robcid[i], lgID, lsp, ptg, pptg))
+			{
+			if ((lgID+3)/4 == (gID+3)/4)
+			{
+				Vector grl=abs_to_rel(mypos, myhead, lsp);
+   				bool seeo = has_visual_goal(grl, readings,0.9);
+
+//check if there is a free path to the goal
+				
+				ptg = (int)(10*len_2d(grl))+pptg;
+				if (!seeo)
+				{
+					pptg = ptg;
+					lsp = mypos;
+				}		
+				put_visual_goal(colId, robcid[i], 1, lgID, lsp, ptg, pptg);
+			}
+			}
+		
+		}
+	}
+   }
+
+/************************************************************************
+* 6. check if somebody else has found j-th robot's goal			* 
+************************************************************************/
+
+
+   for (int i = 0; i < 4; i++)
+   {
+//ask i-th robot (if it is currently seeing it)
+
+	Vector ipos;
+	if (has_los(robcol[i], ipos))
+        {
+
+//ask i-th robot about j-th robot's goal 
+
+   		for (int j = 0; j < 4; j++)
+                {
+			if (strcmp(robcid[j], colId)) 
+			{	
+
+//if i-th robot knows something (1st byte = true), get the score of the 
+//information in the second byte
+			
+			int sgID, ptg, pptg;
+			Vector pos;
+
+			if (get_visual_goal(robcid[i], robcid[j], sgID, pos, ptg, pptg))
+			{	
+//check if I already know something about j-th robot. If the score of
+//my information is lower, or the information is old, or I have no 
+//information, store the one that I have just received 
+
+			int rgID, optg, opptg;
+			Vector opos;
+			bool ni = false;
+			if (get_visual_goal(colId, robcid[j], rgID, opos, optg, opptg))
+			{
+				if ( (rgID+3)/4 < (sgID+3)/4 ||
+					(ptg < optg - 10 && 
+					(rgID+3)/4 >= (sgID+3)/4))
+					ni = true;
+			}
+			else
+				ni = true;
+
+
+//::::sender-owner::::the second value is the score set to iSC + 1 
+			if (ni)
+			{
+                                int di = ptg+(int)(10*len_2d(ipos));
+				put_visual_goal(colId, robcid[j], 1, sgID, mypos, di, di);
+			}
+			}
+			}
+		}
+	
+	}
+   }
+
+   fflush(stdout);
+   for (int i = 0; i < 4; i++)
+   {
+        free(robcol[i]);
+        free(robgoal[i]);
+        free(robcid[i]);
+   }
+   free (robcol);
+   free (robgoal);
+   free (robcid);
+
+pend
+
+
+/**********************************************************************
+# $Log: FREE_US_PATH.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#**********************************************************************/

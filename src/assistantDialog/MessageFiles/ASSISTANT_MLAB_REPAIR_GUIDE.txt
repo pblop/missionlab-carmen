@@ -1,0 +1,4 @@
+The CBR wizard will guide you
+through the repair process...
+
+Please note that for path-related options, inserting a via point will move the robot from the location you paused the robot during the replay to the new via point, and then to the next waypoint in the robot route.

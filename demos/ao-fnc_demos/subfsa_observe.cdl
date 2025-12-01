@@ -1,0 +1,60 @@
+/*************************************************
+*
+* This CDL file subfsa_observe.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+[
+FSA1:FSA(
+      society[$AN_2545]<264,246>|State1| = [
+        Stop]<100,100>
+,
+      society[$AN_2547]<606,246>|State2| = [
+        Stop]<100,100>
+,
+      society[$AN_2549]<607,442>|State3| = [
+          %alert_subject = {"Warning: Enemy is leaving"},
+          %alert_message = {""},
+          %sends_email = {NO_Email},
+          %recipient = {""},
+          %sends_image = {NO_Image}
+,
+        Alert]<100,100>
+,
+      society[$AN_2551]<268,441>|State4| = [
+          %notify_message = {"ObserveTask completed."}
+,
+        Notify]<100,100>
+,
+      society[Start]<50,50>|Start| = [
+        Stop]<100,100>
+,
+      society[$AN_2562]<270,656>|State5| = [
+        Stop]<10,10>
+,
+      rules[$AN_2547]<606,246>|State2| = if [
+          %Objects = {Enemies},
+          %Distance = {110.0}
+,
+        AwayFrom]<0,0>|Trans3|
+ goto $AN_2549,
+      rules[Start]<50,50>|Start| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2545,
+      rules[$AN_2549]<607,442>|State3| = if [
+        Alerted]<0,0>|Trans5|
+ goto $AN_2551,
+      rules[$AN_2545]<264,246>|State1| = if [
+          %Objects = {Enemies},
+          %Distance = {100}
+,
+        Near]<0,0>|Trans2|
+ goto $AN_2547,
+      rules[$AN_2551]<268,441>|State4| = if [
+        Immediate]<10,10>|Trans1|
+ goto $AN_2562)<47,45>|The State Machine|
+]<10,10>
+

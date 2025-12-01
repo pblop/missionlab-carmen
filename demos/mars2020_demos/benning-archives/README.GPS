@@ -1,0 +1,97 @@
+----------------------------------------------------------------------
+README.GPS created by Yoichiro Endo (04/08/2004)
+----------------------------------------------------------------------
+
+TO CHANGE COORDINATES FOR BASE.
+
+1) Start minicom or hserver (with shift-t).
+
+2) The terminal should be 9600 boudrate, N, 8, 1.
+
+3) To update, latitude, longitude, and height (meters), type:
+
+  > FIX POSITION xx.xxxxxx -xx.xxxxxx xxx.xx
+  > LOG com1 rtcm3 ontime 10
+  > LOG com1 rtcm59 ontime 2
+  > LOG com1 rtcm ontime 5
+  > SAVECONFIG
+
+  where x is the appropriate number. Use SAVECONFIG FORCE
+  if there is trouble updating it.
+
+----------------------------------------------------------------------
+
+TO SET UP REMOTE (ROBOT SIDE)
+
+1) Start minicom or hserver (with shift-t) connecting COM1.
+
+2) The terminal should be 115200 boudrate, N, 8, 1 as that's what
+   HServer expects, but the original manufacturing setting is to use
+   9600 baudrate.
+
+3) Initialize the COM1 to set up its baudrate, parity, databits,
+   stopbits, handshake, and echo by typing:
+
+  > COM1 115200, N, 8, 1, N, ON
+  
+4) Make GPS to log P20B and SPHB by typing:
+
+  > log com1 PS20B ontime 1
+  > log com1 SPHB ontime 1
+
+  * The screen should be flooded with data at this point.
+
+5) Save the configuration
+
+  > SAVECONFIG
+
+----------------------------------------------------------------------
+
+Subject: Re: GPS question
+Date: Tue, 13 Apr 2004 14:42:16 -0400
+From: "Thomas R. Collins" <tom.collins@gtri.gatech.edu>
+To: Alexander Stoytchev <saho@cc.gatech.edu>
+CC: endo@cc.gatech.edu, Ronald C Arkin <arkin@cc.gatech.edu>
+
+Hi Alex,
+
+(Endo was asking about this, too, so I'm cc'ing him.)
+
+The important thing to remember is that any unit that has been used as a 
+base station has had the SAVECONFIG operation executed on it.  This puts 
+all data in nonvolatile memory, so that it will be there for subsequent 
+power-ups, and it will resume whatever behavior it was doing before. Since 
+SAVECONFIG was executed AFTER it has been told to spit out differential 
+data logs at regular intervals, that is the behavior it will continue to 
+exhibit.  You would need to tell these units NOT to send any logs at all, 
+and cancel the command that made them believe that they are at a fixed 
+position.  THEN, you would have to SAVECONFIG again so that it wouldn't 
+boot up in base station mode the next time it is powered off and on. If 
+it fails, try SAVECONFIG FORCE.
+
+So I believe that the commands to issue to the base station are
+UNLOGALL
+UNFIX
+SAVECONFIG
+See what responses you get, and it should be clear if this works.
+
+I think that if you look in Hserver, you will see the code used to 
+initialize a mobile GPS unit.  So once you've done the steps above, Hserver 
+will handle all that needs to be done for the unit on a robot, every time 
+it is powered up.  SAVECONFIG should not be used, since it is unnecessary 
+for a unit under the direct control of a host that can configure it as 
+needed.  (It is unclear how many SAVECONFIGs can be executed over the life 
+of a unit.)
+
+So, all that remains is to convert a mobile unit to a base station. The 
+commands given in the manual (under the RT-20 section) are correct. Follow 
+them with SAVECONFIG, and it will be "permanent":
+
+FIX POSITION 33.78135 -84.40034 314.0   (Use the proper coordinates instead 
+of these)
+LOG COM1,RTCM3,ONTIME,10
+LOG COM1,RTCM59,ONTIME,2
+LOG COM1,RTCM,ONTIME,5
+SAVECONFIG
+
+

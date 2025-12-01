@@ -1,0 +1,41 @@
+/**********************************************************************
+ **                                                                  **
+ **                          DROP_IN_BASKET.cnl                       **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DROP_IN_BASKET.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+
+//**********************************************************************
+
+procedure Vector DROP_IN_BASKET with
+   ObjectReading basket;
+header
+body
+   exec_drop_object_in_basket(-1, basket.id);
+pend
+
+
+/**********************************************************************
+# $Log: DROP_IN_BASKET.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.2  1999/12/16 23:10:14  mjcramer
+# rh6 port
+#
+# Revision 1.1  1995/11/08  16:50:52  doug
+# Initial revision
+#
+#**********************************************************************/

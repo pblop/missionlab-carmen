@@ -1,0 +1,9 @@
+"Title: Unbind Robot\n\
+\n\
+Unbinding the robot will delete any robot specific parameters which \n\
+have been entered.  It will then revert the configuration to an unbound\n\
+state.\n\
+\n\
+Unbind: Unbind the configuration from a specific robot.\n\
+Cancel: Do not unbind.\n\
+Help:   This message."

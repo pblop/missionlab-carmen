@@ -1,0 +1,49 @@
+// AERIAL_MAINTAIN_ALTITUDE
+
+#include "cnl.inc"
+
+procedure Vector AERIAL_MAINTAIN_ALTITUDE with
+   robot_position  robopos;
+   double	   desired_altitude;
+   double          dead_zone;
+header
+
+   double ele;
+
+body
+  double dist;
+  double mag;
+  output.x = 0;
+  output.y = 0;
+
+  ele = exec_get_elevation();
+
+  dist = -1 * (ele - desired_altitude);
+  output.z = dist;
+
+
+  // create the vector pointing in the proper direction
+
+  // if we are within the dead zone, we don't need to change altitude anymore
+  if (fabs(dist) <= dead_zone) {
+	mag = 0;
+  }
+  
+  // else we modify the typical move to goal vector by multiplying by 2 to
+  //   increase the movement to the desired altitude
+  else {
+     if (dist > 0) output.z = 1;
+     if (dist < 0) output.z = -1;
+
+
+     mag = 1;
+  }
+
+  // and we multiply the output vector by the magnitude
+  mult_3d(output, mag);
+
+  if (debug) {
+     printf("AERIAL_MAINTAIN_ALTITUDE) output(%.1f, %.1f, %.1f)\n", output.x, output.y, output.z);
+}
+
+pend

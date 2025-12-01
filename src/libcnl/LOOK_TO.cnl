@@ -1,0 +1,34 @@
+/**********************************************************************
+ **                                                                  **
+ **                         LOOK_TO.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector LOOK_TO with
+    	double look_theta;
+	double look_psi;
+header
+body
+      /* generate a vector towards the heading */
+      output.x = 1.0;
+      output.y = tan( (look_theta*M_PI/180.0) );
+      output.z = tan( (look_psi*M_PI/180.0) ); 
+ 
+
+   if( debug )
+   {
+      fprintf(stderr,"LOOK_TO(%d) output=<%2.2f %2.2f %2.2f>\n",
+		 robot_id, output.x,output.y,output.z);
+   }
+pend
+
+

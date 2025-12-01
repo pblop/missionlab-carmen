@@ -1,0 +1,108 @@
+/**********************************************************************
+ **                                                                  **
+ **                   CNP_SAVE_TARGET_VELOCITY.cnl                   **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  CNP_SAVE_TARGET_VELOCITY saves the velocity of a target.        **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CNP_SAVE_TARGET_VELOCITY.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+//***********************************************************************
+// This function saves the velocity of the target for CNP.
+//***********************************************************************
+procedure Vector CNP_SAVE_TARGET_VELOCITY with
+    ObjectReading object;
+header
+    Vector initObjAbsPos;
+    bool initPointSampled = false;
+    bool saved = false;
+body
+{
+    gt_Point objRelPos;
+    Vector objAbsPos, obsVel;
+    robot_position robotPos;
+    char valueBuf[1024];
+    const bool DEBUG_CNP_SAVE_TARGET_VELOCITY = false;
+
+    VECTOR_CLEAR(output);
+    VECTOR_CLEAR(objAbsPos);
+
+    if (!saved)
+    {
+        if (object.id != NOID)
+        {
+            objRelPos = object.closest_point();
+            robotPos = exec_get_position();
+
+            objAbsPos.x = objRelPos.x;
+            objAbsPos.y = objRelPos.y;
+            rotate_z(objAbsPos, robotPos.heading);
+            plus_2d(objAbsPos, robotPos.v);
+
+
+            if (!initPointSampled)
+            {
+                VECTOR_CLEAR(initObjAbsPos);
+                initObjAbsPos = objAbsPos;
+                initPointSampled = true;
+            }
+            else
+            {
+                minus_2d(objAbsPos, initObjAbsPos, obsVel);
+
+                // Send out X.
+                sprintf(valueBuf, "%.2f", obsVel.x);
+                put_state((char *)(CNP_TARGET_VEL_X_KEY.c_str()), valueBuf);
+
+                // Send out Y.
+                sprintf(valueBuf, "%.2f", obsVel.y);
+                put_state((char *)(CNP_TARGET_VEL_Y_KEY.c_str()), valueBuf);
+
+                // Send out Z.
+                sprintf(valueBuf, "%.2f", obsVel.z);
+                put_state((char *)(CNP_TARGET_VEL_Z_KEY.c_str()), valueBuf);
+
+                // Send out confirmation.
+                put_state((char *)(CNP_TARGET_VEL_DONE_KEY.c_str()), "1");
+
+                saved = true;
+
+                if (debug || DEBUG_CNP_SAVE_TARGET_VELOCITY)
+                {
+                    fprintf(
+                        stderr,
+                        "CNP_SAVE_TARGET_VELOCITY.cnl: vel = <%.2f %.2f %.2f>",
+                        obsVel.x,
+                        obsVel.y,
+                        obsVel.z);
+                }
+            }
+        }
+    }
+}
+pend
+
+/**********************************************************************
+# $Log: CNP_SAVE_TARGET_VELOCITY.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/03/01 09:28:02  endo
+# Check-in for Type-I Intercept Experiment.
+#
+#**********************************************************************/

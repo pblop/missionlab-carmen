@@ -1,0 +1,605 @@
+/*************************************************
+*
+* This CDL file LOS_demo.cdl was created with cfgedit
+* version 4.0.05
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_1386 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1395,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1395]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1405 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1420]<359,327>|State2| = [
+                %New_Location = {2.49,7.68},
+                %New_Heading = {0.0}
+,
+              Localize]<100,100>
+,
+            society[Start]<105,62>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1421]<358,96>|State1| = [
+                %Cid = {Green_Robot}
+,
+              SetRobotColorId]<100,100>
+,
+            society[$AN_1422]<621,609>|State3| = [
+                %Goal_Location = {33.11,23.53},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1423]<1028,614>|State4| = [
+                %Goal_Location = {33.25,8.0},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1424]<1030,987>|State5| = [
+                %Goal_Location = {2.49,7.68},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1425]<598,990>|State6| = [
+                %Goal_Location = {33.28,7.94},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1426]<160,983>|State7| = [
+                %Goal_Location = {33.08,23.50},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1427]<159,604>|State8| = [
+                %Goal_Location = {2.83,23.70},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.31},
+                %Objects = {Blue_Robot | Red_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            rules[$AN_1421]<358,96>|State1| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_1420,
+            rules[$AN_1422]<621,609>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.11,23.53}
+,
+              AtGoal]<0,0>|Trans13|
+ goto $AN_1423,
+            rules[$AN_1423]<1028,614>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.25,8.00}
+,
+              AtGoal]<0,0>|Trans14|
+ goto $AN_1424,
+            rules[$AN_1424]<1030,987>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.49,7.68}
+,
+              AtGoal]<0,0>|Trans15|
+ goto $AN_1425,
+            rules[$AN_1425]<598,990>|State6| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.28,7.94}
+,
+              AtGoal]<0,0>|Trans16|
+ goto $AN_1426,
+            rules[$AN_1426]<160,983>|State7| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.08,23.50}
+,
+              AtGoal]<0,0>|Trans17|
+ goto $AN_1427,
+            rules[$AN_1427]<159,604>|State8| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.38,23.70}
+,
+              AtGoal]<0,0>|Trans19|
+ goto $AN_1422,
+            rules[Start]<105,62>|Start| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_1421,
+            rules[$AN_1420]<359,327>|State2| = if [
+              Immediate]<447,663>|Trans2|
+ goto $AN_1425)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<120,120> $AN_1446 from vehicle(
+  bound_to = LOS_demoRobot4:PIONEERAT(
+LOS_demoRobot4:[
+          $AN_1405,
+          $AN_1386]
+)<6,195>|Individual Robot|
+);
+
+instBP<227,266> $AN_1449 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1395,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1395]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1467 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1420]<358,326>|State2| = [
+                %New_Location = {2.579618,23.675159},
+                %New_Heading = {0.0}
+,
+              Localize]<100,100>
+,
+            society[Start]<105,62>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1421]<357,95>|State1| = [
+                %Cid = {Blue_Robot}
+,
+              SetRobotColorId]<100,100>
+,
+            society[$AN_1422]<610,616>|State3| = [
+                %Goal_Location = {33.11,23.53},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Red_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1423]<1027,612>|State4| = [
+                %Goal_Location = {33.25,8.0},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Red_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1424]<1030,988>|State5| = [
+                %Goal_Location = {2.49,7.68},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Red_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1425]<624,993>|State6| = [
+                %Goal_Location = {33.28,7.94},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Red_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1426]<160,983>|State7| = [
+                %Goal_Location = {33.08,23.50},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Red_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1427]<159,604>|State8| = [
+                %Goal_Location = {2.38,23.70},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Red_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            rules[Start]<105,62>|Start| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_1421,
+            rules[$AN_1421]<357,95>|State1| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_1420,
+            rules[$AN_1422]<610,616>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.11,23.53}
+,
+              AtGoal]<0,0>|Trans13|
+ goto $AN_1423,
+            rules[$AN_1423]<1027,612>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.25,8.00}
+,
+              AtGoal]<0,0>|Trans14|
+ goto $AN_1424,
+            rules[$AN_1424]<1030,988>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.49,7.68}
+,
+              AtGoal]<0,0>|Trans15|
+ goto $AN_1425,
+            rules[$AN_1425]<624,993>|State6| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.28,7.94}
+,
+              AtGoal]<0,0>|Trans16|
+ goto $AN_1426,
+            rules[$AN_1426]<160,983>|State7| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.08,23.50}
+,
+              AtGoal]<0,0>|Trans17|
+ goto $AN_1427,
+            rules[$AN_1420]<358,326>|State2| = if [
+              Immediate]<0,0>|Trans18|
+ goto $AN_1422,
+            rules[$AN_1427]<159,604>|State8| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.38,23.70}
+,
+              AtGoal]<0,0>|Trans19|
+ goto $AN_1422)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_1500 from vehicle(
+  bound_to = LOS_demoRobot3:PIONEERAT(
+LOS_demoRobot3:[
+          $AN_1467,
+          $AN_1449]
+)<5,99>|Individual Robot|
+);
+
+instBP<227,266> $AN_1501 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1395,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1395]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1512 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1420]<357,325>|State2| = [
+                %New_Location = {2.5,23.7},
+                %New_Heading = {0.0}
+,
+              Localize]<100,100>
+,
+            society[Start]<105,62>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1529]<1021,301>|State3| = [
+                %Goal_Location = {29,19},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Blue_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1531]<1020,600>|State4| = [
+                %Goal_Location = {15,3.7},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.3},
+                %Objects = {Blue_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1533]<571,601>|State5| = [
+                %Goal_Location = {6.96,27.86},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.31},
+                %Objects = {Blue_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1535]<122,602>|State6| = [
+                %Goal_Location = {38.24,12.48},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.31},
+                %Objects = {Blue_Robot | Green_Robot | Yellow_Robot}
+,
+              LOS_GoTo]<100,100>
+,
+            society[$AN_1421]<356,94>|State1| = [
+                %Cid = {Red_Robot}
+,
+              SetRobotColorId]<100,100>
+,
+            rules[$AN_1421]<356,94>|State1| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_1420,
+            rules[Start]<105,62>|Start| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_1421,
+            rules[$AN_1529]<1021,301>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {29.18,19.03}
+,
+              AtGoal]<0,0>|Trans8|
+ goto $AN_1531,
+            rules[$AN_1531]<1020,600>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {14.99,3.67}
+,
+              AtGoal]<0,0>|Trans9|
+ goto $AN_1533,
+            rules[$AN_1533]<571,601>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {6.96,27.86}
+,
+              AtGoal]<0,0>|Trans10|
+ goto $AN_1535,
+            rules[$AN_1420]<357,325>|State2| = if [
+              Immediate]<0,0>|Trans11|
+ goto $AN_1529,
+            rules[$AN_1535]<122,602>|State6| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {38.24,12.38}
+,
+              AtGoal]<0,0>|Trans12|
+ goto $AN_1529)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_1552 from vehicle(
+  bound_to = LOS_demoRobot2:PIONEERAT(
+LOS_demoRobot2:[
+          $AN_1512,
+          $AN_1501]
+)<0,1>|Individual Robot|
+);
+
+instBP<227,266> $AN_1553 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1395,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1395]<195,164>|State1| = [
+              Stop]<100,100>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1564 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1420]<361,329>|State2| = [
+                %New_Location = {33.11,23.53},
+                %New_Heading = {0.0}
+,
+              Localize]<100,100>
+,
+            society[Start]<105,62>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1421]<357,96>|State1| = [
+                %Cid = {Yellow_Robot}
+,
+              SetRobotColorId]<100,100>
+,
+            society[$AN_1422]<621,609>|State3| = [
+                %Goal_Location = {33.11,23.53},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Green_Robot}
+,
+              LOS_GoTo]<10,10>
+,
+            society[$AN_1423]<1027,612>|State4| = [
+                %Goal_Location = {33.25,8.0},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Green_Robot}
+,
+              LOS_GoTo]<10,10>
+,
+            society[$AN_1424]<1030,988>|State5| = [
+                %Goal_Location = {2.49,7.68},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Green_Robot}
+,
+              LOS_GoTo]<10,10>
+,
+            society[$AN_1425]<624,993>|State6| = [
+                %Goal_Location = {33.28,7.94},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.09},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Green_Robot}
+,
+              LOS_GoTo]<10,10>
+,
+            society[$AN_1426]<160,983>|State7| = [
+                %Goal_Location = {33.08,23.50},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.06},
+                %avoid_obstacle_safety_margin = {0.29},
+                %Objects = {Blue_Robot | Red_Robot | Green_Robot}
+,
+              LOS_GoTo]<10,10>
+,
+            society[$AN_1427]<160,604>|State8| = [
+                %Goal_Location = {2.38,23.70},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {1.02},
+                %avoid_obstacle_safety_margin = {0.28},
+                %Objects = {Blue_Robot | Red_Robot | Green_Robot}
+,
+              LOS_GoTo]<10,10>
+,
+            rules[Start]<105,62>|Start| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_1421,
+            rules[$AN_1421]<357,96>|State1| = if [
+              Immediate]<0,0>|Trans4|
+ goto $AN_1420,
+            rules[$AN_1422]<621,609>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.11,23.53}
+,
+              AtGoal]<0,0>|Trans13|
+ goto $AN_1423,
+            rules[$AN_1423]<1027,612>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.25,8.00}
+,
+              AtGoal]<0,0>|Trans14|
+ goto $AN_1424,
+            rules[$AN_1424]<1030,988>|State5| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.49,7.68}
+,
+              AtGoal]<0,0>|Trans15|
+ goto $AN_1425,
+            rules[$AN_1425]<624,993>|State6| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.28,7.94}
+,
+              AtGoal]<0,0>|Trans16|
+ goto $AN_1426,
+            rules[$AN_1426]<160,983>|State7| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {33.08,23.50}
+,
+              AtGoal]<0,0>|Trans17|
+ goto $AN_1427,
+            rules[$AN_1427]<160,604>|State8| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {2.38,23.70}
+,
+              AtGoal]<0,0>|Trans19|
+ goto $AN_1422,
+            rules[$AN_1420]<361,329>|State2| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_1427)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<120,120> $AN_1606 from vehicle(
+  bound_to = LOS_demoRobot1:PIONEERAT(
+LOS_demoRobot1:[
+          $AN_1564,
+          $AN_1553]
+)<9,303>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_1606,
+    $AN_1552,
+    $AN_1500,
+    $AN_1446]<10,10>|Group of Robots|
+]<10,10>
+

@@ -1,0 +1,38 @@
+/**********************************************************************
+ **                                                                  **
+ **                       EQUAL_INT.cnl                              **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: EQUAL_INT.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool EQUAL_INT with
+   int a;
+   int b;
+header
+body
+   output = a == b;
+pend
+
+
+/**********************************************************************
+# $Log: EQUAL_INT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  1996/03/01  00:48:35  doug
+# Initial revision
+#
+#**********************************************************************/

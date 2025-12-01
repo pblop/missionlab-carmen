@@ -1,0 +1,8 @@
+Overlay files describe landscape
+features.  Select one for your
+mission by selecting a file
+name and clicking 'Ok'.
+
+If you do not choose an overlay, 
+you can select one later by the 
+'File->Load Overlay' menu item.

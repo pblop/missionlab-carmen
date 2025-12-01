@@ -1,0 +1,36 @@
+The following shell scripts set up the iptserver and run a
+demonstration command script.
+
+   demo1          --  Runs example3 (Typical military scout mission)
+	          
+   demo2          --  Runs robot-lab2  (Mobile robot mission in
+                                        two rooms and a hall.)
+	          
+   demo3          --  Runs tech-demo4  (Based on one of our military
+                                        technoogy demonstrations)
+                      NOTE: When the robots get stuck at the
+		            wall made up of obstacles (black
+			    circles), the user needs to pop up
+			    the teleoperation interface (under
+			    the "Command" menu) and move the
+			    team manually around the wall.
+			    Press the [End Teleoperation]
+			    button to continue automatically.
+	          
+   demo4          --  Runs democ (Mission similar to ARPA UGV Demo C)
+
+   demo5          --  Runs robot-lab1 (simple mobile robot
+                                       mission in one room.)
+
+   demo_turn      --  Runs example_turn  (shows off formation turning)
+
+   demo_formation --  Runs example_formation (shows off various formations)
+
+Note that these scripts and the mlab and iptserver programs
+generate quite a bit of output to the shell.  This is normal.
+
+You can also run any of these command scripts by using the
+"demo" shell script directly.  For instance, to run example3,
+do:
+
+   demo example3

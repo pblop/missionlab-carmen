@@ -1,0 +1,46 @@
+/*--------------------------------------------------------------------
+
+	COMPUTE_F.cnl
+
+
+	Written by: 	Antonio Sgorbissa 
+
+	Copyright 2000, Antonio Sgorbissa 
+
+--------------------------------------------------------------------*/
+
+/* $Id: COMPUTE_F.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector COMPUTE_F with
+   Vector 	rep_force;
+header
+body
+
+   //printf("\nCompute F");
+   output = rep_force;
+   double aval = sqrt(rep_force.x*rep_force.x + rep_force.y*rep_force.y); 
+   if (aval > 0.0)
+   {
+	output.x = output.x/aval;
+	output.y = output.y/aval;
+   }
+pend
+
+
+/**********************************************************************
+# $Log: COMPUTE_F.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:04  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#**********************************************************************/

@@ -1,0 +1,63 @@
+/**********************************************************************
+ **                                                                  **
+ **                            SOUND.cnl                             **
+ **                                                                  **
+ **  Written by:  Alexander Stoytchev                                **
+ **                                                                  **
+ **  Outputs a vector in the direction of the sound source.          **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SOUND.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure Vector SOUND with
+   double robot_heading;
+   double sound_direction_x;
+   double sound_direction_y;
+header
+   Vector dir = ZERO_VECTOR;
+   double  angle;
+body
+   {
+      if ( (sound_direction_x == 0.0) && (sound_direction_y == 0.0) )
+        angle = 0.0;
+      else
+        angle = atan2(sound_direction_y, sound_direction_x);
+
+      dir.x = cos(angle);
+      dir.y = sin(angle);
+   }
+
+   output = dir;
+
+   // The output of this behavior is relative to the current heading of the
+   // robot.  So, to generate a constant heading (in world coordinates) vector
+   // requires compensation for the heading changes.
+   rotate_z(output, -1 * robot_heading);
+
+pend
+
+
+
+/**********************************************************************
+# $Log: SOUND.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:03  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/02/29 20:50:13  saho
+# Initial revision
+#
+#
+#**********************************************************************/

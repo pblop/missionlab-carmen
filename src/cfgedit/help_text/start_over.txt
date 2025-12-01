@@ -1,0 +1,7 @@
+"Title: Start Over\n\
+\n\
+Quit the current configuration and start new one.\n\
+\n\
+Yes:    Discard the current workspace and start over.\n\
+Cancel: Do not start over.\n\
+Help:   This message."

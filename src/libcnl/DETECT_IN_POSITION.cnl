@@ -1,0 +1,62 @@
+/*----------------------------------------------------------
+
+	DETECT_IN_POSITION
+
+	True/false output reflects if the robot is in
+		position
+
+	Written by:  Tucker Balch
+
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+----------------------------------------------------------*/
+
+/* $Id: DETECT_IN_POSITION.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+procedure bool DETECT_IN_POSITION with
+   Vector	offset;			/* vector to proper position */
+   double	slop;			/* distance of allowed slop */
+header
+   double	len;
+   int	last = 0;
+body
+   output = FALSE;
+
+   len = len_2d(offset);
+   if( len <= slop )
+   {
+      if (debug && last == FALSE)
+         fprintf(stderr,"DETECT_IN_POSITION (%d) IN POSITION\n", robot_id);
+      output = TRUE;	/* in position */
+   }
+   else
+   {
+      if (debug && last == TRUE)
+         fprintf(stderr,"DETECT_IN_POSITION (%d) OUT OF POSITION\n", robot_id);
+      output = FALSE;	/* not in position */
+   }
+
+   last = output;
+pend
+
+
+/**********************************************************************
+# $Log: DETECT_IN_POSITION.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.4  1995/09/18  20:00:51  doug
+# make DETECT_IN_POSITION return a bool
+#
+# Revision 1.3  1995/06/28  21:53:05  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

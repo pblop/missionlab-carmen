@@ -1,0 +1,85 @@
+/**********************************************************************
+ **                                                                  **
+ **                      AERIAL_MOVE_TO_GOAL.cnl                     **
+ **                                                                  **
+ **  Written by: Patrick Ulam                                        **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: AERIAL_MOVE_TO_GOAL.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+procedure Vector AERIAL_MOVE_TO_GOAL with
+   Vector	goal_rel_loc;
+//   double	goal_altitude;
+   double       sucess_radius;
+header
+   robot_position rp;
+   float x1, y1, x2, y2;
+   Vector a,b;
+body
+{
+    //  goal_rel_loc.z = goal_altitude;
+
+    // heading limiting
+    rp = exec_get_position();
+    x1 = 1;
+    y1 = 0;
+    a = goal_rel_loc;
+    unit_2d(a);
+    x2 = a.x;
+    y2 = a.y;
+
+
+    b.x = 1;
+    b.y = 0;
+
+    if (x2 < 0) {
+        if (y2 >= 0) {
+            rotate_z(b,5);
+        }
+        else if ( y2 < 0) {
+            rotate_z(b,-5);
+        }
+    }
+    else {
+        if (y2 > 0) {
+            rotate_z(b,5);
+        }
+        else if (y2 <= 0) {
+            rotate_z(b,-5);
+        }
+    }
+
+  
+    if (len_3d(goal_rel_loc) > success_radius) {
+        //    output = goal_rel_loc;
+        //	unit_3d(output);
+    }
+    else {
+        VECTOR_CLEAR(output);
+    }
+    //output = goal_rel_loc;
+    //  unit_2d(output);
+    output = b;
+
+    if (debug) {
+        fprintf(stderr,"AERIAL_MOVE_TO_GOAL(%d) r=%.1f output(%.1f, %.1f, %.1f)\n", robot_id, success_radius, output.x, output.y, output.z);
+    }
+}
+pend
+
+/**********************************************************************
+# $Log: AERIAL_MOVE_TO_GOAL.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.4  2006/05/15 03:01:26  endo
+# gcc-3.4 upgrade
+#
+#**********************************************************************/

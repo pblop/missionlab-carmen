@@ -1,0 +1,2 @@
+If you prefer, you can try and correct the mission manually. To do so, descend to the FSA level (if not there already) and modify tasks and triggers as you see appropriate.
+

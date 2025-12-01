@@ -1,0 +1,8 @@
+"Title: State Name\n\
+\n\
+Enter a unique name for the new state.\n\
+Case and white space are significant.\n\
+\n\
+Ok:     Use this name for the new state.\n\
+Cancel: Abort the operation.\n\
+Help:   This message."

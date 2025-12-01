@@ -1,0 +1,99 @@
+/*--------------------------------------------------------------------
+
+	avoid_robot.cnl
+
+	Avoid other robots.
+
+
+	Written by:  Tucker Balch
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: AVOID_ROBOT.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+procedure Vector AVOID_ROBOT with
+
+double	sphere;
+double	min_range;
+Robots	readings;
+
+header
+
+Vector	sum;
+Vector	t1,t2;
+int	i;
+double	len, mag;
+
+body
+
+VECTOR_CLEAR(output);
+VECTOR_CLEAR(sum);
+
+for(i=0; i<readings.cnt; i++)
+	{
+
+  if( debug )
+   fprintf(stderr,"AVOID_ROBOT: robot detected at <%.1f %.1f>\n",
+     readings.v[i].x, readings.v[i].y);
+
+	len = len_2d(readings.v[i]);
+	if (len < EPS_ZERO)
+		{
+		len = 0.0001;
+		readings.v[i].y = 1.0;
+		}
+	mag = 0;
+	if (len <= min_range)
+		{
+		mag = GT_INFINITY;
+		}
+	else if (len < sphere)
+		{
+                double denom = sphere - min_range;
+                if( fabs(denom) < EPS_ZERO )
+                {
+		   mag = GT_INFINITY;
+                }
+                else
+                {
+		   mag = (sphere - len) / denom;
+                } 
+		}
+	if (fabs(mag) > EPS_ZERO)
+		{
+		t1.x = -readings.v[i].x;
+		t1.y = -readings.v[i].y;
+		unit_2d(t1);
+		times_2d(t1, mag, t2);
+		add_2d(t2, sum, sum);
+		}
+	}
+output = sum;
+
+if( debug )
+   fprintf(stderr,"AVOID_ROBOT: <%.1f %.1f>\n",output.x, output.y);
+
+pend
+
+
+/**********************************************************************
+# $Log: AVOID_ROBOT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:55  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.6  2003/04/06 12:04:03  endo
+# gcc 3.1.1
+#
+# Revision 1.5  1995/06/28  21:35:46  jmc
+# Added RCS id and log strings.
+#*********************************************************************/

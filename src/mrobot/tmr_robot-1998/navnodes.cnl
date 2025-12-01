@@ -1,0 +1,142 @@
+/*--------------------------------------------------------------------
+
+	navigate.cnl
+
+	CNL code for a robot to navigate to a goal location
+
+	Originally Written by:  Tucker Balch
+        Modifed by:             Yoichiro Endo
+
+
+	Copyright 2000, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: navnodes.cnl,v 1.1.1.1 2008/07/14 16:44:24 endo Exp $ */
+
+/* ======================= motor modules ======================= */
+
+node obs_only is REMOVE_ROBOTS with
+   mixed = detect_obstacles;
+   robots = detect_robots;
+nend
+
+node swirl is SWIRL_STATIC_OBSTACLES with
+   sphere = db_swirl_sphere;
+   safety_margin = db_swirl_safety_margin;
+   readings = obs_only;
+   goal_rel_loc = robot_goal;
+nend
+
+node move_to_concealment is MOVE_TO_GOAL with
+	success_radius = 0;
+	goal_rel_loc = closest_concealment;
+
+nend
+
+node robot_goal is GLOBAL_TO_EGOCENTRIC with
+   global = extract_goal;
+   robot_location = get_xy;
+   robot_heading = get_heading; 
+nend
+
+
+node unit_goal is SUBTRACT_VECTORS with
+/*   name = {"unit_goal"};*/
+   A = robot_goal;
+   B = detect_unit_center;
+nend
+
+
+node move_to_goal is MOVE_TO_GOAL with
+	success_radius = db_move_to_goal_success_radius;
+	goal_rel_loc = unit_goal;
+nend
+
+node nav_at_goal is DETECT_IN_POSITION with
+	offset = unit_goal;
+	slop = db_nav_at_goal_success_radius;
+nend
+
+node nav_avoid_robot is AVOID_ROBOT with
+	min_range = db_nav_avoid_robot_min_range;
+	sphere = db_nav_avoid_robot_sphere;
+	readings = detect_robots;
+nend
+
+#ifdef INC_TELOP
+node telop is TELOP with
+   telop_mode = db_telop_mode;
+   robot_heading = get_heading;
+   joystick_x = db_joystick_x;
+   joystick_y = db_joystick_y;
+   joystick2_x = db_joystick2_x;
+   joystick2_y = db_joystick2_y;
+   slider_1 = db_slider_1;
+   slider_2 = db_slider_2;
+   joy_buttons = db_joy_buttons;
+nend
+#endif
+
+/* ======================= coordination modules ======================= */
+
+node navigate is SUM_WEIGHTED_VECTORS with
+        name = {"navigate"};
+
+	v = noise;
+	gain = db_nav_noise_gain;
+
+	v = move_to_goal;
+        gain = db_nav_move_to_goal_gain;
+
+	v = avoid_obstacle;
+	gain = db_nav_avoid_obs_gain;
+
+	v = swirl;
+	gain = db_nav_swirl_gain;
+
+	v = nav_avoid_robot;
+        gain = db_nav_avoid_robot_gain;
+
+	v = formation;
+        gain = db_nav_formation_gain;
+
+// ENDO
+	v = move_to_concealment;
+        gain = db_nav_move_to_concealment_gain;
+
+#ifdef INC_TELOP
+        v = telop;
+        gain = db_joystick_magnitude;
+#endif
+
+nend
+
+
+/**********************************************************************
+# $Log: navnodes.cnl,v $
+# Revision 1.1.1.1  2008/07/14 16:44:24  endo
+# MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/20 17:17:51  endo
+# MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+#
+# Revision 1.1.1.1  2006/07/12 13:38:01  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:13  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.3  2003/04/02 21:03:36  zkira
+# Added telop mode
+#
+# Revision 1.2  2002/10/25 02:15:36  kaess
+# - swirl stripped off unnecessary code and parameters,
+# infinite repulsion within safety margin added
+#
+# Revision 1.1  2000/08/01 19:19:42  endo
+# Initial revision
+#
+#**********************************************************************/

@@ -1,0 +1,27 @@
+
+MISSION-AREA 20.0 20.0
+
+ORIGIN 0.1 0.1
+
+SITE "The Pasture of Ferdinand"
+
+CONTROL MEASURES:  
+
+PP StartPlace* 1.0 1.0  0.01
+
+-- Plant some trees
+Object  18.0  17.0 1.0 Fixed "DarkSeaGreen"
+Object   3.0  2.0 0.85 Fixed "DarkSeaGreen"
+Object   5.0 10.0 1.0 Fixed "DarkSeaGreen"
+Object   7.0  7.0 1.7 Fixed "DarkSeaGreen"
+Object  10.0  2.0 1.0 Fixed "DarkSeaGreen"
+Object  12.0 10.0 1.3 Fixed "DarkSeaGreen"
+Object  19.5  7.0 0.8 Fixed "DarkSeaGreen"
+Object  2.0 18.0 1.0 Fixed "DarkSeaGreen"
+
+-- Plant a red (enraging) object
+Object  10.0 10.0 1.3 Fixed "red"
+
+
+AA "Home" 1.0 3.0 2.0 3.0 2.0 4.0 1.0 4.0
+Object  1.5 3.5 0.01 Fixed White 

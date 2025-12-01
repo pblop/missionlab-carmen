@@ -1,0 +1,11 @@
+#ifndef LOCALIZE_VARIANCE_H
+#define LOCALIZE_VARIANCE_H
+
+#define COMPASS_VARIANCE 0.2
+#define GYRO_VARIANCE    0.05
+#define GPS_VARIANCE     1
+#define GPS_THETA_VARIANCE 0.5
+
+
+
+#endif

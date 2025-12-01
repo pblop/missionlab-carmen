@@ -1,0 +1,385 @@
+/*************************************************
+*
+* This CDL file recov.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_1579 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1588,
+            rules[$AN_1588]<163,275>|State1| = if [
+              Immediate]<0,0>|Trans2|
+ goto $AN_1591,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1588]<163,275>|State1| = [
+              InitiaizeCSB]<100,100>
+,
+            society[$AN_1591]<601,274>|State2| = [
+              UpdateCSBSensorData]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1595 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1610]<156,472>|State2| = [
+                %Goal_Location = {119.0, 33.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<100,100>
+,
+            society[$AN_1612]<538,172>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_1614]<846,483>|State4| = [
+                %Goal_Location = {106.0, 35.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1616]<588,836>|State5| = [
+                %Goal_Location = {101.0, 36.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1618]<170,838>|State6| = [
+              Stop]<10,10>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1621]<328,116>|State1| = [
+              Standby*]<100,100>
+,
+            society[$AN_1623]<689,156>|State7| = [
+              Stop]<10,10>
+,
+            society[$AN_1625]<1041,152>|State8| = [
+                %Goal_Location = {119.0, 34.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1627]<1043,684>|State9| = [
+                %Goal_Location = {123.0, 20.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1629]<873,974>|State10| = [
+              Stop]<10,10>
+,
+            rules[$AN_1610]<156,472>|State2| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {119.0, 33.0}
+,
+              AtGoal]<0,0>|Trans3|
+ goto $AN_1614,
+            rules[$AN_1614]<846,483>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {106.0, 35.0}
+,
+              AtGoal]<0,0>|Trans4|
+ goto $AN_1616,
+            rules[$AN_1616]<588,836>|State5| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {101.0, 36.0}
+,
+              AtGoal]<0,0>|Trans5|
+ goto $AN_1618,
+            rules[$AN_1621]<328,116>|State1| = if [
+                %notify_message = {"PROCEED MISSION"}
+,
+              TaskExited]<0,0>|Trans1|
+ goto $AN_1610,
+            rules[$AN_1621]<328,116>|State1| = if [
+                %notify_message = {"MOTOR FAILURE DETECTED"}
+,
+              TaskExited]<0,0>|Trans2|
+ goto $AN_1612,
+            rules[$AN_1618]<170,838>|State6| = if [
+                %threshold = {67.0}
+,
+              WeakCommSignal]<403,504>|Trans14|
+ goto $AN_1623,
+            rules[$AN_1623]<689,156>|State7| = if [
+                %threshold = {70.0}
+,
+              StrongCommSignal]<0,0>|Trans18|
+ goto $AN_1625,
+            rules[$AN_1614]<846,483>|State4| = if [
+                %threshold = {67.0}
+,
+              WeakCommSignal]<0,0>|Trans22|
+ goto $AN_1623,
+            rules[$AN_1616]<588,836>|State5| = if [
+                %threshold = {67.0}
+,
+              WeakCommSignal]<0,0>|Trans23|
+ goto $AN_1623,
+            rules[$AN_1610]<156,472>|State2| = if [
+                %threshold = {67.0}
+,
+              WeakCommSignal]<10,10>|Trans24|
+ goto $AN_1623,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans3|
+ goto $AN_1621,
+            rules[$AN_1625]<1041,152>|State8| = if [
+                %notify_message = {"Comm Recovered"}
+,
+              Notified]<1043,414>|Trans26|
+ goto $AN_1627,
+            rules[$AN_1627]<1043,684>|State9| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {123.0, 20.0}
+,
+              AtGoal]<0,0>|Trans27|
+ goto $AN_1629)<292,156>|The State Machine|
+,
+        max_vel = {1.6},
+        base_vel = {1.4},
+        cautious_vel = {0.3},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_1657 from vehicle(
+  bound_to = recovRobot2:DEFAULT_ROBOT(
+recovRobot2:[
+          $AN_1595,
+          $AN_1579]
+)<28,175>|Individual Robot|
+);
+
+instBP<227,266> $AN_1658 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1588,
+            rules[$AN_1588]<196,284>|State1| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1669,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1588]<196,284>|State1| = [
+              InitiaizeCSB]<10,10>
+,
+            society[$AN_1669]<513,284>|State2| = [
+              UpdateCSBSensorData]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1673 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1621]<158,174>|State1| = [
+              Standby*]<10,10>
+,
+            society[$AN_1610]<160,449>|State2| = [
+                %Goal_Location = {135.0, 72.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1612]<420,219>|State3| = [
+              Stop]<10,10>
+,
+            society[$AN_1691]<607,335>|State4| = [
+                %Goal_Location = {141.0, 98.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1693]<605,771>|State5| = [
+                %Goal_Location = {141.0, 104.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1695]<1050,791>|State6| = [
+              Stop]<10,10>
+,
+            society[$AN_1697]<1083,481>|State7| = [
+                %method = {Comm_Recovery},
+                %follow_csb_advise_gain = {1.0},
+                %avoid_obstacle_gain = {0.06},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {3.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              FollowCSBAdvise]<10,10>
+,
+            society[$AN_1699]<1121,97>|State8| = [
+                %Goal_Location = {119.0, 33.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1701]<580,99>|State9| = [
+                %Goal_Location = {131.0, 20.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.05},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1703]<260,87>|State10| = [
+              Stop]<10,10>
+,
+            society[$AN_1705]<820,268>|State11| = [
+                %notify_message = {"Comm Recovered"}
+,
+              NotifyRobots]<10,10>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            rules[$AN_1621]<158,174>|State1| = if [
+                %notify_message = {"PROCEED MISSION"}
+,
+              TaskExited]<0,0>|Trans1|
+ goto $AN_1610,
+            rules[$AN_1621]<158,174>|State1| = if [
+                %notify_message = {"MOTOR FAILURE DETECTED"}
+,
+              TaskExited]<0,0>|Trans2|
+ goto $AN_1612,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans3|
+ goto $AN_1621,
+            rules[$AN_1610]<160,449>|State2| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {135.0, 72.0}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_1691,
+            rules[$AN_1691]<607,335>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {141.0, 98.0}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_1693,
+            rules[$AN_1693]<605,771>|State5| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {141.0, 104.0}
+,
+              AtGoal]<0,0>|Trans6|
+ goto $AN_1695,
+            rules[$AN_1693]<605,771>|State5| = if [
+                %threshold = {64.0}
+,
+              WeakCommSignal]<0,0>|Trans11|
+ goto $AN_1697,
+            rules[$AN_1691]<607,335>|State4| = if [
+                %threshold = {64.0}
+,
+              WeakCommSignal]<0,0>|Trans19|
+ goto $AN_1697,
+            rules[$AN_1695]<1050,791>|State6| = if [
+                %threshold = {64.0}
+,
+              WeakCommSignal]<0,0>|Trans21|
+ goto $AN_1697,
+            rules[$AN_1701]<580,99>|State9| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {131.0, 20.0}
+,
+              AtGoal]<0,0>|Trans28|
+ goto $AN_1703,
+            rules[$AN_1699]<1121,97>|State8| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {119.0, 33.0}
+,
+              AtGoal]<0,0>|Trans29|
+ goto $AN_1705,
+            rules[$AN_1705]<820,268>|State11| = if [
+              MessageSent]<0,0>|Trans30|
+ goto $AN_1701,
+            rules[$AN_1610]<160,449>|State2| = if [
+                %threshold = {64.0}
+,
+              WeakCommSignal]<0,0>|Trans31|
+ goto $AN_1697,
+            rules[$AN_1697]<1083,481>|State7| = if [
+                %threshold = {70.0}
+,
+              StrongCommSignal]<0,0>|Trans13|
+ goto $AN_1699)<292,156>|The State Machine|
+,
+        max_vel = {1.6},
+        base_vel = {1.4},
+        cautious_vel = {0.3},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1736 from vehicle(
+  bound_to = recovRobot1:DEFAULT_ROBOT(
+recovRobot1:[
+          $AN_1673,
+          $AN_1658]
+)<27,23>|Individual Robot|
+);
+
+[
+[
+    $AN_1736,
+    $AN_1657]<10,10>|Group of Robots|
+]<10,10>
+

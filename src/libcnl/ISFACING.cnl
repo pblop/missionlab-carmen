@@ -1,0 +1,52 @@
+/**********************************************************************
+ **                                                                  **
+ **                       ISFACING.cnl                               **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  William Halliburton                                **
+ **                                                                  **
+ **                                                                  **
+ **                                                                  **
+ **********************************************************************/
+
+init
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool ISFACING with
+   double   desired_heading;
+   double   accuracy;
+   double robot_heading;
+header
+body
+  int dhead,rhead;
+  int a,b;  
+
+  dhead = (int)desired_heading;
+  rhead = (int)robot_heading;
+
+  while(dhead < 0) dhead += 360;
+  while(dhead >= 360) dhead -= 360;
+
+  while(rhead < 0) rhead += 360;
+  while(rhead >= 360) rhead -= 360;
+
+  if (dhead < rhead) {
+    a = rhead - dhead;
+    b = 360 - rhead + dhead;
+  }
+  else {
+    a = dhead - rhead;
+    b = 360 - dhead + rhead;
+  }
+
+  if (((a<b)?a:b)<accuracy) {
+    output = true;
+  } else output = false;
+
+  if (debug) fprintf(stderr,"ISFACING: %d %d %f %d\n",dhead,rhead,accuracy,output);
+pend
+

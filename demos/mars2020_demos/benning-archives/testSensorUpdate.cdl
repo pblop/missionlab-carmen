@@ -1,0 +1,65 @@
+/*************************************************
+*
+* This CDL file testSensorUpdate.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_1555 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1564,
+            rules[$AN_1564]<176,282>|State1| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1586,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1564]<176,282>|State1| = [
+              InitiaizeCSB]<10,10>
+,
+            society[$AN_1586]<550,294>|State2| = [
+              UpdateCSBSensorData]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1567 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1590]<206,246>|State1| = [
+              Stop]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans2|
+ goto $AN_1590)<292,156>|The State Machine|
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1583 from vehicle(
+  bound_to = defaultRobot1:DEFAULT_ROBOT(
+defaultRobot1:[
+          $AN_1567,
+          $AN_1555]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_1583]<10,10>|Group of Robots|
+]<10,10>
+

@@ -1,0 +1,75 @@
+/*************************************************
+*
+* This CDL file sample-type-I-bidder.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2945 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[$AN_2959]<212,314>|State1| = [
+              Stop]<100,100>
+,
+            society[$AN_2961]<476,171>|State2| = [
+              CNP_BidOnTask]<100,100>
+,
+            society[$AN_2963]<748,314>|State3| = [
+              Stop]<100,100>
+,
+            society[$AN_2965]<483,445>|State4| = [
+              CNP_ExecuteWonTask]<100,100>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2959,
+            rules[$AN_2961]<476,171>|State2| = if [
+              CNP_IsAuctionEnded]<0,0>|Trans1|
+ goto $AN_2963,
+            rules[$AN_2963]<748,314>|State3| = if [
+              CNP_WonTask]<0,0>|Trans2|
+ goto $AN_2965,
+            rules[$AN_2963]<748,314>|State3| = if [
+              CNP_LostTask]<0,0>|Trans3|
+ goto $AN_2959,
+            rules[$AN_2959]<212,314>|State1| = if [
+              CNP_AuctionReady]<0,0>|Trans1|
+ goto $AN_2961,
+            rules[$AN_2965]<483,445>|State4| = if [
+                %cnp_task = {CHECK_WON_CNP_TASK},
+                %task_name = {""}
+,
+              CNP_TaskCompletionNotified]<346,364>|Trans1|
+ goto $AN_2959,
+            rules[$AN_2965]<483,445>|State4| = if [
+                %cnp_task = {CHECK_WON_CNP_TASK},
+                %task_name = {""}
+,
+              CNP_TaskRenegingNotified]<274,416>|Trans1|
+ goto $AN_2959)<292,156>|The State Machine|
+,
+        max_vel = {5.0},
+        base_vel = {2.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2982 from vehicle(
+  bound_to = sample-type-I-bidderRobot1:DEFAULT_ROBOT(
+sample-type-I-bidderRobot1:[
+          $AN_2945]
+)<23,28>|Individual Robot|
+);
+
+[
+[
+    $AN_2982]<10,10>|Group of Robots|
+]<10,10>
+

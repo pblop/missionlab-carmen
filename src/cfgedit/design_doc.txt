@@ -1,0 +1,88 @@
+----------- CDL Construction --------------------
+xxx = get_robot_location:xyt:SHAFTENCODERS()
+
+Gives the internal format:
+
+0xce828: get_robot_location
+	symbol_type = AGENT_NAME,
+	construction = CS_IBP, 
+	data_type = 0xc0a68,
+	defining_rec = 0xce768, 
+	input_generator = 0x0,
+	binds_to = 0xc1260, 
+	bound_to = 0xce768,
+
+0xc0a68: robot_position
+
+
+0xce768: xyt
+	symbol_type = SENSOR_NAME,
+	construction = CS_IBP,
+  	data_type = 0xc0a68,
+	defining_rec = 0xc50f8,
+    	input_generator = 0x0, 
+  	binds_to = 0xc1260,
+	bound_to = 0xce828,
+
+0xc50f8: SHAFTENCODERS
+	symbol_type = SENSOR_CLASS,
+	construction = CS_SOCIETY, 
+    	data_type = 0xc0a68,
+  	defining_rec = 0x0, 
+    	input_generator = 0x0,
+	binds_to = 0xc1260, 
+	bound_to = 0x0,
+
+0xc1260: localization
+	symbol_type = BP_CLASS,
+	construction = CS_IBP,
+	data_type = 0xc0798,
+	defining_rec = 0x0,
+	input_generator = 0x0,
+	binds_to = 0x0,
+	bound_to = 0x0,
+
+0xc0798: location
+
+----------- CDL Construction --------------------
+instAgent get_robot_location from xyt:SHAFTENCODERS();
+
+0xce2a8: get_robot_location
+	symbol_type = AGENT_NAME,
+	construction = CS_IBP, 
+	data_type = 0,
+	defining_rec = 0xce1f8, 
+	input_generator = 0x0,
+	binds_to = 0, 
+	bound_to = 0,
+
+0xce1f8: xyt
+	symbol_type = SENSOR_NAME,
+	construction = CS_IBP,
+  	data_type = 0xc0a68,
+	defining_rec = 0xc50f8,
+    	input_generator = 0x0, 
+  	binds_to = 0xc1260,
+	bound_to = 0,
+
+----------- CDL Construction --------------------
+robot_bp:vehicle( bound_to = alpha:Forager( ) )
+
+0xd5f48: robot_bp
+	symbol_type = BP_NAME,
+	construction = CS_SOCIETY,
+	data_type = 0x0,
+	defining_rec = 0xc8138,
+	input_generator = 0x0,
+	binds_to = 0x0,
+	bound_to = 0xd6158,
+
+0xd6158: alpha
+	symbol_type = ROBOT_NAME,
+	construction = CS_SOCIETY,
+	data_type = 0x0,
+	defining_rec = 0xcf558,
+	input_generator = 0x0,
+	binds_to = 0x0,
+	bound_to = 0xd5f48
+

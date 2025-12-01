@@ -1,0 +1,100 @@
+/**********************************************************************
+**                                                                  **
+**                         IR_POSICON_ANT_LIDER.cnl                 **
+**                                                                  **
+**                                                                  **
+ **********************************************************************/
+
+        /* $Id: IR_POSICON_ANT_LIDER.cnl,v 1.1.1.1 2009/05/20  $ */
+
+
+#include "cnl.inc"
+
+init
+    #include "dstar.hpp"
+iend
+
+
+procedure Vector IR_POSICON_ANT_LIDER with
+   obs_array    obstacles;
+   robot_position pos;
+   double gridsize;
+   double length;
+   double width;
+   double ao_val;
+   double goal_gain;
+   double persistence;
+   double angle_dev;
+   Vector ao_vec;
+header
+//         Dstar* d = new Dstar(length, width, gridsize);
+        Vector goal_rel_loc, posObjetivo;
+body
+
+
+    posObjetivo = posicion_ant_lider();
+    //fprintf(stderr, "El valor de initial %d\n", initial);
+    //fprintf(stderr,"IR POSICION_ANT_LIDER(%d) pos=(%.1f %.1f) --->obstacle_gain %f\n", robot_id, pos.v.x, pos.v.y, ao_val);
+//     fprintf(stderr,"Obstaculos = (%.1f %.1f)\n", ao_vec.x, ao_vec.y);
+    //fprintf(stderr,"gridsize %f /// length %f  ///  width %f\n", gridsize, length, width);
+    //posObjetivo = posicion_ant_lider();
+/*    minus_2d(posObjetivo, pos.v, goal_rel_loc);
+    rotate_z(goal_rel_loc, -1 * pos.heading);*/
+//     if( len_2d(goal_rel_loc) > gridsize )
+//     {
+//         Vector global = d->sequencer(goal_rel_loc, pos, obstacles, ao_val, ao_vec, goal_gain, persistence, angle_dev);
+//         minus_2d(global,pos.v,output);
+//         rotate_z(output,-1*pos.heading);
+//         unit_2d(output);
+//     }
+//     else{
+//     /* return a zero vector if within the success circle */
+//         cout<<"Within success radius\n"<<flush;
+//        output=goal_rel_loc;
+//        unit_2d(output);
+//         if(d) {
+//             d->~Dstar();
+//             d=NULL;
+//         }
+//     }
+
+
+//     fprintf(stderr,"++++++++++++++IR POSICION_ANT_LIDER(%d) output=(%.1f %.1f)++++++++++\n", robot_id,output.x,output.y);
+
+
+    /*Sin algoritmo D* */
+    posObjetivo = posicion_ant_lider();
+    minus_2d(posObjetivo, pos.v, output);
+    rotate_z(output, -1 * pos.heading);
+
+    if( debug )
+    {
+        fprintf(stderr,"IR POSICION_ANT_LIDER(%d) output=(%.1f %.1f)\n", robot_id,output.x,output.y);
+    }
+
+    //VECTOR_CLEAR(output);
+    //minus_2d(posObjetivo, pos.v, output);
+    //rotate_z(output, -1 * pos.heading);
+    //fprintf(stderr,"IR POSICION_ANT_LIDER(%d) output=(%.1f %.1f)\n", robot_id,output.x,output.y);
+//     fprintf(stderr,"Obstaculos = (%.1f %.1f)\n", ao_vec.x, ao_vec.y);
+//     output.x += ao_vec.x * ao_val;
+//     output.y += ao_vec.y * ao_val;
+//     fprintf(stderr,"output = (%.1f %.1f)\n", output.x, output.y);
+
+pend
+
+/* ************       Ir a posicion Anterior lider sin algoritmo A*
+        // printf("Posicion objetivo (%f, %f)\n", posObjetivo.x, posObjetivo.y);
+
+    VECTOR_CLEAR(output);
+    minus_2d(posObjetivo, pos.v, output);
+    rotate_z(output, -1 * pos.heading);
+
+
+    output.x += obstaculo.x * 0.3;
+    output.y += obstaculo.y * 0.3;
+
+    //printf("IR POSICION ANT LIDER obstaculo (%f, %f)\n", output.x, output.y);
+
+    //fprintf(stdout,"Estoy en IR_PosicionObjetivo\n");
+*/

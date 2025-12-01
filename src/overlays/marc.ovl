@@ -1,0 +1,212 @@
+--******************************************************************
+--
+--	marc.ovl
+--
+--	This overlay was developed for DARPA's Tactical Mobile
+--      Robotics Project.
+--
+--      Yoichiro Endo
+--
+--      04/13/2000
+--
+--******************************************************************
+
+MISSION-AREA 50.0 50.0
+
+SCENARIO "overwatch"
+
+SITE "MaRC Bldg. 3rd Floor, NE, Georgia Tech"
+
+ORIGIN -1 1
+
+HEADING 180
+
+CONTROL MEASURES:
+
+-- ************************ Start Place **************************** 
+OBJECT 42.0 18.3 0.75 Fixed white -- Identify it as Start_Place object
+--PP StartPlace 40.35 10.0 0.2
+--PP StartPlace 39.4  17.3 0.2
+PP StartPlace 39.0 18.3 0.2
+
+-- ********************** Objet Location **************************
+-- In Copy Room
+OBJECT 30.05 8.4 1.0 Fixed brown
+
+-- In MRL
+OBJECT 15.6 8.4 1.0 Fixed brown
+
+-- In Rm 356
+OBJECT 9.75 21.0 1.0 Movable brown
+
+-- Hallways
+--HALLWAY hallway1* CENTERLINE 40.35 5.5 40.35 19.0 WIDTH 2.9 EXTENTS 38.9 19.0 41.8 19.0 41.8 5.5 38.9 5.5
+HALLWAY hallway2* CENTERLINE 3.5 18.15 43.0 18.15 WIDTH 1.7 EXTENTS 41.8 17.3 41.8 19.0 2.8 19.0 2.8 17.3
+
+
+-- Old Mobile Robot Lab
+WALL "wlomrl001*" 35.9  7.5 38.9  7.5
+WALL "wlomrl002*" 32.1  5.5 35.9  5.5
+WALL "wlomrl003*" 32.1 17.3 32.1  5.5
+WALL "wlomrl004*" 35.9  7.5 35.9  5.5
+WALL "wlomrl005*" 38.9 17.3 38.9  7.5
+ROOM "Rm 362"  38.9 17.3 38.9 5.5 32.1 5.5 32.1 17.3 
+WALL "wlomrl006*" 32.1 17.3 33.65 17.3
+WALL "wlomrl007*" 35.15 17.3 38.9 17.3
+Gap "gpomrl001*" 34.4 17.4 34.4 17.2 1.5
+--DOOR "dromrl001*" 33.65 17.3 35.15 17.3
+WALL "wlomrl008*" 33.65 17.3 35.15 17.3
+--OBJECT 30.05 11.4 1.0 Fixed lightblue
+--OBJECT 30.05 11.4 1.0 Fixed yellow
+
+
+-- Elec. Closet
+WALL "wlec001*" 35.9  7.5 38.9  7.5
+WALL "wlec002*" 35.9  5.5 38.9  5.5
+WALL "wlec003*" 35.9  7.5 35.9  5.5
+WALL "wlec004*" 38.9  7.5 38.9  5.5
+
+-- Copy & Mail Room
+WALL "wlcmr001*" 28.0  5.5 32.1  5.5
+WALL "wlcmr002*" 28.0 17.3 28.0  5.5
+WALL "wlcmr003*" 32.1 17.3 32.1  5.5
+ROOM "Copy Room" 32.1 17.3 32.1  5.5 28.0  5.5 28.0 17.3
+WALL "wlcmr004*" 28.0 17.3 29.25 17.3
+WALL "wlcmr005*" 30.75 17.3 32.1 17.3
+Gap "gpcmr001*" 30.0 17.4 30.0 17.2 1.5
+DOOR "drcmr001*" 28.0 17.3 32.1 17.3
+--WALL "wlcmr006*" 28.0 17.3 32.1 17.3
+--OBJECT 30.05 8.4 1.0 Fixed Purple
+
+-- Room 360
+WALL "Rm 360" 19.7 17.3 28.0 17.3
+WALL "wlrm360001*" 19.7 11.4 28.0 11.4
+WALL "wlrm360002*" 19.7 17.3 19.7 11.4
+WALL "wlrm360003*" 28.0 17.3 28.0 11.4
+
+-- Room 360A
+WALL "Rm 360A" 19.7 11.4 28.0 11.4
+WALL "wlrm360a001*" 19.7  5.5 28.0  5.5
+WALL "wlrm360a002*" 19.7 11.4 19.7  5.5
+WALL "wlrm360a003*" 28.0 11.4 28.0  5.5
+
+
+-- MRL
+WALL "wlmrl001*" 11.5 17.3 16.85 17.3
+WALL "wlmrl002*" 18.35 17.3 19.7 17.3
+WALL "wlmrl003*" 11.5  5.5 19.7  5.5
+WALL "wlmrl004*" 11.5 17.3 11.5  5.5
+WALL "wlmrl005*" 19.7 17.3 19.7  5.5
+Gap "gpmrl001*" 17.6 17.4 17.6 17.2 1.5
+ROOM "Mobile Robot Lab" 19.7 17.3 19.7 5.5 11.5 5.5 11.5 17.3
+DOOR "drmrl001*" 16.85 17.3 18.35 17.3
+--OBJECT 15.6 8.4 1.0 Fixed Green
+
+
+-- Data Closet (outside MRL)
+WALL "wldc001*" 14.3 17.3 16.8 17.3
+WALL "wldc002*" 14.3 16.2 16.8 16.2
+WALL "wldc003*" 14.3 17.3 14.3 16.2
+WALL "wldc004*" 16.8 17.3 16.8 16.2
+
+-- Room 358
+WALL "Rm 358"  2.8 17.3 11.5 17.3
+WALL "wlrm358001*"  2.8  5.5 11.5  5.5
+WALL "wlrm358002*"  2.8 17.3  2.8  5.5
+WALL "wlrm358003*" 11.5 17.3 11.5  5.5
+
+-- Room 351
+WALL "Rm 351" 32.1 23.4 36.2 23.4
+WALL "wlrm351001*" 32.1 23.4 32.1 19.0
+WALL "wlrm351002*" 36.2 23.4 36.2 19.0
+WALL "wlrm351003*" 32.1 19.0 33.65 19.0
+WALL "wlrm351004*" 35.15 19.0 36.2 19.0
+
+ROOM "rmrm351001*" 32.1 19.0 32.1 23.4 36.2 23.4 36.2 19.0
+Gap "gprm351001*" 34.4 19.1 34.4 18.9 1.5
+DOOR "drrm351001*" 33.65 19.0 35.15 19.0
+
+-- Room 352
+WALL "Rm 352" 23.7 23.4 32.1 23.4
+WALL "wlrm352001*" 23.7 19.0 32.1 19.0
+WALL "wlrm352002*" 23.7 23.4 23.7 19.0
+WALL "wlrm352003*" 32.1 23.4 32.1 19.0
+
+-- Room 353
+WALL "Rm 353" 19.7 23.4 23.7 23.4
+WALL "wlrm353001*" 19.7 19.0 23.7 19.0
+WALL "wlrm353002*" 19.7 23.4 19.7 19.0
+WALL "wlrm353003*" 23.7 23.4 23.7 19.0
+
+-- Room 354
+WALL "Rm 354" 15.6 23.4 19.7 23.4
+WALL "wlrm354001*" 15.6 19.0 19.7 19.0
+WALL "wlrm354002*" 15.6 23.4 15.6 19.0
+WALL "wlrm354003*" 19.7 23.4 19.7 19.0
+
+-- Room 355
+WALL "Rm 355" 11.5 23.4 15.6 23.4
+WALL "wlrm355001*" 11.5 19.0 15.6 19.0
+WALL "wlrm355002*" 11.5 23.4 11.5 19.0
+WALL "wlrm355003*" 15.6 23.4 15.6 19.0
+
+-- Room 357 + 356
+WALL "Rm 357"  0.0 23.4 11.5 23.4
+WALL "wlrm357001*"  2.8 22.4  4.4 22.4
+WALL "wlrm357002*"  2.8 23.4  2.8 22.4
+WALL "wlrm357003*"  4.4 22.4  4.4 19.0
+WALL "wlrm357004*" 11.5 23.4 11.5 19.0
+WALL "wlrm357005*"  4.4 19.0 8.975 19.0
+WALL "wlrm357006*" 10.475 19.0 11.5 19.0
+WALL "Rm 356"  7.95 23.4 11.5 23.4
+WALL "wlrm357007*"  7.95 23.4  7.95 19.0
+ROOM "rmrm357001*" 7.95 19.0 7.95 23.4 11.5 23.4 11.5 19.0
+Gap "gprm357001*" 9.725 19.1 9.725 18.9 1.5
+DOOR "drrm357001*" 8.975 19.0 10.475 19.0
+--WALL "wlrm357008*" 8.975 19.0 10.475 19.0
+
+-- Room 371
+WALL "Rm 371" 44.5 23.4 50.0 23.4
+WALL "wlrm371001*" 44.5 19.0 48.6 19.0
+WALL "wlrm371002*" 44.5 23.4 44.5 19.0
+WALL "wlrm371003*" 48.6 23.4 48.6 19.0
+
+-- Bathrooms Etc.
+WALL "wlbtr001*" 41.8 17.3 48.6 17.3
+WALL "wlbtr002*" 41.8  5.5 48.6  5.5
+WALL "wlbtr003*" 41.8 17.3 41.8  5.5
+WALL "wlbtr004*" 48.6 17.3 48.6  5.5
+
+
+-- MaRC
+WALL "wlmarc001*"  0.0 23.3 36.2 23.3
+WALL "wlmarc002*" 44.5 23.3 50.0 23.3
+WALL "wlmarc003*"  0.0 19.0  4.4 19.0
+WALL "wlmarc004*"  0.0 18.9  2.8 18.9
+WALL "wlmarc005*" 36.2 19.1 44.5 19.1
+WALL "East Entry" 36.2 19.0 44.5 19.0
+WALL "wlmarc006*"  2.8 19.0  2.8  0.0
+WALL "wlmarc007*"  2.7 19.0  2.7  0.0
+WALL "wlmarc008*" 36.1 23.4 36.1 19.0
+WALL "wlmarc009*" 44.6 23.4 44.6 19.0
+WALL "wlmarc010*" 36.2  5.5 36.2  0.0
+WALL "wlmarc011*" 44.5  5.5 44.5  0.0
+
+Gap "wlmarc001*" 40.4 19.2 40.4 18.9 2.0
+
+-- Columns
+Obj "objcl001*" 36.2 22.7 0.6
+Obj "objcl002*" 36.2 22.7 1.4
+Obj "objcl003*" 36.2 19.0 0.4
+Obj "objcl004*" 36.2 17.3 0.6
+Obj "objcl005*" 28.0 22.7 0.6
+Obj "objcl006*" 28.0 17.3 0.6
+Obj "objcl007*" 19.7 22.7 0.6
+Obj "objcl008*" 19.7 17.3 0.6
+Obj "objcl009*" 11.5 22.7 0.6
+Obj "objcl010*" 11.5 17.3 0.6
+Obj "objcl011*"  3.1 22.7 0.6
+Obj "objcl012*"  3.1 17.3 0.6
+Obj "objcl013*" 44.5 22.7 0.6
+Obj "objcl014*" 44.5 22.7 1.4
+Obj "objcl015*" 44.5 19.0 0.4

@@ -1,0 +1,12 @@
+MISSION NAME "test1" 
+NEW-ROBOT atrv "/home/doug/robotexec"
+unit <robot1> atrv
+unit <robot2> atrv
+unit <all> (robot1 robot2)
+command list:
+1. unit all Start
+2. unit all Stop
+3. unit all Stop
+4. unit all Stop
+5. unit all Stop
+6. unit all Exit

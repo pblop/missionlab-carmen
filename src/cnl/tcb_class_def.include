@@ -1,0 +1,107 @@
+// The quote on the next line begins the block
+"\n\
+/*************************************************************************/\n\
+\n\
+    // Update our run status.\n\
+    //  - if we have no users, then we will run\n\
+    //  - if at least one of our users want our output, we will run\n\
+    //  - else, we are blocked and will not run.\n\
+    void tcb::update_status(void *port)\n\
+    {\n\
+        if( status_ == STAT_UNKNOWN )\n\
+        {\n\
+            //printf(\"update_status for %s\\n\", task_name);\n\
+\n\
+            bool  will_run = true;\n\
+            if( port != NULL ) // True when not void output\n\
+            {\n\
+                void *ptr;\n\
+                tcb  *usr;\n\
+                will_run = false;\n\
+                if( (ptr = users_.first(&usr)) != NULL )\n\
+                {\n\
+                    do\n\
+                    {\n\
+                        bool wants_it =  usr->will_use_port(port);\n\
+                        //printf(\"%s: user %s wants_it=%d\\n\", task_name,usr->task_name, wants_it);\n\
+                        will_run |= wants_it;\n\
+                    } while( (ptr = users_.next(&usr,ptr)) != NULL);\n\
+                }\n\
+#if 0\n\
+                else\n\
+                {\n\
+                    printf(\"ERROR ::: %s: no users, but have output\\n\",task_name);\n\
+                }\n\
+#endif\n\
+            }\n\
+            status_ = will_run ? STAT_RUNNING : STAT_BLOCKED;\n\
+        }\n\
+    }\n\
+\n\
+    // Reset status\n\
+    void tcb::reset_status()\n\
+    {\n\
+        status_ = STAT_UNKNOWN;\n\
+        output_valid_ = false;\n\
+        done_ = false;\n\
+    }\n\
+\n\
+    // Are we blocked?\n\
+    bool tcb::blocked()\n\
+    {\n\
+        return status_ == STAT_BLOCKED;\n\
+    }\n\
+\n\
+    // Are we finished?\n\
+    bool tcb::done()\n\
+    {\n\
+        return done_;\n\
+    }\n\
+\n\
+    // I can't run\n\
+    void tcb::block_me()\n\
+    {\n\
+        status_ = STAT_BLOCKED;\n\
+    }\n\
+\n\
+    void tcb::set_name(const char *name)\n\
+    {\n\
+        task_name = name;\n\
+    }\n\
+"// This quote ends the block
+/**********************************************************************
+* $Log: tcb_class_def.include,v $
+* Revision 1.1.1.1  2008/07/14 16:44:17  endo
+* MAST Project (based on MissionLab-MINOS-20071018.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/20 17:17:47  endo
+* MINOS Project (based on MissionLab-7.0.20060712.tar.gz)
+*
+* Revision 1.1.1.1  2006/07/12 13:37:55  endo
+* MissionLab 7.0
+*
+* Revision 1.2  2006/05/12 22:45:49  endo
+* g++-3.4 upgrade.
+*
+* Revision 1.1.1.1  2005/02/06 22:59:38  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+# Revision 1.7  1996/06/01  21:53:55  doug
+# *** empty log message ***
+#
+# Revision 1.6  1995/11/08  16:49:34  doug
+# *** empty log message ***
+#
+# Revision 1.5  1995/11/04  18:57:01  doug
+# *** empty log message ***
+#
+# Revision 1.4  1995/11/02  23:30:14  doug
+# *** empty log message ***
+#
+# Revision 1.3  1995/11/01  23:00:28  doug
+# added the tcb class
+#
+* Revision 1.2  1995/11/01  19:13:25  doug
+* added rcs info
+*
+***********************************************************************/

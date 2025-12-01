@@ -1,0 +1,57 @@
+"//===================== Need this Quote as the first line ==================\n\
+\n\
+   // Define the free data types\n\
+   // NOTE: Several special free types are defined in main.cc\n\
+   defType number;\n\
+   defType string;\n\
+   defType direction;\n\
+   defType location;\n\
+\n\
+   // Builtins for the UGV architecture\n\
+   defType[UGV] int;\n\
+   defType[UGV] char;\n\
+   defType[UGV] short;\n\
+   defType[UGV] long;\n\
+   defType[UGV] float;\n\
+   defType[UGV] double;\n\
+   defType[UGV] unsigned;\n\
+   defType[UGV] signed;\n\
+   defType[UGV] string;\n\
+\n\
+   // Builtins for the AuRA architecture\n\
+   defType[AuRA] int;\n\
+   defType[AuRA] char;\n\
+   defType[AuRA] short;\n\
+   defType[AuRA] long;\n\
+   defType[AuRA] float;\n\
+   defType[AuRA] double;\n\
+   defType[AuRA] unsigned;\n\
+   defType[AuRA] signed;\n\
+   defType[AuRA] string;\n\
+\n\
+   // Builtins for the AuRA.urban architectuer\n\
+   defType[AuRA.urban] int;\n\
+   defType[AuRA.urban] char;\n\
+   defType[AuRA.urban] short;\n\
+   defType[AuRA.urban] long;\n\
+   defType[AuRA.urban] float;\n\
+   defType[AuRA.urban] double;\n\
+   defType[AuRA.urban] unsigned;\n\
+   defType[AuRA.urban] signed;\n\
+   defType[AuRA.urban] string;\n\
+\n\
+   // Builtins for the AuRA.naval architecture\n\
+   defType[AuRA.naval] int;\n\
+   defType[AuRA.naval] char;\n\
+   defType[AuRA.naval] short;\n\
+   defType[AuRA.naval] long;\n\
+   defType[AuRA.naval] float;\n\
+   defType[AuRA.naval] double;\n\
+   defType[AuRA.naval] unsigned;\n\
+   defType[AuRA.naval] signed;\n\
+   defType[AuRA.naval] string;\n\
+\n\
+   defAgent boolean False();\n\
+   defAgent boolean True();\n\
+\n\
+"//====================== Need this Quote as the last line ==================

@@ -1,0 +1,7 @@
+"Title: New\n\
+\n\
+Changes have been made to the workspace which are not saved.\n\
+\n\
+Yes:    Discard the current workspace.\n\
+Cancel: Abort the operation.\n\
+Help:   This message."

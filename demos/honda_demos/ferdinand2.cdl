@@ -1,0 +1,119 @@
+/*************************************************
+*
+* This CDL file /net/hr1/bbb/mlab/work/ferdinand2.cdl was created with cfgedit
+* version 1.0c
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_623 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_632,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_632]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+
+instGroup $AN_908 from [
+    %Objects = {Red_Marker},
+    %move_to_object_gain = {1.0},
+    %avoid_obstacle_gain = {1.0},
+    %wander_gain = {0.0},
+    %avoid_obstacle_sphere = {3.0},
+    %avoid_obstacle_safety_margin = {0.5}
+,
+  MoveToward];
+
+instGroup $AN_878 from [
+    %curious = {0.8},
+    %cautious = {0.5}
+,
+  Wander];
+
+instGroup $AN_879 from [
+  Stop];
+
+instBP<284,36> |The Wheels Binding Point| $AN_880 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE(
+        v<17,15> = FSA(
+            society[Start]<58,52>|Start| = $AN_879,
+            society[$AN_896]<239,209>|State1| = $AN_878,
+            society[$AN_900]<233,722>|State2| = $AN_908,
+            society[$AN_909]<893,199>|State3| = [
+                %Objects = {Red_Marker}
+,
+              MoveAway]<10,10>
+,
+            rules[Start]<58,52>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_896,
+            rules[$AN_896]<239,209>|State1| = if [
+                %Objects = {Red_Marker},
+                %Anger_lower = {0.7},
+                %Anger_upper = {1.0},
+                %Fear_lower = {0.0},
+                %Fear_upper = {0.5},
+                %Hunger_lower = {0.0},
+                %Hunger_upper = {1.0},
+                %Curiousity_lower = {0.0},
+                %Curiousity_upper = {1.0}
+,
+              DetectMotivated]<124,427>|Trans2|
+ goto $AN_900,
+            rules[$AN_896]<239,209>|State1| = if [
+                %Objects = {Red_Marker},
+                %Anger_lower = {0.0},
+                %Anger_upper = {0.5},
+                %Fear_lower = {0.7},
+                %Fear_upper = {1.0},
+                %Hunger_lower = {0.0},
+                %Hunger_upper = {1.0},
+                %Curiousity_lower = {0.0},
+                %Curiousity_upper = {1.0}
+,
+              DetectMotivated]<583,302>|Trans1|
+ goto $AN_909,
+            rules[$AN_909]<893,199>|State3| = if [
+                %Objects = {Red_Marker},
+                %Distance = {10.0}
+,
+              AwayFrom]<578,113>|Trans2|
+ goto $AN_896,
+            rules[$AN_900]<233,722>|State2| = if [
+                %Objects = {Red_Marker},
+                %Distance = {0.1}
+,
+              Near]<330,412>|Trans3|
+ goto $AN_896)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<266,1>
+);
+
+instBP<0,0> $AN_993 from vehicle(
+  bound_to = ferdinand2Robot1:PIONEERAT(
+ferdinand2Robot1:[
+          $AN_880,
+          $AN_623]
+)<0,0>
+);
+
+NoName:[
+[
+    $AN_993]<0,0>|The Configuration|
+]<10,10>
+

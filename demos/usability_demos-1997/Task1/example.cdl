@@ -1,0 +1,75 @@
+/*************************************************
+*
+* This CDL file example.cdl was created with cfgedit
+* version 1.0a
+*
+**************************************************/
+
+bindArch AuRA;
+
+instGroup $AN_268 from [
+    %Objects = {Home_Base}
+,
+  MoveTo];
+instGroup $AN_251 from [
+    %Objects = {Flags}
+,
+  PickUp];
+instGroup $AN_242 from [
+    %Objects = {Flags}
+,
+  MoveTo];
+instGroup $AN_237 from [
+  Stop];
+instBP<565,111> |The Wheels Binding Point| $AN_221 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE(
+        v<293,157> = FSA(
+            society[Start]<50,50>|Start| = $AN_237,
+            society[$AN_238]<261,151>|State1| = $AN_242,
+            society[$AN_243]<548,159>|State2| = $AN_251,
+            society[$AN_252]<684,259>|State3| = $AN_268,
+            society[$AN_269]<841,397>|State4| = [
+              Stop]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+                %Objects = {Flags}
+,
+              Detect]<0,0>|Trans1|
+ goto $AN_238,
+            rules[$AN_238]<261,151>|State1| = if [
+                %Objects = {Flags},
+                %Distance = {0.2}
+,
+              Near]<0,0>|Trans2|
+ goto $AN_243,
+            rules[$AN_243]<548,159>|State2| = if [
+                %Objects = {Home_Base}
+,
+              Detect]<0,0>|Trans3|
+ goto $AN_252,
+            rules[$AN_252]<684,259>|State3| = if [
+                %Objects = {Home_Base},
+                %Distance = {0.2}
+,
+              Near]<10,10>|Trans4|
+ goto $AN_269)<292,156>|The State Machine|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_336 from vehicle(
+  bound_to = exampleRobot1:MRV2(
+exampleRobot1:[
+          $AN_221]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_336]<0,0>|The Configuration|
+]<10,10>

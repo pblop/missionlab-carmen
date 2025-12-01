@@ -1,0 +1,47 @@
+/**********************************************************************
+ **                                                                  **
+ **                       SET_CID.cnl                       **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SET_CID.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector SET_CID with
+   int    cid;
+header
+body
+
+   VECTOR_CLEAR(output);
+   char *value = (char*)malloc(100*sizeof(char));
+   switch (cid)
+   {
+	case (Blue_Robot): 
+   		sprintf(value, "Rblu");break;
+	case (Red_Robot):
+   		sprintf(value, "Rred");break;
+	case (Green_Robot):
+   		sprintf(value, "Rgre");break;
+	case (Yellow_Robot):
+   		sprintf(value, "Ryel");break;
+	default:
+   		printf("\nColor not implemented; default to blue");
+   		sprintf(value, "Rblu");break;
+   }
+   put_state("ColID", value);	
+   printf("\n I am a %s robot", value);
+   free (value);
+pend
+
+
+/**********************************************************************
+#
+#**********************************************************************/

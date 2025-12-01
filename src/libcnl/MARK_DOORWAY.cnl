@@ -1,0 +1,60 @@
+/**********************************************************************
+ **                                                                  **
+ **                        MARK_DOORWAY.cnl                          **
+ **                                                                  **
+ **                 Written by:  Jonathan F. Diaz                    **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+init
+extern bool marked_door_once;
+extern bool unmarked_door_once;
+iend
+
+/***********************************************************************/
+
+procedure Vector MARK_DOORWAY with
+header
+body
+{
+  VECTOR_CLEAR(output);
+  exec_mark_nearest_doorway();
+  marked_door_once = TRUE;
+}
+pend
+
+procedure bool MARKED_DOORWAY with
+header
+body
+{
+  output = marked_door_once;
+  if (output == TRUE) marked_door_once = FALSE;
+}
+pend
+
+procedure Vector UNMARK_DOORWAY with
+header
+body
+{
+  VECTOR_CLEAR(output);
+  exec_unmark_nearest_doorway();
+  unmarked_door_once = TRUE;
+}
+pend
+
+procedure bool UNMARKED_DOORWAY with
+header
+body
+{
+  output = unmarked_door_once;
+  if (output == TRUE) unmarked_door_once = FALSE;
+}
+pend
+
+

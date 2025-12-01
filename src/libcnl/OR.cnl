@@ -1,0 +1,30 @@
+/**********************************************************************
+ **                                                                  **
+ **                           OR.cnl                                 **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool OR with
+   bool a;
+   bool b;
+header
+body
+   output = a || b;
+pend
+
+procedure bool NOR with
+   bool a;
+   bool b;
+header
+body
+   output = !(a || b);
+pend

@@ -1,0 +1,12 @@
+You can: 
+
+1) Recomplile and run the 
+repaired mission by clicking on 
+"compile" button (first), and 
+then on "run" button;
+
+2) Or you can view the new
+mission by descending to the
+FSA level first, and then 
+recompile and run. 
+

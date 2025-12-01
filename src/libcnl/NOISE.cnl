@@ -1,0 +1,79 @@
+/**********************************************************************
+ **                                                                  **
+ **                            NOICE.cnl                             **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: NOISE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure Vector NOISE with
+   int    persistence;
+   double robot_heading;
+header
+   int    cntr = INT_INFINITY;
+   Vector dir = ZERO_VECTOR;
+   double theta;
+body
+   if( cntr >= persistence)
+   {
+      theta = DEGREES_TO_RADIANS((float)((rand() >> 8) % 360));
+      dir.x = cos(theta);
+      dir.y = sin(theta);
+      cntr = 0;
+   }
+   else
+   {
+      cntr++;
+   }
+
+   output = dir;
+
+   // The output of this behavior is relative to the current heading of the
+   // robot.  So, to generate a constant heading (in world coordinates) vector
+   // requires compensation for the heading changes.
+   rotate_z(output, -1 * robot_heading);
+
+   if( debug )
+   {
+      fprintf(stderr,"NOISE: output (%.1f %.1f)\n",output.x,output.y);
+   }
+pend
+
+
+
+/**********************************************************************
+# $Log: NOISE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.13  2003/04/06 18:37:37  endo
+# *** empty log message ***
+#
+# Revision 1.12  2003/04/06 12:04:03  endo
+# gcc 3.1.1
+#
+# Revision 1.11  2002/10/25 01:38:55  kaess
+# - swirl stripped off unnecessary code and parameters,
+# infinite repulsion within safety margin added
+# - "robot-too-cautious" bug fixed: robot should be in
+# cautious mode iff inside safety margin, which is the dase
+# when COOP returns an infinit vector - infinity needed to be changed
+#
+# Revision 1.10  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.9  1995/06/28  22:07:18  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

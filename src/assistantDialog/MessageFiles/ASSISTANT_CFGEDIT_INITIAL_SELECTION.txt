@@ -1,0 +1,12 @@
+Here are your options:
+
+New Robot
+ Create a new robot mission
+ using a default template.
+
+Load Robot
+ Load an existing robot mission.
+
+Quit
+ CfgEdit will exit.
+

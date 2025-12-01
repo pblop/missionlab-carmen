@@ -1,0 +1,5 @@
+You can view the mission by descending to the configuration level. 
+
+Middle-click in the lower portion of the dialog box to view the next level of detail. Keep iddle-clicking on the leftmost dialogue box until you reach he desired level.
+
+To play the mission, you need to compile it first by clicking the "compile" button. Then click the "run" button to run the mission.

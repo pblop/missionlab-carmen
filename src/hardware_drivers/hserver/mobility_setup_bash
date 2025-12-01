@@ -1,0 +1,99 @@
+#!/bin/bash -f
+# Source this file in bash to set up Mobility environment variables.
+
+# Undo the effects of a previous source of this script, if applicable
+if [ -n "${MOBILITY_ROOT}" ]
+then
+    source $MOBILITY_ROOT/etc/unsetup
+fi
+
+# Set to the location where Mobility was installed
+if [ -z "${MOBILITY_ROOT}" ]
+then
+    export MOBILITY_ROOT=`pwd`
+    export MOBILITY_VARS="$MOBILITY_VARS MOBILITY_ROOT"
+fi
+
+## this is problematic for any rsh type stuff and other things
+#echo MOBILITY_ROOT is $MOBILITY_ROOT
+
+# set to the Mobility tools directory
+export MOBILITY_TOOLS=${MOBILITY_ROOT}/tools
+export MOBILITY_VARS="$MOBILITY_VARS MOBILITY_TOOLS"
+
+# set to the root directory where Java was installed
+if [ -d ${MOBILITY_TOOLS}/jdk117_v3 ] ; then
+    export JAVA_HOME=${MOBILITY_TOOLS}/jdk117_v3
+elif [ -d ${MOBILITY_TOOLS}/rt117_v3 ] ; then
+    export JAVA_HOME=${MOBILITY_TOOLS}/rt117_v3
+else
+    # Ought to bail out.
+    echo "Mobility setup incomplete:  no Java installed!"
+fi
+
+#
+# Normally do not mess with stuff below this comment.
+#
+
+# record all variables set by this script
+export MOBILITY_VARS="$MOBILITY_VARS JAVA_HOME"
+
+# Add dynamic libraries to search path
+# Ought to check for existing LD_LIBRARY_PATH!!!
+export LD_LIBRARY_PATH=/usr/local/lib:${MOBILITY_TOOLS}/lib:${MOBILITY_ROOT}/lib:.
+
+# Set up initial CLASSPATH depending on JDK vs JRE
+if [ -x $JAVA_HOME/bin/java ] ; then
+    export CLASSPATH=${JAVA_HOME}/lib/classes.zip
+elif [ -x $JAVA_HOME/bin/jre ] ; then
+    export CLASSPATH=${JAVA_HOME}/lib/rt.jar
+fi
+
+# add Swing, JacORB, GL4Java to CLASSPATH
+export CLASSPATH=${CLASSPATH}:${MOBILITY_TOOLS}/swing.jar
+export CLASSPATH=${CLASSPATH}:${MOBILITY_TOOLS}/jacorb_dev
+export CLASSPATH=${CLASSPATH}:${MOBILITY_TOOLS}/javalib
+
+#
+# this should add the jar files that end up in ${MOBILITY_ROOT}/lib from
+# build of java idl and java libraries.  
+#
+# NOTE : If anyone ever adds a new jar files to the build process, this
+# script will need to be edited.
+#
+# I had thought about doing a for loop here, and just getting all the jar
+# files that would end up in the lib directory.  I decided against it
+# because, in the case of a fresh, totally clean install, there would be no
+# jar files in the lib directory, and the build would fail as it went along,
+# because the java code being compiled at later stages that relies on code
+# compiled in earlier stages would no longer be able to find it.
+#
+export CLASSPATH=${CLASSPATH}:${MOBILITY_ROOT}/lib/mobility_1.jar
+#export CLASSPATH=${CLASSPATH}:${MOBILITY_ROOT}/lib/mobilitycommander_1.jar
+export CLASSPATH=${CLASSPATH}:.:javaClasses
+
+# Set up Java commands depending on JDK vs JRE
+if [ -x $JAVA_HOME/bin/java ] ; then
+    export JAVAC="${JAVA_HOME}/bin/javac -classpath $CLASSPATH"
+    export JAVA="${JAVA_HOME}/bin/java -classpath $CLASSPATH"
+    export JAR="${JAVA_HOME}/bin/jar"
+elif [ -x $JAVA_HOME/bin/jre ] ; then
+    export JAVA="${JAVA_HOME}/bin/jre -classpath $CLASSPATH"
+fi
+
+# add Mobility bin and etc directories to PATH
+export MOBILITY_PATH=:${MOBILITY_ROOT}/bin:${MOBILITY_ROOT}/etc
+# also add Java and tool executables to PATH
+export MOBILITY_PATH=${MOBILITY_PATH}:${JAVA_HOME}/bin:${MOBILITY_TOOLS}/bin
+export PATH=${PATH}${MOBILITY_PATH}
+
+# record all variables set by this script
+export MOBILITY_VARS="$MOBILITY_VARS LD_LIBRARY_PATH CLASSPATH"
+export MOBILITY_VARS="$MOBILITY_VARS JAVA JAVAC JRE"
+export MOBILITY_VARS="$MOBILITY_VARS MOBILITY_PATH MOBILITY_VARS"
+
+# we need to set up the MIBFILES environment variable for use with the
+# SNMPserver program.  
+if [ -f $MOBILITY_ROOT/etc/brz11prv.txt ] ; then
+  export MIBFILES=${MIBFILES:+$MIBFILES:}$MOBILITY_ROOT/etc/brz11prv.txt
+fi

@@ -1,0 +1,7 @@
+"Title: Exit\n\
+\n\
+Changes have been made to the workspace which are not saved.\n\
+\n\
+Yes:    Exit and discard the current workspace.\n\
+Cancel: Do not exit.\n\
+Help:   This message."

@@ -1,0 +1,47 @@
+--******************************************************************
+--
+--	shore.ovl
+--
+--	This overlay was developed for AO-FNC Project.
+--
+--  Yoichiro Endo
+--
+--  03/20/2005
+--
+--******************************************************************
+
+SCENARIO "Naval Mission"
+
+SITE "Monterey Bay Aquarium Research Institute"
+
+--MISSION-AREA 800 800
+MISSION-AREA 4000 4000
+
+--LOAD-MAP "shore.mapinfo"
+--HEIGHTMAP shore.hm 800 800 160 1.0
+
+ORIGIN 0 0
+
+--******************************************************************
+CONTROL MEASURES: 
+--******************************************************************
+-- Start Place
+
+--PP StartPlace 100 100 4
+PP StartPlace 3300 100 4
+
+--******************************************************************
+-- Other Landmarks
+
+--PP Pier 555.5 296.0 4
+PP Pier 3755.5 296.0 4
+
+--OBJECT 680.0 262.0 4 Movable green
+OBJECT 3880.0 262.0 4 Movable green
+--PP Warehouse 680.0 262.0 4
+PP Warehouse 3880.0 262.0 4
+
+--PP EnemyStartPlace* 607 22 0.1
+PP EnemyStartPlace* 3807 22 0.1
+--PP InterceptEnemyStartPlace* 518 58 0.1
+PP InterceptEnemyStartPlace* 3718 58 0.1

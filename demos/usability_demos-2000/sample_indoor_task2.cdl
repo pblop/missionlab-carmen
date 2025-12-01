@@ -1,0 +1,344 @@
+/*************************************************
+*
+* This CDL file sample_indoor_task2.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2376 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA7:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2391]<166,150>|State1| = [
+                %Objects = {Friendly_Robot},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.5},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {1.2},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              Follow]<100,100>
+,
+            society[$AN_2393]<651,130>|State2| = [
+                %Objects = {Enemies}
+,
+              LookFor]<100,100>
+,
+            society[$AN_2395]<771,355>|State3| = [
+                %notify_message = {"Enemy found."}
+,
+              NotifyRobots]<100,100>
+,
+            society[$AN_2397]<651,570>|State4| = [
+                %enter_room_gain = {1.0},
+                %distance_to_enter = {1.0},
+                %enter_which = {ENTER_ANY},
+                %avoid_obstacles_gain = {0.33},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              EnterRoom]<100,100>
+,
+            society[$AN_2399]<424,568>|State5| = [
+              Stop]<100,100>
+,
+            society[$AN_2401]<183,567>|State6| = [
+                %leave_room_gain = {1.0},
+                %avoid_obstacles_gain = {0.33},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              LeaveRoom]<100,100>
+,
+            society[$AN_2403]<490,410>|State7| = [
+                %Objects = {Enemies}
+,
+              LookFor]<100,100>
+,
+            society[$AN_2405]<324,277>|State8| = [
+                %notify_message = {"Hallway clear."}
+,
+              NotifyRobots]<100,100>
+,
+            society[$AN_2407]<151,403>|State9| = [
+              Stop]<100,100>
+,
+            rules[$AN_2391]<166,150>|State1| = if [
+                %notify_message = {"Cover me."}
+,
+              Notified]<0,0>|Trans11|
+ goto $AN_2393,
+            rules[$AN_2393]<651,130>|State2| = if [
+                %notify_message = {"Follow me."}
+,
+              Notified]<0,0>|Trans20|
+ goto $AN_2391,
+            rules[$AN_2393]<651,130>|State2| = if [
+                %Objects = {Enemies}
+,
+              Detect]<0,0>|Trans21|
+ goto $AN_2395,
+            rules[$AN_2395]<771,355>|State3| = if [
+              MessageSent]<0,0>|Trans22|
+ goto $AN_2397,
+            rules[$AN_2397]<651,570>|State4| = if [
+              InRoom]<0,0>|Trans23|
+ goto $AN_2399,
+            rules[$AN_2399]<424,568>|State5| = if [
+                %Delay = {2.0}
+,
+              Wait]<0,0>|Trans24|
+ goto $AN_2401,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans10|
+ goto $AN_2391,
+            rules[$AN_2401]<183,567>|State6| = if [
+              InHallway]<0,0>|Trans26|
+ goto $AN_2403,
+            rules[$AN_2403]<490,410>|State7| = if [
+                %Objects = {Enemies}
+,
+              Detect]<0,0>|Trans27|
+ goto $AN_2397,
+            rules[$AN_2403]<490,410>|State7| = if [
+                %Objects = {Enemies}
+,
+              NotDetected]<0,0>|Trans28|
+ goto $AN_2405,
+            rules[$AN_2405]<324,277>|State8| = if [
+              MessageSent]<0,0>|Trans30|
+ goto $AN_2407,
+            rules[$AN_2407]<151,403>|State9| = if [
+                %notify_message = {"Follow me."}
+,
+              Notified]<0,0>|Trans31|
+ goto $AN_2391,
+            rules[$AN_2391]<166,150>|State1| = if [
+                %Objects = {Enemies}
+,
+              Detect]<0,0>|Trans1|
+ goto $AN_2395)<292,156>|Mission|
+,
+        max_vel = {0.5},
+        base_vel = {0.09},
+        cautious_vel = {0.05},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2435 from vehicle(
+  bound_to = sample_indoor_task2Robot2:PIONEERAT(
+sample_indoor_task2Robot2:[
+          $AN_2376]
+)<48,235>|Individual Robot|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_2436 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[$AN_2450]<292,103>|State1| = [
+                %proceed_direction = {Facing},
+                %move_to_location_gain = {1.0},
+                %off_path_gain = {1.0},
+                %avoid_obstacle_gain = {0.33},
+                %avoid_obstacle_sphere = {0.7},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              ProceedAlongHallway]<100,100>
+,
+            society[$AN_2452]<798,37>|State2| = [
+              Terminate]<100,100>
+,
+            society[$AN_2454]<801,195>|State3| = [
+              AboutFace]<100,100>
+,
+            society[$AN_2456]<515,304>|State4| = [
+                %notify_message = {"Cover me."}
+,
+              NotifyRobots]<100,100>
+,
+            society[$AN_2458]<778,308>|State5| = [
+                %enter_room_gain = {1.0},
+                %distance_to_enter = {1.0},
+                %enter_which = {ENTER_UNMARKED_ONLY},
+                %avoid_obstacles_gain = {0.33},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              EnterRoom]<100,100>
+,
+            society[$AN_2460]<63,561>|State7| = [
+              MarkDoorway]<100,100>
+,
+            society[$AN_2462]<486,590>|State8| = [
+                %probe = {Possible_Biohazard},
+                %target = {Biohazard}
+,
+              SurveyRoom*]<10,10>
+,
+            society[$AN_2464]<266,562>|State8| = [
+                %leave_room_gain = {1.0},
+                %avoid_obstacles_gain = {0.25},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              LeaveRoom]<100,100>
+,
+            society[$AN_2466]<794,591>|State9| = [
+                %alert_subject = {"Warning: Biohazard Found!!!"},
+                %alert_message = {"The robot has found a biohazard."},
+                %sends_email = {NO_Email},
+                %recipient = {""}
+,
+              Alert]<100,100>
+,
+            society[$AN_2468]<733,435>|State10| = [
+              Terminate]<100,100>
+,
+            society[$AN_2470]<77,399>|State11| = [
+                %notify_message = {"Follow me."}
+,
+              NotifyRobots]<100,100>
+,
+            society[$AN_2472]<69,221>|State12| = [
+                %proceed_direction = {Left},
+                %move_to_location_gain = {1.0},
+                %off_path_gain = {1.0},
+                %avoid_obstacle_gain = {0.33},
+                %avoid_obstacle_sphere = {0.7},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              ProceedAlongHallway]<100,100>
+,
+            society[$AN_2474]<517,413>|State13| = [
+              Stop]<100,100>
+,
+            society[$AN_2476]<330,358>|State14| = [
+                %enter_room_gain = {1.0},
+                %distance_to_enter = {1.0},
+                %enter_which = {ENTER_ANY},
+                %avoid_obstacles_gain = {0.33},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              EnterRoom]<100,100>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            rules[$AN_2450]<292,103>|State1| = if [
+                %direction = {Left},
+                %detect_which = {DETECT_UNMARKED_ONLY},
+                %Robot_Clearance = {0.5},
+                %Hallway_Width = {2.0}
+,
+              AtDoorway]<0,0>|Trans6|
+ goto $AN_2456,
+            rules[$AN_2456]<515,304>|State4| = if [
+              MessageSent]<0,0>|Trans7|
+ goto $AN_2458,
+            rules[$AN_2450]<292,103>|State1| = if [
+                %Objects = {Start_Place},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans2|
+ goto $AN_2452,
+            rules[$AN_2462]<486,590>|State8| = if [
+                %notify_message = {"NO TARGET FOUND"}
+,
+              TaskExited]<0,0>|Trans12|
+ goto $AN_2464,
+            rules[$AN_2462]<486,590>|State8| = if [
+                %notify_message = {"TARGET FOUND"}
+,
+              TaskExited]<0,0>|Trans13|
+ goto $AN_2466,
+            rules[$AN_2458]<778,308>|State5| = if [
+              InRoom]<0,0>|Trans14|
+ goto $AN_2462,
+            rules[$AN_2466]<794,591>|State9| = if [
+              Alerted]<0,0>|Trans15|
+ goto $AN_2468,
+            rules[$AN_2464]<266,562>|State8| = if [
+              InHallway]<0,0>|Trans16|
+ goto $AN_2460,
+            rules[$AN_2460]<63,561>|State7| = if [
+              MarkedDoorway]<0,0>|Trans17|
+ goto $AN_2470,
+            rules[$AN_2470]<77,399>|State11| = if [
+              MessageSent]<0,0>|Trans18|
+ goto $AN_2472,
+            rules[$AN_2472]<69,221>|State12| = if [
+              InHallway]<0,0>|Trans19|
+ goto $AN_2450,
+            rules[$AN_2462]<486,590>|State8| = if [
+                %notify_message = {"Enemy found."}
+,
+              Notified]<0,0>|Trans32|
+ goto $AN_2474,
+            rules[$AN_2458]<778,308>|State5| = if [
+                %notify_message = {"Enemy found."}
+,
+              Notified]<0,0>|Trans33|
+ goto $AN_2474,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2450,
+            rules[$AN_2474]<517,413>|State13| = if [
+                %notify_message = {"Hallway clear."}
+,
+              Notified]<0,0>|Trans35|
+ goto $AN_2462,
+            rules[$AN_2450]<292,103>|State1| = if [
+                %Goal_Tolerance = {0.5}
+,
+              AtEndOfHall]<0,0>|Trans4|
+ goto $AN_2454,
+            rules[$AN_2472]<69,221>|State12| = if [
+                %notify_message = {"Enemy found."}
+,
+              Notified]<0,0>|Trans2|
+ goto $AN_2476,
+            rules[$AN_2450]<292,103>|State1| = if [
+                %notify_message = {"Enemy found."}
+,
+              Notified]<0,0>|Trans2|
+ goto $AN_2476,
+            rules[$AN_2464]<266,562>|State8| = if [
+                %notify_message = {"Enemy found."}
+,
+              Notified]<0,0>|Trans2|
+ goto $AN_2476,
+            rules[$AN_2476]<330,358>|State14| = if [
+              InRoom]<0,0>|Trans5|
+ goto $AN_2474,
+            rules[$AN_2454]<801,195>|State3| = if [
+              AboutFaceCompleted]<0,0>|Trans5|
+ goto $AN_2450)<292,156>|Mission|
+,
+        max_vel = {0.5},
+        base_vel = {0.13},
+        cautious_vel = {0.07},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_2521 from vehicle(
+  bound_to = sample_indoor_task2Robot1:PIONEERAT(
+sample_indoor_task2Robot1:[
+          $AN_2436]
+)<48,51>|Individual Robot|
+);
+
+[
+[
+    $AN_2521,
+    $AN_2435]<10,10>|Group of Robots|
+]<10,10>
+

@@ -1,0 +1,84 @@
+/**********************************************************************
+ **                                                                  **
+ **                       CNP_IS_TASK_WON.cnl                        **
+ **                                                                  **
+ **  Written by: Patrick Ulam                                        **
+ **                                                                  **
+ **  CNP_IS_TASK_WON                                                 **
+ **   Returns true if the robot's bidding task has won.              **
+ **                                                                  **
+ **  CNP_WON_TASK_IS                                                 **
+ **   Returns true if the robot's won task is the task being         **
+ **   specified.                                                     **
+ **                                                                  **
+ **  Copyright 2005 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CNP_IS_TASK_WON.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#include <string>
+
+using std::string;
+iend
+
+/***********************************************************************/
+
+procedure bool CNP_IS_TASK_WON with
+header
+body
+{
+   output = exec_cnp_is_task_won();
+
+   if(debug)
+   {
+       fprintf(
+           stderr,
+           "CNP_IS_TASK_WON(%d): %s\n",
+           robot_id,
+           output? "YES":"NO");
+   }
+}
+pend
+
+/***********************************************************************/
+
+procedure bool CNP_WON_TASK_IS with
+   CNLString_t taskName;
+header
+body
+{
+    string cnpTaskName;
+
+    cnpTaskName = taskName.val;
+    output = exec_cnp_won_task_is(cnpTaskName);
+
+    if(debug)
+    {
+        fprintf(
+            stderr,
+            "CNP_WON_TASK_IS(%d): %s\n",
+            robot_id,
+            output? "YES":"NO");
+    }
+}
+pend
+
+/**********************************************************************
+# $Log: CNP_IS_TASK_WON.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.3  2006/01/10 06:16:04  endo
+# AO-FNC Type-I check-in.
+#
+# Revision 1.2  2005/11/16 21:43:15  endo
+# Header added.
+#
+#
+#**********************************************************************/

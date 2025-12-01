@@ -1,0 +1,40 @@
+/**********************************************************************
+ **                                                                  **
+ **                          V_IS_ZERO.cnl                           **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: V_IS_ZERO.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure int V_IS_ZERO with
+   Vector v;
+header
+body
+   output = v.x == 0 && v.y == 0;
+pend
+
+
+
+/**********************************************************************
+# $Log: V_IS_ZERO.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:01  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.6  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.5  1995/06/28  22:14:46  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

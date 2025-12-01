@@ -1,0 +1,40 @@
+/**********************************************************************
+ **                                                                  **
+ **                          DROP_OBJECT.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: DROP_OBJECT.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+
+//**********************************************************************
+
+procedure Vector DROP_OBJECT with
+header
+body
+   exec_drop_object_in_basket(-1, -1);
+pend
+
+
+/**********************************************************************
+# $Log: DROP_OBJECT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  1996/03/03  23:59:35  doug
+# Initial revision
+#
+# Revision 1.1  1995/11/08  16:50:52  doug
+# Initial revision
+#
+#**********************************************************************/

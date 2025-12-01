@@ -1,0 +1,1541 @@
+/*************************************************
+*
+* This is the generic default CDL library file
+*
+* $Id: default.gen,v 1.1.1.1 2006/07/12 13:37:54 endo Exp $
+*
+* $Log: default.gen,v $
+* Revision 1.1.1.1  2006/07/12 13:37:54  endo
+* MissionLab 7.0
+*
+* Revision 1.15  2006/07/10 06:10:34  endo
+* Clean-up for MissionLab 7.0 release.
+*
+* Revision 1.14  2006/07/02 21:45:03  endo
+* CMDLi from MARS 2020 integrated into AO-FNC repository.
+*
+* Revision 1.13  2006/05/06 04:25:34  endo
+* Bugs of TrackTask fixed.
+*
+* Revision 1.12  2006/05/02 04:14:04  endo
+* TrackTask improved for the experiment.
+*
+* Revision 1.11  2006/03/05 23:27:19  pulam
+* Addition of SL-UAV code and CNP code for calculating bids for intercept/inspect tasks
+*
+* Revision 1.10  2006/03/01 09:27:10  endo
+* Check-in for Type-I Intercept Experiment.
+*
+* Revision 1.9  2006/02/19 22:40:55  endo
+* CNP_SAVE_TARGET_LOCATION stuff.
+*
+* Revision 1.8  2006/02/19 17:53:27  endo
+* Experiment related modifications
+*
+* Revision 1.7  2006/01/10 06:21:40  endo
+* AO-FNC Type-I check-in.
+*
+* Revision 1.6  2005/05/18 21:17:19  endo
+* AuRA.naval added.
+*
+* Revision 1.5  2005/04/08 01:55:18  pulam
+* CNP behaviors
+*
+* Revision 1.4  2005/03/27 01:19:25  pulam
+* addition of uxv behaviors
+*
+* Revision 1.3  2005/03/23 07:36:41  pulam
+* addition of 3d visulation and handling of UUVs, USVs, UAVs
+*
+* Revision 1.2  2005/02/08 00:00:23  endo
+* Mods from usability-2004
+*
+* Revision 1.1.1.1  2005/02/06 22:59:30  endo
+* AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+*
+* Revision 1.68  2003/04/06 09:21:55  endo
+* Updated for CBR Wizard Prototype II.
+*
+* Revision 1.67  2003/04/06 07:54:28  endo
+* Checked in for Ananth. Dstar added.
+*
+* Revision 1.66  2003/04/06 00:04:40  kaess
+* *** empty log message ***
+*
+* Revision 1.65  2003/04/02 23:02:04  zkira
+* Added skip_goal and at_or_skip_goal and telop mode
+*
+* Revision 1.64  2002/11/08 16:25:55  endo
+* Rolled back to cancel ARBITRATE.
+*
+* Revision 1.63  2002/11/07 22:10:07  blee
+* added ARBITRATE operator
+*
+* Revision 1.62  2002/10/31 21:24:35  ebeowulf
+* Added the code for the RESET_WORLD code.
+*
+* Revision 1.61  2002/10/31 15:09:17  ebeowulf
+* Added the CHANGE_ROBOT_COLOR simulation behavior
+*
+* Revision 1.60  2002/10/25 15:24:03  ebeowulf
+* Added new parameters to the QLEARN operator.
+*
+* Revision 1.59  2002/10/25 01:32:03  kaess
+* - swirl stripped off unnecessary code and parameters,
+* infinite repulsion within safety margin added
+*
+* Revision 1.58  2002/07/02 20:27:00  blee
+* Added MOVE_TO_GUARDED
+*
+* Revision 1.57  2002/01/13 01:37:56  endo
+* Behaviors for Mission Expert added.
+*
+* Revision 1.56  2001/10/18 17:44:42  ebeowulf
+* Added ActionTimeout variable to QLEARN
+*
+* Revision 1.55  2001/09/24 21:08:40  ebeowulf
+* added QLEARN coordinator and Reinforcer type
+*
+* Revision 1.54  2001/01/24 23:36:58  saho
+* Added code for motivations and their update.
+*
+* Revision 1.53  2000/12/02 21:33:06  sgorbiss
+* Added behaviors for line-of-sight navigation
+* MicroNavigation and Avoid The Past
+*
+* Revision 1.52  2000/09/19 10:03:03  endo
+* Biohazard_Sign and Biohazard_Container added.
+* More camera modes added.
+*
+* Revision 1.51  2000/08/27 20:56:47  endo
+* WAIT_FOR_PROCEED was binded as boolean instead of displacement.
+*
+* Revision 1.50  2000/08/15 20:46:28  endo
+* Standby* added.
+*
+* Revision 1.49  2000/07/13 19:18:26  conrad
+* added camera tracking
+*
+* Revision 1.48  2000/06/18 02:03:02  endo
+* MoveAhead no longer takes "amount".
+*
+* Revision 1.47  2000/05/19 21:48:18  endo
+* POPUP_TELOP_INTERFACE, IS_NOT_PROGRESSING added.
+*
+* Revision 1.46  2000/04/25 07:17:14  endo
+* NOTIFY_ROBOTS was addded.
+*
+* Revision 1.45  2000/04/20 00:50:07  endo
+* fsa_completion_key
+*
+* Revision 1.44  2000/04/19 21:42:39  jdiaz
+* *** empty log message ***
+*
+* Revision 1.43  2000/04/16 15:21:33  endo
+* A bunch of states/triggers for the TMR usability test
+* Phase II was added.
+*
+* Revision 1.42  2000/04/13 22:23:23  endo
+* Checked in for Doug.
+* Four new triggers have been defined to allow using the distributed flags.
+*         FlagIsSet(flag name)   : returns true when the flag becomes true.
+*         FlagIsClear(flag name) : returns true when the flag becomes false.
+*         SetFlag(flag name)     : sets the named flag to true and returns TRUE,
+*                                  so it works like Immediate.
+*         ClearFlag(flag name)   : clears the named flag to false and returns TRUE,
+*                                  so it works like Immediate.
+*
+* Revision 1.41  2000/03/30 15:39:42  saho
+* Added TALK behavior.
+*
+* Revision 1.40  2000/03/30 01:12:58  endo
+* OneObjectClass, ObjectClasses retreieved old definition.
+*
+* Revision 1.39  2000/03/24 16:40:16  saho
+* Added IS_AN_OBJECT_MOTIVATED and DETECT_SOUND_MOTIVATED.
+*
+* Revision 1.38  2000/02/29 20:35:29  saho
+* Added sound related stae and trigger.
+*
+* Revision 1.37  2000/02/29 00:21:26  jdiaz
+* protos for mark doorway, and changes to enter room and doorway detection
+*
+* Revision 1.36  2000/02/18 02:23:37  endo
+* Alert state and Alerted trigger added.
+*
+* Revision 1.35  2000/02/07 05:56:50  jdiaz
+* doorways walls hallways rooms
+*
+* Revision 1.34  2000/01/24 18:28:01  ellenber
+* Fixed Objects/Obstacles conflict.  Now works with Obstacles.
+*
+* Revision 1.33  1999/10/25 18:44:58  endo
+* rolled back to this version.
+*
+* Revision 1.29  1999/08/11 21:53:50  jdiaz
+* added additional display as two_points. added defintion for STAY_ON_PATH
+*
+* Revision 1.28  1999/07/03 01:19:14  mjcramer
+* Added get camera heading
+* changed objects
+*
+* Revision 1.27  1999/06/29 01:42:55  mjcramer
+* Added camera stuff
+*
+* Revision 1.26  1999/06/28 20:12:59  endo
+* SETXYTheta added.
+*
+* Revision 1.25  1999/06/23 18:31:15  jdiaz
+* added distances_50 and SETXY
+*
+# Revision 1.24  1999/06/11  15:40:50  conrad
+# *** empty log message ***
+#
+* Revision 1.23  1999/06/07 03:37:38  jdiaz
+* *** empty log message ***
+*
+* Revision 1.22  1999/06/07 03:31:28  jdiaz
+* added types for Range_5 and DirectionTypes. Added Binding point sense_raw_sonar. Added triggers for MovedDistance, HasTurned, and AtDoorWayUltrasound
+*
+* Revision 1.21  1999/05/31 02:37:03  conrad
+* Added SPIN, ISFACING, VECTOR_COMPASS_DIFFERIENTAIL, GET_COMPASS_HEADING
+*
+* Revision 1.20  1999/05/28 00:28:49  mjcramer
+* Fixed "object" and "obstacle" confusion, added vision
+*
+* Revision 1.19  1997/02/14 03:52:56  zchen
+* add move_ahead
+*
+# Revision 1.18  1996/06/17  22:58:36  doug
+# *** empty log message ***
+#
+# Revision 1.17  1996/06/13  15:24:30  doug
+# *** empty log message ***
+#
+# Revision 1.16  1996/06/05  20:28:31  doug
+# *** empty log message ***
+#
+# Revision 1.15  1996/06/02  20:56:09  doug
+# *** empty log message ***
+#
+# Revision 1.15  1996/06/02  20:56:09  doug
+# *** empty log message ***
+#
+# Revision 1.14  1996/06/01  21:55:00  doug
+# *** empty log message ***
+#
+# Revision 1.13  1996/05/14  23:17:57  doug
+# *** empty log message ***
+#
+# Revision 1.12  1996/05/02  22:58:54  doug
+# *** empty log message ***
+#
+# Revision 1.11  1996/04/30  20:44:08  doug
+# *** empty log message ***
+#
+# Revision 1.10  1996/04/18  00:21:13  doug
+# *** empty log message ***
+#
+# Revision 1.9  1996/03/04  00:00:14  doug
+# *** empty log message ***
+#
+# Revision 1.8  1996/03/01  00:48:13  doug
+# *** empty log message ***
+#
+# Revision 1.7  1996/02/29  01:48:38  doug
+# *** empty log message ***
+#
+# Revision 1.6  1996/02/28  03:57:57  doug
+# *** empty log message ***
+#
+# Revision 1.5  1996/02/27  05:09:12  doug
+# *** empty log message ***
+#
+# Revision 1.4  1996/02/25  01:14:53  doug
+# *** empty log message ***
+#
+# Revision 1.3  1996/02/19  21:59:37  doug
+# *** empty log message ***
+#
+# Revision 1.2  1996/01/10  17:27:49  doug
+# *** empty log message ***
+#
+# Revision 1.1  1995/11/27  21:09:15  doug
+# Initial revision
+#
+*
+**************************************************/
+
+/********************* Types *****************************/
+defType displacement;
+defType state;
+defType link;
+defType robot_position;
+defType object_locations;
+defType image;
+defType ObjectList;
+defType Reading;
+defType Angle;
+defType obs_array;
+defType raw_sonar_array;
+defType Reinforcer;
+defType CNLString_t;
+
+deftype GridSize DisplayAs SliderBar 0.0 5.0 |Grid Size| = {0.0}, {1.0}, {2.0}, {3.0}, {4.0}, {10.0}, {5.0};
+
+deftype WorldLength DisplayAs SliderBar 50 400 |WorldLength| = {50}, {100}, {150}, {200}, {250}, {300}, {350}, {400};
+
+deftype WorldWidth DisplayAs SliderBar 50 300 |WorldWidth| = {50}, {100}, {150}, {200}, {250}, {300}, {350}, {400};
+
+
+defType UValue_1000 DisplayAs SliderBar 0 1000 |Eq. line| = {0}, {500.0}, {1000.0};
+
+defType Past_Range DisplayAs SliderBar 0 100 |Avoid Past Range| = {0}, {50}, {100};
+
+defType Past_Grid_Dim DisplayAs SliderBar 0 1000 |Avoid Past Range| = {0}, {500}, {1000};
+
+defType Past_Grid_Scale DisplayAs SliderBar 0 100 |Avoid Past Range| = {0}, {50}, {100};
+
+defType Past_Overlap_Ratio DisplayAs SliderBar 0 1 |Avoid Past Range| = {0}, {0.5}, {1};
+
+defType Range_100 DisplayAs SliderBar 0 100 |VisGoal Gain Range| = {0}, {50}, {100};
+
+defType Range_01 DisplayAs SliderBar 0 1 |Meters| = {Not}, {Slightly}, {Neutral}, {Mostly}, {Extremely};
+defType Range_5 DisplayAs SliderBar 0 5 |Meters| = {0}, {2.5}, {5.0};
+
+defType Range_10 DisplayAs SliderBar 0 10 |Meters| = {0}, {2.0}, {4.0}, {6.0}, {8.0}, {10.0};
+
+defType Patient_01 DisplayAs SliderBar 0 1 |Meters| = {0}, {1.0};
+
+// Times in the range of 0 to 30 seconds
+defType Time_30 DisplayAs SliderBar 0 30 |Seconds| = {No}, {Quick}, {Short}, {Medium}, {Long}, {Extreme};
+
+// Times in the range of 0 to 300 seconds
+defType Time_300 DisplayAs SliderBar 0 300 |Seconds| = {0}, {50}, {100}, {150}, {200}, {250}, {300 (sec)};
+
+defType Heading_360 DisplayAs SliderBar 0 360 |Degrees| = {0},{180},{360};
+
+defType Heading_90 DisplayAs SliderBar -90 90 |Degrees| = {Right},{Straight},{Left};
+
+defType Heading_45 DisplayAs SliderBar -45 45 |Degrees| = {Down}, {Level}, {Up};
+
+defType Degrees_90 DisplayAs SliderBar 0 90 |Degrees| = {Accurate}, {Sloppy};
+
+defType Degrees_45 DisplayAs SliderBar 0 45 |Degrees| = {Accurate}, {Sloppy};
+
+defType Ang_Velocity DisplayAs SliderBar -1000 1000 |Degrees/Sec| = {-1000},{0},{1000};
+
+//SAHO
+defType Change_Variable DisplayAs SliderBar -100 100 |increase/decrease| = {-100},{0},{100};
+
+defType Slippage_Factor DisplayAs SliderBar 0 2 |Multiplier| = {0},{1},{2};
+
+// Distances in the range of 0 to 10 meters
+defType Distances_10 DisplayAs SliderBar 0 10 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+// Distances in the range of 0 to 100 meters
+defType Distances_100 DisplayAs SliderBar 0 100 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+// Distances in the range of 0 to 50 meters
+defType Distances_50 DisplayAs SliderBar 0 50 |Meters| = {Close},{Somewhat Close},{Normal},{Somewhat Far}, {Far};
+
+//Tiempo en un rango de 0 a 30 minutos
+defType Tiempo_30 DisplayAs SliderBar 0 30 |Minutos| = {0 min},{30 min};
+
+// Speeds in the range of 0 to 10 meters per second
+defType Speeds_10 DisplayAs SliderBar 0 10 |Meters/Second| = {Turtle},{Normal},{Rabbit};
+
+defType Awayness_10 DisplayAs SliderBar 0 10 |Meters| = {Somewhat Far}, {Far}, {Very Far};
+defType Nearness_10 DisplayAs SliderBar 0 10 |Meters| = {Very Near}, {Near}, {Somewhat Near};
+
+defType ObjectClasses  DisplayAs CheckBox = {Mines}, {Enemy_Robots}, {Flags}, {EOD_Areas}, {Rocks}, {Trees_and_Shrubs}, {Home_Base}, {Unknown_Objects}, {Hiding_Places}, {Cans};
+
+defType OneObjectClass  DisplayAs RadioBox = {Mine}, {Enemy_Robot}, {Flag}, {EOD_Area}, {Rock}, {Tree_or_Shrub}, {Home_Base}, {Unknown_Object}, {Hiding_Place}, {Can};
+
+defType NBC_Class  DisplayAs RadioBox = {Biological_Agent}, {Chemical_Agent}, {Radioactive_Material};
+defType ProbeObject_Class  DisplayAs RadioBox = {Possible_Biohazard}, {Possible_Victim};
+defType TestObject_Class  DisplayAs RadioBox = {Biohazard}, {Mine};
+
+defType MarkObjectClass DisplayAs RadioBox = {Biohazard}, {Safe_Object};
+
+defType FollowObject_Class  DisplayAs RadioBox = {Friendly_Robot}, {Enemy}, {Victim}, {Hostage};
+
+defType RobotClasses  DisplayAs CheckBox = {Blue_Robot}, {Red_Robot}, {Green_Robot}, {Yellow_Robot};
+
+defType PatrolEnd DisplayAs TypeInBox 0 1|Type-in the last patrol point|;
+defType Map_Location1  DisplayAs TwoPoints;
+defType Map_Location2  DisplayAs TwoPoints;
+defType Map_Location3  DisplayAs TwoPoints;
+defType Map_Location4  DisplayAs TwoPoints;
+defType Map_Location5  DisplayAs TwoPoints;
+defType Map_Location6  DisplayAs TwoPoints;
+defType Map_Location7  DisplayAs TwoPoints;
+defType Map_Location8  DisplayAs TwoPoints;
+
+defType RobotCid  DisplayAs RadioBox = {Blue_Robot}, {Red_Robot}, {Green_Robot}, {Yellow_Robot};
+
+defType Share_state  DisplayAs RadioBox = {TRUE}, {FALSE};
+
+defType FormationTypes  DisplayAs RadioBox = {NoFormation}, {Sweep}, {Line}, {LineLeft}, {LineRight}, {Diamond}, {Wedge}, {WedgeLeft}, {WedgeRight}, {Column};
+
+defType TurnMode  DisplayAs RadioBox = {ON},{OFF};
+defType DirectionTypes DisplayAs RadioBox = {Right}, {Left}, {Both};
+
+defType ProceedDirTypes DisplayAs RadioBox = {Right}, {Left},
+{Facing}, {Opposite};
+
+defType DetectionTypes DisplayAs RadioBox = {DETECT_UNMARKED_ONLY}, {DETECT_ANY};
+defType EnterTypes DisplayAs RadioBox = {ENTER_UNMARKED_ONLY}, {ENTER_ANY};
+defType ThroughTypes DisplayAs RadioBox = {THROUGH_UNMARKED_ONLY}, {THROUGH_ANY};
+defType ResetTypes DisplayAs RadioBox = {DEFAULT_MAP}, {USE_NEW_MAP};
+defType CNPTaskSelection DisplayAs RadioBox = {CHECK_WON_CNP_TASK}, {CHECK_SPECIFIC_CNP_TASK};
+
+defType CSB_Methods DisplayAs RadioBox = {Comm_Recovery}, {Comm_Preserve}, {Internalized_Plan}, {CSB_Average}, {CSB_Greedy};
+
+defType Map_Location  DisplayAs TwoPoints;
+defType Start_Location DisplayAs TwoPoints;
+defType End_Location DisplayAs TwoPoints;
+
+defType check_use_email DisplayAs RadioBox = {Send_Email}, {NO_Email};
+defType check_attach_image DisplayAs RadioBox = {Attach_Image}, {NO_Image};
+defType check_sub_mission_deployment DisplayAs RadioBox = {DEPLOY_FIRST}, {EXECUTE_IMMEDIATELY};
+defType check_sub_mission_deployment_method DisplayAs RadioBox = {DEPLOY_BY_GOTO}, {DEPLOY_BY_LOCALIZE};
+
+// The format for TypeInBox is:
+// defType <new name> DisplayAs TypeInBox <1: ScrollBox or 0: Non-ScrollBox>
+// <1: Show typed contents on the screen or 0: Do not show typed contents on the screen>
+// |<description/heading goes to the top of the box>|
+defType email_address DisplayAs TypeInBox 0 0|Type-in the email address (if applicable)|;
+defType type_alert_subject DisplayAs TypeInBox 0 1|Type-in the headline of this alert|;
+defType type_alert_message DisplayAs TypeInBox 1 0|Type-in the alert message|;
+defType key_name DisplayAs TypeInBox 0 0|Enter the name of the distributed flag|;
+defType type_message DisplayAs TypeInBox 1 0|Type-in a message|; // Used by TALK
+defType type_notify_message DisplayAs TypeInBox 0 1|Type-in the notify message|;
+defType type_map_name DisplayAs TypeInBox 0 1|Type-in the new map name|;
+defType fsa_completion_key DisplayAs TypeInBox 0 0|FSA completion key|;
+defType type_sub_mission_name DisplayAs TypeInBox 0 1|Type-in the sub-mission name|;
+defType cnp_task_constraints_string DisplayAs TypeInBox 1 0|Task Constraints (Format = Name:Type:Value,...)|;
+defType cnp_task_id_string DisplayAs TypeInBox 0 1|Task ID (number)|;
+defType cnp_task_name_string DisplayAs TypeInBox 0 1|Task Name|;
+defType cnp_specific_task_name_string DisplayAs TypeInBox 0 1|Specify the CNP task name (if not using the won task)|;
+
+defType type_env_filename DisplayAs TypeInBox 0 1|Type-in the environment file name|;
+defType type_cmdl_filename DisplayAs TypeInBox 0 1|Type-in the cmdl file name|;
+
+// Define symbolic names for the keypresses.
+// The first letter of the name is the corresponding keypress
+// the case is not sensitive.  All other key presses are mapped to a space
+// which is shown as the first name in this list.
+
+defType KeyPress  DisplayAs RadioBox = {Danger}, {Safe}, {Abort};
+
+defType ThetaPsiMode DisplayAs RadioBox = {Check_Theta_Only}, {Check_Psi_Only}, {Check_Both_Theta_And_Psi};
+defType TrackingMode DisplayAs RadioBox = {None},{Center},{Sweep_X_High},{Sweep_X_Center},{Sweep_X_Low},{Sweep_Y_Left},{Sweep_Y_Center},{Sweep_Y_Right},{Sweep_XY},{Largest_Color},{Closest_Laser};
+defType MobilityType DisplayAs RadioBox = {UXV},{UGV},{UUV},{USV},{UAV},{SLUAVU},{SLUAVL};
+
+/********************* Binding points *****************************/
+defIBP robot_position sense_location();
+defIBP number sense_compass();
+
+defIBP obs_array sense_obstacles(number max_sensor_range);
+
+defIBP ObjectList sense_objects(number max_sensor_range);
+defIBP raw_sonar_array sense_raw_sonar();
+
+defOBP void movement(
+    displacement v,
+    const number base_vel = {1});
+
+defOBP void pantilt(
+    displacement look_loc );
+
+defOBP void pantiltzoom(
+    displacement look_loc,
+    number zoom );
+
+defRBP vehicle();
+
+defOBP void motivations(
+       displacement v );
+
+
+/******************** sensors ********************/
+
+defSensor binds sense_location robot_position GET_LOCATION
+|Returns robot position as given by the shaft encoders|
+	();
+
+defSensor binds sense_compass number GET_COMPASS_HEADING
+|Returns compass heading in decimal degrees|
+	();
+
+defSensor binds sense_raw_sonar raw_sonar_array RAW_ULTRASONICS
+|Return a list of the raw sonar readings from the robot|
+	();
+
+defSensor binds sense_obstacles obs_array DETECT_OBSTACLES
+|Return a list of all objects detected within the sonar range (meters)|
+      (number max_sensor_range);
+
+defSensor binds sense_objects ObjectList DETECT_OBJECTS
+|Return a list of all objects detected by the vision system|
+	(number max_sensor_range);
+
+/******************** actuators ********************/
+
+defActuator binds movement void DRIVE
+|Sends movement command to drive mechanism|
+(     displacement v,
+      number max_vel,
+      number base_vel);
+
+defActuator binds movement void DRIVE_W_SPIN(
+      displacement v,
+      number max_vel,
+      number base_vel,
+      number cautious_vel,
+      boolean  cautious_mode);
+
+defActuator binds pantilt void PANTILT
+|Sends pan/tilt command to camera|
+(     displacement look_loc );
+
+defActuator binds pantiltzoom void PANTILTZOOM
+|Sends pan/tilt/zoom command to camera|
+(     displacement look_loc,
+      number zoom );
+
+
+defActuator binds motivations void MOTIVATIONS
+|Updates the motivational variables|
+(  displacement v );
+
+defActuator binds movement void DRIVE_ROOMBA
+|Sends movement command to drive mechanism|
+(     displacement v,
+      number max_vel,
+      number base_vel);
+
+
+/******************** robots ********************/
+
+defRobot binds vehicle DEFAULT_ROBOT(
+    actuator base:DRIVE,
+    actuator camera:PANTILT,
+    sensor   vision_system:DETECT_OBJECTS,
+    sensor   sonars:DETECT_OBSTACLES,
+    sensor   shaftencoders:GET_LOCATION);
+
+/********************* Operators *****************************/
+
+defOp displacement FSA FSAstyle(
+    list [boolean triggers, expression rules, member society] );
+
+defOp displacement COOP SELECTstyle(
+   list [displacement members, const number weight]
+   );
+
+defOp displacement MDL_coordinator MDLstyle(
+   commands command_list,
+
+   displacement moveto,
+   displacement teleop,
+   displacement occupy,
+
+   boolean moveto_done,
+   boolean teleop_done,
+   boolean occupy_done
+   );
+
+defOp displacement CMDLi MDLstyle(
+   const string envFilename,
+   const string cmdlFilename,
+
+   displacement moveto,
+   displacement recon,
+
+   boolean moveto_done,
+   boolean recon_done
+   );
+
+defOp displacement QLEARN RLstyle(
+    	list boolean triggers,
+        list displacement society,
+        list Reinforcer reinforcers,
+        // const string QfileName,
+        const CNLString_t QfileName,
+        const number ActionTimeout,
+        const number alpha,
+        const number alphaDecay,
+        const number random,
+        const number randomDecay
+	);
+
+/********************* Agents *****************************/
+
+defAgent displacement MOVE_TO_GOAL_DSTAR(
+    displacement goal_rel_loc,
+    robot_position pos,
+    obs_array obstacles,
+    number gridsize,
+    number length,
+    number width,
+    number ao_val,
+    location ao_vec,
+    number persistence,
+    number angle_dev,
+    number goal_gain
+);
+
+
+defAgent number VARIABLE(const number value);
+
+defAgent displacement user_wait(
+	const UTM position,
+	const string message
+/*
+	const boolean calibrate_gns
+*/
+);
+
+defAgent displacement xcountry(
+        const number initial_speed,
+        const UTM points
+/*
+        const number tolerance,
+	const number speed,
+	const number tolerance,
+	const boolean obstacle_avoidance,
+	const UTM start_point,
+	const UTM end_point,
+	const string formation_type,
+	const number formation_spacing,
+	const number formation_dead_zone,
+	const number formation_saturation
+*/
+);
+
+defAgent direction GET_HEADING(robot_position cur_pos);
+
+defAgent location GET_XY(robot_position cur_pos);
+
+defAgent displacement AVOID_STATIC_OBSTACLES(
+    const number sphere,
+    const number safety_margin,
+    object_locations readings);
+
+defAgent displacement VECTOR_COMPASS_DIFFERENTIAL(
+	number Desired_heading,
+	number Tolerance,
+	number Compass_heading
+);
+
+defAgent displacement PROBE(
+    const number sphere,
+    const number safety_margin,
+    object_locations readings);
+
+defAgent displacement MOVE_TO_FREE_SPACE(
+    const number horizon,
+    obs_array   readings);
+
+defAgent displacement NOISE(
+    const number persistence,
+    direction robot_heading);
+
+defAgent displacement MOVE_TO_GOAL(
+    location goal_rel_loc,
+    number success_radius);
+
+defAgent displacement IR_A_ROOMBA(
+    location goal_rel_loc,
+    const number location_gain,
+	const number obstacle_gain,
+	const number sphere);
+
+defAgent displacement IR_POSICION_OBJETIVO(
+    location obstaculo);
+
+defAgent displacement ASPIRAR();
+
+defAgent displacement ENTRAR_HABITACION(
+    location entrar,
+    location ostaculos,
+    location teleop,
+    number pesoEntrar,
+    number pesoObstaculos,
+    number pesoTeleop);
+
+defAgent displacement GUIAR_ROBOT(
+    number num,
+    location pasillo);
+
+defAgent displacement GUIAR(
+    location moverPasillo,
+    //location obstaculos,
+    location estarEnPasillo);
+
+defAgent displacement SEGUIR_LIDER(
+    location obstaculo);
+
+//defAgent displacement SEGUIR_LIDER(
+//    robot_position pos,
+//    obs_array obstacles,
+//    number gridsize,
+//    number length,
+//    number width,
+//    number ao_val,
+//    location ao_vec,
+//    number persistence,
+//    number angle_dev,
+//    number goal_gain
+//);
+
+defAgent displacement IR_POSICON_ANT_LIDER(
+    robot_position pos,
+    obs_array obstacles,
+    number gridsize,
+    number length,
+    number width,
+    number ao_val,
+    location ao_vec,
+    number persistence,
+    number angle_dev,
+    number goal_gain);
+
+defAgent displacement ASPIRAR560();
+
+defAgent displacement MOVE_AHEAD(
+    number heading);
+
+defAgent displacement SWIRL_STATIC_OBSTACLES(
+    const number sphere,
+    const number safety_margin,
+    location goal_rel_loc,
+    obs_array readings);
+
+defAgent displacement SETXY(
+    number x,
+    number y);
+
+defAgent displacement STAY_ON_PATH(
+    location Start,
+    location End,
+    number Path_Width
+);
+
+defAgent displacement SETXYTHETA(
+    location new_robot_location,
+    number new_theta);
+
+defAgent displacement MOVE_TO(
+    boolean have_a_goal,
+    location goal_rel_loc);
+    
+defAgent displacement CARMEN_NAVIGATE(
+    location goal);
+
+defAgent displacement AERIAL_MOVE_TO_GOAL(
+    location goal_rel_loc,
+    const number success_radius);
+    //const number goal_altitiude);
+
+defAgent displacement AERIAL_AVOID_ROBOT(
+    const number sphere,
+    const number min_range
+    );
+
+defAgent displacement AERIAL_NOISE(
+    const number persistence,
+    direction robot_heading);
+
+defAgent displacement AERIAL_AVOID_OBSTACLES
+|Motor behavior generating a vector away from any close obstacles for uav|
+( const number sphere,
+  const number safety_margin,
+  obs_array   readings);
+
+defAgent displacement AERIAL_MAINTAIN_ALTITUDE
+|Uav tries to maintain a given altitiude|
+( robot_position robopos,
+  const number desired_altitude,
+  const number dead_zone);
+
+defAgent displacement AERIAL_GLOBAL_TO_EGOCENTRIC(
+    displacement global,
+    location robot_location,
+    direction robot_heading,
+    number goal_altitude);
+
+defAgent displacement POS_ANT_LIDER_REL_LOC(
+    robot_position pos);
+
+
+defAgent displacement FOLLOW_CSB_ADVISE(
+    number method);
+    
+defAgent displacement GROUSAL_FOLLOW_CSB_ADVISE(
+    number method);
+
+defAgent displacement INIT_CSB();
+
+defAgent displacement UPDATE_CSB_SENSOR_DATA();
+
+defAgent boolean COMM_SIGNAL_STRONG_ENOUGH(
+    number threshold);
+
+defAgent boolean GROUSAL_COMM_SIGNAL_STRONG_ENOUGH(
+    number threshold);
+    
+defAgent boolean GROUSAL_SERVO_BATTERY_CHARGED(
+    number threshold);
+    
+defAgent boolean GROUSAL_GENERAL_BATTERY_CHARGED(
+    number threshold);
+    
+defAgent boolean CSB_CONFIDENCE_HIGH_ENOUGH(
+    number method,
+    number threshold);
+
+defAgent displacement MARK_DOORWAY();
+
+defAgent boolean MARKED_DOORWAY();
+
+defAgent displacement UNMARK_DOORWAY();
+
+defAgent boolean UNMARKED_DOORWAY();
+
+defAgent displacement ENTER_ROOM(
+    number distance,
+    number unmarked);
+
+defAgent displacement ENTER_DOORWAY(
+    number distance,
+    number unmarked);
+
+defAgent boolean THROUGH_DOORWAY(
+    number unmarked);
+
+defAgent displacement LEAVE_ROOM();
+
+defAgent displacement ENTER_ALTERNATE_HALLWAY(
+    number distance);
+
+defAgent boolean DETECT_ALTERNATE_HALLWAY();
+
+defAgent displacement GLOBAL_TO_EGOCENTRIC(
+    displacement global,
+    location robot_location,
+    direction robot_heading);
+
+defAgent boolean got_continue();
+
+defAgent displacement TELOP(
+    number telop_mode,
+    direction robot_heading,
+    number joystick_x,
+    number joystick_y,
+    number joystick2_x,
+    number joystick2_y,
+    number slider_1,
+    number slider_2,
+    number joy_buttons);
+    
+defAgent displacement GROUSAL_TELOP_CSB(
+    number telop_mode,
+    direction robot_heading,
+    number joystick_x,
+    number joystick_y,
+    number joystick2_x,
+    number joystick2_y,
+    number slider_1,
+    number slider_2,
+    number joy_buttons);
+
+defAgent displacement POPUP_TELOP_INTERFACE();
+
+//************* SOUND RELATED STUFF *******************
+defAgent displacement SOUND(
+    direction robot_heading,
+    number sound_direction_x,
+    number sound_direction_y);
+
+defAgent boolean DETECT_SOUND
+|Perceptual trigger activated when the robot hears a sound|
+(number volume_threshold);
+
+
+defAgent boolean DETECT_SOUND_MOTIVATED
+|Trigger activated when the robot hears a sound and is in the mood|
+(number volume_threshold, number curiousity_threshold, number curiousity_level);
+
+
+defAgent displacement TALK
+|Talk using the Speech Synthesizer|
+(
+  string  talkmessage
+);
+
+//*************** END SOUND STUFF *********************
+
+
+defAgent ObjectList FILTER_OBJECT_CLASSES
+|Perceptual filter passing only objects with one of the specified colors|
+(list const string desired_color, ObjectList full_list);
+
+defAgent ObjectList FILTER_OBJECTS
+|Perceptual filter passing only objects with the specified color|
+(const string desired_color, ObjectList full_list);
+
+defAgent ObjectList FILTER_OBJECTS_BY_CLASS
+|Perceptual filter passing only objects of the specified types|
+(
+// If false, pass objects only of the indicated types
+// If true, pass objects only if NOT the indicated types
+const boolean remove_these,
+
+// Classes of objects
+ObjectClasses classes,
+
+ObjectList full_list
+);
+
+
+defAgent ObjectList ECHO_OBJECTS
+|Debug tool which writes the list of objects to stderr and then returns it|
+(ObjectList full_list);
+
+defAgent boolean IS_AN_OBJECT
+|Perceptual trigger if there is at least one object in the list|
+(ObjectList object_list);
+
+//**********************************************************
+// MOTIVATIONAL STUFF BEGIN
+//**********************************************************
+
+defAgent boolean IS_AN_OBJECT_MOTIVATED
+|Trigger if there is an object in the list and emotional thresholds are met|
+( ObjectList object_list,
+  number anger_lower, number anger_upper,
+  number fear_lower, number fear_upper,
+  number hunger_lower, number hunger_upper,
+  number curiousity_lower, number curiousity_upper,
+  number anger_level,
+  number fear_level,
+  number hunger_level,
+  number curiousity_level
+);
+
+defAgent displacement MOTIVATIONAL_UPDATE
+|Process that updates the motivational variables|
+(number anger_level, number fear_level, number hunger_level, number curiousity_level);
+
+defAgent  void CHANGE_MOTIVATIONAL_VECTOR
+|State that changes the motivational variables|
+( number anger_change, number fear_change,  number hunger_change,  number  curiousity_change, number anger_level, number fear_level, number hunger_level, number curiousity_level);
+
+
+//**********************************************************
+// MOTIVATIONAL STUFF END
+//**********************************************************
+
+defAgent Reading CLOSEST_OBJECT
+|Perceptual process extracting the closest object from a list of objects|
+(ObjectList object_list);
+
+defAgent boolean IS_AT_GOAL
+|Perceptual trigger determining if robot is within success distance from goal|
+(boolean have_a_goal, location goal_rel_loc, number success_radius);
+
+defAgent boolean ESTOY_OBJETIVO
+|Trigger que determina si un robot ha alcanzado el punto que deseaba con un margen de error|
+(boolean have_a_goal, number success_radius);
+
+defAgent boolean ESTOY_POS_ANT_LIDER
+|Trigger que determina si un robot ha alcanzado el punto que deseaba con un margen de error|
+(boolean have_a_goal, number success_radius);
+
+defAgent boolean FIN_ASPIRAR
+|Trigger que indica cuando se ha superado el tiempo de aspirar|
+(number tiempo_limpieza);
+
+defAgent boolean NUEVA_TAREA
+|Trigger que indica cuando ha llegado un mensaje de un tipo determinado|
+();
+
+
+defAgent boolean IS_TARGET_UNTRACKABLE
+(Reading object);
+
+defAgent boolean CNP_GOT_A_TASK
+|Perceptual trigger to determine if a robot has a task for bid|
+();
+
+defAgent boolean CNP_IS_TASK_CHANGED
+();
+
+defAgent boolean CNP_IS_TASK_WON
+|Perceptual trigger to determine if a robot has won a task|
+();
+
+defAgent boolean CNP_WON_TASK_IS
+|Perceptual trigger to determine if a robot has won a specified task|
+(
+    string taskName
+);
+
+defAgent boolean CNP_IS_TASK_LOST
+|Perceptual trigger to determine if a robot has lost a task|
+();
+
+defAgent displacement CNP_BID_ON_TASK();
+
+// Obsolete: Use CNP_NOTIFY_TASK_COMPLETED instad.
+//defAgent displacement CNP_RENEG_TASK();
+
+
+defAgent displacement CNP_TRACK();
+
+defAgent displacement CNP_INJECT_TASK
+|Inject a CNP task|
+(
+    number taskID,
+    string taskName,
+    string constraintsString
+);
+
+defAgent displacement SLUAV_TRANSPORT
+|Transport a SLUAV|
+(
+   number robotid
+);
+
+defAgent boolean CNP_IS_AUCTION_ENDED();
+
+defAgent boolean CNP_IS_AUCTION_FAILED();
+
+defAgent displacement CNP_NOTIFY_TASK_COMPLETED
+(
+    boolean reneged
+);
+
+defAgent displacement CNP_NOTIFY_WON_TASK_STARTED();
+
+defAgent boolean CNP_TASK_COMPLETION_NOTIFIED(
+    number cnpTaskSelection,
+    string specificTaskName,
+    boolean reneged
+);
+
+defAgent displacement CNP_SAVE_TARGET_LOCATION
+|The robot saves the location of the nearest target for CNP|
+(Reading object);
+
+defAgent displacement CNP_SAVE_TARGET_VELOCITY
+|The robot saves the velocity of the target for CNP|
+(Reading object);
+
+defAgent displacement CNP_SAVE_TARGET_VEHICLE_TYPE
+|The robot saves the vehicle type of the target for CNP|
+(Reading object);
+
+defAgent boolean SKIP_GOAL
+|Perceptual trigger determining if robot should skip current waypoint|
+(boolean have_a_goal);
+
+defAgent location OBJECT_LOCATION
+|Perceptual filter extracting X,Y location of an object from reading|
+(Reading   object);
+
+defAgent location PROJECTED_GOAL
+|Project a goal to the direction|
+( location robot_location,
+  direction robot_heading,
+  direction project_angle,
+  number distance
+);
+
+defAgent displacement AVOID_OBJECTS
+|Motor behavior generating a displacement away from any close objects|
+( const number sphere,
+  const number safety_margin,
+  ObjectList   objlist);
+
+defAgent displacement CLOSEST_OBSTACLE
+|Perceptual process extracting the closest generic obstacle|
+(obs_array obstacle_list);
+
+defAgent displacement AVOID_OBSTACLES
+|Motor behavior generating a vector away from any close obstacles|
+( const number sphere,
+  const number safety_margin,
+  obs_array   readings);
+
+defAgent displacement AVOID_OBSTACLES_MEM
+|Motor behavior generating a displacement away from any close objects|
+( const number sphere,
+  const number safety_margin,
+  const number decay_rate,
+  obs_array readings,
+  robot_position cur_pos
+);
+
+defAgent boolean CONSTANT
+|Perceptual trigger generating constant value useful for hardcoding transitions|
+(const boolean value);
+
+defAgent number DATABASE_VALUE
+|Perceptual trigger generating constant value useful for hardcoding transitions|
+(const string key,
+ const number initial);
+
+defAgent displacement GET_HALLWAY_INFO_VECTOR
+(const string key, number Direction);
+
+defAgent number GET_HALLWAY_INFO_DOUBLE
+(const string key);
+
+defAgent boolean IN_ROOM
+();
+
+defAgent boolean IN_HALLWAY
+();
+
+defAgent boolean AND
+|Perceptual trigger whose output is true if both inputs are true|
+(boolean a, boolean b);
+
+defAgent boolean OR
+|Perceptual trigger whose output is true if both inputs are not false|
+(boolean a, boolean b);
+
+defAgent boolean NOR
+|Perceptual trigger whose output is true if both inputs are false|
+(boolean a, boolean b);
+
+defAgent boolean NOT
+|Perceptual trigger whose output is true when the input is false|
+(boolean a);
+
+defAgent displacement NULL_MS
+|the NULL motor schema outputs a zero displacement, useful in empty FSA states|
+();
+
+defAgent displacement DROP_IN_BASKET
+|Drop the object the robot is carrying into the basket (if robot is near basket)|
+(Reading basket);
+
+defAgent void PICKUP_OBJECT
+|Pickup the object (if the robot is next to it)|
+(Reading object);
+
+defAgent void MARK_OBJECT
+|Mark an object (if the robot is next to it) by changing its color|
+(Reading object,
+ OneObjectClass  new_class);
+
+defAgent displacement HALT
+|Halts the robot executable|
+();
+
+defAgent displacement TERMINATE_MISSION
+|Terminate the entire mission|
+();
+
+defAgent boolean FIRST_TIME
+|Perceptual trigger causing transition to occur first time the state executes|
+();
+
+defAgent displacement NOOP
+|An agent which performs no operation, generating an empty output|
+();
+
+defAgent displacement SET_TRIGGER_FLAG
+(string key);
+
+defAgent boolean IS_TRIGGER_FLAG_SET
+(string key);
+
+
+defAgent boolean DOORWAY_ULTRASOUND
+|Perceptual trigger when a doorway is encountered in sonar patterns|
+(number robot_length,
+ number hallway_width,
+ number look_for,
+ number unmarked);
+
+defAgent boolean WAIT(
+    number delay_time);
+
+defAgent displacement WAIT_FOR_PROCEED();
+
+defAgent boolean ISFACING(
+    number desired_heading,
+    number accuracy,
+    direction robot_heading);
+
+defAgent boolean HAS_TURNED(
+    number desired_turn_angle,
+    number robot_heading,
+    number off_set);
+
+defAgent boolean MOVED_DISTANCE(
+    number desired_distance,
+    robot_position position);
+
+defAgent displacement SPIN(
+    const number angular_velocity,
+    const number slippageFactor);
+
+defAgent boolean PROBE_MOVABLE
+|Is the object movable?|
+( Reading object);
+
+defAgent displacement PROBE_OBJECT
+|Determine the object proporties|
+( Reading object);
+
+defAgent displacement ALERT
+|Alert the user about the object|
+( string  alertsubject,
+  string  alertmessage,
+  boolean use_email,
+  string  mail_recipient,
+  boolean attach_image
+);
+
+defAgent boolean ALERTED_ONCE
+|Causes the transition when the alert message has sent|
+(const boolean value
+);
+
+defAgent displacement NOTIFY
+|The robot notifies this message|
+(string  notifymessage);
+
+defAgent displacement NOTIFY_ROBOTS
+|The robot notifies this message to other robots via console|
+(string  notifymessage);
+
+defAgent boolean NOTIFIED_ONCE
+|Causes a transition when the robot received this messag|
+( string  notifymessage
+);
+
+defAgent displacement NOTIFY_ROBOTS_OBJECT_LOCATION
+|The robot broadcasts the location of the nearest object|
+(Reading object);
+
+defAgent boolean IS_OBJECT_LOCATION_NOTIFIED();
+
+defAgent displacement NOTIFIED_OBJECT_LOCATION();
+
+defAgent boolean IS_NOT_PROGRESSING
+|auses a transition when the robot is stuck and having no progress|
+( location desired_location,
+  number patient
+);
+
+defAgent boolean IS_VALID_OBJECT
+|Is this a valid object?|
+( Reading object);
+
+defAgent displacement MAP_LOCATION
+|Determine the location of a map feature|
+( const string feature_name );
+
+defAgent displacement START_SUB_MISSION
+|Starts Sub-Mission|
+( string  sub_mission_name,
+  number deployment_method,
+  displacement goal_rel_loc
+);
+
+defAgent boolean SUB_MISSION_READY
+|Causes a transition when sub-mission is ready|
+( number sub_mission_deployment,
+  boolean at_goal_trigger
+);
+
+defAgent number LAST_KEY_PRESS
+|Return the last key that was pressed on the operator console|
+( );
+
+defAgent boolean EQUAL_INT
+|check if the two values are equal|
+(number a, number b);
+
+defAgent displacement ADD_OBJECT
+|Add an object to the environment|
+(string color,
+ number style,
+ location place,
+ number diameter );
+
+defAgent displacement DEBUG_PROC
+|Writes a counter to stderr to aid debugging|
+( );
+
+defAgent number DATABASE_DOUBLE
+|A variable holding a double|
+( const string  key,
+  const number  initial);
+
+defAgent boolean SET_DATABASE_DOUBLE
+( const string key,
+  const number value);
+
+defAgent boolean UPDATE_DISTRIBUTED_FLAG
+|Update a distributed flag -- returns true for use on transition |
+( const string  key,
+  const boolean  value);
+
+defAgent boolean TEST_DISTRIBUTED_FLAG
+|Test a distributed flag -- returns flag, or default if flag not valid yet |
+( const string  key,
+  const boolean  default_value);
+
+defAgent number DATABASE_INT
+|A variable holding a int|
+( const string  key,
+  const number  initial);
+
+defAgent number DATABASE_BOOLEAN
+|A variable holding a boolean|
+( const string  key,
+  const number  initial);
+
+defAgent displacement MAINTAIN_FORM
+|Maintain our position in the formation|
+(location offset,
+ const number dead_zone_radius,
+ const number saturation_length );
+
+
+defAgent location COMPUTE_FORM_POSITION
+|get egocentric vector to our correct position in the formation|
+(const number spacing,
+ const number unit_size,
+ location unit_center_relative,
+ number formation_heading,
+ location robot_location,
+ direction robot_heading,
+ string formation_name
+ );
+
+defAgent displacement COMPUTE_UNIT_CENTER
+|Compute the center location of a group of objects|
+(ObjectList   robots);
+
+
+defAgent displacement SCALE_VECTOR
+|Multiply a vector by a scale factor|
+(displacement v,
+ number multiplier);
+
+defAgent direction DETECT_FORM_HEADING
+|Determine the heading of the formation|
+(displacement relative_goal,
+ displacement telop_input,
+ number telop_mag,
+ const number default_trigger,
+ direction robot_heading
+ );
+
+defAgent number COUNT_OBJECTS(
+    ObjectList   objlist);
+
+defAgent number SUM(
+    list number values);
+
+defAgent number SUM_DOUBLE(
+    list number values);
+
+defAgent displacement SUBTRACT_VECTORS
+|Compute the difference of the two vectors|
+(displacement   A,
+ displacement   B);
+
+defAgent displacement DEBUG_SHOW_INPUT
+|Debug tool which writes the vector to stderr|
+(string msg,
+ displacement input);
+
+defAgent displacement LOOK_TO(
+	const number look_theta,
+	const number look_psi );
+
+defAgent boolean IS_LOOKING_AT_DEGREE(
+	const number lookfor,
+	const number desired_theta,
+	const number delta_theta,
+	const number desired_psi,
+	const number delta_psi );
+
+defAgent displacement SET_CAMERA_TRACKING_MODE(
+	 const number mode);
+
+defAgent displacement SET_MOBILITY_TYPE(
+    const number mobilityType);
+
+defAgent displacement COMPUTE_REP
+(
+  const number sphere,
+  obs_array   readings);
+
+defAgent displacement COMPUTE_F
+(
+  displacement rep_force);
+
+defAgent displacement COMPUTE_T
+(
+  displacement rep_force);
+
+defAgent displacement COMPUTE_G
+(
+  boolean have_a_goal,
+  location goal_rel_loc
+  );
+
+defAgent number COMPUTE_U
+(
+  displacement rep_force);
+
+defAgent number COMPUTE_ULIM
+(
+  number alpha,
+  number beta,
+  number umax,
+  number umin);
+
+defAgent number COMPUTE_A
+(
+  displacement g,
+  displacement f);
+
+defAgent number COMPUTE_B
+(
+  displacement g);
+
+defAgent displacement SET_TARGET
+(
+  location goal_loc);
+
+defAgent number CURRENT_TARGET
+|A variable holding a vector|
+( const displacement new_vector);
+
+defAgent displacement MNAV_OBSTACLES
+|Motor behavior generating a vector away from any close obstacles|
+(
+  number ulim,
+  displacement f,
+  displacement t,
+  displacement g,
+  number u);
+
+defAgent displacement MNAV_TO_GOAL
+|Motor behavior generating a vector away from any close obstacles|
+(
+  number ulim,
+  displacement f,
+  displacement t,
+  displacement g,
+  number u);
+
+defAgent boolean MUST_FOLLOW(
+    displacement g,
+    displacement f);
+
+defAgent boolean MUST_LEAVE(
+    number alpha,
+    displacement g,
+    displacement f);
+
+defAgent displacement FREE_US_PATH(
+    location goal_rel_loc,
+    obs_array readings,
+    robot_position cur_pos,
+    boolean progress,
+    number state_sharing);
+
+defAgent boolean IS_A_FROBOT
+|Perceptual trigger if there is at least one object in the list|
+(ObjectList object_list,
+robot_position cur_pos);
+
+defAgent displacement DATABASE_VEC
+|A variable holding a vector|
+( const string  key,
+  const displacement new_vector);
+
+defAgent displacement NOTIFY_GOALS
+|The robot notifies this message to other robots via console|
+( displacement goal_loc);
+
+defAgent displacement SET_CID
+|The robot notifies this message to other robots via console|
+( number cid);
+
+defAgent displacement AVOID_PAST
+|Motor behavior generating a vector away from any close obstacles|
+( number past_horizon,
+  number past_mark,
+  robot_position cur_pos,
+  number past_gridsize,
+  number world_to_past_scale,
+  number overlap_ratio);
+
+defAgent boolean IS_NOT_PROGRESSING_MEM
+|auses a transition when the robot is stuck and having no progress|
+( location desired_location,
+  number patient
+);
+
+defAgent displacement MOVE_TO_GUARDED
+( displacement goal_rel_loc,
+  number       dropoff_radius,
+  number       dead_zone_radius,
+  number       output_gain,
+  boolean      have_a_goal );
+
+defAgent displacement CHANGE_ROBOT_COLOR(
+   const string color
+);
+
+defAgent displacement RESET_WORLD(
+   const string new_overlay,
+   boolean load_new_overlay
+);
+
+defAgent number CBRGetCase(
+	displacement goal_rel_loc);
+
+defAgent displacement CBRAgent(
+	number CBR_RetCode,
+	displacement COOPVector);
+
+defAgent displacement MakeUnitVector(
+	number  XComp,
+	number  YComp);
+
+defAgent displacement HeadRelUnitV(
+	displacement Goal_Location,
+	robot_position Robot_Pos,
+	number  XComp,
+	number  YComp);
+
+defAgent displacement INTERCEPT(
+    ObjectList objlist);
+
+defAgent number STRING_TO_INT(
+    string inputString);
+
+defAgent boolean STRING_TO_BOOL(
+    string inputString);
+
+defAgent number STRING_TO_DOUBLE(
+    string inputString);
+
+defAgent number STRING_TO_FLOAT(
+    string inputString);

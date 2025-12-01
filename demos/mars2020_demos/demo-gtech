@@ -1,0 +1,19 @@
+MISSION NAME "gtech"
+OVERLAY "FortBenning-demo.ovl"
+NEW-ROBOT gtechRobot1 "gtechRobot1" "orange" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+NEW-ROBOT gtechRobot2 "gtechRobot2" "orange" "" (
+ robot_type = HOLONOMIC,
+ run_type= SIMULATION)
+
+UNIT <all> gtechRobot1 gtechRobot2
+
+set show-trails off
+set scale-robots off
+set ROBOT-LENGTH 10.0
+
+
+COMMAND LIST:
+ 0. UNIT all START StartPlace -2.000000 0.000000

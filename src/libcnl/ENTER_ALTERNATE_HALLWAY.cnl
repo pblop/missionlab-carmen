@@ -1,0 +1,79 @@
+/**********************************************************************
+ **                                                                  **
+ **                   ENTER_ALTERNATE_HALLWAY.cnl                    **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Jonathan F. Diaz                                   **
+ **                                                                  **
+ **  Copyright 1999, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+init
+#define D_EPS 0.08
+#define NEARLY(var, val) ((var) >= ((val) - D_EPS) && (var) <= ((val) + D_EPS))
+iend
+
+procedure Vector ENTER_ALTERNATE_HALLWAY with 
+double distance;
+header
+body
+{
+  static int first_time = 1, seed;
+  static Vector pt1, pt2; 
+  static double width, dx, dy;
+  Vector mid, inpt;
+  double dockxy, cone_angle, controlled_radius, l1, l2;
+
+  robot_position loc = exec_get_position();
+  VECTOR_CLEAR(output);
+  /* Seed our random choice*/
+  if (first_time == 1) {
+    seed = rand();
+    if (exec_detect_alternate_hallway_info_at_random(loc, seed, &pt1, &pt2, &width, &dx, &dy)) 
+      first_time = 0;
+  }
+  
+  if (first_time == 0) {
+    /*determine the midpoint*/
+    mid.x = (pt1.x + pt2.x)/2.0; 
+    mid.y = (pt1.y + pt2.y)/2.0;
+    
+    /* calculate the in point */
+    inpt.x = mid.x + dx * distance;
+    inpt.y = mid.y + dy * distance;
+    
+    /* Dock angle is the angle from the center point to
+       the midpoint of the hallway entrance */
+    dockxy = atan2(mid.y - inpt.y, mid.x - inpt.x);
+    /* Cone angle is twice the angle from the center point
+       to the hallway entrance midpoint to either endpoint */
+    l1 = sqrt((pt1.x - mid.x)*(pt1.x - mid.x) + (pt1.y - mid.y)*(pt1.y - mid.y));
+    l2 = sqrt((inpt.x - mid.x)*(inpt.x - mid.x) + (inpt.y - mid.y)*(inpt.y - mid.y));
+    cone_angle = 2*fabs(atan2(l1, l2));
+    /* Controlled radius is the distance from the center to any point
+       on the circle plus the hallway width for a smooth turn. */
+    controlled_radius = sqrt((pt1.x - inpt.x)*(pt1.x - inpt.x) +
+			     (pt1.y - inpt.y)*(pt1.y - inpt.y)) + width;
+    loc = exec_get_position();
+    
+    /* Call DOCK with both ballistic and controlled gains set to 1.0 */
+    output = compute_dock_force_on_robot(loc.v, inpt, dockxy, controlled_radius,
+					 cone_angle, 1.0, 1.0);
+    rotate_z(output, -1*loc.heading);
+    output.z = 0.0;
+    /* If we are nearly at the goal reset first_time */
+    if (NEARLY(loc.v.x, inpt.x) && NEARLY(loc.v.y, inpt.y)) 
+      first_time = 1;
+  }
+}
+pend
+  
+  
+      
+      
+  

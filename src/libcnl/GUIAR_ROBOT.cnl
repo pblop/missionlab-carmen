@@ -1,0 +1,80 @@
+/**********************************************************************
+**                                                                  **
+**                           GUIAR_ROBOT.cnl                        **
+**                                                                  **
+**                                                                  **
+**  Written by:  Alberto Rodríguez Valle                            **
+**                                                                  **
+**                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+
+
+/***********************************************************************/
+procedure Vector GUIAR_ROBOT with
+        int num;
+        Vector pasillo;
+header
+        static int inicial = 0;
+        robot_position rp;
+        Vector p1, p2;
+        int ts;
+        int numEsclavos;
+        static bool puertaProxima = false;
+        float distancia, radio, angulo;
+        Vector punto1, punto2;
+body
+        printf("*******\nQue pasa aquiIIIII\n*********");
+        if(inicial < 1)
+        {
+            sleep(5);
+            inicial ++;
+            if(inicial == 1){
+                //printf("Antes de enviar BROADCAST\n");
+                enviar_broadCast(num);
+                //enviarPosicion(rp);
+            }
+            VECTOR_CLEAR(output);
+        }else{
+            rp = exec_get_position();
+            //enviarPosicion(rp);
+            if(exec_detect_nearest_doorway(&p1, &p2, &ts) == true){
+                //printf("La distancia al marco de la puerta es de %f => PuertaProxima %s\n", modulo(rp.v, p1), puertaProxima ? "VERDADERO":"FALSO");
+                if((modulo(rp.v, p1) < 1.0) && puertaProxima == false){
+                    numEsclavos = get_num_esclavos();
+                    if(numEsclavos >= 1){
+                        enviar_cambio_estado(numEsclavos);
+                        decrementar_num_esclavos();
+                        puertaProxima = true;
+                        distancia = modulo(p1, p2);
+                        radio = distancia/2 * 1.25;
+                        angulo = acos(distancia / (2 * radio)) + atan2((p2.y-p1.y),(p2.x-p1.x));
+                        punto1.x = p1.x + radio * cos(angulo);
+                        punto1.y = p1.y + radio * sin(angulo);
+
+                        punto2.x = p2.x + radio * cos(angulo);
+                        punto2.y = p2.y - radio * sin(angulo);
+                        //printf("El Punto1: (%.1f, %.1f)  /// Punto2: (%.1f, %.1f)\n", punto1.x, punto1.y, punto2.x, punto2.y);
+                        if(modulo(rp.v, punto1) < modulo(rp.v, punto2))
+                            almacenar_posicion(punto2);
+                        else
+                            almacenar_posicion(punto1);
+                    }
+                }
+                if(modulo(rp.v, p1) > 1.0)
+                    puertaProxima = false;
+            }
+            //printf("El numero de esclavos es de %d\n", get_num_esclavos());
+            if(get_num_esclavos() > 0)
+                output = pasillo;
+            else
+                VECTOR_CLEAR(output);
+            //output.x = rp.v.x + 0.05;
+            //output.y = 0.0;
+            //output.z = 0.0;
+        }
+
+
+pend

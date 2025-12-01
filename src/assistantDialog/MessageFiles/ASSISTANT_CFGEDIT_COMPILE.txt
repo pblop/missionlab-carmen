@@ -1,0 +1,3 @@
+Click 'OK' when the mission is compiled. You can click 'Run' to run the mission after that.
+
+You can cancel the compilation by clicking 'Cancel', but you can't run the mission if you do so until you recompile it.

@@ -1,0 +1,59 @@
+/**********************************************************************
+ **                                                                  **
+ **                         MOVE_TO_GOAL.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOVE_TO_GOAL.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector MOVE_TO_GOAL with
+   Vector 	goal_rel_loc;
+   double 	success_radius;
+header
+body
+   if( len_2d(goal_rel_loc) > success_radius )
+   {
+      /* generate a vector towards the goal */
+      output = goal_rel_loc;
+      unit_2d(output);
+   }
+   else
+   {
+      /* return a zero vector if within the success circle */
+      VECTOR_CLEAR(output);
+   }
+
+   if( debug )
+   {
+      fprintf(stderr,"MOVE_TO_GOAL(%d) r=%.1f output=(%.1f %.1f)\n",
+		 robot_id, success_radius,output.x,output.y);
+   }
+pend
+
+
+/**********************************************************************
+# $Log: MOVE_TO_GOAL.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.8  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.7  1995/07/10  19:54:18  doug
+# *** empty log message ***
+#
+# Revision 1.6  1995/06/28  22:06:00  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

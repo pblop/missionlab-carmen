@@ -1,0 +1,26 @@
+/**********************************************************************
+ **                                                                  **
+ **                           IN_HALLWAY.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Jonathan F. Diaz                                   **
+ **                                                                  **
+ **  Copyright 1999, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure bool IN_HALLWAY with
+header
+body
+{
+  robot_position loc = exec_get_position();
+  output = exec_detect_in_hallway(loc);
+}
+pend

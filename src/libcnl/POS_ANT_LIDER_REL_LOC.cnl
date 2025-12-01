@@ -1,0 +1,21 @@
+ /*********************************************************
+**                                                      **
+**                                                      **
+**                  POS_ANT_LIDER_REL_LOC.cnl                  **
+**                                                      **
+**                                                      **
+ *********************************************************/
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+procedure Vector POS_ANT_LIDER_REL_LOC with
+        robot_position pos;
+header
+        Vector posObjetivo;
+body
+    posObjetivo = posicion_ant_lider();
+    minus_2d(posObjetivo, pos.v, output);
+    rotate_z(output, -1 * pos.heading);
+pend

@@ -1,0 +1,12 @@
+The replay window is similar to a standard media player. You can:
+
+1) Replay the mission by clicking the triangular play button.
+
+2) Pause or stop the replay at the point where the failure occured. 
+
+3) Fastforward or rewind the mission to the point where the failure occured.
+
+4) Use the slider bar to move through the mission playback.
+
+3) Click on "Fix it!" button to start the repair process once you've identified the failure point. 
+

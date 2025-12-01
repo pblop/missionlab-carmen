@@ -1,0 +1,25 @@
+Number of mv_sliders: 4
+
+title: anger
+num_params: 1
+key: anger_level
+base: 0.5
+inc: 1
+
+title: fear
+num_params: 1
+key: fear_level
+base: 0.5
+inc: 1
+
+title: hunger
+num_params: 1
+key: hunger_level
+base: 0.5
+inc: 1
+
+title: curiousity
+num_params: 1
+key: curiousity_level
+base: 0.5
+inc: 1

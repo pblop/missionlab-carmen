@@ -1,0 +1,14 @@
+
+MISSION-AREA 45.0 45.0
+--ORIGIN 0.1 0.1
+
+CONTROL MEASURES:  
+
+PP StartPlace 5.0  5.0  0.2 -- starts at Empty.ovl & Walls.ovl
+
+--PP StartPlace 39.4  17.3 0.01 -- starts at the hallway P1
+--PP StartPlace 38.9  18.0  0.2 -- starts at the hallway P2
+--PP StartPlace 35.5  11.4  0.2 -- starts at the center of MRL
+--PP StartPlace 35.2 18.0 0.2 -- starts at marc.ovl (hallway2)
+--PP StartPlace 40.35 10.0  0.2 -- starts at marc.ovl (hallway1)
+--PP StartPlace 41.35 10.0  0.2 -- starts at marc.ovl (hallway1) - off center

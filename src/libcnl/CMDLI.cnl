@@ -1,0 +1,494 @@
+/**********************************************************************
+ **                                                                  **
+ **                      CMDLi.cnl                                   **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Douglas C. MacKenzie                               **
+ **                                                                  **
+ **  Copyright 2004.  All Rights Reserved.                           **
+ **  Mobile Intelligence Corporation                                 **
+ **  Livonia, Michigan, USA                                          **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CMDLI.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+init
+#define SKIPUSING 
+#include "cmdli/cmdli.h"
+extern char robot_name[256];
+
+static sara::cmdli *myInterpreter = NULL;
+
+// cache values during a step call
+static std::string lastAction;
+static sara::keyValueMap cur_parms;
+static sara::Vector goalLocation;
+
+// If true, then we switched to a new step during the call and we
+// should be careful to not do anything for a cycle until our inputs
+// are updated to match the new parameters, such as goalLocation.
+static bool changed;
+
+bool moveTo_done_val;
+bool recon_done_val;
+
+
+/** Trigger Callbacks **/
+sara::cmdli::TriggerReturnValue_T trigger_moveTo_done(const sara::keyValueMap &parms)
+{
+   // if we already know it changed, then return false
+   if( changed )
+   {
+      fprintf(stderr,"CMDLi::trigger_moveTo_done - WARN: The goalLocation has changed, returning False\n");
+      return sara::cmdli::TriggerFalse;
+   }
+
+   sara::keyValueMap::const_iterator it = parms.find("goalLocation");
+
+   if( it == parms.end() )
+   {
+      fprintf(stderr,"CMDLi::trigger_moveTo_done - ERROR: Did not find parameter 'goalLocation'\n");
+      return sara::cmdli::TriggerFalse;
+   }
+   
+   sara::Vector *now = (sara::Vector *)(sara::Vector::load( it->second ));
+   if( !now )
+   {
+      fprintf(stderr,"CMDLi::trigger_moveTo_done - ERROR: Unable to parse goalLocation value '%s'\n", it->second.c_str() );
+      return sara::cmdli::TriggerFalse;
+   }
+
+   if( (*now - goalLocation).length() > EPS_ZERO )
+   {
+      // we are on to a new step in the mission
+      changed = true;
+      goalLocation = *now;
+   }
+
+   // free the rec.
+   delete now;
+
+   if( changed )
+   {
+      // The target location has changed, return false
+      fprintf(stderr,"CMDLi::trigger_moveTo_done - WARN: The goalLocation has changed, returning False\n");
+      return sara::cmdli::TriggerFalse;
+   }
+
+   if( moveTo_done_val )
+   {
+       fprintf(stderr,"CMDLi::trigger_moveTo_done - returning true\n");
+       return sara::cmdli::TriggerTrue;
+   }
+   else
+   {
+      return sara::cmdli::TriggerFalse;
+   }
+}
+
+sara::cmdli::TriggerReturnValue_T trigger_recon_done(const sara::keyValueMap &parms)
+{
+   // if we already know it changed, then return false
+   if( changed )
+   {
+      fprintf(stderr,"CMDLi::trigger_recon_done - WARN: The goalLocation has changed, returning False\n");
+      return sara::cmdli::TriggerFalse;
+   }
+
+   sara::keyValueMap::const_iterator it = parms.find("goalLocation");
+   if( it == parms.end() )
+   {
+      fprintf(stderr,"CMDLi::trigger_recon_done - ERROR: Did not find parameter 'goalLocation'\n");
+      return sara::cmdli::TriggerFalse;
+   }
+   
+   sara::Vector *now = (sara::Vector *)(sara::Vector::load( it->second ));
+   if( !now )
+   {
+      fprintf(stderr,"CMDLi::trigger_recon_done - ERROR: Unable to parse goalLocation value '%s'\n", it->second.c_str() );
+      return sara::cmdli::TriggerFalse;
+   }
+
+   if( (*now - goalLocation).length() > EPS_ZERO )
+   {
+      // we are on to a new step in the mission
+      changed = true;
+      goalLocation = *now;
+   }
+
+   // free the rec.
+   delete now;
+
+   if( changed )
+   {
+      // The target location has changed, return false
+      fprintf(stderr,"CMDLi::trigger_recon_done - WARN: The goalLocation has changed, returning False\n");
+      return sara::cmdli::TriggerFalse;
+   }
+
+    if( recon_done_val )
+    {
+        fprintf(stderr,"CMDLi::trigger_recon_done - returning true\n");
+        return sara::cmdli::TriggerTrue;
+    }
+    else
+    {
+        return sara::cmdli::TriggerFalse;
+    }
+}
+
+sara::cmdli::TriggerReturnValue_T trigger_never(const sara::keyValueMap &parms)
+{
+    return sara::cmdli::TriggerFalse;
+}
+
+/** action callbacks **/
+bool action_loiter(const sara::keyValueMap &parms)
+{
+   lastAction = "Loiter";
+   return true;
+}
+
+bool action_trackTarget(const sara::keyValueMap &parms)
+{
+   lastAction = "TrackTarget";
+   return true;
+}
+
+bool action_recon(const sara::keyValueMap &parms)
+{
+   // move the parms into data values.
+   // the database value will be named with the parm name and have the value of the parm.
+   for(sara::keyValueMap::const_iterator it=parms.begin(); it!=parms.end(); ++it)
+   {
+      std::string key = it->first;
+      std::string val = it->second;
+
+      // munge vectors to match DATABASE_VEC expectations
+
+      if( val[0] == '<' )
+      {
+         char *start = (char *)val.c_str();
+
+         // get past the bracket
+         start ++;
+
+         // find the first comma
+         char *end = strchr(start, ',');
+         if( end )
+         {
+            // step past it
+            end++;
+
+            // is there a second one?
+            char *second = strchr(end, ',');
+            if( second == NULL )
+            {
+               // nope, end at the bracket instead
+               second = strchr(end, '>');
+            }
+
+            // ok, we found a start and an end, so modify the value
+            if( second )
+            {
+               // this is the end
+               *second = '\0';
+               
+               // save the new value
+               val = start;
+            }
+         }
+      }
+
+      // optimization: don't write the value unless it has changed.
+      sara::keyValueMap::iterator old = cur_parms.find( key );
+      if( old == cur_parms.end() || old->second != val )
+      {
+         fprintf(stderr,"CMDLi::action_recon - setting parm %s=%s\n", key.c_str(), val.c_str());
+         put_state((char *)key.c_str(), (char *)val.c_str());
+         cur_parms[key] = val;
+      }
+   }
+
+   sara::keyValueMap::const_iterator it = parms.find("goalLocation");
+   if( it == parms.end() )
+   {
+      fprintf(stderr,"CMDLi::action_recon - ERROR: Did not find parameter 'goalLocation'\n");
+      return false;
+   }
+   
+   sara::Vector *now = (sara::Vector *)(sara::Vector::load( it->second ));
+   if( !now )
+   {
+      fprintf(stderr,"CMDLi::action_recon - ERROR: Unable to parse goalLocation value '%s'\n", it->second.c_str() );
+      return false;
+   }
+
+   if( (*now - goalLocation).length() > EPS_ZERO )
+   {
+      // we are on to a new step in the mission
+      changed = true;
+      goalLocation = *now;
+   }
+
+   // free the rec.
+   delete now;
+
+   lastAction = "Recon";
+   return true;
+}
+
+bool action_moveTo(const sara::keyValueMap &parms)
+{
+   // move the parms into data values.
+   // the database value will be named with the parm name and have the value of the parm.
+   for(sara::keyValueMap::const_iterator it=parms.begin(); it!=parms.end(); ++it)
+   {
+      std::string key = it->first;
+      std::string val = it->second;
+
+      // munge vectors to match DATABASE_VEC expectations
+
+      if( val[0] == '<' )
+      {
+         char *start = (char *)val.c_str();
+
+         // get past the bracket
+         start ++;
+
+         // find the first comma
+         char *end = strchr(start, ',');
+         if( end )
+         {
+            // step past it
+            end++;
+
+            // is there a second one?
+            char *second = strchr(end, ',');
+            if( second == NULL )
+            {
+               // nope, end at the bracket instead
+               second = strchr(end, '>');
+            }
+
+            // ok, we found a start and an end, so modify the value
+            if( second )
+            {
+               // this is the end
+               *second = '\0';
+               
+               // save the new value
+               val = start;
+            }
+         }
+      }
+
+      // optimization: don't write the value unless it has changed.
+      sara::keyValueMap::iterator old = cur_parms.find( key );
+      if( old == cur_parms.end() || old->second != val )
+      {
+         fprintf(stderr,"CMDLi::action_moveTo - setting parm %s=%s\n", key.c_str(), val.c_str());
+         put_state((char *)key.c_str(), (char *)val.c_str());
+         cur_parms[key] = val;
+      }
+   }
+
+   sara::keyValueMap::const_iterator it = parms.find("goalLocation");
+   if( it == parms.end() )
+   {
+      fprintf(stderr,"CMDLi::action_moveTo - ERROR: Did not find parameter 'goalLocation'\n");
+      return false;
+   }
+   
+   sara::Vector *now = (sara::Vector *)(sara::Vector::load( it->second ));
+   if( !now )
+   {
+      fprintf(stderr,"CMDLi::action_moveTo - ERROR: Unable to parse goalLocation value '%s'\n", it->second.c_str() );
+      return false;
+   }
+
+   if( (*now - goalLocation).length() > EPS_ZERO )
+   {
+      // we are on to a new step in the mission
+      changed = true;
+      goalLocation = *now;
+   }
+
+   // free the rec.
+   delete now;
+
+   // return
+   lastAction = "MoveTo";
+   return true;
+}
+
+iend
+
+
+/***********************************************************************/
+
+procedure Vector CMDLi with
+   CNLString_t envFilename;
+   CNLString_t cmdlFilename;
+
+   Vector moveto;
+   Vector recon;
+
+   bool moveto_done;
+   bool recon_done;
+once
+    using namespace sara;
+
+    std::string our_robot_name(robot_name);
+
+    // Remove the directory from the robot name.
+    int iPos = -1;
+    std::string strNoDir = our_robot_name;
+
+    // get the last '/' to see if there's a directory
+    if ( ( iPos = our_robot_name.rfind( '/' ) ) > -1 )
+    {
+        strNoDir.erase( 0, iPos + 1 );
+    }
+
+    our_robot_name = strNoDir;
+    
+    std::string logfilename = "cmdli-" + our_robot_name + ".log";
+    logging_file = fopen(logfilename.c_str(), "w");
+
+    myInterpreter = cmdli::createInstance();
+    std::string env_filename(envFilename.val);
+    std::string cmdl_filename(cmdlFilename.val);
+
+    sara::INFORM("CMDLi starting with params: \n  env: %s\n  cmdl: %s\n  robot: %s",env_filename.c_str(), cmdl_filename.c_str(), our_robot_name.c_str());
+
+    // load the environment
+    sara::environment *env = new sara::environment();
+
+    bool no_env_path_search = false;
+    bool verbose = false;
+    bool debugLoad = false;
+    int rtn;
+    rtn = env->load_environment(env_filename, no_env_path_search, verbose, debugLoad);
+    if( rtn != 0 )
+    {
+       sara::WARN("Error loading environment file");
+    }
+
+    // build a list of default termination conditions for each action
+    cmdli::defaultActionCompletionTriggers_T actionTerminationTriggers;
+
+    actionTerminationTriggers["Loiter"] = "Loiter_done";
+    actionTerminationTriggers["MoveTo"] = "MoveTo_done";
+    actionTerminationTriggers["Recon"] = "Recon_done";
+    actionTerminationTriggers["TrackTarget"] = "TrackTarget_done";
+
+    // build the list of defined triggers
+    cmdli::Triggers_T triggers;
+    triggers["Loiter_done"] = trigger_never;
+    triggers["MoveTo_done"] = trigger_moveTo_done;
+    triggers["Recon_done"] = trigger_recon_done;
+    triggers["TrackTarget_done"] = trigger_never;
+ 
+    // build list of action callbacks
+    cmdli::Actions_T actionFncs;
+    actionFncs["MoveTo"] = action_moveTo;
+    actionFncs["Recon"] = action_recon;
+    actionFncs["Loiter"] = action_loiter;
+    actionFncs["TrackTarget"] = action_trackTarget;
+
+    // load the mission
+    if( !myInterpreter->init(actionTerminationTriggers, actionFncs, triggers, env, our_robot_name))
+    {
+        sara::ERROR("Fatal error initializing the cmdl interpreter!");
+    }
+
+//    myInterpreter->set_debug_mask(cmdli::INTERPRETER | cmdli::SYNCHRONIZATION);
+
+    bool ok = myInterpreter->load_from_file( cmdl_filename );
+    if( !ok )
+    {
+       sara::ERROR("Unable to load mission from '%s", cmdl_filename.c_str());
+    }
+
+header
+body
+   VECTOR_CLEAR(output);
+   changed = false;
+
+   moveTo_done_val = moveto_done;
+   recon_done_val  = recon_done;
+
+   // step it
+   bool ok = myInterpreter->step();
+   if( !ok )
+   {
+      sara::ERROR("Unable to load mission from '%s", cmdl_filename.c_str());
+   }
+
+   // If we changed to a new goalLocation, then just pause for a cycle, since
+   // the moveto vector will take us farther towards the old location.
+   if( !changed )
+   {
+      if( lastAction == "MoveTo" )
+      {
+         output = moveto;
+      }
+      else if( lastAction == "Recon" )
+      {
+         output = recon;
+   
+      }
+      else if( lastAction == "Loiter" )
+      {
+         // nothing to do
+      }
+      else if( lastAction == "TrackTarget" )
+      {
+         // nothing to do
+      }
+   }
+
+   if( debug )
+   {
+      fprintf(stderr,"CMDLi(%d) output=(%.1f %.1f)\n", robot_id, output.x, output.y);
+   }
+
+pend
+
+/**********************************************************************
+# $Log: CMDLI.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.3  2006/07/04 16:53:19  endo
+# Compiling error fixed.
+#
+# Revision 1.2  2006/07/02 22:17:29  endo
+# CMDLi compiling error fix.
+#
+# Revision 1.1  2006/07/02 21:46:23  endo
+# CMDLi from MARS 2020 integrated into AO-FNC repository.
+#
+# Revision 1.6  2004/11/22 00:20:23  endo
+# Checked in for Doug to support CMDLi v5.
+#
+# Revision 1.5  2004/11/20 23:49:27  endo
+# Checked in for Doug.
+#
+# Revision 1.4  2004/11/12 20:50:47  endo
+# Support for TrackTarget added.
+#
+# Revision 1.3  2004/09/22 08:05:41  endo
+# *** empty log message ***
+#
+# Revision 1.2  2004/09/22 04:02:54  endo
+# The skipping waypoint bug fixed.
+#
+# Revision 1.1  2004/09/20 05:12:10  endo
+# Support for CMDLi added.
+#
+#**********************************************************************/

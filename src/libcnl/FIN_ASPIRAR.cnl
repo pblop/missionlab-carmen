@@ -1,0 +1,37 @@
+/**********************************************************************
+ **                                                                  **
+ **                           FIN_ASPIRAR.cnl                        **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Alberto Rodríguez Valle                            **
+ **                                                                  **
+ **                                                                  **
+ **********************************************************************/
+
+#include "cnl.inc"
+
+init
+    #include <time.h>
+iend
+
+/***********************************************************************/
+
+procedure bool FIN_ASPIRAR with
+        double tiempo_limpieza;
+header
+        static long tiempoFin;
+        static int inicial = 0;
+body
+        printf("FIN ASPIRAR\n");
+    if(inicial == 0){
+        tiempoFin = time(NULL) + (long)(tiempo_limpieza * 60);
+        inicial ++;
+    }
+    if(tiempoFin < time(NULL)){
+        output = true;
+        exec_activar_motores_limpieza(false);
+        inicial = 0;
+    }
+    else
+        output = false;
+pend

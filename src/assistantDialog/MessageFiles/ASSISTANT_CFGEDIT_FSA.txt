@@ -1,0 +1,11 @@
+Right-click on a state or trigger
+to change its type.
+
+Middle-click on a state or trigger
+to change options (if any) associated
+with its type.
+
+To execute your plan, click the
+'Compile' button and, after the plan
+compiles succesfully, click the
+'Run' button.

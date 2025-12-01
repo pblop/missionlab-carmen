@@ -1,0 +1,5 @@
+RobotRadiusInMeters    0.30 
+SafetyMarginInMeters   0.35 
+DefaultConvexSelectMode 3 
+DefaultConcaveAngleMode 1 
+

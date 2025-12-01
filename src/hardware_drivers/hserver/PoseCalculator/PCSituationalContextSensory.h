@@ -1,0 +1,48 @@
+/**********************************************************************
+ **                                                                  **
+ **                    PCSituationalContextSensory.h                 **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  Copyright 2004, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: PCSituationalContextSensory.h,v 1.1.1.1 2006/07/12 13:37:57 endo Exp $ */
+
+#ifndef POSECALC_SITUATIONAL_CONTEXT_SENSORY_H
+#define POSECALC_SITUATIONAL_CONTEXT_SENSORY_H
+
+#include "PCSituationalContextInterface.h"
+#include "PoseCalculatorTypes.h"
+
+class PoseCalcSituationalContextSensory : 
+    public PoseCalcSituationalContextInterface {
+
+protected:
+    double getSituationalValue_(int sensorType, int poseType);
+
+public:
+    PoseCalcSituationalContextSensory(void);
+    void applySituation(PoseCalcGenericData_t &data);
+
+    virtual ~PoseCalcSituationalContextSensory(void);
+};
+
+#endif
+
+/**********************************************************************
+# $Log: PCSituationalContextSensory.h,v $
+# Revision 1.1.1.1  2006/07/12 13:37:57  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/06/05 21:35:53  endo
+# PoseCalculator from MARA 2020 migrated
+#
+# Revision 1.1  2004/09/10 19:59:19  endo
+# New PoseCalc integrated.
+#
+#**********************************************************************/

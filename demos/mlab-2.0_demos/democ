@@ -1,0 +1,52 @@
+--------------------------------------------------------------------------
+--                                                             06-10-94 --
+--              COMMAND DESCRIPTION FILE FORMAT                         --
+--									--
+--   COMMENTS: Everything after double dashes on any line is ignored	--
+--									--
+--   Organization of the file:						--
+--									--
+--      1. Header (this part)						--
+--      2. Mission information						--
+--      3. Command list							--
+--									--
+--------------------------------------------------------------------------
+
+-- THIS IS PART 2, the mission information
+
+MISSION NAME "Demo C simulation"
+
+SCENARIO "Demo-C"
+
+OVERLAY democ.ovl
+
+NEW-ROBOT bluerobot "mlab-2.0-robot" "blue" ""
+
+UNIT <scouts> (<veh-a> bluerobot) (<veh-b> bluerobot)
+
+COMMAND LIST:
+
+ 0. UNIT scouts START AA-Alpha-1 0 20
+
+ 1. UNIT scouts OCCUPY AA-Alpha-1 FORMATION No-Formation
+
+ 2a. UNIT scouts MOVETO Split FORMATION Column
+
+ 2b. UNIT scouts OCCUPY Split FORMATION Column
+
+ 3a. UNIT veh-a MOVETO Rec-1 AND
+     UNIT veh-b MOVETO Rec-2
+
+ 3b. UNIT veh-a OCCUPY Rec-1 AND
+     UNIT veh-b OCCUPY Rec-2
+
+ 4a. UNIT veh-a MOVETO Op-1 AND
+     UNIT veh-b MOVETO Op-2
+
+ 4b. UNIT veh-a OCCUPY Op-1 AND
+     UNIT veh-b OCCUPY Op-2
+
+ 5. UNIT scouts MOVETO Rec-1 FORMATION Column
+ 6. UNIT scouts MOVETO AA-Alpha-1 FORMATION Column
+
+11. UNIT scouts STOP

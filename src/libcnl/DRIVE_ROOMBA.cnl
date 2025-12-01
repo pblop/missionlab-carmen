@@ -1,0 +1,41 @@
+#include "cnl.inc"
+
+procedure void DRIVE_ROOMBA with
+   Vector v;
+   double max_vel;
+   double base_vel;
+   double cautious_vel;
+   bool cautious_mode;
+header
+body
+   /* apply the base velocity */
+
+    /*La tercera componente del vector se utiliza para indicar si el robot debe retroceder*/
+   float marchaAtras;
+
+   v.x *= base_vel;
+   v.y *= base_vel;
+    marchaAtras = v.z;
+    v.z = 0;
+
+   /* clip at the max velocity */
+   if( len_2d(v) > max_vel )
+   {
+      unit_2d(v);
+      if (cautious_mode)
+      {
+     mult_2d(v,cautious_vel);
+      }
+      else
+      {
+     mult_2d(v,max_vel);
+      }
+   }
+    v.z = marchaAtras;
+
+   if( debug )
+      fprintf(stderr,"Drive <%.1f %.1f %.0f>\n",v.x,v.y, v.z);
+
+   /* move the robot */
+   exec_mover_roomba(v);
+pend

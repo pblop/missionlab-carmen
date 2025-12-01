@@ -1,0 +1,56 @@
+/*************************************************
+*
+* This CDL file track_dynamic_constraints.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+[
+FSA1:FSA(
+      society[$AN_2918]<194,277>|State3| = [
+          %Targets = {Enemy}
+,
+        CNP_SaveTargetLocation]<100,100>
+,
+      society[$AN_2920]<491,277>|State4| = [
+          %Targets = {Enemy}
+,
+        CNP_SaveTargetVelocity]<100,100>
+,
+      society[$AN_2922]<788,278>|State5| = [
+          %Targets = {Enemy}
+,
+        CNP_SaveTargetVehicleType]<100,100>
+,
+      society[Start]<50,50>|Start| = [
+        Stop]<100,100>
+,
+      society[$AN_2925]<789,525>|State4| = [
+          %notify_message = {"Dynamic constraints saved."}
+,
+        Notify]<10,10>
+,
+      society[$AN_2935]<502,526>|State5| = [
+        Stop]<10,10>
+,
+      rules[$AN_2920]<491,277>|State4| = if [
+          %Delay = {0.5}
+,
+        Wait]<0,0>|Trans5|
+ goto $AN_2922,
+      rules[Start]<50,50>|Start| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2918,
+      rules[$AN_2918]<194,277>|State3| = if [
+        Immediate]<0,0>|Trans2|
+ goto $AN_2920,
+      rules[$AN_2922]<788,278>|State5| = if [
+        Immediate]<0,0>|Trans3|
+ goto $AN_2925,
+      rules[$AN_2925]<789,525>|State4| = if [
+        Immediate]<0,0>|Trans1|
+ goto $AN_2935)<48,54>|The State Machine|
+]<10,10>
+

@@ -1,0 +1,18 @@
+# set the environment variables to use this package from the local directory
+# You need to call this with "source" to be able to keep the changes
+
+# create the variable name, for the left side of the set
+setenv tmpvar1 `echo $1 | $MIC_ROOT/support/toupper.sh`_DIR
+
+# create the path, for the right hand of the set
+setenv tmpvar2 $MIC_LOCAL_ROOT/$1
+
+# update the env variable
+eval $SETCMD $tmpvar1$EQOP$tmpvar2
+
+# try to insert a path statement before the others to catch the new directory
+if ( { test -e $MIC_ROOT/$1/bin/$TARGET_OS } ) then
+   set path = ( $tmpvar2/bin/$TARGET_OS $path )
+else if ( $1 == "support" ) then
+   set path = ( $tmpvar2 $path )
+endif

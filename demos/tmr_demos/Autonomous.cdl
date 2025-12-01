@@ -1,0 +1,201 @@
+/*************************************************
+*
+* This CDL file Autonomous.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<565,111> |The Wheels Binding Point| $AN_2946 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE(
+        v<292,156> = FSA1:FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_2961]<213,138>|State1| = [
+                %Objects = {Flags | Hiding_Places}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2963]<680,140>|State2| = [
+                %Objects = {Mines}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2965]<455,278>|State3| = [
+                %Objects = {Rocks | Trees_and_Shrubs}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2967]<216,449>|State4| = [
+                %Objects = {Hiding_Places}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2969]<468,438>|State5| = [
+              Stop]<100,100>
+,
+            society[$AN_2971]<692,451>|State6| = [
+                %Objects = {Flags}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2973]<215,637>|State7| = [
+                %Objects = {Flags}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2975]<475,634>|State8| = [
+              Stop]<100,100>
+,
+            society[$AN_2977]<702,631>|State9| = [
+                %Objects = {Mines}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2979]<215,830>|State10| = [
+                %Objects = {Mines}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2981]<477,831>|State11| = [
+              Stop]<100,100>
+,
+            society[$AN_2983]<707,835>|State12| = [
+                %Objects = {Trees_and_Shrubs}
+,
+              MoveToward]<100,100>
+,
+            society[$AN_2985]<215,1013>|State13| = [
+                %Objects = {Trees_and_Shrubs}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2987]<740,276>|State14| = [
+                %Objects = {EOD_Areas}
+,
+              MoveToward]<10,10>
+,
+            society[$AN_2989]<842,451>|State15| = [
+                %Objects = {EOD_Areas}
+,
+              MoveToward]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2961,
+            rules[$AN_2961]<213,138>|State1| = if [
+                %Objects = {Flags},
+                %Distance = {0.1}
+,
+              Near]<457,139>|Trans2|
+ goto $AN_2963,
+            rules[$AN_2963]<680,140>|State2| = if [
+                %Objects = {Mines},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans3|
+ goto $AN_2965,
+            rules[$AN_2965]<455,278>|State3| = if [
+                %Objects = {Rocks},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans4|
+ goto $AN_2961,
+            rules[$AN_2961]<213,138>|State1| = if [
+                %Objects = {Hiding_Places},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans5|
+ goto $AN_2967,
+            rules[$AN_2967]<216,449>|State4| = if [
+                %Objects = {Enemy_Robots}
+,
+              Detect]<0,0>|Trans1|
+ goto $AN_2969,
+            rules[$AN_2969]<468,438>|State5| = if [
+                %Objects = {Enemies},
+                %Distance = {10.0}
+,
+              AwayFrom]<0,0>|Trans2|
+ goto $AN_2971,
+            rules[$AN_2973]<215,637>|State7| = if [
+                %Objects = {Enemy_Robots}
+,
+              Detect]<0,0>|Trans4|
+ goto $AN_2975,
+            rules[$AN_2975]<475,634>|State8| = if [
+                %Objects = {Enemies},
+                %Distance = {10.0}
+,
+              AwayFrom]<0,0>|Trans5|
+ goto $AN_2977,
+            rules[$AN_2971]<692,451>|State6| = if [
+                %Objects = {Flags},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans3|
+ goto $AN_2973,
+            rules[$AN_2977]<702,631>|State9| = if [
+                %Objects = {Mines},
+                %Distance = {0.1}
+,
+              Near]<0,0>|Trans3|
+ goto $AN_2979,
+            rules[$AN_2981]<477,831>|State11| = if [
+                %Objects = {Enemies},
+                %Distance = {10.0}
+,
+              AwayFrom]<0,0>|Trans1|
+ goto $AN_2983,
+            rules[$AN_2979]<215,830>|State10| = if [
+                %Objects = {Unknown_Objects}
+,
+              Detect]<348,832>|Trans2|
+ goto $AN_2981,
+            rules[$AN_2983]<707,835>|State12| = if [
+                %Objects = {Trees_and_Shrubs},
+                %Distance = {0.1}
+,
+              Near]<456,927>|Trans3|
+ goto $AN_2985,
+            rules[$AN_2985]<215,1013>|State13| = if [
+                %Objects = {Trees_and_Shrubs},
+                %Distance = {0.1}
+,
+              Near]<48,554>|Trans1|
+ goto $AN_2961,
+            rules[$AN_2965]<455,278>|State3| = if [
+                %Objects = {Trees_and_Shrubs},
+                %Distance = {0.1}
+,
+              Near]<606,278>|Trans2|
+ goto $AN_2987,
+            rules[$AN_2987]<740,276>|State14| = if [
+                %Objects = {EOD_Areas},
+                %Distance = {0.1}
+,
+              Near]<10,10>|Trans3|
+ goto $AN_2989)<292,156>|The State Machine|
+,
+        max_vel = {0.75},
+        base_vel = {0.5},
+        cautious_vel = {0.3},
+        cautious_mode = {false})<565,111>|The Wheels Actuator|
+);
+
+instBP<0,0> $AN_3025 from vehicle(
+  bound_to = AutonomousRobot1:MRV2(
+AutonomousRobot1:[
+          $AN_2946]
+)<0,0>|The robot|
+);
+
+[
+[
+    $AN_3025]<10,10>|The Configuration|
+]<10,10>
+

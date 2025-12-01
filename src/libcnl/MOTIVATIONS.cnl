@@ -1,0 +1,42 @@
+/**********************************************************************
+ **                                                                  **
+ **                         MOTIVATIONS.cnl                          **
+ **                                                                  **
+ **  Written by: Alexander Stoytchev                                 **
+ **                                                                  **
+ **  Copyright 2000, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOTIVATIONS.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure void MOTIVATIONS with
+  Vector v;
+header
+body
+
+   if( debug )
+   {
+      fprintf(stderr,"MOTIVATIONS.cnl called\n");
+   }
+pend
+
+
+/**********************************************************************
+# $Log: MOTIVATIONS.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2001/01/24 23:19:11  saho
+# Initial revision
+#
+#**********************************************************************/

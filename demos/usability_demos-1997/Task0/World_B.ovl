@@ -1,0 +1,33 @@
+MISSION-AREA 21.0 15.0
+
+ORIGIN 0.1 0.1
+
+CONTROL MEASURES:  
+
+PP StartPlace* 3.5 4.5  0.01
+
+-- Plant some trees
+Object   1.0  14.0 1.0 Fixed "DarkSeaGreen"
+Object   3.0  12.0 0.85 Fixed "DarkSeaGreen"
+Object   5.0 14.5 1.0 Fixed "DarkSeaGreen"
+Object   7.0  9.0 1.7 Fixed "DarkSeaGreen"
+Object  10.0 12.0 1.0 Fixed "DarkSeaGreen"
+Object  12.0 11.0 1.3 Fixed "DarkSeaGreen"
+Object  20.0 13.0 1.0 Fixed "DarkSeaGreen"
+Object  20.5  9.0 0.8 Fixed "DarkSeaGreen"
+Object  11.0 13.0 0.3 Fixed Black
+
+-- And some rocks
+Object  11.0 10.0 0.4 Fixed Black
+Object  17.0 13.0 0.5 Fixed Black
+Object  1.0 3.0 0.8 Fixed Black
+
+-- And some mines
+Object 1.0 6.0   0.5 Movable orange
+Object 7.0 14.0  0.5 Movable orange
+Object 10.0 5.0  0.5 Movable orange
+Object 17.0 6.0  0.5 Movable orange
+Object 18.0 14.0 0.5 Movable orange
+Object 18.0 1.0  0.5 Movable orange
+Object  1.0 1.0  0.5 Movable orange
+

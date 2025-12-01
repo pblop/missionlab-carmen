@@ -1,0 +1,340 @@
+/*************************************************
+*
+* This CDL file sample_qlearn.cdl was created with cfgedit
+* version 5.0.06
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_1418 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<646,509> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1427,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1427]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<651,383>|The Camera Actuator|
+);
+
+instBP<10,10> |Need heading info.| $AN_1430 from sense_location(
+  bound_to = shaft_encoders:GET_LOCATION(
+)<10,10>
+);
+
+instBP<10,10> |Need heading info.| $AN_1434 from sense_location(
+  bound_to = shaft_encoders:GET_LOCATION(
+)<10,10>
+);
+
+instBP<10,40> |Get list of obstacles| $AN_1438 from sense_obstacles(
+  bound_to = sonars:DETECT_OBSTACLES(
+        max_sensor_range = {^})<10,10>|Return a list of unclassified obstacles detected within the sonar range (meters)|
+);
+
+instBP<10,10> |Get list of objects| $AN_1444 from sense_objects(
+  bound_to = vision_system:DETECT_OBJECTS(
+        max_sensor_range = {^})<10,10>|Return a list of objects recognized by a visual sensor|
+);
+
+instBP<10,10> |Get list of objects| $AN_1450 from sense_objects(
+  bound_to = vision_system:DETECT_OBJECTS(
+        max_sensor_range = {^})<10,10>|Return a list of objects recognized by a visual sensor|
+);
+
+instBP<10,40> |Get list of obstacles| $AN_1456 from sense_obstacles(
+  bound_to = sonars:DETECT_OBSTACLES(
+        max_sensor_range = {^})<10,10>|Return a list of unclassified obstacles detected within the sonar range (meters)|
+);
+
+instBP<10,40> |Get list of obstacles| $AN_1462 from sense_obstacles(
+  bound_to = sonars:DETECT_OBSTACLES(
+        max_sensor_range = {^})<10,10>|Return a list of unclassified obstacles detected within the sonar range (meters)|
+);
+
+instBP<10,10> |Need heading info.| $AN_1468 from sense_location(
+  bound_to = shaft_encoders:GET_LOCATION(
+)<10,10>
+);
+
+instBP<10,10> |Get list of objects| $AN_1472 from sense_objects(
+  bound_to = vision_system:DETECT_OBJECTS(
+        max_sensor_range = {^})<10,10>|Return a list of objects recognized by a visual sensor|
+);
+
+instGroup |Get the list of objects in the desired classes| $AN_1478 from [
+    %classes = {^},
+    %max_sensor_range = {^}
+,
+FILTER_OBJECTS_BY_CLASS(
+      remove_these = {false},
+      classes = {^},
+      %max_sensor_range = {^},
+      full_list<19,34> = $AN_1472)<460,16>|pass only oranges|
+];
+
+instBP<10,10> |Get list of objects| $AN_1486 from sense_objects(
+  bound_to = vision_system:DETECT_OBJECTS(
+        max_sensor_range = {^})<10,10>|Return a list of objects recognized by a visual sensor|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1492 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<381,72> = QLEARN(
+            triggers[$AN_1507]<33,7> = [
+                %Objects = {Flags}
+,
+IS_AN_OBJECT(
+                  %classes = {^ObjectClasses %Objects},
+                  %max_sensor_range = {50},
+                  object_list<10,10> = [
+                      %classes = {^},
+                      %max_sensor_range = {^}
+,
+FILTER_OBJECTS_BY_CLASS(
+                        remove_these = {false},
+                        classes = {^},
+                        %max_sensor_range = {^},
+                        full_list<19,34> = $AN_1486)<460,16>|pass only oranges|
+]<100,100>|Get the list of objects in the desired classes|
+)<312,10>|Is there one of the objects we are looking for?|
+]<137,7>|Detect|
+,
+            triggers[$AN_1512]<22,102> = [
+                %Objects = {Mine},
+                %Distance = {1.0}
+,
+IS_AT_GOAL(
+                  %classes = {^ObjectClasses %Objects},
+                  success_radius = {^Nearness_10 %Distance},
+                  %max_sensor_range = {^Nearness_10 %Distance},
+                  have_a_goal<100,100> = IS_AN_OBJECT(
+                      %classes = {^},
+                      %max_sensor_range = {^},
+                      object_list<100,100> = $AN_1478)<100,100>
+,
+                  goal_rel_loc<100,100> = OBJECT_LOCATION(
+                      %max_sensor_range = {^},
+                      %classes = {^},
+                      object<100,100> = [
+                          %max_sensor_range = {^},
+                          %classes = {^}
+,
+CLOSEST_OBJECT(
+                            %max_sensor_range = {^},
+                            object_list<295,22> = $AN_1478,
+                            %classes = {^})<129,200>|closest object|
+]<100,100>|Pick the closest object of the desired classes|
+)<100,100>
+)<100,100>
+]<100,100>|Near|
+,
+            society[$AN_1513]<13,226> = [
+                %curious = {0.8},
+                %cautious = {0.5}
+,
+COOP(
+                  %avoid_obstacle_sphere = {1.5},
+                  %avoid_obstacle_safety_margin = {0.3},
+                  %classes = {0},
+                  %max_sensor_range = {2},
+                  members[A]<10,10> = [
+                      %persistence = {10}
+,
+NOISE(
+                        persistence = {^},
+                        robot_heading<265,157> = GET_HEADING(
+                            cur_pos<14,138> = $AN_1468)<297,156>|get just the heading|
+)<493,119>|generate random motion|
+]<100,100>|Generates random motion|
+,
+                  members[B]<10,152> = [
+                      %avoid_obstacle_sphere = {^},
+                      %avoid_obstacle_safety_margin = {^},
+                      %max_sensor_range = {^}
+,
+AVOID_OBSTACLES(
+                        %max_sensor_range = {^},
+                        sphere = {^Distances_10 %avoid_obstacle_sphere},
+                        safety_margin = {^Distances_10 %avoid_obstacle_safety_margin},
+                        readings<10,81> = $AN_1462)<393,26>|avoid obstacles|
+]<100,100>|Move the robot away from obstacles|
+,
+                  members[C]<10,252> = [
+                      %horizon = {2.0},
+                      %max_sensor_range = {2.0}
+,
+MOVE_TO_FREE_SPACE(
+                        horizon = {^},
+                        %max_sensor_range = {^},
+                        readings<10,81> = $AN_1456)<395,26>|Move the robot towards open areas|
+]<100,100>|Move the robot towards open areas|
+,
+                  weight[A] = {0.8},
+                  weight[B] = {^Range_01 %cautious},
+                  weight[C] = {^Range_01 %curious})<444,26>|Explore the environment|
+]<215,414>|Wander|
+,
+            society[$AN_1523]<6,345> = [
+                %Objects = {Flags},
+                %move_to_object_gain = {1.0},
+                %avoid_obstacle_gain = {0.33},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3},
+                %max_sensor_range = {50}
+,
+COOP(
+                  %classes = {^ObjectClasses %Objects},
+                  %avoid_obstacle_sphere = {^},
+                  %avoid_obstacle_safety_margin = {^},
+                  %max_sensor_range = {^},
+                  members[A]<10,10> = [
+                      %max_sensor_range = {^},
+                      %classes = {^}
+,
+MOVE_TO(
+                        %max_sensor_range = {^},
+                        have_a_goal<100,100> = IS_VALID_OBJECT(
+                            %max_sensor_range = {^},
+                            %classes = {^},
+                            object<100,100> = [
+                                %max_sensor_range = {^},
+                                %classes = {^}
+,
+CLOSEST_OBJECT(
+                                  %max_sensor_range = {^},
+                                  object_list<295,22> = [
+                                      %classes = {^},
+                                      %max_sensor_range = {^}
+,
+FILTER_OBJECTS_BY_CLASS(
+                                        remove_these = {false},
+                                        classes = {^},
+                                        %max_sensor_range = {^},
+                                        full_list<19,34> = $AN_1450)<460,16>|pass only oranges|
+]<66,36>|Get the list of objects in the desired classes|
+,
+                                  %classes = {^})<129,200>|closest object|
+]<66,36>|Pick the closest object of the desired classes|
+)<100,100>
+,
+                        goal_rel_loc<78,528> = OBJECT_LOCATION(
+                            %max_sensor_range = {^},
+                            object<237,266> = [
+                                %max_sensor_range = {^},
+                                %classes = {^}
+,
+CLOSEST_OBJECT(
+                                  %max_sensor_range = {^},
+                                  object_list<295,22> = [
+                                      %classes = {^},
+                                      %max_sensor_range = {^}
+,
+FILTER_OBJECTS_BY_CLASS(
+                                        remove_these = {false},
+                                        classes = {^},
+                                        %max_sensor_range = {^},
+                                        full_list<19,34> = $AN_1444)<460,16>|pass only oranges|
+]<66,36>|Get the list of objects in the desired classes|
+,
+                                  %classes = {^})<129,200>|closest object|
+]<66,36>|Pick the closest object of the desired classes|
+,
+                            %classes = {^})<45,312>|location of object|
+,
+                        %classes = {^})<500,514>|move to object|
+]<100,100>|Move the robot towards the closest object with this color|
+,
+                  members[B]<10,145> = [
+                      %avoid_obstacle_sphere = {^},
+                      %avoid_obstacle_safety_margin = {^},
+                      %max_sensor_range = {^}
+,
+AVOID_OBSTACLES(
+                        %max_sensor_range = {^},
+                        sphere = {^Distances_10 %avoid_obstacle_sphere},
+                        safety_margin = {^Distances_10 %avoid_obstacle_safety_margin},
+                        readings<10,81> = $AN_1438)<393,26>|avoid obstacles|
+]<100,100>|Move the robot away from obstacles|
+,
+                  members[C]<10,280> = [
+                      %persistence = {10}
+,
+NOISE(
+                        persistence = {^},
+                        robot_heading<265,157> = GET_HEADING(
+                            cur_pos<14,138> = $AN_1434)<297,156>|get just the heading|
+)<493,119>|generate random motion|
+]<100,100>|Generates random motion|
+,
+                  members[D]<10,400> = [
+                      %max_sensor_range = {^},
+                      %classes = {^}
+,
+SCALE_VECTOR(
+                        multiplier<475,10> = DATABASE_DOUBLE(
+                            key = {"joystick_magnitude"},
+                            initial = {0.0})<100,100>
+,
+                        v<500,200> = TELOP(
+			    telop_mode<250,440> = DATABASE_INT(
+				key = {"telop_mode"},
+				initial = {0})<100,100>
+,
+                            robot_heading<250,10> = GET_HEADING(
+                                cur_pos<2,10>|get just the heading| = $AN_1430)<100,100>
+,
+                            joystick_x<250,120> = DATABASE_DOUBLE(
+                                key = {"joystick_x"},
+                                initial = {0.0})<100,100>
+,
+                            joystick_y<250,275> = DATABASE_DOUBLE(
+                                key = {"joystick_y"},
+                                initial = {0.0})<100,100>
+)<100,100>
+)<700,10>
+]<100,100>|move the robot towards the joystic direction|
+,
+                  weight[A] = {^Range_01 %move_to_object_gain},
+                  weight[B] = {^Range_01 %avoid_obstacle_gain},
+                  weight[C] = {^Range_01 %wander_gain},
+                  weight[D] = {1.0})<350,13>|move to|
+]<10,10>|MoveToward|
+,
+            reinforcers[$AN_1550] = {6,1,10},
+            reinforcers[$AN_1551] = {7,1,10},
+            QfileName = {"Qdemo"},
+            ActionTimeout = {300},
+            alpha = {0.1},
+            alphaDecay = {0.9},
+            random = {0.1},
+            randomDecay = {1.0})<654,132>
+,
+        max_vel = {0.5},
+        base_vel = {0.2},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<639,34>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1552 from vehicle(
+  bound_to = sample_qlearnRobot1:PIONEERAT(
+sample_qlearnRobot1:[
+          $AN_1492,
+          $AN_1418]
+)<0,0>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_1552]<10,10>|Group of Robots|
+]<10,10>
+

@@ -1,0 +1,108 @@
+/*************************************************
+*
+* This CDL file sample_hospital.cdl was created with cfgedit
+* version 3.1.05
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<222,15> |The Wheels Binding Point| $AN_1006 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1027]<120,300>|State1| = [
+                %Goal_Location = {273.64,453.12},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1029]<570,300>|State2| = [
+                %Goal_Location = {278.47,414.49},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1033]<1020,300>|State3| = [
+                %Goal_Location = {393.56,350.10},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1037]<1020,600>|State4| = [
+                %Goal_Location = {425.75,304.23},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1041]<570,600>|State5| = [
+                %Goal_Location = {444.27,293.76},
+                %move_to_location_gain = {1.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {0.5},
+                %avoid_obstacle_safety_margin = {0.3}
+,
+              GoTo]<10,10>
+,
+            rules[$AN_1027]<120,300>|State1| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {273.64,453.12}
+,
+              AtGoal]<10,10>|Trans1|
+ goto $AN_1029,
+            rules[$AN_1029]<570,300>|State2| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {278.47,414.49}
+,
+              AtGoal]<10,10>|Trans2|
+ goto $AN_1033,
+            rules[$AN_1033]<1020,300>|State3| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {393.56,350.10}
+,
+              AtGoal]<10,10>|Trans3|
+ goto $AN_1037,
+            rules[$AN_1037]<1020,600>|State4| = if [
+                %Goal_Tolerance = {0.5},
+                %Goal_Location = {425.75,304.23}
+,
+              AtGoal]<10,10>|Trans4|
+ goto $AN_1041,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans5|
+ goto $AN_1027)<292,156>|Mission|
+,
+        max_vel = {0.2},
+        base_vel = {1},
+        cautious_vel = {0.05},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1022 from vehicle(
+  bound_to = sample_hospitalRobot1:PIONEERAT(
+sample_hospitalRobot1:[
+          $AN_1006]
+)<0,0>|Individual Robot|
+);
+
+NoName:[
+[
+    $AN_1022]<10,10>|Group of Robots|
+]<10,10>
+

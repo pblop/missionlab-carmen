@@ -1,0 +1,29 @@
+"Copyright 1994 - 2006\n\
+Georgia Tech Research Corporation (GTRC)\n\
+Atlanta, Georgia  30332-0415\n\
+ALL RIGHTS RESERVED\n\
+\n\
+This software may be modified, copied and redistributed, both within the recipient's organization and\n\
+externally, subject to the following restrictions:\n\
+  (a) The recipient may not derive income for the Georgia Tech Research Corporation (herein \"GTRC\")\n\
+      software itself;\n\
+  (b) In any derivative works based on this software, the recipient agrees to acknowledge GTRC;\n\
+  (c) Any copies made of this software must be accompanied by the following copyright notice: \"Copyright\n\
+      1994 - 2006 Georgia Tech Research Corporation. All rights Reserved.\"; and\n\
+  (d) The recipient agrees to obey all U.S. Government restrictions governing redistribution or export of\n\
+      such information.\n\
+\n\
+These restrictions may apply to redistribution within an international organization. GTRC makes no war-\n\
+ranties or representations, either expressed or implied, with respect to the software contained herein,\n\
+its quality, merchantability, performance or fitness for a particular purpose. In no event shall GTRC\n\
+or its developers, directors, officers, employees or affiliates be liable for direct, incidental, in-\n\
+direct, special or consequential damages (including damages or loss of business profits, business int-\n\
+erruption, loss of business information and the like) resulting from any defect in this software or its\n\
+documentation or arising out of the use or inability to use this software or accompanying documentation\n\
+even if GTRC, an authorized representative or a GTRC affiliate has been advised of the possibility of\n\
+such damage. GTRC makes no representation or warranty regarding the results obtainable through use of\n\
+this software. No oral or written information or advice given by GTRC, its dealers, distributors, agents,\n\
+affiliates, developers, directors, officers or employees shall create a warranty or in any way increase\n\
+the scope of this warranty. This software was developed with ARPA Grant number N00014-94-1-0215 and fund-\n\
+ed by DARPA under contract number DAAE07-98-C-LO38, and DARPA / U.S. Army SMDC under contract number\n\
+DASG60-99-C-0081, DARPA / DOI contract number NBCH1020012, and NAVAIR Intelligent Autonomy program."

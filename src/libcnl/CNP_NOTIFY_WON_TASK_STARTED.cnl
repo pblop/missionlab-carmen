@@ -1,0 +1,47 @@
+/**********************************************************************
+ **                                                                  **
+ **                 CNP_NOTIFY_WON_TASK_STARTED.cnl                  **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  CNP_NOTIFY_WON_TASK_STARTED:                                    **
+ **   Notifies that the executing CNP task that just won has been    **
+ **   started.                                                       **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CNP_NOTIFY_WON_TASK_STARTED.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector CNP_NOTIFY_WON_TASK_STARTED with
+header
+   bool firstTime = true;
+body
+{
+    VECTOR_CLEAR(output);
+
+    if (firstTime)
+    {
+        exec_notify_cnp_won_task_started();
+
+        firstTime = false;
+    }
+}   
+pend
+
+/**********************************************************************
+# $Log: CNP_NOTIFY_WON_TASK_STARTED.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/01/10 06:19:45  endo
+# AO-FNC Type-I check-in.
+#
+#**********************************************************************/

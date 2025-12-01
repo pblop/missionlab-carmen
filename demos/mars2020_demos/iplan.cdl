@@ -1,0 +1,188 @@
+/*************************************************
+*
+* This CDL file iplan.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instGroup $AN_1691 from [
+  UpdateCSBSensorData];
+
+instGroup $AN_1689 from [
+  InitiaizeCSB];
+
+instGroup $AN_1687 from [
+  Stop];
+
+instBP<227,266> $AN_1679 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1588,
+            rules[$AN_1588]<199,330>|State1| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1591,
+            society[Start]<50,50>|Start| = $AN_1687,
+            society[$AN_1588]<199,330>|State1| = $AN_1689,
+            society[$AN_1591]<588,328>|State2| = $AN_1691)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instGroup $AN_1652 from [
+  Stop];
+
+instGroup $AN_1650 from [
+  Stop];
+
+instGroup $AN_1648 from [
+  Stop];
+
+instGroup $AN_1646 from [
+  Standby*];
+
+instBP<222,15> |The Wheels Binding Point| $AN_1637 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1612]<232,203>|State2| = $AN_1646,
+            society[$AN_1614]<642,195>|State4| = $AN_1648,
+            society[Start]<50,50>|Start| = $AN_1650,
+            society[$AN_1626]<233,506>|State4| = $AN_1652,
+            rules[$AN_1612]<232,203>|State2| = if [
+                %notify_message = {"MOTOR FAILURE DETECTED"}
+,
+              TaskExited]<0,0>|Trans10|
+ goto $AN_1614,
+            rules[$AN_1612]<232,203>|State2| = if [
+                %notify_message = {"PROCEED MISSION"}
+,
+              TaskExited]<0,0>|Trans13|
+ goto $AN_1626,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans12|
+ goto $AN_1612)<292,156>|The State Machine|
+,
+        max_vel = {1.6},
+        base_vel = {1.4},
+        cautious_vel = {0.3},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<100,100> $AN_1634 from vehicle(
+  bound_to = iplanRobot2:DEFAULT_ROBOT(
+iplanRobot2:[
+          $AN_1637,
+          $AN_1679]
+)<35,205>|Individual Robot|
+);
+
+instBP<227,266> $AN_1579 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1588,
+            rules[$AN_1588]<199,330>|State1| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_1591,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1588]<199,330>|State1| = [
+              InitiaizeCSB]<10,10>
+,
+            society[$AN_1591]<588,328>|State2| = [
+              UpdateCSBSensorData]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1595 from movement(
+  v<0,0> = ,
+  base_vel = {0.1},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[$AN_1610]<713,511>|State1| = [
+                %method = {Internalized_Plan},
+                %follow_csb_advise_gain = {1.0},
+                %avoid_obstacle_gain = {0.01},
+                %wander_gain = {0.0},
+                %avoid_obstacle_sphere = {10.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              FollowCSBAdvise]<10,10>
+,
+            society[$AN_1612]<232,203>|State2| = [
+              Standby*]<10,10>
+,
+            society[$AN_1614]<642,195>|State4| = [
+              Stop]<10,10>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1626]<233,506>|State4| = [
+                %Goal_Location = {126.5, 32.5},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1699]<606,775>|State5| = [
+              Stop]<10,10>
+,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans12|
+ goto $AN_1612,
+            rules[$AN_1612]<232,203>|State2| = if [
+                %notify_message = {"MOTOR FAILURE DETECTED"}
+,
+              TaskExited]<0,0>|Trans10|
+ goto $AN_1614,
+            rules[$AN_1612]<232,203>|State2| = if [
+                %notify_message = {"PROCEED MISSION"}
+,
+              TaskExited]<0,0>|Trans13|
+ goto $AN_1626,
+            rules[$AN_1626]<233,506>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {126.5, 32.5}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_1610,
+            rules[$AN_1610]<713,511>|State1| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {141.0, 104.0}
+,
+              AtGoal]<10,10>|Trans3|
+ goto $AN_1699)<292,156>|The State Machine|
+,
+        max_vel = {1.6},
+        base_vel = {1.4},
+        cautious_vel = {0.3},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1623 from vehicle(
+  bound_to = iplanRobot1:DEFAULT_ROBOT(
+iplanRobot1:[
+          $AN_1595,
+          $AN_1579]
+)<38,29>|Individual Robot|
+);
+
+[
+[
+    $AN_1623,
+    $AN_1634]<10,10>|Group of Robots|
+]<10,10>
+

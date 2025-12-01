@@ -1,0 +1,146 @@
+/**********************************************************************
+ **                                                                  **
+ **                            MOVE_TO_FREE_SPACE.cnl                **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: MOVE_TO_FREE_SPACE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector MOVE_TO_FREE_SPACE with
+   double       horizon;
+   obs_array    readings;
+   /* readings.size is the number of obstacles
+      readings.val is a Vector to the center of the obstacle
+      so readings.val.x and readings.val.y are the center numbers.
+      readings.r is a corresponding array of each obstacle's radius. 
+   */
+header
+body
+            
+   bool way_clear[12];
+   double closest_point;
+   int i;
+
+   // init array
+   for (i = 0; i < 12; i++) 
+   {     
+      way_clear[i] = true;
+   }  
+
+   // Determine if each direction is empty out to our sphere of influence
+   // by evaluating the heading to each visible object
+
+   for(i = 0; i < readings.size; i++)
+   {
+      // Get the closest point of the obstacle to the center of the robot
+      // len_2d gives the center to center dist in meters
+      closest_point = len_2d(readings.val[i].center) + readings.val[i].r;
+
+      // Handle case where we are within an obstacle by marking all ways dirty
+      if (closest_point < EPS_ZERO) /* Epsilon Zero (around 0.00001) */
+      {
+         for (int j = 0; j < 12; j++) 
+            way_clear[j] = false;
+      }
+      else if (closest_point < horizon)
+      {
+	 // If it troubles us by being to close, then disregard that direction.
+         double theta = RADIANS_TO_DEGREES(atan2(readings.val[i].center.y,
+				                 readings.val[i].center.x));
+         while( theta < 0 )
+            theta += 360;
+
+         int slot = (int)((theta + 15) / 30);
+         way_clear[slot] = false;
+      }
+   }
+
+   // Init with a unit vector straight ahead
+   output.x = 1.0;
+   output.y = 0;
+   
+   // pick the path closest to our current heading (0) that is clear
+   // way_clear[0] is straight ahead
+   // way_clear[1] is left
+   // way_clear[11] is right
+   // way_clear[6] is back
+
+   for (i = 0; i <= 6; i++)
+   {
+      // check the left side: Note this catches the 0 and 6 cases too.
+      int left  = i;
+   
+      if( way_clear[left] )
+      {
+         /* then go this direction */
+         rotate_z(output, left*30);
+   
+         /* Reduce output strength by ratio isn't in current direction */
+         double mag = 1.0 - ((double)i / 6);
+         mult_2d(output, mag);
+         break;
+      }
+   
+      /* check the right side */
+      int right = 12 - i;
+   
+      if( way_clear[right] )
+      {
+         /* then go this direction */
+         rotate_z(output, right*30);
+   
+         /* Reduce output strength by ratio isn't in current direction */
+         double mag = 1.0 - ((double)i / 6);
+         mult_2d(output, mag);
+         break;
+      }
+   }
+   
+   // If didn't like any directions, don't generate anything.
+   if( i > 6 )
+   {
+      VECTOR_CLEAR(output);
+   }
+
+   if( debug )
+      fprintf(stderr,"MOVE_TO_FREE_SPACE: output=(%.1f %.1f)\n",output.x,output.y);
+   
+pend
+
+
+/**********************************************************************
+# $Log: MOVE_TO_FREE_SPACE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:59  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.6  2000/01/24 18:25:23  ellenber
+# Fixed Objects/Obstacles conflict.  Now works with Obstacles.
+#
+# Revision 1.5  1996/05/05 17:59:07  doug
+# *** empty log message ***
+#
+# Revision 1.4  1996/05/05  16:47:48  doug
+# fixing compiler warnings
+#
+# Revision 1.3  1996/03/01  00:48:21  doug
+# *** empty log message ***
+#
+# Revision 1.2  1996/02/20  15:45:02  doug
+# *** empty log message ***
+#
+# Revision 1.1  1996/02/19  21:58:52  doug
+# Initial revision
+#
+#**********************************************************************/

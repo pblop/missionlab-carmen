@@ -1,0 +1,48 @@
+/**********************************************************************
+ **                                                                  **
+ **                     COOP.cnl                     		     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+ /***********************************************************************/
+
+procedure Vector COOP with
+   list Vector members;
+   list double weight;
+header
+   Vector tmp;
+   int    i;
+body
+   if( members_num != weight_num )
+   {
+      fprintf(stderr,"Error in COOP: Number of input vectors must match number of weight values\n");
+      exit(1);
+   }
+
+   if( debug )
+   {
+      fprintf(stderr,"COOP\n");
+      for(i=0; i<members_num; i++)
+         fprintf(stderr,"	<%2.2f %2.2f %2.2f> * %.1f\n",members[i].x,members[i].y,members[i].z,weight[i]);
+   }
+
+   /* compute the weighted vector sumation of all the inputs */
+   VECTOR_CLEAR(output);
+   for(i=0; i<members_num; i++)
+   {
+      //fprintf(stderr,"variables %d  <%2.2f %2.2f %2.2f> * %.1f\n", i,members[i].x,members[i].y,members[i].z,weight[i]);
+      times_3d(members[i],weight[i],tmp);
+      plus_3d(output,tmp);
+   }
+
+   if( debug )
+      fprintf(stderr,"	output=<%2.2f %2.2f %2.2f>\n",output.x,output.y,output.z);
+pend

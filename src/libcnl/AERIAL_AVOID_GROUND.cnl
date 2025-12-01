@@ -1,0 +1,55 @@
+/**********************************************************************
+ **                                                                  **
+ **                       AERIAL_AVOID_GROUND.cnl                    **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  Patrick Ulam                                       **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+
+
+// AERIAL_AVOID_GROUND 
+//  this behaviour implements a ground avoidal behavior with 2 parameter
+//            ground_avoidance_range - The maximum altitude from the ground in which the behaviour 
+//					reacts to the ground
+//            ground_avoidance_threshold = range from ground level in which the magnitude of the 
+//					avoidance vector is maximal
+
+#include "cnl.inc"
+
+procedure Vector AERIAL_AVOID_GROUND with
+   robot_position  robopos;
+   double	   ground_avoidance_range;
+   double          ground_avoidance_theshold;
+header
+body
+  output.x = 0;
+  output.y = 0;
+
+  // if we are out of range we don't avoid anything
+  if (robopos.v.z > ground_avoidance_range) {
+	output.z = 0;
+  }
+
+  // if we are within the threshold we set the magnitude to the maximum
+  else if (robopos.v.z >= ground_avoidance_threshold) {
+	output.z = 1.0;
+  }
+
+  else {
+  	output.z = (ground_avoidance_range - robopos.v.z) / ground_avoidance_range;
+  }
+
+
+  if (debug) {
+     fprintf(stderr, "AERIAL_AVOID_GROUND) output(%.1f, %.1f, %.1f)\n", output.x, output.y, output.z);
+}
+
+pend

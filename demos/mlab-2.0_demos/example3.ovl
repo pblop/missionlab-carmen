@@ -1,0 +1,46 @@
+--******************************************************************
+--
+--	example3.odl
+--
+--	Example overlay file for complex mission.
+--	
+--	This file describes a set of positions in the
+--	world used by the script example3.
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+SCENARIO "example3"
+
+SITE "Demo B site, Colorado"
+
+ORIGIN 30 0 -- All the following coordinades are with respect to this origin
+
+
+CONTROL MEASURES:
+
+Boundary Top 10 500 900 500
+Boundary Bot 10  40 900  40
+
+LDLC Echo 175 520 175 30      -- Beginning and end marked with FEBA
+
+AA AA1 50 80  150 80  150 180   50 180
+
+PP Charlie 50 300
+
+Gap Delta 150 300  200 300 100
+
+PP Delta1 250 300
+
+Axis Golf 200 300 600 300 150
+
+PP Gamma1 520 300
+PL Gamma 520 520 520 35
+
+ATK BP1 600 400
+
+ATK BP2 650 200 
+
+OBJ Tango 825 300 200

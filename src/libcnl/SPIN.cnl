@@ -1,0 +1,52 @@
+/**********************************************************************
+ **                                                                  **
+ **                       SPIN.cnl                                   **
+ **                                                                  **
+ **                                                                  **
+ **  Written by:  William Halliburton                                **
+ **                                                                  **
+ **                                                                  **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SPIN.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+init
+iend
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector SPIN with
+   double   angular_velocity;
+   double   slippageFactor;
+header
+body
+
+        const char* ssf = "spin_slippage_factor";
+        char sf_string[512];
+        sprintf( sf_string, "%f", slippageFactor);
+        put_state( (char*) ssf, sf_string);
+
+	output.x = 0;
+        output.y = 0;
+        output.z = (int)angular_velocity;
+pend
+
+/**********************************************************************
+# $Log: SPIN.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.11  2000/03/30 01:24:50  endo
+# spin_slippage_factor doesn't use output.y anymore.
+# It uses database_double now.
+#
+# Revision 1.10  1999/05/30 23:42:23  conrad
+# Spins the robot at specific angular velocity.
+#
+#**********************************************************************/

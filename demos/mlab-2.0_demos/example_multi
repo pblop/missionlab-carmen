@@ -1,0 +1,67 @@
+--******************************************************************
+--
+--	example_formation
+--
+--	Formation mission script for 4 robots.
+--	
+--	This example spawns four robots.
+--	The companion overlay file that defines the points to move to 
+--	is example_formation.ovl .
+--
+--	24 Oct 94	Original, based on earlier	Tucker Balch
+--			stuff by Jonathan Cameron.
+--
+--******************************************************************
+
+MISSION NAME "Formation Demo"
+
+SCENARIO "Formation Demo"
+
+OVERLAY example_formation.ovl
+
+SET OBSTACLE-COVERAGE 3
+SET MIN-OBSTACLE-RADIUS 3
+SET MAX-OBSTACLE-RADIUS 15
+SET SEED 416565 -- 5052, 450, 206885425, 1003573794, 96165
+SET HIGHLIGHT-REPELLING-OBSTACLES
+CREATE-OBSTACLES
+
+-- NEW-ROBOT roverrobot "./robot" red "rover.cc.gatech.edu"
+-- NEW-ROBOT ericsonrobot "./robot" blue "ericson.cc.gatech.edu"
+
+NEW-ROBOT desotorobot "~robot/mission.linux/src/robot/robot" red "tinman.cc.gatech.edu"
+-- NEW-ROBOT iorobot "~robot/mission/src/robot/robot" blue "io.cc.gatech.edu"
+
+-- UNIT <scouts> (<scouts-1> roverrobot ericsonrobot) (<scouts-2> roverrobot roverrobot)
+
+-- UNIT <scouts> (<scouts-1> desotorobot iorobot) (<scouts-2> desotorobot desotorobot)
+
+UNIT <scouts> (<scouts-1> desotorobot desotorobot) (<scouts-2> desotorobot desotorobot)
+
+COMMAND LIST:
+
+ 0. UNIT scouts START PP-CHARLIE 0 20
+
+ 1. UNIT scouts MOVETO PP-DELTA FORMATION Column
+
+ 2. UNIT scouts MOVETO PP-CHARLIE FORMATION Column
+
+ 3. UNIT scouts MOVETO PP-DELTA FORMATION Line
+
+ 4. UNIT scouts MOVETO PP-CHARLIE  FORMATION Line
+
+ 5. UNIT scouts MOVETO PP-DELTA FORMATION Wedge
+
+ 6. UNIT scouts MOVETO PP-CHARLIE  FORMATION Wedge
+
+ 7. UNIT scouts MOVETO PP-DELTA FORMATION Diamond
+
+ 8. UNIT scouts MOVETO PP-CHARLIE  FORMATION Diamond
+
+ 9. UNIT scouts MOVETO PP-DELTA FORMATION Sweep
+
+ 10. UNIT scouts MOVETO PP-CHARLIE FORMATION Sweep
+
+11. UNIT scouts STOP
+
+12. Quit

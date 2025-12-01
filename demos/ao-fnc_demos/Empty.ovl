@@ -1,0 +1,10 @@
+
+--MISSION-AREA 15.0 15.0
+MISSION-AREA 800.0 800.0
+
+CONTROL MEASURES:  
+
+--PP StartPlace 5.0  5.0  0.2
+PP StartPlace 100 100 4
+
+PP EnemyStartPlace* 607 22 0.1

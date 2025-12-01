@@ -1,0 +1,123 @@
+/*************************************************
+*
+* This CDL file robot-A.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.urban;
+
+instBP<227,266> $AN_1579 from pantilt(
+  look_loc<0,0> = ,
+  bound_to = camera:PANTILT(
+        look_loc<14,299> = FSA(
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans1|
+ goto $AN_1588,
+            society[Start]<50,50>|Start| = [
+              Stop]<100,100>
+,
+            society[$AN_1588]<195,164>|State1| = [
+              Stop]<10,10>
+)<11,182>|The State Machine|
+)<224,298>|The Camera Actuator|
+);
+
+instBP<222,15> |The Wheels Binding Point| $AN_1591 from movement(
+  base_vel = {0.1},
+  v<0,0> = ,
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA(
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_1607]<158,174>|State1| = [
+              Standby*]<10,10>
+,
+            society[$AN_1609]<160,449>|State2| = [
+                %Goal_Location = {135.0, 72.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1611]<538,172>|State3| = [
+              Stop]<10,10>
+,
+            society[$AN_1613]<700,438>|State4| = [
+                %Goal_Location = {141.0, 98.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1615]<702,792>|State5| = [
+                %Goal_Location = {141.0, 104.0},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {0.03},
+                %avoid_obstacle_sphere = {1.5},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_1617]<165,798>|State6| = [
+              Stop]<10,10>
+,
+            rules[$AN_1607]<158,174>|State1| = if [
+                %notify_message = {"PROCEED MISSION"}
+,
+              TaskExited]<0,0>|Trans1|
+ goto $AN_1609,
+            rules[$AN_1607]<158,174>|State1| = if [
+                %notify_message = {"MOTOR FAILURE DETECTED"}
+,
+              TaskExited]<0,0>|Trans2|
+ goto $AN_1611,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<10,10>|Trans3|
+ goto $AN_1607,
+            rules[$AN_1609]<160,449>|State2| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {135.0, 72.0}
+,
+              AtGoal]<0,0>|Trans1|
+ goto $AN_1613,
+            rules[$AN_1613]<700,438>|State4| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {141.0, 98.0}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_1615,
+            rules[$AN_1615]<702,792>|State5| = if [
+                %Goal_Tolerance = {1.0},
+                %Goal_Location = {141.0, 104.0}
+,
+              AtGoal]<0,0>|Trans6|
+ goto $AN_1617)<292,156>|The State Machine|
+,
+        max_vel = {1.6},
+        base_vel = {1.4},
+        cautious_vel = {0.3},
+        cautious_mode = {true})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_1631 from vehicle(
+  bound_to = robot-ARobot1:DEFAULT_ROBOT(
+robot-ARobot1:[
+          $AN_1591,
+          $AN_1579]
+)<27,23>|Individual Robot|
+);
+
+[
+[
+    $AN_1631]<10,10>|Group of Robots|
+]<10,10>
+

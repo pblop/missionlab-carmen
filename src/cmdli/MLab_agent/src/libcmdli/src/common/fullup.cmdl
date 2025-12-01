@@ -1,0 +1,53 @@
+MISSION NAME "full up" 
+
+// UPenn robots
+NEW-ROBOT truck "/home/doug/robotexec"
+NEW-ROBOT blimp "/home/doug/robotexec"
+NEW-ROBOT fw "/home/doug/robotexec"
+unit <roci_1> truck
+unit <roci_2> truck
+unit <roci_3> truck
+unit <roci_4> truck
+unit <blimp>  blimp
+unit <fixedwing1>  fw
+unit <fixedwing2>  fw
+unit <upenn_ground> (roci_1 roci_1 roci_1 roci_4)
+unit <upenn> (roci_1 roci_1 roci_1 roci_4 blimp fixedwing1 fixedwing2)
+
+// USC robots
+NEW-ROBOT pioneer "/home/doug/robotexec"
+NEW-ROBOT helicopter "/home/doug/robotexec"
+unit <usc_1> truck
+unit <usc_2> truck
+unit <usc_3> truck
+unit <usc_4> truck
+unit <heli>  helicopter
+unit <usc_ground> (usc_1 usc_2 usc_3 usc_4)
+unit <usc> (usc_1 usc_2 usc_3 usc_4 heli)
+
+// GaTech robots
+NEW-ROBOT atrv "/home/doug/robotexec"
+unit <gatech_1> truck
+unit <gatech_2> truck
+unit <gatech_3> truck
+unit <gatech> (gatech_1 gatech_2 gatech_3)
+
+
+unit <all_ground> (upenn_ground usc_ground gatech)
+unit <all> (upenn usc gatech)
+
+command list:
+1. unit all Start
+2. unit all_ground Stop
+3. unit upenn_ground MoveTo location = [PP1a]
+   unit usc_ground MoveTo location = [PP2a]
+   unit gatech MoveTo location = [PP3a]
+
+4. unit robot1 MoveTo location = [PP1b]
+   unit robot2 MoveTo location = [PP2b]
+   unit robot3 MoveTo location = [PP3b]
+
+5. unit all MoveTo location = "<0,0>"
+6. unit all Stop
+7. unit all Exit
+

@@ -1,0 +1,58 @@
+/**********************************************************************
+ **                                                                  **
+ **                         PANTILT.cnl                         **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: PANTILT.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure void PANTILT with
+   Vector 	look_loc;
+header
+//   static Vector old_look;
+body
+
+   if( look_loc.x != 0 ) {
+
+//	if( (look_loc.x != old_look.x) || (look_loc.y != old_look.y)
+//            || (look_loc.z != old_look.z) ) {
+		
+//           old_look.x = look_loc.x;  
+//           old_look.y = look_loc.y;  
+//           old_look.z = look_loc.z;
+	   exec_move_camera( look_loc );
+//	}
+   }
+   if( debug )
+   {
+      fprintf(stderr,"PANTILT(%d) panning to <%f,%f,%f>\n", robot_id,
+	      look_loc.x, look_loc.y, look_loc.z );
+   }
+pend
+
+
+/**********************************************************************
+# $Log: PANTILT.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:02  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.12  1999/10/25 18:54:54  endo
+# rolled back to this version.
+#
+# Revision 1.10  1999/06/29 02:10:27  mjcramer
+# Pan/Tilt Camera control
+#
+#
+#**********************************************************************/

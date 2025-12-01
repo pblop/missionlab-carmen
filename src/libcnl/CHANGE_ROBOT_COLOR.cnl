@@ -1,0 +1,30 @@
+/**********************************************************************
+ **                                                                  **
+ **                    CHANGE_ROBOT_COLOR.cnl                        **
+ **                                                                  **
+ **  Written By:  Eric Martinson                                     **
+ **                                                                  **
+ **  Copyright 2001 - 2006, Georgia Tech Research Corporation        **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: CHANGE_ROBOT_COLOR.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+//**********************************************************************
+procedure Vector CHANGE_ROBOT_COLOR with
+   CNLString_t color;
+header
+   int 	         once = 1;
+body
+   if(once)
+   {
+       	exec_change_robot_color(color.val);
+        once = 0;
+   }
+   VECTOR_CLEAR(output);
+pend
+

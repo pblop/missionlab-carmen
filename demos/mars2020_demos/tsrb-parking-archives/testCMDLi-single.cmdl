@@ -1,0 +1,14 @@
+MISSION NAME "CMDLi Test"
+
+NEW-ROBOT atrvjrClass "atrvjrRobot"
+
+UNIT <testCMDLi-singleRobot1> atrvjrClass
+
+UNIT <all> testCMDLi-singleRobot1
+
+COMMAND LIST:
+2. unit testCMDLi-singleRobot1 MoveTo goalLocation = [Waypoint-A]
+   unit testCMDLi-singleRobot1 MoveTo goalLocation = [Waypoint-B]
+   unit testCMDLi-singleRobot1 MoveTo goalLocation = [Waypoint-C]
+   unit testCMDLi-singleRobot1 MoveTo goalLocation = [Waypoint-B]
+   unit testCMDLi-singleRobot1 MoveTo goalLocation = [Waypoint-A]

@@ -1,0 +1,240 @@
+/*************************************************
+*
+* This CDL file ao-fnc-enemy.cdl was created with cfgedit
+* version 6.0.01
+*
+**************************************************/
+
+bindArch AuRA.naval;
+
+instBP<222,15> |The Wheels Binding Point| $AN_2929 from movement(
+  v<0,0> = ,
+  base_vel = {2.5},
+  bound_to = base:DRIVE_W_SPIN(
+        v<12,15> = FSA1:FSA(
+            society[$AN_2943]<1020,300>|State3| = [
+                %Goal_Location = {666.88, 225.92},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2945]<1020,600>|State4| = [
+                %Goal_Location = {679.68, 261.76},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2947]<587,600>|State5| = [
+                %Objects = {Illegal_Weapons}
+,
+              PickUp]<10,10>
+,
+            society[Start]<50,50>|Start| = [
+              Stop]<10,10>
+,
+            society[$AN_2950]<120,600>|State6| = [
+                %Goal_Location = {673.28, 238.72},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2952]<120,900>|State7| = [
+                %Goal_Location = {555.52, 295.68},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2954]<570,900>|State8| = [
+                %Goal_Location = {8.32, 556.80},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2956]<922,902>|State9| = [
+              Stop]<10,10>
+,
+            society[$AN_2958]<772,478>|State10| = [
+              Stop]<10,10>
+,
+            society[$AN_2960]<921,1128>|State11| = [
+              Stop]<10,10>
+,
+            society[$AN_2962]<581,1130>|State12| = [
+                %Object = {Illegal_Weapons}
+,
+              DropObject]<10,10>
+,
+            society[$AN_2964]<374,699>|State14| = [
+                %notify_message = {"Holding weapons."}
+,
+              Notify]<10,10>
+,
+            society[$AN_2966]<121,343>|State1| = [
+                %Goal_Location = {609.28, 28.16},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2968]<128,1128>|State15| = [
+              Stop]<10,10>
+,
+            society[$AN_2970]<316,98>|State15| = [
+                %mobility_type = {UXV}
+,
+              SetMobilityType]<10,10>
+,
+            society[$AN_2972]<628,119>|State2| = [
+                %Goal_Location = {702.72, 205.44},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2974]<426,405>|State16| = [
+                %Goal_Location = {609.28, 28.16},
+                %move_to_location_gain = {1.0},
+                %wander_gain = {0.0},
+                %avoid_obstacle_gain = {1.0},
+                %avoid_obstacle_sphere = {3.0},
+                %avoid_obstacle_safety_margin = {0.5}
+,
+              GoTo]<10,10>
+,
+            society[$AN_2976]<345,237>|State17| = [
+              Stop]<10,10>
+,
+            rules[$AN_2950]<120,600>|State6| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {673.28, 238.72}
+,
+              AtGoal]<10,10>|Trans1|
+ goto $AN_2952,
+            rules[$AN_2952]<120,900>|State7| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {555.52, 295.68}
+,
+              AtGoal]<10,10>|Trans2|
+ goto $AN_2954,
+            rules[$AN_2954]<570,900>|State8| = if [
+                %notify_message = {"Enemy stop."}
+,
+              Notified]<0,0>|Trans1|
+ goto $AN_2956,
+            rules[$AN_2945]<1020,600>|State4| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {679.68, 261.76}
+,
+              AtGoal]<10,10>|Trans1|
+ goto $AN_2958,
+            rules[$AN_2958]<772,478>|State10| = if [
+                %Objects = {Illegal_Weapons},
+                %Distance = {20.0}
+,
+              Near]<700,529>|Trans2|
+ goto $AN_2947,
+            rules[$AN_2958]<772,478>|State10| = if [
+                %Delay = {3.0}
+,
+              Wait]<492,532>|Trans1|
+ goto $AN_2950,
+            rules[$AN_2956]<922,902>|State9| = if [
+                %notify_message = {"Enemy put down weapons."}
+,
+              Notified]<0,0>|Trans2|
+ goto $AN_2960,
+            rules[$AN_2960]<921,1128>|State11| = if [
+                %notify_message = {"Holding weapons."}
+,
+              Notified]<774,1130>|Trans3|
+ goto $AN_2962,
+            rules[$AN_2947]<587,600>|State5| = if [
+                %Delay = {3.0}
+,
+              Wait]<0,0>|Trans3|
+ goto $AN_2964,
+            rules[$AN_2964]<374,699>|State14| = if [
+              Immediate]<269,659>|Trans2|
+ goto $AN_2950,
+            rules[$AN_2972]<628,119>|State2| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {702.72, 205.44}
+,
+              AtGoal]<0,0>|Trans2|
+ goto $AN_2943,
+            rules[$AN_2943]<1020,300>|State3| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {666.88, 225.92}
+,
+              AtGoal]<10,10>|Trans3|
+ goto $AN_2945,
+            rules[$AN_2962]<581,1130>|State12| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2968,
+            rules[Start]<50,50>|Start| = if [
+              Immediate]<0,0>|Trans1|
+ goto $AN_2970,
+            rules[$AN_2970]<316,98>|State15| = if [
+              Immediate]<10,10>|Trans3|
+ goto $AN_2966,
+            rules[$AN_2976]<345,237>|State17| = if [
+                %Delay = {5.0}
+,
+              Wait]<0,0>|Trans4|
+ goto $AN_2974,
+            rules[$AN_2966]<121,343>|State1| = if [
+                %Delay = {1.0}
+,
+              Wait]<266,276>|Trans5|
+ goto $AN_2976,
+            rules[$AN_2974]<426,405>|State16| = if [
+                %Goal_Tolerance = {5.0},
+                %Goal_Location = {609.28, 28.16}
+,
+              AtGoal]<0,0>|Trans6|
+ goto $AN_2972)<292,156>|The State Machine|
+,
+        max_vel = {2.0},
+        base_vel = {1.5},
+        cautious_vel = {0.5},
+        cautious_mode = {false})<222,15>|The Wheel Actuator|
+);
+
+instBP<0,0> $AN_3014 from vehicle(
+  bound_to = ao-fnc-enemyRobot1:DEFAULT_ROBOT(
+ao-fnc-enemyRobot1:[
+          $AN_2929]
+)<0,0>|Individual Robot|
+);
+
+[
+[
+    $AN_3014]<10,10>|Group of Robots|
+]<10,10>
+

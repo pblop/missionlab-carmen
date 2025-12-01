@@ -1,0 +1,167 @@
+/*--------------------------------------------------------------------
+
+  swirl_static_obstacles.cnl
+
+
+  Written by: Doug MacKenzie
+  Based on:   mstub2.c in Driver written by Tucker Balch and Andy Henshaw
+
+  Copyright 1995, Georgia Tech Research Corporation
+  Atlanta, Georgia  30332-0415
+  ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+        Swirl Obstacle 
+
+         sphere (in meters)
+         safety_margin (in meters)
+         goal_rel_loc (egocentric vector towards goal, sets swirl direction)
+
+--------------------------------------------------------------------*/
+
+/* $Id: SWIRL_STATIC_OBSTACLES.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure Vector SWIRL_STATIC_OBSTACLES with
+  double       sphere;
+  double       safety_margin;
+  obs_array    readings;
+  Vector       goal_rel_loc;
+header
+body
+  int          i;
+
+VECTOR_CLEAR(output);
+
+
+for(i=0; i<readings.size; i++)
+{
+  /* compute the distance from the center of the robot to the 
+     center of the obstacle in meters 
+  */
+  double c_to_c_dist = len_2d(readings.val[i].center);
+  double radius = readings.val[i].r + safety_margin;
+  double mag = 0;
+  
+  
+  /* create a unit vector along the direction of repulsion */
+  Vector repuls = { -readings.val[i].center.x,
+                    -readings.val[i].center.y };
+  unit_2d(repuls);
+  
+  /* Handle the case where within safety margin: */
+  /* infinite repulsion FROM THE CENTER of the object */
+  if (c_to_c_dist <= radius )
+    {
+      mag = GT_INFINITY;
+      
+      if (c_to_c_dist < EPS_ZERO) /* Epsilon Zero (around 0.00001) */
+        {
+          /* Handle the case where an obstacle is EXACTLY centered
+             where the robot is as a special case because we can't
+             use the vector to determine a direction to move.
+             So, arbitraily choose positive Y direction for vector.
+          */
+
+          repuls.x = 0.0;
+          repuls.y = 1.0;
+        }
+
+    }  
+  else
+    {
+
+      /* handle case where within the linear repulsion zone */
+      if (c_to_c_dist <= radius + sphere )
+        {
+          /* set the magnitude of the repulsion vector (0...1) based on how 
+             far we have intruded into the zone.
+             Magnitude is 0 on outside edge (c_to_c_dist = sphere + radius).
+             Magnitude is 1 on inside edge (c_to_c_dist = radius)
+
+             sphere is the size of the zone.
+             We are at distance (c_to_c_dist - radius) from the inner edge of
+             the zone or (sphere - (c_to_c_dist - radius)) from the outer edge.
+      
+             So, take our distance from the outer edge and divide by the size
+             of the zone to get a ratio from 0 to 1 with zero at the outside
+             and 1 at the inside.
+          */
+
+          mag = (sphere - (c_to_c_dist - radius)) / sphere;
+        }
+      else
+        {
+          /* otherwise, outside obstacle's sphere of influence, so ignore it */
+          mag = 0;
+        }
+
+      // modify repulsive vector to point "parallel" to the object
+          
+      // if the obstacle is on the left, relative to the heading
+      // towards the goal, rotate it 90 degrees ccw so it points back.
+      // Else, rotate it 90 degrees cw so it also points back.
+      double obs_dir = atan2(repuls.y, repuls.x);
+
+      if( obs_dir < 0 )
+        {
+          rotate_z(repuls,90);
+        }
+      else
+        {
+          rotate_z(repuls,-90);
+        }
+
+    }
+  
+  /* Set its strength to the value selected */
+  mult_2d(repuls, mag);
+
+  /* Add it to the running sum */
+  plus_2d(output, repuls);
+
+  if( debug )
+    {
+      fprintf(stderr,"swirl_obs: <%.1f %.1f>, %.1f => repulsive vector <%.1f %.1f>\n",
+              readings.val[i].center.x, 
+              readings.val[i].center.y, 
+              readings.val[i].r,
+              repuls.x, repuls.y);
+    }
+  
+}
+
+if( debug )
+  fprintf(stderr,"swirl_static_obstacles: output=(%.1f %.1f)\n",output.x,output.y);
+pend
+
+
+/**********************************************************************
+# $Log: SWIRL_STATIC_OBSTACLES.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:06  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.8  2003/04/06 19:43:42  endo
+# gcc 3.1.1
+#
+# Revision 1.7  2002/10/25 01:38:55  kaess
+# - swirl stripped off unnecessary code and parameters,
+# infinite repulsion within safety margin added
+# - "robot-too-cautious" bug fixed: robot should be in
+# cautious mode iff inside safety margin, which is the dase
+# when COOP returns an infinit vector - infinity needed to be changed
+#
+# Revision 1.6  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.5  1995/07/10  19:54:18  doug
+# *** empty log message ***
+#
+# Revision 1.4  1995/06/28  22:14:16  jmc
+# Added RCS id and log strings.
+#**********************************************************************/

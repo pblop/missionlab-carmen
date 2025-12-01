@@ -1,0 +1,33 @@
+/**********************************************************************
+ **                                                                  **
+ **                      GET_COMPASS_HEADING.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure int GET_COMPASS_HEADING with
+header
+body
+   output = exec_get_compass_heading();
+pend
+
+
+
+
+
+
+
+
+
+
+

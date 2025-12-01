@@ -1,0 +1,41 @@
+/**********************************************************************
+ **                                                                  **
+ **                      TERMINATE_MISSION.cnl                       **
+ **                                                                  **
+ **  Written by:  Yoichiro Endo                                      **
+ **                                                                  **
+ **  Various utility functions that deal with string.                **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: TERMINATE_MISSION.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+//***********************************************************************
+// Converts string into int.
+//***********************************************************************
+
+procedure Vector TERMINATE_MISSION with
+header
+body
+{
+    VECTOR_CLEAR(output);
+
+    exec_terminate_mission();
+}
+pend
+
+/**********************************************************************
+# $Log: TERMINATE_MISSION.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/02/19 17:54:53  endo
+# Experiment related modifications
+#
+#**********************************************************************/

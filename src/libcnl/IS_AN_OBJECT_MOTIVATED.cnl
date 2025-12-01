@@ -1,0 +1,75 @@
+/**********************************************************************
+ **                                                                  **
+ **                  IS_AN_OBJECT_MOTIVATED.cnl                      **
+ **                                                                  **
+ **  Returns TRUE if a specified object is within view and the 	     **
+ **  motivational data vector is within the predifined thresholds.   ** 
+ **                                                                  **
+ **  Inspired by:  Douglas C. MacKenzie (IS_AN_OBJECT)               **
+ **  Written by:  Ben Wong <bbb@cc.gatech.edu>                       **
+ **                                                                  **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: IS_AN_OBJECT_MOTIVATED.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure bool IS_AN_OBJECT_MOTIVATED with
+   ObjectList    object_list;
+   double        anger_lower;			// Thresholds
+   double        anger_upper;
+   double        fear_lower;
+   double        fear_upper;
+   double        hunger_lower;
+   double        hunger_upper;
+   double        curiousity_lower;
+   double        curiousity_upper;
+   double        anger_level;		// The global anger level.
+   double        fear_level;
+   double 	 hunger_level;
+   double 	 curiousity_level;
+header
+body
+
+    double anger, fear, hunger, curiousity;
+	anger=anger_level;
+	fear=fear_level;
+	hunger=hunger_level;
+	curiousity=curiousity_level;
+
+    // Note: (object_list.count > 0) is true if we saw the object.
+    // Also, consider using an epsilon for <= since these are floats. 
+    output =
+       (( object_list.count > 0) &&
+	(     (anger_lower <= anger)      &&      (anger <= anger_upper) ) &&
+	(      (fear_lower <= fear)       &&       (fear <= fear_upper) ) &&
+	(    (hunger_lower <= hunger)     &&     (hunger <= hunger_upper) ) &&
+        ((curiousity_lower <= curiousity) && (curiousity <= curiousity_upper))
+	);
+    
+    if (debug)
+	  fprintf(stderr, "IS_AN_OBJECT_MOTIVATED: %f %f %f %f : %s \n", 
+		anger_level, fear_level, hunger_level, curiousity_level,output?"YES":"NO");
+
+  if( debug )
+    fprintf(stderr,"IS_AN_OBJECT_MOTIVATED(%d): %s\n",
+	    robot_id, output?"YES":"NO");
+pend
+
+
+/**********************************************************************
+# $Log: IS_AN_OBJECT_MOTIVATED.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:03  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/03/24 16:55:27  saho
+# Initial revision
+#
+#
+#**********************************************************************/

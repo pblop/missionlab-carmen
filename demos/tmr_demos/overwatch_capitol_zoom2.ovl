@@ -1,0 +1,1059 @@
+--******************************************************************
+--
+--	overwatch_capitol_zoom2.ovl
+--
+--
+--******************************************************************
+
+--MISSION-AREA 600.0 600.0
+MISSION-AREA 250.0 250.0
+--MISSION-AREA 300.0 300.0
+
+SCENARIO "overwatch"
+
+SITE "Downtown, Atlanta, GA"
+
+--ORIGIN -185 -170
+--ORIGIN -200 -340
+ORIGIN -450 -340
+
+CONTROL MEASURES:
+
+-- Boundary ""     500  10 500 990
+-- Boundary display_center  10 400 990 400
+
+-- State Capitol
+Boundary "" 650 545 750 545
+Boundary "" 650 420 800 420
+Boundary "" 650 545 650 420
+Boundary "" 750 545 800 420
+
+Boundary "" 700 520 745 520
+Boundary "" 675 495 700 495
+Boundary "" 745 495 760 495
+Boundary "" 675 470 700 470
+Boundary "" 745 470 760 470
+Boundary "State Capitol" 700 445 745 445
+Boundary "" 675 495 675 470
+Boundary "" 700 520 700 495
+Boundary "" 700 470 700 445
+Boundary "" 745 520 745 495
+Boundary "" 760 495 760 470
+Boundary "" 745 470 745 445
+
+Obstacle 680 537.5 5
+
+Obstacle 670 427.5 5
+Obstacle 680 427.5 5
+
+Obstacle 660 525   5
+Obstacle 660 510   5
+Obstacle 660 450   5
+
+-- City Hall
+Boundary "" 500 400 625 400
+Boundary "" 500 275 625 275
+Boundary "" 500 400 500 275
+Boundary "" 625 400 625 275
+
+Boundary "" 540 370 585 370
+Boundary "" 520 340 540 340
+Boundary "" 585 340 605 340
+Boundary "City Hall" 520 295 605 295
+Boundary "" 520 340 520 295
+Boundary "" 540 370 540 340
+Boundary "" 585 370 585 340
+Boundary "" 605 340 605 295
+
+Obstacle 507   383   5
+Obstacle 520   393   5
+Obstacle 535   393   5
+Obstacle 535   383   5
+Obstacle 550   393   5
+Obstacle 575   393   5
+Obstacle 590   383   5
+Obstacle 590   393   5
+Obstacle 605   393   5
+Obstacle 618   383   5
+
+Obstacle 505   370   2.5
+Obstacle 515   370   2.5
+Obstacle 525   370   2.5
+Obstacle 600   370   2.5
+Obstacle 610   370   2.5
+Obstacle 620   370   2.5
+
+Obstacle 505   280   2.5
+Obstacle 515   280   2.5
+Obstacle 525   280   2.5
+Obstacle 535   280   2.5
+Obstacle 545   280   2.5
+Obstacle 580   280   2.5
+Obstacle 590   280   2.5
+Obstacle 600   280   2.5
+Obstacle 610   280   2.5
+Obstacle 620   280   2.5
+
+Obstacle 505   360   2.5
+Obstacle 505   350   2.5
+Obstacle 505   340   2.5
+Obstacle 505   330   2.5
+Obstacle 505   320   2.5
+Obstacle 505   310   2.5
+Obstacle 505   300   2.5
+Obstacle 505   290   2.5
+
+Obstacle 620   360   2.5
+Obstacle 620   350   2.5
+Obstacle 620   340   2.5
+Obstacle 620   330   2.5
+Obstacle 620   320   2.5
+Obstacle 620   310   2.5
+Obstacle 620   300   2.5
+Obstacle 620   290   2.5
+
+-- State Health Building
+Boundary "" 650 400 775 400
+Boundary "" 650 275 775 275
+Boundary "" 650 400 650 275
+Boundary "" 775 400 775 275
+
+Boundary "" 660 390 770 390
+Boundary "State Health Bldg" 660 280 770 280
+Boundary "" 660 390 660 280
+Boundary "" 770 390 770 280
+
+-- State D.O.T.
+Boundary "" 785 400 810 400
+Boundary "" 785 275 805 275
+Boundary "" 785 400 785 275
+Boundary "" 810 400 835 350
+Boundary "" 835 350 825 300
+Boundary "" 825 300 805 275
+
+Boundary "" 790 395 805 395
+Boundary "State D.O.T." 790 290 810 290
+Boundary "" 790 395 790 290
+Boundary "" 805 395 830 350
+Boundary "" 830 350 820 300
+Boundary "" 820 300 810 290
+
+-- Fulton County Government Center
+Boundary "" 210 545 335 545
+Boundary "" 210 420 335 420
+Boundary "" 210 545 210 420
+Boundary "" 335 545 335 420
+
+Boundary "County Government Ctr" 220 535 325 535
+Boundary "" 220 430 325 430
+Boundary "" 220 535 220 430
+Boundary "" 325 535 325 430
+
+Obstacle 220   535 0.5
+Obstacle 222.5 535 0.5
+Obstacle 225   535 0.5
+Obstacle 227.5 535 0.5
+Obstacle 230   535 0.5
+Obstacle 232.5 535 0.5
+Obstacle 235   535 0.5
+Obstacle 237.5 535 0.5
+Obstacle 240   535 0.5
+Obstacle 242.5 535 0.5
+Obstacle 245   535 0.5
+Obstacle 247.5 535 0.5
+Obstacle 250   535 0.5
+Obstacle 252.5 535 0.5
+Obstacle 255   535 0.5
+Obstacle 257.5 535 0.5
+Obstacle 260   535 0.5
+Obstacle 262.5 535 0.5
+Obstacle 265   535 0.5
+Obstacle 267.5 535 0.5
+Obstacle 270   535 0.5
+Obstacle 272.5 535 0.5
+Obstacle 275   535 0.5
+Obstacle 277.5 535 0.5
+Obstacle 280   535 0.5
+Obstacle 282.5 535 0.5
+Obstacle 285   535 0.5
+Obstacle 287.5 535 0.5
+Obstacle 290   535 0.5
+Obstacle 292.5 535 0.5
+Obstacle 295   535 0.5
+Obstacle 297.5 535 0.5
+Obstacle 300   535 0.5
+Obstacle 302.5 535 0.5
+Obstacle 305   535 0.5
+Obstacle 307.5 535 0.5
+Obstacle 310   535 0.5
+Obstacle 312.5 535 0.5
+Obstacle 315   535 0.5
+Obstacle 317.5 535 0.5
+Obstacle 320   535 0.5
+Obstacle 322.5 535 0.5
+Obstacle 325   535 0.5
+
+Obstacle 220   430 0.5
+Obstacle 222.5 430 0.5
+Obstacle 225   430 0.5
+Obstacle 227.5 430 0.5
+Obstacle 230   430 0.5
+Obstacle 232.5 430 0.5
+Obstacle 235   430 0.5
+Obstacle 237.5 430 0.5
+Obstacle 240   430 0.5
+Obstacle 242.5 430 0.5
+Obstacle 245   430 0.5
+Obstacle 247.5 430 0.5
+Obstacle 250   430 0.5
+Obstacle 252.5 430 0.5
+Obstacle 255   430 0.5
+Obstacle 257.5 430 0.5
+Obstacle 260   430 0.5
+Obstacle 262.5 430 0.5
+Obstacle 265   430 0.5
+Obstacle 267.5 430 0.5
+Obstacle 270   430 0.5
+Obstacle 272.5 430 0.5
+Obstacle 275   430 0.5
+Obstacle 277.5 430 0.5
+Obstacle 280   430 0.5
+Obstacle 282.5 430 0.5
+Obstacle 285   430 0.5
+Obstacle 287.5 430 0.5
+Obstacle 290   430 0.5
+Obstacle 292.5 430 0.5
+Obstacle 295   430 0.5
+Obstacle 297.5 430 0.5
+Obstacle 300   430 0.5
+Obstacle 302.5 430 0.5
+Obstacle 305   430 0.5
+Obstacle 307.5 430 0.5
+Obstacle 310   430 0.5
+Obstacle 312.5 430 0.5
+Obstacle 315   430 0.5
+Obstacle 317.5 430 0.5
+Obstacle 320   430 0.5
+Obstacle 322.5 430 0.5
+Obstacle 325   430 0.5
+
+Obstacle 220 535   0.5
+Obstacle 220 532.5 0.5
+Obstacle 220 530   0.5
+Obstacle 220 527.5 0.5
+Obstacle 220 525   0.5
+Obstacle 220 522.5 0.5
+Obstacle 220 520   0.5
+Obstacle 220 517.5 0.5
+Obstacle 220 515   0.5
+Obstacle 220 512.5 0.5
+Obstacle 220 510   0.5
+Obstacle 220 507.5 0.5
+Obstacle 220 505   0.5
+Obstacle 220 502.5 0.5
+Obstacle 220 500   0.5
+Obstacle 220 497.5 0.5
+Obstacle 220 495   0.5
+Obstacle 220 492.5 0.5
+Obstacle 220 490   0.5
+Obstacle 220 487.5 0.5
+Obstacle 220 485   0.5
+Obstacle 220 482.5 0.5
+Obstacle 220 480   0.5
+Obstacle 220 477.5 0.5
+Obstacle 220 475   0.5
+Obstacle 220 472.5 0.5
+Obstacle 220 470   0.5
+Obstacle 220 467.5 0.5
+Obstacle 220 465   0.5
+Obstacle 220 462.5 0.5
+Obstacle 220 460   0.5
+Obstacle 220 457.5 0.5
+Obstacle 220 455   0.5
+Obstacle 220 452.5 0.5
+Obstacle 220 450   0.5
+Obstacle 220 447.5 0.5
+Obstacle 220 445   0.5
+Obstacle 220 442.5 0.5
+Obstacle 220 440   0.5
+Obstacle 220 437.5 0.5
+Obstacle 220 435   0.5
+Obstacle 220 432.5 0.5
+Obstacle 220 430   0.5
+
+Obstacle 325 535   0.5
+Obstacle 325 532.5 0.5
+Obstacle 325 530   0.5
+Obstacle 325 527.5 0.5
+Obstacle 325 525   0.5
+Obstacle 325 522.5 0.5
+Obstacle 325 520   0.5
+Obstacle 325 517.5 0.5
+Obstacle 325 515   0.5
+Obstacle 325 512.5 0.5
+Obstacle 325 510   0.5
+Obstacle 325 507.5 0.5
+Obstacle 325 505   0.5
+Obstacle 325 502.5 0.5
+Obstacle 325 500   0.5
+Obstacle 325 497.5 0.5
+Obstacle 325 495   0.5
+Obstacle 325 492.5 0.5
+Obstacle 325 490   0.5
+Obstacle 325 487.5 0.5
+Obstacle 325 485   0.5
+Obstacle 325 482.5 0.5
+Obstacle 325 480   0.5
+Obstacle 325 477.5 0.5
+Obstacle 325 475   0.5
+Obstacle 325 472.5 0.5
+Obstacle 325 470   0.5
+Obstacle 325 467.5 0.5
+Obstacle 325 465   0.5
+Obstacle 325 462.5 0.5
+Obstacle 325 460   0.5
+Obstacle 325 457.5 0.5
+Obstacle 325 455   0.5
+Obstacle 325 452.5 0.5
+Obstacle 325 450   0.5
+Obstacle 325 447.5 0.5
+Obstacle 325 445   0.5
+Obstacle 325 442.5 0.5
+Obstacle 325 440   0.5
+Obstacle 325 437.5 0.5
+Obstacle 325 435   0.5
+Obstacle 325 432.5 0.5
+Obstacle 325 430   0.5
+
+-- County Courthouse
+Boundary "" 355 545 475 545
+Boundary "" 355 420 480 420
+Boundary "" 355 545 355 420
+Boundary "" 475 545 480 495
+Boundary "" 480 495 480 420
+
+Boundary "County Courthouse" 365 535 470 535
+Boundary "" 365 430 470 430
+Boundary "" 365 535 365 430
+Boundary "" 470 535 470 430
+
+Obstacle 365   535 0.5
+Obstacle 367.5 535 0.5
+Obstacle 370   535 0.5
+Obstacle 372.5 535 0.5
+Obstacle 375   535 0.5
+Obstacle 377.5 535 0.5
+Obstacle 380   535 0.5
+Obstacle 382.5 535 0.5
+Obstacle 385   535 0.5
+Obstacle 387.5 535 0.5
+Obstacle 390   535 0.5
+Obstacle 392.5 535 0.5
+Obstacle 395   535 0.5
+Obstacle 397.5 535 0.5
+Obstacle 400   535 0.5
+Obstacle 402.5 535 0.5
+Obstacle 405   535 0.5
+Obstacle 407.5 535 0.5
+Obstacle 410   535 0.5
+Obstacle 412.5 535 0.5
+Obstacle 415   535 0.5
+Obstacle 417.5 535 0.5
+Obstacle 420   535 0.5
+Obstacle 422.5 535 0.5
+Obstacle 425   535 0.5
+Obstacle 427.5 535 0.5
+Obstacle 430   535 0.5
+Obstacle 432.5 535 0.5
+Obstacle 435   535 0.5
+Obstacle 437.5 535 0.5
+Obstacle 440   535 0.5
+Obstacle 442.5 535 0.5
+Obstacle 445   535 0.5
+Obstacle 447.5 535 0.5
+Obstacle 450   535 0.5
+Obstacle 452.5 535 0.5
+Obstacle 455   535 0.5
+Obstacle 457.5 535 0.5
+Obstacle 460   535 0.5
+Obstacle 462.5 535 0.5
+Obstacle 465   535 0.5
+Obstacle 467.5 535 0.5
+Obstacle 470   535 0.5
+
+Obstacle 365   430 0.5
+Obstacle 367.5 430 0.5
+Obstacle 370   430 0.5
+Obstacle 372.5 430 0.5
+Obstacle 375   430 0.5
+Obstacle 377.5 430 0.5
+Obstacle 380   430 0.5
+Obstacle 382.5 430 0.5
+Obstacle 385   430 0.5
+Obstacle 387.5 430 0.5
+Obstacle 390   430 0.5
+Obstacle 392.5 430 0.5
+Obstacle 395   430 0.5
+Obstacle 397.5 430 0.5
+Obstacle 400   430 0.5
+Obstacle 402.5 430 0.5
+Obstacle 405   430 0.5
+Obstacle 407.5 430 0.5
+Obstacle 410   430 0.5
+Obstacle 412.5 430 0.5
+Obstacle 415   430 0.5
+Obstacle 417.5 430 0.5
+Obstacle 420   430 0.5
+Obstacle 422.5 430 0.5
+Obstacle 425   430 0.5
+Obstacle 427.5 430 0.5
+Obstacle 430   430 0.5
+Obstacle 432.5 430 0.5
+Obstacle 435   430 0.5
+Obstacle 437.5 430 0.5
+Obstacle 440   430 0.5
+Obstacle 442.5 430 0.5
+Obstacle 445   430 0.5
+Obstacle 447.5 430 0.5
+Obstacle 450   430 0.5
+Obstacle 452.5 430 0.5
+Obstacle 455   430 0.5
+Obstacle 457.5 430 0.5
+Obstacle 460   430 0.5
+Obstacle 462.5 430 0.5
+Obstacle 465   430 0.5
+Obstacle 467.5 430 0.5
+Obstacle 470   430 0.5
+
+Obstacle 365 535   0.5
+Obstacle 365 532.5 0.5
+Obstacle 365 530   0.5
+Obstacle 365 527.5 0.5
+Obstacle 365 525   0.5
+Obstacle 365 522.5 0.5
+Obstacle 365 520   0.5
+Obstacle 365 517.5 0.5
+Obstacle 365 515   0.5
+Obstacle 365 512.5 0.5
+Obstacle 365 510   0.5
+Obstacle 365 507.5 0.5
+Obstacle 365 505   0.5
+Obstacle 365 502.5 0.5
+Obstacle 365 500   0.5
+Obstacle 365 497.5 0.5
+Obstacle 365 495   0.5
+Obstacle 365 492.5 0.5
+Obstacle 365 490   0.5
+Obstacle 365 487.5 0.5
+Obstacle 365 485   0.5
+Obstacle 365 482.5 0.5
+Obstacle 365 480   0.5
+Obstacle 365 477.5 0.5
+Obstacle 365 475   0.5
+Obstacle 365 472.5 0.5
+Obstacle 365 470   0.5
+Obstacle 365 467.5 0.5
+Obstacle 365 465   0.5
+Obstacle 365 462.5 0.5
+Obstacle 365 460   0.5
+Obstacle 365 457.5 0.5
+Obstacle 365 455   0.5
+Obstacle 365 452.5 0.5
+Obstacle 365 450   0.5
+Obstacle 365 447.5 0.5
+Obstacle 365 445   0.5
+Obstacle 365 442.5 0.5
+Obstacle 365 440   0.5
+Obstacle 365 437.5 0.5
+Obstacle 365 435   0.5
+Obstacle 365 432.5 0.5
+Obstacle 365 430   0.5
+
+Obstacle 470 535   0.5
+Obstacle 470 532.5 0.5
+Obstacle 470 530   0.5
+Obstacle 470 527.5 0.5
+Obstacle 470 525   0.5
+Obstacle 470 522.5 0.5
+Obstacle 470 520   0.5
+Obstacle 470 517.5 0.5
+Obstacle 470 515   0.5
+Obstacle 470 512.5 0.5
+Obstacle 470 510   0.5
+Obstacle 470 507.5 0.5
+Obstacle 470 505   0.5
+Obstacle 470 502.5 0.5
+Obstacle 470 500   0.5
+Obstacle 470 497.5 0.5
+Obstacle 470 495   0.5
+Obstacle 470 492.5 0.5
+Obstacle 470 490   0.5
+Obstacle 470 487.5 0.5
+Obstacle 470 485   0.5
+Obstacle 470 482.5 0.5
+Obstacle 470 480   0.5
+Obstacle 470 477.5 0.5
+Obstacle 470 475   0.5
+Obstacle 470 472.5 0.5
+Obstacle 470 470   0.5
+Obstacle 470 467.5 0.5
+Obstacle 470 465   0.5
+Obstacle 470 462.5 0.5
+Obstacle 470 460   0.5
+Obstacle 470 457.5 0.5
+Obstacle 470 455   0.5
+Obstacle 470 452.5 0.5
+Obstacle 470 450   0.5
+Obstacle 470 447.5 0.5
+Obstacle 470 445   0.5
+Obstacle 470 442.5 0.5
+Obstacle 470 440   0.5
+Obstacle 470 437.5 0.5
+Obstacle 470 435   0.5
+Obstacle 470 432.5 0.5
+Obstacle 470 430   0.5
+
+-- Central Ave & Mitchell
+Boundary "" 500 545 625 545
+Boundary "" 500 420 625 420
+Boundary "" 500 545 500 420
+Boundary "" 625 545 625 420
+
+Boundary "" 585 540 620 540
+Boundary "" 585 480 620 480
+Boundary "" 585 540 585 480
+Boundary "" 620 540 620 480
+
+Obstacle 505   500   3
+Obstacle 515   500   3
+Obstacle 525   500   3
+Obstacle 535   500   3
+
+Obstacle 505   490   2.5
+Obstacle 505   480   2.5
+Obstacle 505   470   2.5
+Obstacle 505   460   2.5
+Obstacle 505   450   2.5
+Obstacle 505   440   2.5
+
+Obstacle 515   490   2.5
+Obstacle 515   480   2.5
+Obstacle 515   470   2.5
+Obstacle 515   460   2.5
+Obstacle 515   450   2.5
+Obstacle 515   440   2.5
+
+Obstacle 525   430   3
+
+Obstacle 575   472.5 5
+Obstacle 585   472.5 5
+Obstacle 595   472.5 5
+Obstacle 605   472.5 5
+Obstacle 615   472.5 5
+
+Obstacle 575   427.5 5
+Obstacle 585   427.5 5
+Obstacle 595   427.5 5
+Obstacle 605   427.5 5
+Obstacle 615   427.5 5
+
+Obstacle 575   532.5 5
+Obstacle 575   522.5 5
+Obstacle 575   512.5 5
+Obstacle 575   502.5 5
+Obstacle 575   492.5 5
+Obstacle 575   482.5 5
+Obstacle 575   472.5 5
+
+-- Pryor & Trinity Ave
+Boundary "" 355 400 480 400
+Boundary "" 355 275 480 275
+Boundary "" 355 400 355 275
+Boundary "" 480 400 480 275
+
+Boundary "" 360 395 470 395
+Boundary "" 360 315 415 315
+Boundary "" 415 280 470 280
+Boundary "" 360 395 360 315
+Boundary "" 415 315 415 280
+Boundary "" 470 395 470 280
+
+Obstacle 360   395 0.5
+Obstacle 362.5 395 0.5
+Obstacle 365   395 0.5
+Obstacle 367.5 395 0.5
+Obstacle 370   395 0.5
+Obstacle 372.5 395 0.5
+Obstacle 375   395 0.5
+Obstacle 377.5 395 0.5
+Obstacle 380   395 0.5
+Obstacle 382.5 395 0.5
+Obstacle 385   395 0.5
+Obstacle 387.5 395 0.5
+Obstacle 390   395 0.5
+Obstacle 392.5 395 0.5
+Obstacle 395   395 0.5
+Obstacle 397.5 395 0.5
+Obstacle 400   395 0.5
+Obstacle 402.5 395 0.5
+Obstacle 405   395 0.5
+Obstacle 407.5 395 0.5
+Obstacle 410   395 0.5
+Obstacle 412.5 395 0.5
+Obstacle 415   395 0.5
+Obstacle 417.5 395 0.5
+Obstacle 420   395 0.5
+Obstacle 422.5 395 0.5
+Obstacle 425   395 0.5
+Obstacle 427.5 395 0.5
+Obstacle 430   395 0.5
+Obstacle 432.5 395 0.5
+Obstacle 435   395 0.5
+Obstacle 437.5 395 0.5
+Obstacle 440   395 0.5
+Obstacle 442.5 395 0.5
+Obstacle 445   395 0.5
+Obstacle 447.5 395 0.5
+Obstacle 450   395 0.5
+Obstacle 452.5 395 0.5
+Obstacle 455   395 0.5
+Obstacle 457.5 395 0.5
+Obstacle 460   395 0.5
+Obstacle 462.5 395 0.5
+Obstacle 465   395 0.5
+Obstacle 467.5 395 0.5
+Obstacle 470   395 0.5
+
+Obstacle 360   315 0.5
+Obstacle 362.5 315 0.5
+Obstacle 365   315 0.5
+Obstacle 367.5 315 0.5
+Obstacle 370   315 0.5
+Obstacle 372.5 315 0.5
+Obstacle 375   315 0.5
+Obstacle 377.5 315 0.5
+Obstacle 380   315 0.5
+Obstacle 382.5 315 0.5
+Obstacle 385   315 0.5
+Obstacle 387.5 315 0.5
+Obstacle 390   315 0.5
+Obstacle 392.5 315 0.5
+Obstacle 395   315 0.5
+Obstacle 397.5 315 0.5
+Obstacle 400   315 0.5
+Obstacle 402.5 315 0.5
+Obstacle 405   315 0.5
+Obstacle 407.5 315 0.5
+Obstacle 410   315 0.5
+Obstacle 412.5 315 0.5
+Obstacle 415   315 0.5
+
+Obstacle 415   280 0.5
+Obstacle 417.5 280 0.5
+Obstacle 420   280 0.5
+Obstacle 422.5 280 0.5
+Obstacle 425   280 0.5
+Obstacle 427.5 280 0.5
+Obstacle 430   280 0.5
+Obstacle 432.5 280 0.5
+Obstacle 435   280 0.5
+Obstacle 437.5 280 0.5
+Obstacle 440   280 0.5
+Obstacle 442.5 280 0.5
+Obstacle 445   280 0.5
+Obstacle 447.5 280 0.5
+Obstacle 450   280 0.5
+Obstacle 452.5 280 0.5
+Obstacle 455   280 0.5
+Obstacle 457.5 280 0.5
+Obstacle 460   280 0.5
+Obstacle 462.5 280 0.5
+Obstacle 465   280 0.5
+Obstacle 467.5 280 0.5
+Obstacle 470   280 0.5
+
+Obstacle 360 395   0.5
+Obstacle 360 392.5 0.5
+Obstacle 360 390   0.5
+Obstacle 360 387.5 0.5
+Obstacle 360 385   0.5
+Obstacle 360 382.5 0.5
+Obstacle 360 380   0.5
+Obstacle 360 377.5 0.5
+Obstacle 360 375   0.5
+Obstacle 360 372.5 0.5
+Obstacle 360 370   0.5
+Obstacle 360 367.5 0.5
+Obstacle 360 365   0.5
+Obstacle 360 362.5 0.5
+Obstacle 360 360   0.5
+Obstacle 360 357.5 0.5
+Obstacle 360 355   0.5
+Obstacle 360 352.5 0.5
+Obstacle 360 350   0.5
+Obstacle 360 347.5 0.5
+Obstacle 360 345   0.5
+Obstacle 360 342.5 0.5
+Obstacle 360 340   0.5
+Obstacle 360 337.5 0.5
+Obstacle 360 335   0.5
+Obstacle 360 332.5 0.5
+Obstacle 360 330   0.5
+Obstacle 360 327.5 0.5
+Obstacle 360 325   0.5
+Obstacle 360 322.5 0.5
+Obstacle 360 320   0.5
+Obstacle 360 317.5 0.5
+Obstacle 360 315   0.5
+
+Obstacle 415 315   0.5
+Obstacle 415 312.5 0.5
+Obstacle 415 310   0.5
+Obstacle 415 307.5 0.5
+Obstacle 415 305   0.5
+Obstacle 415 302.5 0.5
+Obstacle 415 300   0.5
+Obstacle 415 297.5 0.5
+Obstacle 415 295   0.5
+Obstacle 415 292.5 0.5
+Obstacle 415 290   0.5
+Obstacle 415 287.5 0.5
+Obstacle 415 285   0.5
+Obstacle 415 282.5 0.5
+Obstacle 415 280   0.5
+
+Obstacle 470 395   0.5
+Obstacle 470 392.5 0.5
+Obstacle 470 390   0.5
+Obstacle 470 387.5 0.5
+Obstacle 470 385   0.5
+Obstacle 470 382.5 0.5
+Obstacle 470 380   0.5
+Obstacle 470 377.5 0.5
+Obstacle 470 375   0.5
+Obstacle 470 372.5 0.5
+Obstacle 470 370   0.5
+Obstacle 470 367.5 0.5
+Obstacle 470 365   0.5
+Obstacle 470 362.5 0.5
+Obstacle 470 360   0.5
+Obstacle 470 357.5 0.5
+Obstacle 470 355   0.5
+Obstacle 470 352.5 0.5
+Obstacle 470 350   0.5
+Obstacle 470 347.5 0.5
+Obstacle 470 345   0.5
+Obstacle 470 342.5 0.5
+Obstacle 470 340   0.5
+Obstacle 470 337.5 0.5
+Obstacle 470 335   0.5
+Obstacle 470 332.5 0.5
+Obstacle 470 330   0.5
+Obstacle 470 327.5 0.5
+Obstacle 470 325   0.5
+Obstacle 470 322.5 0.5
+Obstacle 470 320   0.5
+Obstacle 470 317.5 0.5
+Obstacle 470 315   0.5
+Obstacle 470 312.5 0.5
+Obstacle 470 310   0.5
+Obstacle 470 307.5 0.5
+Obstacle 470 305   0.5
+Obstacle 470 302.5 0.5
+Obstacle 470 300   0.5
+Obstacle 470 297.5 0.5
+Obstacle 470 295   0.5
+Obstacle 470 292.5 0.5
+Obstacle 470 290   0.5
+Obstacle 470 287.5 0.5
+Obstacle 470 285   0.5
+Obstacle 470 282.5 0.5
+Obstacle 470 280   0.5
+
+-- Peachtree & Trinity Ave
+Boundary "" 210 400 335 400
+Boundary "" 210 275 335 275
+Boundary "" 210 400 210 275
+Boundary "" 335 400 335 275
+
+Boundary "" 215 395 305 395
+Boundary "" 215 365 305 365
+Boundary "" 215 395 215 365
+Boundary "" 305 395 305 365
+
+Boundary "" 215 345 265 345
+Boundary "" 215 335 265 335
+Boundary "" 215 345 215 335
+Boundary "" 265 345 265 335
+
+Boundary "" 250 310 305 310
+Boundary "" 215 290 250 290
+Boundary "" 215 280 305 280
+Boundary "" 215 290 215 280
+Boundary "" 250 310 250 290
+Boundary "" 305 310 305 280
+
+Obstacle 215   395 0.5
+Obstacle 217.5 395 0.5
+Obstacle 220   395 0.5
+Obstacle 222.5 395 0.5
+Obstacle 225   395 0.5
+Obstacle 227.5 395 0.5
+Obstacle 230   395 0.5
+Obstacle 232.5 395 0.5
+Obstacle 235   395 0.5
+Obstacle 237.5 395 0.5
+Obstacle 240   395 0.5
+Obstacle 242.5 395 0.5
+Obstacle 245   395 0.5
+Obstacle 247.5 395 0.5
+Obstacle 250   395 0.5
+Obstacle 252.5 395 0.5
+Obstacle 255   395 0.5
+Obstacle 257.5 395 0.5
+Obstacle 260   395 0.5
+Obstacle 262.5 395 0.5
+Obstacle 265   395 0.5
+Obstacle 267.5 395 0.5
+Obstacle 270   395 0.5
+Obstacle 272.5 395 0.5
+Obstacle 275   395 0.5
+Obstacle 277.5 395 0.5
+Obstacle 280   395 0.5
+Obstacle 282.5 395 0.5
+Obstacle 285   395 0.5
+Obstacle 287.5 395 0.5
+Obstacle 290   395 0.5
+Obstacle 292.5 395 0.5
+Obstacle 295   395 0.5
+Obstacle 297.5 395 0.5
+Obstacle 300   395 0.5
+Obstacle 302.5 395 0.5
+Obstacle 305   395 0.5
+
+Obstacle 215   365 0.5
+Obstacle 217.5 365 0.5
+Obstacle 220   365 0.5
+Obstacle 222.5 365 0.5
+Obstacle 225   365 0.5
+Obstacle 227.5 365 0.5
+Obstacle 230   365 0.5
+Obstacle 232.5 365 0.5
+Obstacle 235   365 0.5
+Obstacle 237.5 365 0.5
+Obstacle 240   365 0.5
+Obstacle 242.5 365 0.5
+Obstacle 245   365 0.5
+Obstacle 247.5 365 0.5
+Obstacle 250   365 0.5
+Obstacle 252.5 365 0.5
+Obstacle 255   365 0.5
+Obstacle 257.5 365 0.5
+Obstacle 260   365 0.5
+Obstacle 262.5 365 0.5
+Obstacle 265   365 0.5
+Obstacle 267.5 365 0.5
+Obstacle 270   365 0.5
+Obstacle 272.5 365 0.5
+Obstacle 275   365 0.5
+Obstacle 277.5 365 0.5
+Obstacle 280   365 0.5
+Obstacle 282.5 365 0.5
+Obstacle 285   365 0.5
+Obstacle 287.5 365 0.5
+Obstacle 290   365 0.5
+Obstacle 292.5 365 0.5
+Obstacle 295   365 0.5
+Obstacle 297.5 365 0.5
+Obstacle 300   365 0.5
+Obstacle 302.5 365 0.5
+Obstacle 305   365 0.5
+
+Obstacle 215 395   0.5
+Obstacle 215 392.5 0.5
+Obstacle 215 390   0.5
+Obstacle 215 387.5 0.5
+Obstacle 215 385   0.5
+Obstacle 215 382.5 0.5
+Obstacle 215 380   0.5
+Obstacle 215 377.5 0.5
+Obstacle 215 375   0.5
+Obstacle 215 372.5 0.5
+Obstacle 215 370   0.5
+Obstacle 215 367.5 0.5
+Obstacle 215 365   0.5
+
+Obstacle 305 395   0.5
+Obstacle 305 392.5 0.5
+Obstacle 305 390   0.5
+Obstacle 305 387.5 0.5
+Obstacle 305 385   0.5
+Obstacle 305 382.5 0.5
+Obstacle 305 380   0.5
+Obstacle 305 377.5 0.5
+Obstacle 305 375   0.5
+Obstacle 305 372.5 0.5
+Obstacle 305 370   0.5
+Obstacle 305 367.5 0.5
+Obstacle 305 365   0.5
+
+Obstacle 318 395 2.5
+Obstacle 324 395 2.5
+Obstacle 330 395 2.5
+Obstacle 330 365 2.5
+
+-- World of Coca-Cola
+Boundary "" 495 695 625 695
+Boundary "" 495 570 625 570
+Boundary "" 495 695 495 570
+Boundary "" 625 695 625 570
+
+Boundary "" 540 625 580 625
+Boundary "World of Coca-Cola" 540 585 580 585
+Boundary "" 540 625 540 585
+Boundary "" 580 625 580 585
+
+-- Underground
+Boundary "" 355 695 475 695
+Boundary "" 355 570 475 570
+Boundary "" 355 695 355 570
+Boundary "" 475 695 475 570
+
+Boundary "" 360 690 470 690
+Boundary "" 360 575 470 575
+Boundary "" 360 690 360 575
+Boundary "" 470 690 470 575
+
+Boundary "" 210 695 335 695
+Boundary "" 210 570 335 570
+Boundary "" 210 695 210 570
+Boundary "" 335 695 335 570
+
+Boundary "" 215 690 330 690
+Boundary "" 215 575 330 575
+Boundary "" 215 690 215 575
+Boundary "" 330 690 330 575
+
+-- Courtland & M. L. King Jr. Dr
+Boundary "" 650 695 750 695
+Boundary "" 650 570 750 570
+Boundary "" 650 695 650 570
+Boundary "" 750 695 750 570
+
+Boundary "" 660 630 740 630
+Boundary "" 660 575 740 575
+Boundary "" 660 630 660 575
+Boundary "" 740 630 740 575
+
+-- Traffic Court + City Hall Annex
+Boundary "" 500 255 625 255
+Boundary "" 500 130 540 100
+Boundary "" 540 100 625 155
+Boundary "" 500 255 500 130
+Boundary "" 625 255 625 155
+
+Boundary "" 520 235 545 235
+Boundary "Traffic Court" 520 190 545 190
+Boundary "" 520 235 520 190
+Boundary "" 545 235 545 190
+
+Boundary "" 505 170 555 170
+Boundary "" 505 140 555 140
+Boundary "" 505 170 505 140
+Boundary "" 555 170 555 140
+
+Boundary "" 575 250 620 250
+Boundary "" 575 225 620 225
+Boundary "" 575 250 575 225
+Boundary "" 620 250 620 225
+
+-- Board of Education
+Boundary "" 355 255 480 255
+Boundary "" 355 130 480 130
+Boundary "" 355 255 355 130
+Boundary "" 480 255 480 130
+
+Boundary "" 360 250 415 250
+Boundary "" 395 230 415 230
+Boundary "Board of Education" 360 195 395 195
+Boundary "" 360 250 360 195
+Boundary "" 395 230 395 195
+Boundary "" 415 250 415 230
+
+-- Peachtree & Garnett
+Boundary "" 210 255 335 255
+Boundary "" 210 130 335 130
+Boundary "" 210 255 210 130
+Boundary "" 335 255 335 130
+
+Boundary "" 250 250 330 250
+Boundary "" 250 220 330 220
+Boundary "" 250 250 250 220
+Boundary "" 330 250 330 220
+
+-- Washington & Memorial Dr
+Boundary "" 650 255 740 255
+Boundary "" 650 165 760 230
+Boundary "" 650 255 650 165
+Boundary "" 740 255 760 230
+
+Boundary "" 655 250 725 250
+Boundary "" 680 215 725 215
+Boundary "" 655 190 680 190
+Boundary "" 655 250 655 190
+Boundary "" 680 215 680 190
+Boundary "" 725 250 725 215
+
+Boundary "" 755 255 790 255
+Boundary "" 755 255 770 235
+Boundary "" 770 235 790 255
+
+
+
+PP P1a 215 430 2
+
+PP P2a 220 425 2
+
+PP P3a 320 425 2
+
+PP P4a 360 425 2
+
+PP P5a 370 425 2
+
+PP P6a 470 425 2
+
+PP P7a 480 430 2
+
+PP P8a 475 466 2
+
+PP P9a 565 466 2
+
+PP P10a 580 466 2
+
+PP P11a 615 466 2
+
+PP P12a 670 482.5 2
+
+
+
+PP P1b 210 395 2
+
+PP P2b 215 400 2
+
+PP P3b 300 400 2
+
+PP P4b 355 400 2
+
+PP P5b 365 400 2
+
+PP P6b 465 400 2
+
+PP P7b 565 435 2
+
+PP P8b 615 435 2
+
+PP P9b 665 438 2
+
+PP P10b 670 466 2
+
+

@@ -1,0 +1,36 @@
+/**********************************************************************
+ **                                                                  **
+ **                      SET_MOBILITY_TYPE.cnl                       **
+ **                                                                  **
+ **  Written by: Patrick Ulam and Yoichiro Endo                      **
+ **                                                                  **
+ **  Copyright 2006, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+/* $Id: SET_MOBILITY_TYPE.cnl,v 1.1.1.1 2006/07/12 13:37:59 endo Exp $ */
+
+#include "cnl.inc"
+
+procedure Vector SET_MOBILITY_TYPE with
+	int mobilityType;
+header
+body
+{
+   VECTOR_CLEAR(output);
+
+   exec_set_mobility_type(mobilityType);
+}
+pend
+
+/**********************************************************************
+# $Log: SET_MOBILITY_TYPE.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:59  endo
+# MissionLab 7.0
+#
+# Revision 1.1  2006/05/02 04:19:32  endo
+# TrackTask improved for the experiment.
+#
+#**********************************************************************/

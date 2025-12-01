@@ -1,0 +1,48 @@
+/*--------------------------------------------------------------------
+
+	COMPUTE_U.cnl
+
+
+	Written by: 	Antonio Sgorbissa 
+
+	Copyright 2000, Antonio Sgorbissa 
+
+--------------------------------------------------------------------*/
+
+/* $Id: COMPUTE_U.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+/***********************************************************************/
+
+procedure double COMPUTE_U with
+   Vector 	rep_force;
+header
+body
+
+    //put rep_force in the database 
+   
+    char *value;
+    value = (char*)malloc(100*sizeof(char));
+    sprintf(value, "%f %f", rep_force.x, rep_force.y);
+    put_state("RepForce", value);
+    free (value);
+
+    //compute U
+    output = sqrt(rep_force.x*rep_force.x + rep_force.y*rep_force.y);
+pend
+
+
+/**********************************************************************
+# $Log: COMPUTE_U.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 23:00:05  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.1  2000/12/02 21:46:37  sgorbiss
+# Initial revision
+#
+#**********************************************************************/

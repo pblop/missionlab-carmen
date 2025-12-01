@@ -1,0 +1,14 @@
+SCENARIO "Faculty of Sciences"
+
+SITE "Salamanca, Spain"
+
+MISSION-AREA 113.6 89.6
+
+LOAD-MAP "deptoiaGIS.mapinfo"
+
+ORIGIN 0 0
+
+CONTROL MEASURES:  
+
+PP StartPlace 32.0  44.0  0.2
+

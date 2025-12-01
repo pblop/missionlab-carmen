@@ -1,0 +1,8 @@
+"Title: Choose a robot for robot binding point\n\
+\n\
+There are multiple robots available which could be\n\
+bound to this robot binding point.  Choose one and press OK.\n\
+\n\
+OK:    Bind the choosen robot.\n\
+Abort: Abort binding operation.\n\
+Help:  This message."

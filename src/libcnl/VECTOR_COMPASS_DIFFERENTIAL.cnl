@@ -1,0 +1,48 @@
+/**********************************************************************
+ **                                                                  **
+ **                      GET_COMPASS_HEADING.cnl                     **
+ **                                                                  **
+ **                                                                  **
+ **  Copyright 1995, Georgia Tech Research Corporation               **
+ **  Atlanta, Georgia  30332-0415                                    **
+ **  ALL RIGHTS RESERVED, See file COPYRIGHT for details.            **
+ **                                                                  **
+ **********************************************************************/
+
+
+#include "cnl.inc"
+
+
+/***********************************************************************/
+
+procedure Vector VECTOR_COMPASS_DIFFERENTIAL with
+	double Desired_heading;
+	int Compass_heading;
+	double Tolerance;
+header
+	double dif;
+body
+	dif = (Desired_heading - Compass_heading);
+	if (fabs(dif)>Tolerance) {
+		dif *= M_PI/180.0;
+		output.x = cos(dif);
+		output.y = - sin(dif);
+		output.z = 0;
+	} else {
+		output.x = 1;
+		output.y = 0;
+		output.z = 0;
+        }	
+        /*fprintf(stderr, "d:%g c:%d t:%g x:%g y:%g\n", Desired_heading,Compass_heading,Tolerance,output.x,output.y);*/
+pend
+
+
+
+
+
+
+
+
+
+
+

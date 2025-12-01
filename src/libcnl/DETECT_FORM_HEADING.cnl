@@ -1,0 +1,104 @@
+/*--------------------------------------------------------------------
+
+	DETECT_FORM_HEADING
+
+	Compute the "intended" heading of the formation.
+	This is given relative to the robot heading.
+	Selects telop input if it is non-zero.
+
+	-- The output must be relative to the current heading of the robot
+
+	Written by:  Tucker Balch
+
+	1. Doug MacKenzie - Trying to get the default stuff to work.  It was
+	                    causing problems when the output was stored as a
+			    fixed value and the robot turned. 
+
+	Copyright 1995, Georgia Tech Research Corporation
+	Atlanta, Georgia  30332-0415
+	ALL RIGHTS RESERVED, See file COPYRIGHT for details.
+
+--------------------------------------------------------------------*/
+
+/* $Id: DETECT_FORM_HEADING.cnl,v 1.1.1.1 2006/07/12 13:37:58 endo Exp $ */
+
+
+#include "cnl.inc"
+
+procedure double DETECT_FORM_HEADING with
+   Vector 	relative_goal;
+   Vector 	telop_input;
+   double       telop_mag;
+   double	default_trigger;
+   double	robot_heading;
+
+header
+   double last_form_heading = 0;
+   double last_robot_heading = 0;
+
+body
+
+output = 0;
+
+/*if ( 1 == 0 )*/ 
+if ( fabs(telop_mag) > 0.001 )
+	{
+      	output = RADIANS_TO_DEGREES(atan2(telop_input.y, telop_input.x));
+	}
+else
+	{
+	if ( len_2d(relative_goal) >= default_trigger )
+		{
+      		// Compute the angle represented by the vector towards the goal
+      		output = RADIANS_TO_DEGREES(atan2(relative_goal.y, relative_goal.x));
+
+      		/* remember where the last heading was */
+      		last_form_heading = output;
+      		last_robot_heading = robot_heading;
+   		}
+	
+	else
+		{
+      		// if zero vector, then use the last good heading */
+      		// Rotated by the difference in our robot heading and the original
+      		output = last_form_heading + (last_robot_heading - robot_heading);
+
+      		if ( debug )
+			fprintf(stderr,"DETECT_FORM_HEADING (%d): using default=%.0f robot_heading=%.0f\n",
+			robot_id, last_form_heading, robot_heading );
+   		}
+	}
+
+if ( debug )
+	{
+	double deg=0;
+	if( len_2d(relative_goal) > EPS_ZERO )
+		{
+	   	deg = RADIANS_TO_DEGREES(atan2(relative_goal.y, relative_goal.x));
+           	deg += robot_heading;
+		}
+
+	fprintf(stderr,"DETECT_FORM_HEADING (%d): rel_goal=<%.1f %.1f> (%.0f global) output=%.0f degrees\n", 
+		robot_id, relative_goal.x, relative_goal.y, deg, output);
+   	}
+pend
+
+
+
+/**********************************************************************
+# $Log: DETECT_FORM_HEADING.cnl,v $
+# Revision 1.1.1.1  2006/07/12 13:37:58  endo
+# MissionLab 7.0
+#
+# Revision 1.1.1.1  2005/02/06 22:59:56  endo
+# AO-FNC Project (based on mlab-6.0.01.06192003.tar.gz)
+#
+# Revision 1.11  1995/09/08  14:50:10  doug
+# removed include of gt_simulation.h since now in cnl.inc
+#
+# Revision 1.10  1995/08/11  17:36:28  tucker
+# added a comment
+#
+# Revision 1.9  1995/06/28  21:51:10  jmc
+# Added RCS id and log strings.
+#**********************************************************************/
