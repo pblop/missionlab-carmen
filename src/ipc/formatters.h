@@ -600,6 +600,8 @@ typedef enum
 #define ALIGN ALIGN_WORD
 #elif defined (i386) && !defined(__CYGWIN__)         /* Get this before PPC603 which comes from ? */
 #define ALIGN ALIGN_INT
+#elif defined(__aarch64__) || defined(__arm64__)
+#define ALIGN ALIGN_LONGEST
 #elif defined(__x86_64)
 #define ALIGN ALIGN_LONGEST
 #elif defined (i386) && defined(__CYGWIN__)
