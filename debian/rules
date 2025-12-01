@@ -9,5 +9,47 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+# In the latest Debian versions, there are certain issues compiling old code
+# (without refactoring). C++23 standard changes how C handles certain cases,
+# like void function pointers (used in map_graphics.c, example: line 455).
+# Using the gnu99 standard avoids those issues, and it seems like the codebase
+# doesn't require any modern C/C++ features.
+# This is similar to the change made in missionlabcarmen.spec, but for some
+# reason, here gnu99 is needed instead of just gnu98 (as in the spec file).
+export DEB_CFLAGS_MAINT_APPEND = -std=gnu99
+export DEB_CXXFLAGS_MAINT_APPEND = -std=gnu++98 -fpermissive -Wimplicit-function-declaration
+
 %:
 	dh $@ 
+
+override_dh_auto_build:
+  # These makefiles are horrible: CFLAGS are hardcoded, names like CFLAGS1/2 are used, and they basically
+	# ignore the standard flags set on the environment.
+	# To fix this, we create compiler wrappers that force our desired flags.
+	mkdir -p $(CURDIR)/.wrappers
+
+  # The gcc wrapper, placing our custom flags at the end to override any
+  # previous ones. We pass both C and C++ flags here because some makefiles call
+  # 'gcc' to compile C++ files.
+	# We also filter out some warnings about command-line options not being valid
+	# for certain languages, and force colored diagnostics (because passing the
+	# output through grep disables colors otherwise).
+	echo '#!/bin/bash' > $(CURDIR)/.wrappers/gcc
+	echo 'exec /usr/bin/gcc -fdiagnostics-color=always "$$@" '"${DEB_CFLAGS_MAINT_APPEND} ${DEB_CXXFLAGS_MAINT_APPEND}"' 2> >(grep -v "command-line option.*is valid for.*but not for" >&2)'>> $(CURDIR)/.wrappers/gcc
+	chmod +x $(CURDIR)/.wrappers/gcc
+
+  # The g++ wrapper, placing our custom flags at the end to override any previous ones.
+	echo '#!/bin/sh' > $(CURDIR)/.wrappers/g++
+	echo 'exec /usr/bin/g++ "$$@" '${DEB_CXXFLAGS_MAINT_APPEND} >> $(CURDIR)/.wrappers/g++
+	chmod +x $(CURDIR)/.wrappers/g++
+
+	# Some makefiles even call 'cc' or 'c++'.
+	ln -sf gcc $(CURDIR)/.wrappers/cc
+	ln -sf g++ $(CURDIR)/.wrappers/c++
+
+	# Explicitly build the Kalman library first so the linker can find them when
+	# necessary.
+	PATH=$(CURDIR)/.wrappers:$(PATH) $(MAKE) -C src/hardware_drivers/hserver/PoseCalculator/Kalman/
+
+	
+	PATH=$(CURDIR)/.wrappers:$(PATH) dh_auto_build -- -j1
