@@ -33,7 +33,7 @@ char *inname;
 char **filenames;
 int num_include_paths = 0;
 int num_defines = 0;
-FILE *outfile = stdout;
+FILE *outfile = 0;
 FILE *logfile;
 int pass;
 int cnl_debug;
@@ -122,6 +122,8 @@ main(int argc, char **argv)
    int p1_cnldebug = 0;
    int p2_cnldebug = 0;
    char ccp_call[4096];
+
+	 outfile = stdout;
 
    char *copyright_str =
 #include "copyright"

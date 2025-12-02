@@ -24,6 +24,7 @@
 #include <sys/time.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <sys/ioctl.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>

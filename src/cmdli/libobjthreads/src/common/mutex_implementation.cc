@@ -81,7 +81,7 @@ mutex_implementation::create_mutex()
 #elif defined(DJGPP)
    return new djgpp_mutex();
    
-#elif defined(linux)
+#elif defined(linux) || defined(__linux__)
    return new posix_mutex();
 
 #else
