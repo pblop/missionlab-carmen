@@ -1,0 +1,141 @@
+name: Build and release packages
+
+on:
+  push:
+    # Trigger ONLY when pushing a tag starting with 'p'
+    tags:
+      - "p*"
+
+jobs:
+  # Build everything
+  build:
+    name: Build ${{ matrix.distro }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # --- UBUNTU (Debian) ---
+          - distro: ubuntu
+            arch: x86_64
+            runner: ubuntu-24.04
+            version: 24.04
+            container: ubuntu:24.04
+            pkg_type: deb
+          - distro: ubuntu
+            arch: arm64
+            runner: ubuntu-24.04-arm
+            version: 24.04
+            container: ubuntu:24.04
+            pkg_type: deb
+
+          # --- FEDORA (RPM) ---
+          - distro: fedora
+            arch: x86_64
+            runner: ubuntu-24.04
+            version: 42
+            container: fedora:42
+            pkg_type: rpm
+          - distro: fedora
+            arch: arm64
+            runner: ubuntu-24.04-arm
+            version: 42
+            container: fedora:42
+            pkg_type: rpm
+
+          # --- OPENSUSE (RPM) --- (not yet working)
+          # - distro: opensuse
+          #   arch: x86_64
+          #   runner: ubuntu-24.04
+          #   container: opensuse/leap:latest
+          #   pkg_type: rpm
+          # - distro: opensuse
+          #   arch: arm64
+          #   runner: ubuntu-24.04-arm
+          #   container: opensuse/leap:latest
+          #   pkg_type: rpm
+
+    container:
+      image: ${{ matrix.container }}
+      options: --user root
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Install deps based on distro and package type
+      - name: Install Deps (Debian/Ubuntu)
+        if: matrix.pkg_type == 'deb'
+        env:
+          # This tells apt-get to never ask questions
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update
+          apt-get install -y build-essential devscripts debhelper equivs nodejs
+          mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' debian/control
+
+      # Node.js is needed by upload-artifact
+      - name: Install Deps (Fedora)
+        if: matrix.distro == 'fedora'
+        run: |
+          dnf install -y rpm-build rpmdevtools make gcc gcc-c++ nodejs
+          dnf builddep -y missionlabcarmen.spec
+
+      - name: Install Deps (openSUSE)
+        if: matrix.distro == 'opensuse'
+        run: |
+          zypper refresh
+          zypper install -y rpm-build rpmdevtools make gcc gcc-c++ tar nodejs
+          zypper source-install -d missionlabcarmen.spec
+
+      # Build the packages
+      - name: Build DEB
+        if: matrix.pkg_type == 'deb'
+        run: dpkg-buildpackage -b -uc -us
+
+      - name: Build RPM
+        if: matrix.pkg_type == 'rpm'
+        run: |
+          mkdir -p ~/rpmbuild/SOURCES
+          tar --exclude=.git --exclude=debian -czf ~/rpmbuild/SOURCES/missionlabcarmen-1.0.tar.gz .
+          cp missionlabcarmen-rpmlintrc ~/rpmbuild/SOURCES/ || true
+          rpmbuild -bb missionlabcarmen.spec
+
+      # Collect artifacts
+      - name: Collect Files
+        run: |
+          mkdir -p staging
+          # Find and move DEBs (ignoring the extra 'dbgsym' debug packages)
+          find .. -maxdepth 1 -name "*.deb" ! -name "*-dbgsym_*.deb" ! -name "*-build-deps_*.deb" | while read file; do
+            filename=$(basename "$file")
+            newname="${filename%.deb}_${{ matrix.distro }}-${{ matrix.version }}.deb"
+            mv "$file" "staging/$newname"
+          done || true
+          # Find and move RPMs
+          find ~/rpmbuild/RPMS -name "*.rpm" -exec mv {} staging/ \; || true
+
+      # Upload artifacts
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # We give each upload a unique name so they don't overwrite each other
+          name: package-${{ matrix.distro }}-${{ matrix.version }}-${{ matrix.arch }}
+          path: staging/*
+
+  # Create GitHub Release with all artifacts
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create releases
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_assets
+          merge-multiple: true # Flattens all packages into one folder
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release_assets/*
+          generate_release_notes: true
