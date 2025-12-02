@@ -316,7 +316,10 @@ bool TwoPointsType::readPointFromOverlay_(float *x, float *y)
     unlink(pointFileName);
 
     // Execute mlab.
-    sprintf(cmd, "mlab -m %s -n", pointFileName);
+    // Single quotes around filename to handle weird chars in overlay names, for
+    // example, when USER is (null). This WILL fail if the username contains
+    // a single quote, but that is unlikely, as POSIX disallows it.
+    sprintf(cmd, "mlab -m '%s' -n", pointFileName);
     system(cmd);
 
     if ((pointFile = fopen(pointFileName, "r")) == NULL)

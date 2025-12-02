@@ -312,8 +312,11 @@ bool TwoWorldPointsType::readPointFromOverlay_(double *lat, double *lon)
     fd = mkstemp(worldPointFileName);
     unlink(worldPointFileName);
 
-    // Execute mlab.
-    sprintf(cmd, "mlab -G %s -n", worldPointFileName);
+    // Execute mlab. 
+    // Single quotes around filename to handle weird chars in overlay names, for
+    // example, when USER is (null). This WILL fail if the username contains
+    // a single quote, but that is unlikely, as POSIX disallows it.
+    sprintf(cmd, "mlab -G '%s' -n", worldPointFileName);
     system(cmd);
 
     if ((worldPointFile = fopen(worldPointFileName, "r")) == NULL)
