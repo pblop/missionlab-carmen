@@ -140,6 +140,7 @@ static void close_cb(
         XtDestroyWidget(dialog);
         dialog = NULL;
     }
+    done = true;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -454,7 +455,7 @@ void EditParms(Symbol *rec, bool showAdvancedParm)
     // get the atomWmDeleteWindow message specifier and add a callback for it
     atomWmDeleteWindow = XmInternAtom(
         XtDisplay(dialog),
-        "atomWmDeleteWindow",
+        "WM_DELETE_WINDOW",
         false);
 
     XmAddWMProtocolCallback(
